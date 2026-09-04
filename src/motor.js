@@ -2,7 +2,7 @@ const $=s=>document.querySelector(s);
 const azar=a=>a[Math.floor(Math.random()*a.length)];
 const mezclar=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const rutaPor=id=>RUTAS.find(r=>r.id===id),rioPor=rutaPor;/* «rio» en un identificador quiere decir «ruta»: el motor juega rutas de paradas (ver docs/itinerarios.md) */
-const ZONAS={cr:{nombre:'Costa Rica',pos:[10.3,-84.3]}};const zonaDe=r=>r.zona||'mundo';
+const ZONAS=JUEGO.zonas||{};/* JUEGO viene de src/juegos/<juego>.js, cargado antes del motor */const zonaDe=r=>r.zona||'mundo';
 /* interruptor Niño/Adulto: P.modo 'mercader' = Niño (mercado, animal, textos plegados, lee sola), 'historia' = Adulto */
 let GLOBO=false;const esNino=()=>modo()==='mercader';const mas=(titulo,html,h3)=>esNino()?`<details class="mas"><summary>${titulo}</summary>${html}</details>`:`${h3?`<h3>${h3}</h3>`:''}${html}`;
 const htmlVoz=()=>voz.soporte()?`<button class="voz${voz.hablando?' on':''}" onclick="voz.leer()" aria-pressed="${voz.hablando}" aria-label="Escuchar en voz alta" title="Escuchar">🔊</button>`:'';
@@ -12,13 +12,13 @@ function setVoz(v){P.voz=v;guardar();render(false)}
 function dichoActual(){if(S.pantalla==='quiz')return S.quiz&&S.quiz.resp!=null?S.quiz.dicho:null;if(S.pantalla!=='rio')return null;const r=rioPor(S.rio);
   if(S.tab==='descender'){const E=S.evento;if(E)return E.resp!=null?(E.ok?E.def.bien:E.def.mal):E.dicho;return S.dicho}
   if(S.tab==='ordenar')return S.orden&&S.orden.dicho;
-  if(S.tab==='recitar'){const R=S.rec;if(!R)return null;return R.revelada&&R.i<r.ciudades.length?r.ciudades[R.i].nombre:R.dicho}
+  if(S.tab==='recitar'){const R=S.rec;if(!R)return null;return R.revelada&&R.i<r.paradas.length?r.paradas[R.i].nombre:R.dicho}
   return S.quiz&&S.quiz.dicho}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const km=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
 const marcarFrase=f=>esc(f).replace(/\[([^\]]+)\]/g,'<b>$1</b>');
 const fraseLimpia=f=>f.replace(/[\[\]]/g,'');
-const lista=r=>r.ciudades.map(c=>c.nombre).join(' → ');
+const lista=r=>r.paradas.map(c=>c.nombre).join(' → ');
 const oculta=s=>s.split(' ').map(w=>w[0]+'_'.repeat(Math.max(1,w.length-1))).join(' ');
 const sinNombre=(t,n)=>t.replace(new RegExp(n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),'___');
 const sinHtml=s=>String(s).replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
@@ -87,26 +87,26 @@ function normalizar(r){r.vocab=Object.assign({},VOCAB[r.tipo]||VOCAB.rio,r.vocab
   r.acum=[0];for(let i=1;i<r.curso.length;i++)r.acum[i]=r.acum[i-1]+hav(r.curso[i-1],r.curso[i]);r.kmPoly=r.acum[r.acum.length-1];
   let ult=0;r.paradas.forEach(c=>{let best=ult,bd=1e9;for(let i=ult;i<r.curso.length;i++){const d=(r.curso[i][0]-c.pos[0])**2+(r.curso[i][1]-c.pos[1])**2;if(d<bd){bd=d;best=i}}c.idx=best;ult=best;c.km=Math.round(r.acum[best]/r.kmPoly*(r.longitud||r.kmPoly))});
   if(r.carga.length)r.fantasma=fantasma(r);return r}
-const RUTAS=RIVERS.map(desdeRio).map(normalizar);
-const idxParada=(r,p)=>p<=0?0:p>r.ciudades.length?r.curso.length-1:r.ciudades[p-1].idx;
+const RUTAS=JUEGO.rutas().map(normalizar);
+const idxParada=(r,p)=>p<=0?0:p>r.paradas.length?r.curso.length-1:r.paradas[p-1].idx;
 /* ---------- relieve: perfil de altura del cauce (ALTURAS, de tools/relieve.py: puntos [fracción del cauce, metros]) ---------- */
 const alturaEn=(r,f)=>{const P=r.perfil;if(!P)return null;if(f<=P[0][0])return P[0][1];for(let i=1;i<P.length;i++)if(f<=P[i][0]){const [f0,a0]=P[i-1],[f1,a1]=P[i];return f1>f0?a0+(a1-a0)*(f-f0)/(f1-f0):a1}return P[P.length-1][1]};
-const fracParada=(r,i)=>r.acum[r.ciudades[i].idx]/r.kmPoly;
+const fracParada=(r,i)=>r.acum[r.paradas[i].idx]/r.kmPoly;
 const alturaParada=(r,i)=>{const a=alturaEn(r,fracParada(r,i));return a==null?null:Math.round(a)};
 const textoAltura=(r,i)=>{const a=alturaParada(r,i);return a==null?'':a<0?` · el río va ${km(-a)} m bajo el nivel del océano`:a<5?' · el río ya va al nivel del mar':` · el río pasa a ${km(a)} m sobre el mar`};
 const fraseAltura=(r,i)=>{const a=alturaParada(r,i);return a==null?'':a<0?`El río va ${-a} metros bajo el nivel del océano.`:a<5?'El río ya va al nivel del mar.':`El río pasa a ${a} metros sobre el mar.`};
-function fracActual(r){const n=r.ciudades.length,p=S.paso,fp=k=>k<=0?0:k>n?1:fracParada(r,k-1);return S.evento?(fp(p)+fp(p+1))/2:fp(p)}
+function fracActual(r){const n=r.paradas.length,p=S.paso,fp=k=>k<=0?0:k>n?1:fracParada(r,k-1);return S.evento?(fp(p)+fp(p+1))/2:fp(p)}
 function perfilSVG(r){const P=r.perfil;if(!P)return '';const el=document.getElementById('perfil'),W=Math.max(300,(el&&el.clientWidth)||380),H=56,x0=8,x1=W-8,yb=44,yt=10,top=Math.max(P[0][1],1),piso=Math.min(0,P[P.length-1][1]);
   const X=f=>x0+f*(x1-x0),Y=a=>yb-(Math.max(a,piso)-piso)/(top-piso)*(yb-yt),fa=fracActual(r),aa=Math.round(alturaEn(r,fa)),xa=X(fa),ya=Y(aa);
   let h=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Perfil de altura del ${esc(r.nombre)}: de ${km(P[0][1])} m en la fuente a ${km(P[P.length-1][1])} m en el mar">`;
   h+=`<path class="perfil-tierra" d="M${X(0).toFixed(1)} ${yb}L${P.map(([f,a])=>`${X(f).toFixed(1)} ${Y(a).toFixed(1)}`).join('L')}L${X(1).toFixed(1)} ${yb}Z"/><line class="perfil-base" x1="${x0}" y1="${Y(0).toFixed(1)}" x2="${x1}" y2="${Y(0).toFixed(1)}"/>`;
-  r.ciudades.forEach((c,i)=>{h+=`<circle class="perfil-tick" cx="${X(fracParada(r,i)).toFixed(1)}" cy="${Y(alturaParada(r,i)).toFixed(1)}" r="2.2"><title>${esc(c.nombre)}: ${km(alturaParada(r,i))} m</title></circle>`});
+  r.paradas.forEach((c,i)=>{h+=`<circle class="perfil-tick" cx="${X(fracParada(r,i)).toFixed(1)}" cy="${Y(alturaParada(r,i)).toFixed(1)}" r="2.2"><title>${esc(c.nombre)}: ${km(alturaParada(r,i))} m</title></circle>`});
   h+=`<circle class="perfil-aqui" cx="${xa.toFixed(1)}" cy="${ya.toFixed(1)}" r="4"/>`;
   const izq=fa>0.75;h+=`<text class="perfil-txt" x="${(xa+(izq?-8:8)).toFixed(1)}" y="${(ya<24?ya+14:ya-7).toFixed(1)}" text-anchor="${izq?'end':'start'}">${km(aa)} m</text>`;
   if(fa>0.12)h+=`<text class="perfil-txt" x="${(x0+7).toFixed(1)}" y="${(yt+4).toFixed(1)}">${km(P[0][1])} m</text>`;
   h+=`<text class="perfil-txt k" x="${x1}" y="${H-3}" text-anchor="end">Altura del cauce</text>`;
   return h+'</svg>'}
-const kmParada=(r,p)=>p<=0?0:p>r.ciudades.length?r.longitud:r.ciudades[p-1].km;
+const kmParada=(r,p)=>p<=0?0:p>r.paradas.length?r.longitud:r.paradas[p-1].km;
 function puntoMedio(r,de,a){if(a<=de)return{k:de,pt:r.curso[de]};const s=(r.acum[de]+r.acum[a])/2;let k=de;while(k<a-1&&r.acum[k+1]<=s)k++;
   const p=r.curso[k],q=r.curso[k+1],L=r.acum[k+1]-r.acum[k],u=L?(s-r.acum[k])/L:0;return{k,pt:[p[0]+(q[0]-p[0])*u,p[1]+(q[1]-p[1])*u]}}
 
@@ -160,7 +160,7 @@ const voz={hablando:false,
   estado(on){if(on!==this.hablando){this.hablando=on;audio.duck(on)}document.querySelectorAll('.voz').forEach(b=>{b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)})}};
 
 /* ---------- persistencia: localStorage de este navegador, un progreso por perfil; memoria si no hay ---------- */
-const store={mem:{},clave:n=>'cauces:progreso:'+n,
+const store={mem:{},clave:n=>JUEGO.clave+':progreso:'+n,
   leer(k){try{const v=window.localStorage&&window.localStorage.getItem(k);if(v)return JSON.parse(v)}catch(e){}return this.mem[k]||null},
   escribir(k,v){this.mem[k]=v;try{if(window.localStorage)window.localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
   borrar(k){delete this.mem[k];try{if(window.localStorage)window.localStorage.removeItem(k)}catch(e){}}};
@@ -170,8 +170,8 @@ const nuevoP=()=>({cards:{},vistos:{},sellos:{}});
 /* ---------- pasaporte: un sello por ciudad, ganado al llegar sabiendo adónde ibas; dorado si además está en caja ≥ 3 ---------- */
 const sellos=()=>P.sellos||(P.sellos={});
 const claveSello=(r,i)=>r.id+':'+i;
-const sellosDe=r=>r.ciudades.filter((c,i)=>sellos()[claveSello(r,i)]).length;
-const completo=r=>sellosDe(r)===r.ciudades.length;
+const sellosDe=r=>r.paradas.filter((c,i)=>sellos()[claveSello(r,i)]).length;
+const completo=r=>sellosDe(r)===r.paradas.length;
 const totalSellos=()=>RUTAS.reduce((a,r)=>a+sellosDe(r),0);
 const selloOro=(r,i)=>{const c=P.cards['ciudad:'+r.id+':'+i];return !!(c&&c.box>=3)};
 function sellar(r,i){const k=claveSello(r,i);if(sellos()[k])return false;sellos()[k]=Date.now();guardar();return true}
@@ -180,26 +180,26 @@ function verPasaporte(){S.pantalla='pasaporte';S.aviso=null;render()}
 /* sellos con carácter: forma, inclinación, desgaste y tinta salen de un hash de río:parada, así cada sello es siempre el mismo */
 const FORMAS={circulo:'<circle cx="50" cy="50" r="46"/>',ovalo:'<ellipse cx="50" cy="50" rx="48" ry="41"/>',cuadrado:'<rect x="6" y="6" width="88" height="88" rx="18"/>',hexagono:'<polygon points="50,3 93,26 93,74 50,97 7,74 7,26"/>',octogono:'<polygon points="30,4 70,4 96,30 96,70 70,96 30,96 4,70 4,30"/>',escudo:'<path d="M50 4 L93 14 V52 Q93 82 50 97 Q7 82 7 52 V14 Z"/>'};
 const DESGASTES=['','4 2','7 2 2 2','9 3','2 2','6 1 1 1'];
-function sello(r,i,extra){const c=r.ciudades[i],k=claveSello(r,i),ts=sellos()[k];let h=2166136261;for(const ch of k)h=Math.imul(h^ch.charCodeAt(0),16777619);h=Math.imul(h^(h>>>13),1540483477)>>>0;h=(h^(h>>>15))>>>0;/* FNV-1a con mezcla final: claves vecinas dan sellos distintos */
+function sello(r,i,extra){const c=r.paradas[i],k=claveSello(r,i),ts=sellos()[k];let h=2166136261;for(const ch of k)h=Math.imul(h^ch.charCodeAt(0),16777619);h=Math.imul(h^(h>>>13),1540483477)>>>0;h=(h^(h>>>15))>>>0;/* FNV-1a con mezcla final: claves vecinas dan sellos distintos */
   const nombres=Object.keys(FORMAS),f=FORMAS[nombres[h%nombres.length]],rot=((h>>>5)%29)-14,desgaste=DESGASTES[(h>>>10)%DESGASTES.length],tinta=(h>>>15)%3===0?' verde2':'';
   if(!ts)return `<svg class="sello vacio" viewBox="0 0 100 100" role="img" aria-label="Sin sello"><g class="forma">${f}</g></svg>`;
   const oro=selloOro(r,i),pc=c.escena&&picto(c.escena[0]),aro=((oro?'★ ':'')+r.nombre+' · '+c.pais+' · ').toUpperCase();let txt=aro;while(txt.length<36)txt+=aro;
   const largo=c.nombre.length>11?' textLength="78" lengthAdjust="spacingAndGlyphs"':'',id='aro'+h.toString(36);
   return `<svg class="sello${oro?' oro':tinta}${extra||''}" viewBox="0 0 100 100" style="--rot:${rot}deg" role="img" aria-label="Sello de ${esc(c.nombre)}"><defs><path id="${id}" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><g class="forma">${f}</g><g class="forma2" transform="translate(50 50) scale(.9) translate(-50 -50)"${desgaste?` stroke-dasharray="${desgaste}"`:''}>${f}</g><text class="aro"><textPath href="#${id}">${esc(txt)}</textPath></text>${pc?`<svg class="escena pic" x="34" y="19" width="32" height="32" viewBox="${pc.vb}">${pc.svg}</svg>`:''}<text class="nom" x="50" y="64" text-anchor="middle"${largo}>${esc(c.nombre)}</text><text class="fecha" x="50" y="76" text-anchor="middle">${esc(fechaSello(ts))}</text></svg>`}
-function renderSello(r,i){const k=claveSello(r,i),c=r.ciudades[i];
+function renderSello(r,i){const k=claveSello(r,i),c=r.paradas[i];
   if(S.selloNuevo===k)return `<div class="sello-nuevo">${sello(r,i,' nuevo')}<div><b>¡Sello de ${esc(c.nombre)}!</b> Llegaste sabiendo adónde ibas; ya está en tu pasaporte.</div></div>`;
   if(sellos()[k])return `<div class="sello-nota">${sello(r,i)}<div>Sello en el pasaporte${selloOro(r,i)?', y dorado: la recordás en el repaso':''}.</div></div>`;
   if(S.llaves[i]===false)return `<div class="sello-nota">${sello(r,i)}<div>Sin sello esta vez: llegaste sin saber adónde ibas. En la próxima bajada, si lo sabés, lo ganás.</div></div>`;
   return ''}
-function renderPasaporte(){const grupos=[['Los grandes ríos',RUTAS.filter(r=>!r.zona)],['Ríos de Costa Rica',RUTAS.filter(r=>r.zona==='cr')]];
+function renderPasaporte(){const grupos=JUEGO.grupos.map(g=>[g.titulo,RUTAS.filter(g.filtro)]);
   const total=RUTAS.reduce((a,r)=>a+r.paradas.length,0),hechos=RUTAS.filter(completo).length;
   return `<p class="kicker">Pasaporte de ${esc(PERFILES.activo)}</p><h2>${totalSellos()} de ${total} sellos</h2><p>${hechos===1?'Un '+VJ().completo:hechos+' '+VJ().completos} de ${RUTAS.length}. ${VJ().selloNota} ${VJ().hechoNota}</p>
 ${grupos.map(([t,rs])=>`<div class="fkicker">${t}</div>`+rs.map(r=>`<div class="pas-rio"><button class="pas-cab" onclick="abrirRio('${r.id}')">${r.companero?`<span class="emo" aria-hidden="true">${animal(r.companero)}</span>`:''}<b>${esc(r.nombre)}</b><span class="fmeta">${sellosDe(r)} de ${r.paradas.length} sellos${completo(r)?' · completo':''}</span></button><div class="sellos">${r.paradas.map((c,i)=>sello(r,i)).join('')}</div></div>`).join('')).join('')}
 <div class="acciones"><button class="btn sec" onclick="irInicio()">${VJ().volver}</button></div>`}
-const guardarPerfiles=()=>store.escribir('cauces:perfiles',PERFILES);
-function cargarPerfiles(){const g=store.leer('cauces:perfiles');
+const guardarPerfiles=()=>store.escribir(JUEGO.clave+':perfiles',PERFILES);
+function cargarPerfiles(){const g=store.leer(JUEGO.clave+':perfiles');
   if(g&&g.lista&&g.lista.length)PERFILES=g;
-  else{PERFILES={activo:'Capitán',lista:['Capitán']};const viejo=store.leer('cauces:progreso');if(viejo&&viejo.cards){store.escribir(store.clave('Capitán'),viejo);store.borrar('cauces:progreso')}guardarPerfiles()}
+  else{PERFILES={activo:'Capitán',lista:['Capitán']};const viejo=store.leer(JUEGO.clave+':progreso');if(viejo&&viejo.cards){store.escribir(store.clave('Capitán'),viejo);store.borrar('cauces:progreso')}guardarPerfiles()}
   if(!PERFILES.lista.includes(PERFILES.activo))PERFILES.activo=PERFILES.lista[0];P=store.leer(store.clave(PERFILES.activo))||nuevoP()}
 function elegirPerfil(i){const n=PERFILES.lista[i];if(!n)return;PERFILES.activo=n;guardarPerfiles();P=store.leer(store.clave(n))||nuevoP();S.perfilNuevo=false;S.aviso=null;render(false)}
 function nuevoPerfil(){S.perfilNuevo=!S.perfilNuevo;render(false);const el=document.getElementById('nombrePerfil');if(S.perfilNuevo&&el&&el.focus)el.focus()}
@@ -209,7 +209,7 @@ function crearPerfil(nombre){const el=document.getElementById('nombrePerfil');no
 const preguntar=m=>typeof confirm==='function'?confirm(m):true;
 function quitarPerfil(){const n=PERFILES.activo;if(!preguntar(`¿Quitar el perfil ${n} y su progreso de este navegador? Si querés conservarlo, guardalo antes en un archivo.`))return;
   store.borrar(store.clave(n));PERFILES.lista=PERFILES.lista.filter(x=>x!==n);if(!PERFILES.lista.length)PERFILES.lista=['Capitán'];PERFILES.activo=PERFILES.lista[0];guardarPerfiles();P=store.leer(store.clave(PERFILES.activo))||nuevoP();S.aviso=null;render(false)}
-const progresoJSON=()=>JSON.stringify({app:'cauces',version:1,perfil:PERFILES.activo,guardado:new Date().toISOString(),progreso:P});
+const progresoJSON=()=>JSON.stringify({app:JUEGO.id,version:1,perfil:PERFILES.activo,guardado:new Date().toISOString(),progreso:P});
 function exportar(){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([progresoJSON()],{type:'application/json'}));a.href=url;a.download='cauces-'+PERFILES.activo.replace(/[^\p{L}\p{N}]+/gu,'-')+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function importarTexto(txt){let d=null;try{d=JSON.parse(txt)}catch(e){}
   const p=d&&d.progreso&&d.progreso.cards?d.progreso:(d&&d.cards?d:null);if(!p){S.aviso='Ese archivo no tiene un progreso de Cauces.';render(false);return false}
@@ -225,7 +225,7 @@ const INTERVALOS=[0,1,3,7,14,30],DIA=86400000,NUEVAS_POR_DIA=10;
 let P=nuevoP();
 const guardar=()=>store.escribir(store.clave(PERFILES.activo),P);
 function marcar(id,ok){const c=P.cards[id]||{box:0,due:0};if(c.nuevo){delete c.nuevo;diaHoy().nuevas++}c.box=ok?Math.min(5,c.box+1):0;c.due=Date.now()+INTERVALOS[c.box]*DIA;P.cards[id]=c;guardar()}
-function idsDe(r){const ids=['orden','antigua','moderna','mar'].map(k=>'rio:'+r.id+':'+k);r.ciudades.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
+function idsDe(r){const ids=['orden','antigua','moderna','mar'].map(k=>'rio:'+r.id+':'+k);r.paradas.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
 function dominio(r){const ids=idsDe(r);let s=0;ids.forEach(id=>{const c=P.cards[id];if(c)s+=c.box});return s/(ids.length*5)}
 function sembrar(r){idsDe(r).forEach(id=>{if(!P.cards[id])P.cards[id]={box:0,due:Date.now(),nuevo:true}});guardar()}
 /* Hoy: las tarjetas vencidas ya repasadas entran todas; las nuevas (sembradas y nunca respondidas) entran de a NUEVAS_POR_DIA
@@ -260,7 +260,7 @@ function preguntaTipo(tipo,r,extra){const V=r.vocab;
   if(tipo==='imagen'){const i=extra==null?Math.floor(Math.random()*n):extra,c=r.paradas[i],otras=mezclar(r.paradas.map((x,k)=>k).filter(k=>k!==i)).slice(0,3);
     return armar({tipo,rio:r.id,ciudad:i,escena:c.escena,texto:V.preguntas.imagen(r,c),nota:c.dato,cardId:'ciudad:'+r.id+':'+i},esc(c.nombre),otras.map(k=>esc(r.paradas[k].nombre)))}
   if(tipo==='pais'){const i=extra==null?Math.floor(Math.random()*n):extra,c=r.paradas[i];
-    const dis=[...new Set(mezclar([...new Set(r.paradas.map(x=>x.pais))]).concat(mezclar([...new Set(RUTAS.flatMap(x=>x.ciudades.map(y=>y.pais)))])))].filter(p=>p!==c.pais).slice(0,3);
+    const dis=[...new Set(mezclar([...new Set(r.paradas.map(x=>x.pais))]).concat(mezclar([...new Set(RUTAS.flatMap(x=>x.paradas.map(y=>y.pais)))])))].filter(p=>p!==c.pais).slice(0,3);
     return armar({tipo,rio:r.id,ciudad:i,texto:`¿En qué país está ${c.nombre}?`,nota:c.dato,cardId:null},esc(c.pais),dis.map(esc))}
   if(tipo==='altura'){const alts=r.paradas.map((c,i)=>alturaParada(r,i));let sel=null;
     for(let k=0;k<8&&!sel&&alts[0]!=null;k++){const g=mezclar(r.paradas.map((c,i)=>i)).slice(0,4),top=g.reduce((m,i)=>alts[i]>alts[m]?i:m,g[0]),seg=Math.max(...g.filter(i=>i!==top).map(i=>alts[i]));if(alts[top]>=seg+25&&alts[top]>=seg*1.15)sel={g,top}}
@@ -300,21 +300,21 @@ function continuarEvento(){const E=S.evento;if(!E||E.resp==null)return;S.evento=
 const modo=()=>P.modo==='historia'?'historia':'mercader';
 function setModo(m){P.modo=m;guardar();render(false)}
 function iniciarEco(){S.eco=modo()==='mercader'?{monedas:10,bodega:[],dicho:null,cerrado:false,final:null}:null}
-function precio(r,g,j){if(j<g.o)return null;const k=j-g.o;if(g.d&&k>g.d)return 0;let p=g.b*(1+0.5*k);if(g.m===j)p*=2;else if(j===r.ciudades.length-1&&k>0)p*=1.25;return Math.round(p)}
-function comprar(gi){const r=rioPor(S.rio),g=r.mercado[gi],e=S.eco;if(!e||e.cerrado)return;
+function precio(r,g,j){if(j<g.o)return null;const k=j-g.o;if(g.d&&k>g.d)return 0;let p=g.b*(1+0.5*k);if(g.m===j)p*=2;else if(j===r.paradas.length-1&&k>0)p*=1.25;return Math.round(p)}
+function comprar(gi){const r=rioPor(S.rio),g=r.carga[gi],e=S.eco;if(!e||e.cerrado)return;
   if(e.bodega.length>=3)S.dicho=azar(VOCES.sinEspacio);else if(e.monedas<g.b)S.dicho=azar(VOCES.sinMonedas);else{e.monedas-=g.b;e.bodega.push(gi);S.dicho=azar(VOCES.compra).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));audio.ping(660)}
   render(false)}
-function vender(bi){const r=rioPor(S.rio),e=S.eco;if(!e||e.cerrado)return;const g=r.mercado[e.bodega[bi]],p=precio(r,g,S.paso-1);e.bodega.splice(bi,1);
+function vender(bi){const r=rioPor(S.rio),e=S.eco;if(!e||e.cerrado)return;const g=r.carga[e.bodega[bi]],p=precio(r,g,S.paso-1);e.bodega.splice(bi,1);
   if(p>0){e.monedas+=p;S.dicho=azar(VOCES.venta).replace('{n}',p);audio.ping(1046)}else S.dicho=azar(VOCES.podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));
   render(false)}
-function cerrarEco(r){const e=S.eco;if(!e||e.cerrado)return;const j=r.ciudades.length-1,vend=[];e.bodega.forEach(gi=>{const g=r.mercado[gi],p=precio(r,g,j)||0;e.monedas+=p;vend.push(g.n+' · '+p)});e.bodega=[];
+function cerrarEco(r){const e=S.eco;if(!e||e.cerrado)return;const j=r.paradas.length-1,vend=[];e.bodega.forEach(gi=>{const g=r.carga[gi],p=precio(r,g,j)||0;e.monedas+=p;vend.push(g.n+' · '+p)});e.bodega=[];
   const gan=e.monedas-10;P.tesoro=(P.tesoro||0)+Math.max(0,gan);e.cerrado=true;e.final={fin:e.monedas,gan,vend};S.dicho=VOCES.ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+(r.fantasma!=null?' '+(e.monedas>r.fantasma?VOCES.fantasma[0]:e.monedas<r.fantasma?VOCES.fantasma[1].replace('{n}',r.fantasma):VOCES.fantasma[2]):'');guardar()}
 function irInicio(){S.pantalla='inicio';S.aviso=null;render()}
 function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='preguntar')iniciarQuiz(r);render()}
-function paso(d,tras){const r=rioPor(S.rio),fin=r.ciudades.length+1,antes=S.paso;
+function paso(d,tras){const r=rioPor(S.rio),fin=r.paradas.length+1,antes=S.paso;
   if(d>0&&!tras&&!S.evento&&antes<fin){const def=r.eventos.find(e=>e.tramo===antes+1&&!S.eventosVistos[e.tramo]);if(def){lanzarEvento(r,def);return}}
   S.paso=Math.max(0,Math.min(fin,antes+d));S.viaje={de:antes,a:S.paso};if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
-function reiniciarOrden(r){S.orden={pool:mezclar(r.ciudades.map((c,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VOCES.ordenInicio)}}
+function reiniciarOrden(r){S.orden={pool:mezclar(r.paradas.map((c,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VOCES.ordenInicio)}}
 function tocarChip(i){const o=S.orden,r=rioPor(S.rio);if(o.listo)return;
   if(i===o.seq.length){o.seq.push(i);o.pool=o.pool.filter(x=>x!==i);o.fallo=null;o.dicho=azar(VOCES.ordenBien);if(!o.pool.length){o.listo=true;o.dicho=VOCES.ordenFin[o.errores===0?0:o.errores===1?1:2];if(S.eco&&o.errores<=1){o.premio=o.errores===0?5:2;P.tesoro=(P.tesoro||0)+o.premio;o.dicho+=` +${o.premio} monedas al tesoro.`}marcar('rio:'+r.id+':orden',o.errores<=1)}}
   else{o.errores++;o.fallo=i;o.dicho=azar(VOCES.ordenMal);setTimeout(()=>{if(S.orden===o&&o.fallo===i){o.fallo=null;render(false)}},600)}
@@ -330,18 +330,16 @@ function globo(r,texto,extra){const m=r&&r.companero;if(!m||!texto)return '';GLO
 function bloqueFrase(r,conLista){return `<div class="frase"><div class="fkicker">Frase para el orden</div><div class="ftexto">${marcarFrase(r.frase)}</div>${r.fraseNota?`<div class="fnota">${esc(r.fraseNota)}</div>`:''}${conLista?`<div class="flista">${esc(lista(r))}</div>`:''}</div>`}
 function tabs(){return `<div class="tabs">${[['descender',VJ().bajar],['ordenar','Ordenar'],['recitar','Recitar'],['preguntar','Preguntar']].map(([k,t])=>`<button class="${S.tab===k?'on':''}" onclick="setTab('${k}')">${t}</button>`).join('')}</div>`}
 function renderInicio(){const n=pendientes().length;
-  const fila=r=>`<button class="fila" onclick="abrirRio('${r.id}')"><span class="fnombre">${r.masc?`<span class="emo" aria-hidden="true">${animal(r.masc)}</span>`:''}${esc(r.nombre)}</span><span class="fmeta">${r.vocab.fila(r)}${completo(r)?' · completo':sellosDe(r)?` · ${sellosDe(r)} sello${sellosDe(r)>1?'s':''}`:P.vistos[r.id]?' · recorrido':''}</span><span class="barra"><i style="width:${Math.round(dominio(r)*100)}%"></i></span></button>`;
-  const porLargo=(a,b)=>b.longitud-a.longitud,filas=RUTAS.filter(r=>!r.zona).sort(porLargo).map(fila).join(''),filasCR=RUTAS.filter(r=>r.zona==='cr').sort(porLargo).map(fila).join('');
+  const fila=r=>`<button class="fila" onclick="abrirRio('${r.id}')"><span class="fnombre">${r.companero?`<span class="emo" aria-hidden="true">${animal(r.companero)}</span>`:''}${esc(r.nombre)}</span><span class="fmeta">${r.vocab.fila(r)}${completo(r)?' · completo':sellosDe(r)?` · ${sellosDe(r)} sello${sellosDe(r)>1?'s':''}`:P.vistos[r.id]?' · recorrido':''}</span><span class="barra"><i style="width:${Math.round(dominio(r)*100)}%"></i></span></button>`;
+  const porLargo=(a,b)=>(b.longitud||0)-(a.longitud||0);
+  const grupos=JUEGO.grupos.map(g=>`<div class="fkicker${g.clase?' '+g.clase:''}">${g.titulo}</div>${g.nota?`<p class="fnota">${g.nota}</p>`:'\n'}${g.antes?g.antes+'\n':''}<div class="lista">${RUTAS.filter(g.filtro).sort(porLargo).map(fila).join('')}</div>`).join('\n');
   return `${renderPerfiles()}
 ${renderHoy()}
 ${S.aviso?`<div class="aviso">${esc(S.aviso)}</div>`:''}
 ${modo()==='mercader'?`<div class="tesoro">🪙 Tesoro: ${P.tesoro||0} monedas · ${rango(P.tesoro||0)}</div>`:''}
 <p class="pie">${VJ().toca}</p>
-<div class="fkicker">Los grandes ríos</div>
-<div class="frase"><div class="fkicker">Podio por longitud</div><div class="ftexto"><b>No</b> <b>Am</b>es <b>Ya</b> <b>M</b>ás</div><div class="fnota">Nilo, Amazonas, Yangtsé, Misisipi: los cuatro más largos, en orden.</div></div>
-<div class="lista">${filas}</div>
-<div class="fkicker zona-titulo">Ríos de Costa Rica</div><p class="fnota">Seis ríos de casa, con su historia: el Tempisque, el Reventazón, el Sarapiquí, el San Juan de la frontera, el Tárcoles y el Térraba.</p><div class="lista">${filasCR}</div>
-<details class="mas ajustes"><summary>¿Cómo se juega?</summary><p>Cada río es un recorrido fijo de la fuente al mar, y cada ciudad una habitación con una imagen absurda que la amarra al lugar. Cada río se baja en su propia embarcación, con un animal de guía y una bodega que cambia en cada puerto. Bajás el río una vez, después lo ordenás de memoria y luego te pregunto. Lo que fallés vuelve pronto; lo que sepás se espacia.</p></details>
+${grupos}
+<details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}</details>
 <details class="mas ajustes"><summary>Ajustes: modo, voz y progreso</summary><div class="fkicker">Modo de juego</div><div class="tabs modo"><button class="${esNino()?'on':''}" onclick="setModo('mercader')">Niño</button><button class="${esNino()?'':'on'}" onclick="setModo('historia')">Adulto</button></div><p class="fnota">${esNino()?VJ().ajustesNino:VJ().ajustesAdulto}</p>${esNino()&&voz.soporte()?`<div class="tabs modo"><button class="${P.voz!=='boton'?'on':''}" onclick="setVoz('auto')">🔊 Lee sola</button><button class="${P.voz==='boton'?'on':''}" onclick="setVoz('boton')">Solo con el botón</button></div><p class="fnota">Con «Lee sola», el animal lee cada pantalla al abrirla y lo que dice al responder.</p>`:''}${renderProgreso()}</details>`}
 function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;const n=r.paradas.length,p=S.paso;
   if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2>${escena(r.inicio.escena)}<p>${esc(r.inicio.nota)}</p>${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}${bloqueFrase(r,true)}${renderGuia(r)}<div class="nav"><span></span>${botonZarpar(r)}</div>`;
@@ -368,7 +366,7 @@ function renderMercado(r,j){const V=r.vocab;const e=S.eco;if(!e||!r.carga.length
 function iniciarRecitar(r){const d=dominio(r);S.rec={i:0,revelada:false,pista:d<0.3?'frase':d<0.7?'iniciales':'nada',ok:[],dicho:azar(VOCES.recitarInicio),premio:0}}
 function setPista(p){S.rec.pista=p;render(false)}
 function revelar(){S.rec.revelada=true;render(false)}
-function recordada(ok){const r=rioPor(S.rio),R=S.rec,n=r.ciudades.length;if(R.i>=n||!R.revelada)return;marcar('ciudad:'+r.id+':'+R.i,ok);R.ok.push(ok);R.dicho=azar(ok?VOCES.recitarBien:VOCES.recitarMal);R.i++;R.revelada=false;
+function recordada(ok){const r=rioPor(S.rio),R=S.rec,n=r.paradas.length;if(R.i>=n||!R.revelada)return;marcar('ciudad:'+r.id+':'+R.i,ok);R.ok.push(ok);R.dicho=azar(ok?VOCES.recitarBien:VOCES.recitarMal);R.i++;R.revelada=false;
   if(R.i>=n){const todas=R.ok.every(Boolean);R.dicho=VOCES.recitarFin[todas?0:R.ok.filter(Boolean).length>=n-1?1:2];if(S.eco&&todas){R.premio=R.pista==='nada'?5:R.pista==='iniciales'?3:1;P.tesoro=(P.tesoro||0)+R.premio;R.dicho+=` +${R.premio} monedas al tesoro.`;guardar()}}
   render(false)}
 function renderRecitar(r){const V=r.vocab,R=S.rec,n=r.paradas.length;
@@ -397,7 +395,7 @@ function renderQuiz(){const Q=S.quiz,n=Q.qs.length;
   return `${rq?globo(rq,Q.dicho):globoNeutro(Q.dicho)}<p class="kicker">${botonVoz()}Pregunta ${Q.i+1} de ${n} · ${esc(Q.titulo)}</p>${q.escena?escena(q.escena,'quiz'):''}<p class="pregunta">${esc(q.texto)}</p><div class="opciones">${ops}</div>${nota}`}
 function render(scroll){voz.callar();GLOBO=false;const arriba=document.getElementById('arriba');if(arriba)arriba.classList.toggle('portada',S.pantalla==='inicio'||S.pantalla==='pasaporte');
   const cab=$('#cab'),panel=$('#panel');
-  if(S.pantalla==='inicio'){cab.innerHTML=cabecera('Cauces','Los grandes ríos, ciudad por ciudad');panel.innerHTML=renderInicio();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
+  if(S.pantalla==='inicio'){cab.innerHTML=cabecera(JUEGO.nombre,JUEGO.sub);panel.innerHTML=renderInicio();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
   else if(S.pantalla==='pasaporte'){cab.innerHTML=cabecera('Pasaporte',`${totalSellos()} sellos · ${RUTAS.filter(completo).length} ${VJ().completos}`,true);panel.innerHTML=renderPasaporte();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
   else if(S.pantalla==='rio'){const r=rioPor(S.rio);cab.innerHTML=cabecera(r.nombre,r.vocab.cabecera(r),true);
     panel.innerHTML=tabs()+(S.tab==='descender'?renderDescender(r):S.tab==='ordenar'?renderOrden(r):S.tab==='recitar'?renderRecitar(r):renderQuiz());renderMapa(focoRio(r))}
@@ -407,7 +405,7 @@ function render(scroll){voz.callar();GLOBO=false;const arriba=document.getElemen
   if(scroll!==false)window.scrollTo(0,0)}
 
 /* ---------- foco del mapa ---------- */
-function focoRio(r){const n=r.ciudades.length,f={modo:'rio',rio:r,tocar:false,etiquetas:new Set(),actual:null,halo:null};
+function focoRio(r){const n=r.paradas.length,f={modo:'rio',rio:r,tocar:false,etiquetas:new Set(),actual:null,halo:null};
   if(S.tab==='descender'){
     if(S.evento){for(let i=0;i<S.paso;i++)f.etiquetas.add(i);const m=S.evento.medio,de=idxParada(r,S.paso);f.corte=m.k;f.extra=[r.curso[m.k],m.pt];
       f.barca={poly:r.curso.slice(de,m.k+1).concat([m.pt]),t0:S.viajeEv?0:1,t1:1};S.viajeEv=false;f.frac=(S.paso+0.5)/(n+1);return f}
@@ -418,17 +416,18 @@ function focoRio(r){const n=r.ciudades.length,f={modo:'rio',rio:r,tocar:false,et
   else return focoQuiz(S.quiz.qs[S.quiz.i],r);
   return f}
 /* la barca queda estacionada en la parada actual cuando no se está descendiendo, para que el animal no desaparezca del mapa */
-const estacionada=r=>{const a=idxParada(r,S.paso);return{corte:a,barca:{de:a,a},frac:S.paso/(r.ciudades.length+1)}};
+const estacionada=r=>{const a=idxParada(r,S.paso);return{corte:a,barca:{de:a,a},frac:S.paso/(r.paradas.length+1)}};
 function focoQuiz(q,rDef){
-  if(!q){if(rDef){const f={modo:'rio',rio:rDef,tocar:false,etiquetas:new Set(rDef.ciudades.map((c,i)=>i)),actual:null,halo:null,...estacionada(rDef)};return f}return{modo:'mundo',tocar:false}}
+  if(!q){if(rDef){const f={modo:'rio',rio:rDef,tocar:false,etiquetas:new Set(rDef.paradas.map((c,i)=>i)),actual:null,halo:null,...estacionada(rDef)};return f}return{modo:'mundo',tocar:false}}
   const r=rioPor(q.rio);
   const est=rDef&&rDef.id===r.id?estacionada(rDef):{};
   if(S.quiz.resp==null){if(q.tipo==='cerca'||q.tipo==='siguiente'||q.tipo==='imagen'||q.tipo==='pais')return{modo:'rio',rio:r,tocar:false,etiquetas:new Set(),actual:null,halo:null,...est};return{modo:'mundo',tocar:false}}
-  return{modo:'rio',rio:r,tocar:false,etiquetas:new Set(r.ciudades.map((c,i)=>i)),actual:q.ciudad,halo:null,...est}}
+  return{modo:'rio',rio:r,tocar:false,etiquetas:new Set(r.paradas.map((c,i)=>i)),actual:q.ciudad,halo:null,...est}}
 
 /* ---------- mapa ---------- */
 const proj=p=>[(p[1]+180)/360*1000,(90-p[0])/180*500];
 const trazo=pts=>pts.map((p,i)=>{const q=proj(p);return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join('');
+const trazoTramo=(r,a,b)=>{let d='';for(let i=a;i<=b;i++){const q=proj(r.curso[i]);d+=(i===a||r.cortes.includes(i)?'M':'L')+q[0].toFixed(1)+' '+q[1].toFixed(1)}return d};/* vértices a..b del trazo; cada segmento nuevo (cortes) empieza con M */
 function vbPara(pts,minW,margen){const m=$('#mapa'),asp=(m.clientWidth||380)/(m.clientHeight||260);
   let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;pts.forEach(p=>{const q=proj(p);x0=Math.min(x0,q[0]);y0=Math.min(y0,q[1]);x1=Math.max(x1,q[0]);y1=Math.max(y1,q[1])});
   let w=(x1-x0)*margen,h=(y1-y0)*margen;const cx=(x0+x1)/2,cy=(y0+y1)/2;w=Math.max(w,minW);h=Math.max(h,minW/asp);if(w/h<asp)w=h*asp;else h=w/asp;return{x:cx-w/2,y:cy-h/2,w,h}}
@@ -446,16 +445,16 @@ function colocar(q,nombre,puestos,px){const w=nombre.length*6.6*px,alto=12*px;
   const x=q[0]+6*px,y=q[1]+4*px;return[x,y,'start']}
 function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa');let pts,vb;
   if(foco.modo==='mundo'){pts=[];RUTAS.forEach(r=>pts.push(...r.curso));vb=vbPara(pts,60,1.08)}
-  else if(foco.modo==='zona'){pts=[];RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>pts.push(...r.curso,...r.ciudades.map(c=>c.pos)));vb=vbPara(pts,3,1.25)}
-  else{const r=foco.rio;pts=r.curso.concat(r.ciudades.map(c=>c.pos));vb=vbPara(pts,r.zona?3:20,1.3)}
+  else if(foco.modo==='zona'){pts=[];RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>pts.push(...r.curso,...r.paradas.map(c=>c.pos)));vb=vbPara(pts,3,1.25)}
+  else{const r=foco.rio;pts=r.curso.concat(r.paradas.map(c=>c.pos));vb=vbPara(pts,r.zona?3:20,1.3)}
   setVB(vb,inmediato);const px=vb.w/(m.clientWidth||380),f=v=>(v*px).toFixed(2);const activo=foco.rio?foco.rio.id:null,enZona=foco.modo==='zona';let h='';
   const zr=foco.modo==='mundo'?'':enZona?foco.zona:(foco.rio.zona||'mundo'),rel=document.getElementById('relieve');/* franjas de altura: solo al acercarse (están recortadas a las vistas de los ríos) */
   if(rel){if(rel._z!==zr){rel._z=zr;rel.innerHTML=zr&&RELIEVE[zr]?RELIEVE[zr].map(([a,d])=>`<path class="a${a}" d="${d}"/>`).join(''):''}rel.setAttribute('stroke-width',f(1.2))}
   RUTAS.forEach(r=>{const cls=activo?(r.id===activo?' activo':' tenue'):(enZona&&r.zona!==foco.zona?' tenue':'');
-    (r.brazos||[]).forEach(b=>{h+=`<path class="rio brazo${cls}" d="${trazo(b)}" stroke-width="${f(1.6)}"/>`});
-    if(r.id===activo&&foco.corte!=null){h+=`<path class="rio activo resto" d="${trazo(r.curso.slice(foco.corte))}" stroke-width="${f(2.4)}"/>`;if(foco.corte>0)h+=`<path class="rio activo" d="${trazo(r.curso.slice(0,foco.corte+1))}" stroke-width="${f(3.4)}"/>`;if(foco.extra)h+=`<path class="rio activo" d="${trazo(foco.extra)}" stroke-width="${f(3.4)}"/>`}
-    else h+=`<path class="rio${cls}${!activo&&completo(r)?' hecho':''}" d="${trazo(r.curso)}" stroke-width="${f(r.id===activo?3:2.2)}"/>`;
-    if(foco.tocar&&(enZona?r.zona===foco.zona:!r.zona))h+=`<path class="hit" d="${trazo(r.curso)}" stroke-width="${f(18)}" onclick="abrirRio('${r.id}')"/>`});
+    r.ramas.forEach(b=>{h+=`<path class="rio brazo${cls}" d="${trazo(b)}" stroke-width="${f(1.6)}"/>`});
+    if(r.id===activo&&foco.corte!=null){h+=`<path class="rio activo resto" d="${trazoTramo(r,foco.corte,r.curso.length-1)}" stroke-width="${f(2.4)}"/>`;if(foco.corte>0)h+=`<path class="rio activo" d="${trazoTramo(r,0,foco.corte)}" stroke-width="${f(3.4)}"/>`;if(foco.extra)h+=`<path class="rio activo" d="${trazo(foco.extra)}" stroke-width="${f(3.4)}"/>`}
+    else h+=`<path class="rio${cls}${!activo&&completo(r)?' hecho':''}" d="${trazoTramo(r,0,r.curso.length-1)}" stroke-width="${f(r.id===activo?3:2.2)}"/>`;
+    if(foco.tocar&&(enZona?r.zona===foco.zona:!r.zona))h+=`<path class="hit" d="${trazoTramo(r,0,r.curso.length-1)}" stroke-width="${f(18)}" onclick="abrirRio('${r.id}')"/>`});
   const puestos=[];
   if(zr){const rid=foco.rio?foco.rio.id:null;NOMBRES_RELIEVE.forEach(L=>{if(L.z!==zr)return;let p=L.p,a=L.a||0;if(L.v){const v=rid&&L.v[rid];if(!v)return;p=v;a=v[2]||0}
     const q=proj(p);if(q[0]<vb.x-2*px||q[0]>vb.x+vb.w+2*px||q[1]<vb.y||q[1]>vb.y+vb.h)return;
@@ -467,11 +466,11 @@ function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa
   if(foco.modo==='mundo')for(const z in ZONAS){const q=proj(ZONAS[z].pos);h+=`<circle class="zona" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(4.5)}" stroke-width="${f(1.5)}"/><text class="etq" x="${(q[0]+7*px).toFixed(1)}" y="${(q[1]+4*px).toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}">${esc(ZONAS[z].nombre)}</text>${foco.tocar?`<circle class="hitz" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(18)}" onclick="verZona('${z}')"><title>Ríos de ${esc(ZONAS[z].nombre)}</title></circle>`:''}`}
   if(enZona){RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>{const q=proj(r.curso[Math.floor(r.curso.length/2)]),[x,y,an]=colocar(q,r.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(r.nombre)}</text>`})}
   if(foco.rio){const r=foco.rio;
-    r.ciudades.forEach((c,i)=>{const q=proj(c.pos),on=foco.etiquetas.has(i);h+=`<circle class="ciudad${on?' on':''}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(3.5)}"/>`;
+    r.paradas.forEach((c,i)=>{const q=proj(c.pos),on=foco.etiquetas.has(i);h+=`<circle class="ciudad${on?' on':''}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(3.5)}"/>`;
       if(foco.actual===i)h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`});
     if(foco.halo){const q=proj(foco.halo);h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`}
-    r.ciudades.forEach((c,i)=>{if(!foco.etiquetas.has(i))return;const q=proj(c.pos),[x,y,an]=colocar(q,c.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(c.nombre)}</text>`})}
-  let barca=null;if(foco.rio&&foco.barca){const b=foco.barca;if(b.poly)barca={poly:b.poly.map(proj),t0:b.t0,t1:b.t1};else{const lo=Math.min(b.de,b.a),hi=Math.max(b.de,b.a);barca={poly:foco.rio.curso.slice(lo,hi+1).map(proj),t0:b.de<=b.a?0:1,t1:b.de<=b.a?1:0}}h+=`<path id="estela" class="estela" d="" stroke-width="${f(1.6)}" stroke-dasharray="${f(2)} ${f(3)}"/><g id="barca" class="barca${S.bamboleo?' duda':''}"><g class="mece"><g transform="scale(${px.toFixed(4)})">${glifo(foco.rio.nave?foco.rio.nave.tipo:'')}</g></g>${foco.rio.masc?`<g id="masc">${ANIMALES[foco.rio.masc.glifo]?`<g class="animal" transform="translate(-9 -9) scale(.6)">${ANIMALES[foco.rio.masc.glifo]}</g>`:`<text x="-13" y="-9" font-size="13" text-anchor="middle">${foco.rio.masc.emoji}</text>`}</g>`:''}</g>`;S.bamboleo=false}
+    r.paradas.forEach((c,i)=>{if(!foco.etiquetas.has(i))return;const q=proj(c.pos),[x,y,an]=colocar(q,c.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(c.nombre)}</text>`})}
+  let barca=null;if(foco.rio&&foco.barca){const b=foco.barca;if(b.poly)barca={poly:b.poly.map(proj),t0:b.t0,t1:b.t1};else{const lo=Math.min(b.de,b.a),hi=Math.max(b.de,b.a);barca={poly:foco.rio.curso.slice(lo,hi+1).map(proj),t0:b.de<=b.a?0:1,t1:b.de<=b.a?1:0}}h+=`<path id="estela" class="estela" d="" stroke-width="${f(1.6)}" stroke-dasharray="${f(2)} ${f(3)}"/><g id="barca" class="barca${S.bamboleo?' duda':''}"><g class="mece"><g transform="scale(${px.toFixed(4)})">${glifo(foco.rio.vehiculo?foco.rio.vehiculo.tipo:'')}</g></g>${foco.rio.companero?`<g id="masc">${ANIMALES[foco.rio.companero.glifo]?`<g class="animal" transform="translate(-9 -9) scale(.6)">${ANIMALES[foco.rio.companero.glifo]}</g>`:`<text x="-13" y="-9" font-size="13" text-anchor="middle">${foco.rio.companero.emoji}</text>`}</g>`:''}</g>`;S.bamboleo=false}
   const fr=document.getElementById('fronteras');fr.setAttribute('stroke-width',f(1));fr.setAttribute('stroke-dasharray',f(3)+' '+f(3));fr.style.display=foco.modo==='mundo'?'none':'';
   const bm=document.querySelector('.mundo');if(bm)bm.hidden=!enZona;
   capa.innerHTML=h;if(barca)animarBarca(barca.poly,barca.t0,barca.t1,px);audio.ajustar(foco.frac!=null?foco.frac:0.45);ambiente(foco)}
