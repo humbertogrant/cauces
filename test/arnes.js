@@ -13,5 +13,5 @@ function montar(archivos){
   global.requestAnimationFrame=f=>0;global.cancelAnimationFrame=()=>{};
   for(const f of archivos)vm.runInThisContext(fs.readFileSync(path.join(__dirname,'..','src',f),'utf8'),{filename:f});
   return LS}
-const CAUCES=['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/relieve.js','motor.js'];
+const CAUCES=['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','motor.js'];
 module.exports={montar,CAUCES};

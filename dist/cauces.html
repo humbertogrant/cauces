@@ -772,16 +772,6 @@ paradas:["Aquí el río es una quebrada entre casas y cafetales. Todavía huele 
 terraba:{nombre:"Pinzas",especie:"el cangrejo del manglar",emoji:"🦀",glifo:"cangrejo",hola:"Soy Pinzas, cangrejo de manglar. Camino de lado, pero llego. Subite.",mar:"El Pacífico, y mi manglar. Aquí me quedo, entre las raíces.",
 paradas:["Aquí el río salta entre piedras y el agua está fría. ¡Yo me agarro!","Huele a piña por todos lados. ¿Será que a los cangrejos nos gusta?","Dos ríos se juntan y ahora el agua es ancha y café.","Máscaras de colores en las casas. A mí me dan un poquito de susto.","Esferas de piedra en el suelo. Redondas, redondas. Yo no sé rodar.","¡Mi manglar! Raíces, barro y mareas. Llegamos."]}
 };
-const VOCES={
-  ordenInicio:["Yo ya me la sé. ¿Y vos?","Tocá con calma; yo te miro.","Si te trabás, acordate de la frase."],
-  ordenBien:["¡Esa es!","¡Sí! Seguí.","Yo también me la sabía.","¡Vamos bien!","Esa la vi pasar."],
-  ordenMal:["Mmm, esa viene más adelante.","Todavía no llegamos ahí.","Casi. Pensá en la frase.","Nop. ¿Cuál venía primero?"],
-  ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y me gano un pescado.","Volvamos a bajar el río juntos, con la frase en la mano."],
-  pregunta:["¿Vos qué decís?","Pensá con calma.","Yo sé la respuesta, pero no digo nada.","Esta es fácil... ¿o no?","Mirá bien las opciones."],
-  quizBien:["¡Sí! ¡Te lo sabías!","¡Eso! Yo estaba seguro.","¡Bravo! Otra más.","¡Claro que sí!","¡Ese es mi río!"],
-  quizMal:["Uy. Esa se nos escapó.","No pasa nada: ahora ya la sabemos.","Yo también me habría confundido.","Mmm, esa la repasamos."],
-  resultado:["¡Sos capitán de este río!","¡Bien! Un par de viajes más y sos capitán.","Bajemos el río otra vez; yo te acompaño."]
-};
 </script>
 <script>
 const MERCADOS={
@@ -805,16 +795,6 @@ sanjuan:[{n:"queso",e:"🧀",o:0,b:3,d:3},{n:"cacao",e:"🍫",o:1,b:2,m:5},{n:"m
 tarcoles:[{n:"café",e:"☕",o:0,b:3,m:3},{n:"chips",e:"💾",o:1,b:5,m:4},{n:"tapa de dulce",e:"🍯",o:2,b:2},{n:"frutas",e:"🥭",o:3,b:2,d:2}],
 terraba:[{n:"café",e:"☕",o:0,b:3,m:3},{n:"piñas",e:"🍍",o:1,b:2,d:2},{n:"maíz",e:"🌽",o:2,b:2},{n:"máscaras",e:"🎭",o:3,b:4,m:5},{n:"bananos",e:"🍌",o:4,b:2,d:2}]
 };
-const RANGOS=[[500,"Señor de los Cauces"],[250,"Almirante"],[100,"Capitán"],[30,"Marinero"],[0,"Grumete"]];
-const rango=t=>RANGOS.find(x=>t>=x[0])[1];
-Object.assign(VOCES,{
-  compra:["{g}: buena compra.","Cargado. Ahora a venderlo río abajo.","{g} en la bodega. ¿Cuánto valdrá más adelante?"],
-  venta:["¡{n} monedas! Buen negocio.","Vendido por {n}. Yo ya lo sabía.","{n} monedas a la bolsa."],
-  podrido:["Uy, {g}: se pasó. Al agua.","{g} podrido. Hay que vender más rápido."],
-  sinMonedas:["No alcanzan las monedas. Vendé algo primero.","Estamos sin plata. ¿Qué tenés en la bodega?"],
-  sinEspacio:["La bodega está llena. Vendé algo o dejalo.","Solo caben tres cosas. Elegí."],
-  ganancia:["¡Qué negociante! Ganaste {n} monedas.","Ganaste {n} monedas. La próxima, más.","Esta vez no ganamos nada. Yo te sigo queriendo."]
-});
 </script>
 <script>
 // Eventos entre puertos: saltan al zarpar hacia la parada `tramo` (1..n+1; n+1 es el mar), una vez por descenso,
@@ -882,6 +862,30 @@ terraba:[
 {tramo:4,icono:"🎭",titulo:"Los diablitos",reto:"frase",texto:"En Boruca, cada fin de año, los diablitos con máscara pelean tres días contra el toro, que son los españoles, y al final ganan. Un diablito te cierra el paso y pide la frase del río.",bien:"El diablito baila y te deja pasar.",mal:"El diablito te persigue un rato por la orilla, riéndose."},
 {tramo:5,icono:"⚪",titulo:"Las esferas",reto:"imagen",texto:"En Palmar la compañía bananera encontró esferas de piedra casi perfectas, algunas de más de dos metros y varias toneladas, hechas hace más de mil años. Nadie sabe para qué. Para pasar entre ellas, contá algo de una ciudad que ya conocés.",bien:"Pasás entre las esferas sin tocar ninguna.",mal:"Rozás una esfera y rueda un poquito; nadie lo vio."}]
 };
+</script>
+<script>
+// Voces genéricas del compañero (VOCES), rangos del tesoro (RANGOS) y voces de la economía: compartidos por todos los juegos.
+// Las frases que nombran el río se sustituyen por VOCAB[tipo].voces en las rutas que no son ríos (ver docs/itinerarios.md).
+const VOCES={
+  ordenInicio:["Yo ya me la sé. ¿Y vos?","Tocá con calma; yo te miro.","Si te trabás, acordate de la frase."],
+  ordenBien:["¡Esa es!","¡Sí! Seguí.","Yo también me la sabía.","¡Vamos bien!","Esa la vi pasar."],
+  ordenMal:["Mmm, esa viene más adelante.","Todavía no llegamos ahí.","Casi. Pensá en la frase.","Nop. ¿Cuál venía primero?"],
+  ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y me gano un pescado.","Volvamos a bajar el río juntos, con la frase en la mano."],
+  pregunta:["¿Vos qué decís?","Pensá con calma.","Yo sé la respuesta, pero no digo nada.","Esta es fácil... ¿o no?","Mirá bien las opciones."],
+  quizBien:["¡Sí! ¡Te lo sabías!","¡Eso! Yo estaba seguro.","¡Bravo! Otra más.","¡Claro que sí!","¡Ese es mi río!"],
+  quizMal:["Uy. Esa se nos escapó.","No pasa nada: ahora ya la sabemos.","Yo también me habría confundido.","Mmm, esa la repasamos."],
+  resultado:["¡Sos capitán de este río!","¡Bien! Un par de viajes más y sos capitán.","Bajemos el río otra vez; yo te acompaño."]
+};
+const RANGOS=[[500,"Señor de los Cauces"],[250,"Almirante"],[100,"Capitán"],[30,"Marinero"],[0,"Grumete"]];
+const rango=t=>RANGOS.find(x=>t>=x[0])[1];
+Object.assign(VOCES,{
+  compra:["{g}: buena compra.","Cargado. Ahora a venderlo río abajo.","{g} en la bodega. ¿Cuánto valdrá más adelante?"],
+  venta:["¡{n} monedas! Buen negocio.","Vendido por {n}. Yo ya lo sabía.","{n} monedas a la bolsa."],
+  podrido:["Uy, {g}: se pasó. Al agua.","{g} podrido. Hay que vender más rápido."],
+  sinMonedas:["No alcanzan las monedas. Vendé algo primero.","Estamos sin plata. ¿Qué tenés en la bodega?"],
+  sinEspacio:["La bodega está llena. Vendé algo o dejalo.","Solo caben tres cosas. Elegí."],
+  ganancia:["¡Qué negociante! Ganaste {n} monedas.","Ganaste {n} monedas. La próxima, más.","Esta vez no ganamos nada. Yo te sigo queriendo."]
+});
 </script>
 <script>
 // Generado por tools/relieve.py: no editar a mano. Alturas de ETOPO1 y del mosaico DEM de NOAA NCEI; nombres de Natural Earth 50 m y OpenStreetMap.

@@ -38,13 +38,3 @@ paradas:["Aquí el río es una quebrada entre casas y cafetales. Todavía huele 
 terraba:{nombre:"Pinzas",especie:"el cangrejo del manglar",emoji:"🦀",glifo:"cangrejo",hola:"Soy Pinzas, cangrejo de manglar. Camino de lado, pero llego. Subite.",mar:"El Pacífico, y mi manglar. Aquí me quedo, entre las raíces.",
 paradas:["Aquí el río salta entre piedras y el agua está fría. ¡Yo me agarro!","Huele a piña por todos lados. ¿Será que a los cangrejos nos gusta?","Dos ríos se juntan y ahora el agua es ancha y café.","Máscaras de colores en las casas. A mí me dan un poquito de susto.","Esferas de piedra en el suelo. Redondas, redondas. Yo no sé rodar.","¡Mi manglar! Raíces, barro y mareas. Llegamos."]}
 };
-const VOCES={
-  ordenInicio:["Yo ya me la sé. ¿Y vos?","Tocá con calma; yo te miro.","Si te trabás, acordate de la frase."],
-  ordenBien:["¡Esa es!","¡Sí! Seguí.","Yo también me la sabía.","¡Vamos bien!","Esa la vi pasar."],
-  ordenMal:["Mmm, esa viene más adelante.","Todavía no llegamos ahí.","Casi. Pensá en la frase.","Nop. ¿Cuál venía primero?"],
-  ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y me gano un pescado.","Volvamos a bajar el río juntos, con la frase en la mano."],
-  pregunta:["¿Vos qué decís?","Pensá con calma.","Yo sé la respuesta, pero no digo nada.","Esta es fácil... ¿o no?","Mirá bien las opciones."],
-  quizBien:["¡Sí! ¡Te lo sabías!","¡Eso! Yo estaba seguro.","¡Bravo! Otra más.","¡Claro que sí!","¡Ese es mi río!"],
-  quizMal:["Uy. Esa se nos escapó.","No pasa nada: ahora ya la sabemos.","Yo también me habría confundido.","Mmm, esa la repasamos."],
-  resultado:["¡Sos capitán de este río!","¡Bien! Un par de viajes más y sos capitán.","Bajemos el río otra vez; yo te acompaño."]
-};

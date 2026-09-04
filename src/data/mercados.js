@@ -19,13 +19,3 @@ sanjuan:[{n:"queso",e:"🧀",o:0,b:3,d:3},{n:"cacao",e:"🍫",o:1,b:2,m:5},{n:"m
 tarcoles:[{n:"café",e:"☕",o:0,b:3,m:3},{n:"chips",e:"💾",o:1,b:5,m:4},{n:"tapa de dulce",e:"🍯",o:2,b:2},{n:"frutas",e:"🥭",o:3,b:2,d:2}],
 terraba:[{n:"café",e:"☕",o:0,b:3,m:3},{n:"piñas",e:"🍍",o:1,b:2,d:2},{n:"maíz",e:"🌽",o:2,b:2},{n:"máscaras",e:"🎭",o:3,b:4,m:5},{n:"bananos",e:"🍌",o:4,b:2,d:2}]
 };
-const RANGOS=[[500,"Señor de los Cauces"],[250,"Almirante"],[100,"Capitán"],[30,"Marinero"],[0,"Grumete"]];
-const rango=t=>RANGOS.find(x=>t>=x[0])[1];
-Object.assign(VOCES,{
-  compra:["{g}: buena compra.","Cargado. Ahora a venderlo río abajo.","{g} en la bodega. ¿Cuánto valdrá más adelante?"],
-  venta:["¡{n} monedas! Buen negocio.","Vendido por {n}. Yo ya lo sabía.","{n} monedas a la bolsa."],
-  podrido:["Uy, {g}: se pasó. Al agua.","{g} podrido. Hay que vender más rápido."],
-  sinMonedas:["No alcanzan las monedas. Vendé algo primero.","Estamos sin plata. ¿Qué tenés en la bodega?"],
-  sinEspacio:["La bodega está llena. Vendé algo o dejalo.","Solo caben tres cosas. Elegí."],
-  ganancia:["¡Qué negociante! Ganaste {n} monedas.","Ganaste {n} monedas. La próxima, más.","Esta vez no ganamos nada. Yo te sigo queriendo."]
-});
