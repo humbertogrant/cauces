@@ -14,4 +14,5 @@ function montar(archivos){
   for(const f of archivos)vm.runInThisContext(fs.readFileSync(path.join(__dirname,'..','src',f),'utf8'),{filename:f});
   return LS}
 const CAUCES=['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'];
-module.exports={montar,CAUCES};
+const EXPLORADORES=['data/mapa-exploradores.js','data/itinerarios.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js'];
+module.exports={montar,CAUCES,EXPLORADORES,JUEGOS:{cauces:CAUCES,exploradores:EXPLORADORES}};

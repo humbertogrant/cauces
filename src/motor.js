@@ -49,7 +49,7 @@ const hav=(a,b)=>{const R=6371,toR=x=>x*Math.PI/180,dl=toR(b[0]-a[0]),dn=toR(b[1
 const cap=t=>t[0].toUpperCase()+t.slice(1);
 const VOCAB={
   rio:{tipo:'río',tipos:'ríos',Tipos:'Ríos',
-    inicio:'Nacimiento',fin:'Desembocadura',extremoInicio:'Fuente',extremoFin:'Mar',entreInicio:'la fuente',entreFin:'el mar',
+    inicio:'Nacimiento',fin:'Desembocadura',extremoInicio:'Fuente',extremoFin:'Mar',entreInicio:'la fuente',entreFin:'el mar',Parada:'Parada',proxima:'¿Cuál es la próxima parada?',
     llegarFin:'Llegar al mar',avanzar:'Zarpar a',bajar:'Descender',
     parada:'ciudad',paradas:'ciudades',puertoS:'puerto',puertosS:'puertos',enPuerto:'En el puerto',llevaba:'El mercader llevaba',
     tuVehiculo:'Tu embarcación',carga:'bodega',mercado:'Mercado de',seVende:'Se vende aquí',masAdelante:'vale más río abajo',mercader:'mercader de la ruta',
@@ -71,8 +71,50 @@ const VOCAB={
     preguntas:{ciudad:(r,c)=>`¿Junto a qué río está ${c.nombre} (${c.pais})?`,cerca:r=>`¿Cuál de estas ciudades está más cerca de la desembocadura del ${r.nombre}?`,orden:r=>'De la fuente al mar: '+lista(r)+'.',
       contexto:(r,cx)=>`Ruta ${cx.clave}: «${cx.pista}» ¿De qué río se trata?`,fin:r=>`¿Dónde desemboca el ${r.nombre}?`,finNota:r=>`${km(r.longitud)} km hasta ${r.fin.en}. ${r.inicio.nota}`,
       siguiente:(r,c)=>`En el ${r.nombre}, ¿qué parada sigue después de ${c.nombre}?`,relleno:'La desembocadura',imagen:(r,c)=>`¿De qué ciudad del ${r.nombre} es esta imagen? «${sinNombre(c.imagen,c.nombre)}»`,
-      altura:r=>`¿En cuál de estas paradas del ${r.nombre} pasa el río más alto sobre el mar?`,alturaNota:'El cauce en cada parada: ',frase:r=>`¿Qué frase guarda el orden de las ciudades del ${r.nombre}?`}}
+      altura:r=>`¿En cuál de estas paradas del ${r.nombre} pasa el río más alto sobre el mar?`,alturaNota:'El cauce en cada parada: ',frase:r=>`¿Qué frase guarda el orden de las ciudades del ${r.nombre}?`,
+      fecha:(r,c)=>`¿En qué año pasó el ${r.nombre} por ${c.nombre}?`,fechaNota:r=>'Parada por parada: '+r.paradas.map(c=>`${c.nombre} ${c.fecha||'?'}`).join(' · ')+'.',ordenPregunta:r=>`¿En qué orden van estas ciudades del ${r.nombre}?`}},
+  itinerario:{tipo:'viaje',tipos:'viajes',Tipos:'Viajes',
+    inicio:'Partida',fin:'Regreso',extremoInicio:'Partida',extremoFin:'Regreso',entreInicio:'la partida',entreFin:'el regreso',Parada:'Etapa',proxima:'¿Cuál es la próxima etapa?',
+    llegarFin:'Volver a casa',avanzar:'Seguir a',bajar:'Viajar',
+    parada:'etapa',paradas:'etapas',puertoS:'alto',puertosS:'altos',enPuerto:'En el camino',llevaba:'El viajero llevaba',
+    tuVehiculo:'Tu caravana',carga:'morral',mercado:'Trueque en',seVende:'Se cambia aquí',masAdelante:'vale más adelante',mercader:'viajero de la ruta',
+    zarpas:'Salís con diez monedas y el morral vacío.',cerrado:'Cerrado: ya volviste a casa con esta caravana.',cuentas:'Saliste con 10 monedas y volviste con',sobrante:'Lo que quedaba en el morral se cambió en',
+    soloVender:'Llegaste sin saber adónde ibas: aquí solo podés vender.',nadaQueComprar:'Aquí no hay nada que cambiar; vendé si te conviene.',
+    sonido:'Sonido del camino',sonidoTipo:'viento',volver:'Volver a los viajes',toca:'Tocá un viaje en el mapa o en la lista.',retoSub:'Diez preguntas de todos los viajes',
+    completo:'viaje completo',completos:'viajes completos',hechoNota:'Los viajes completos se pintan de dorado en el mapa.',
+    selloNota:'Cada sello se gana llegando a una etapa sabiendo adónde ibas; se vuelve dorado cuando además la recordás en el repaso.',
+    recorre:'Recorré un viaje o jugá un reto: lo que hagás vuelve cuando toque.',recorreFin:'No hay nada pendiente todavía. Recorré un viaje hasta el regreso o jugá un reto: lo que hagás entra al repaso y vuelve cuando toque.',
+    ajustesNino:'Mercader: diez monedas, tres espacios y precios que suben etapa a etapa. El animal acompaña, los textos largos quedan plegados en «Contame más» y la voz puede leer sola.',
+    ajustesAdulto:'Historia: lo que el viajero llevaba, alto por alto, sin monedas. Todo el texto a la vista y el animal calladito, salvo para reaccionar.',
+    dominas:'Ya dominás este viaje.',conCalma:'Volvé a recorrer el viaje con calma; el repaso te lo va a recordar.',
+    ordenBien:'Sin errores: el camino ya es tuyo.',ordenMal:e=>`${e} errores: volvé a recorrer el viaje con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} etapas en orden, de la partida al regreso.`,
+    cabecera:r=>`${r.region} · de ${r.inicio.nombre} a ${r.fin.en}`,fila:r=>`${esc(r.region)} · ${r.paradas.length} etapas`,
+    kickerInicio:r=>`Partida${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Etapa ${p} de ${n}${c.fecha?` · ${c.fecha}`:''}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
+    tramo:(r,c,prev)=>prev?`después de ${esc(prev.nombre)}`:`primera etapa desde ${esc(r.inicio.nombre)}`,
+    llegada:r=>`Después de ${r.paradas.length} etapas, ${r.nombre} vuelve a ${r.fin.en}.`,contame:cx=>'Contame más: '+cx.titulo[0].toLowerCase()+cx.titulo.slice(1),
+    vozInicio:r=>`Partida: ${r.inicio.nombre}${r.inicio.fecha?', '+r.inicio.fecha:''}.`,vozParada:(p,n,c)=>`Etapa ${p} de ${n}: ${c.nombre}, ${c.pais}${c.fecha?', '+c.fecha:''}.`,vozFin:r=>`Regreso: ${r.fin.en}. Después de ${r.paradas.length} etapas, ${r.nombre} vuelve a ${r.fin.en}.`,
+    preguntas:{ciudad:(r,c)=>`¿En qué viaje está la etapa ${c.nombre} (${c.pais})?`,cerca:r=>`¿Cuál de estas etapas está más cerca del final del viaje de ${r.nombre}?`,orden:r=>'De la partida al regreso: '+lista(r)+'.',
+      contexto:(r,cx)=>`${cx.titulo}: «${cx.pista}» ¿De qué viaje se trata?`,fin:r=>`¿Dónde termina el viaje de ${r.nombre}?`,finNota:r=>`Sale de ${r.inicio.nombre}${r.inicio.fecha?' en '+r.inicio.fecha:''} y vuelve a ${r.fin.en}${r.fin.fecha?' en '+r.fin.fecha:''}. ${r.inicio.nota}`,
+      siguiente:(r,c)=>`En el viaje de ${r.nombre}, ¿qué etapa sigue después de ${c.nombre}?`,relleno:'El regreso',imagen:(r,c)=>`¿De qué etapa del viaje de ${r.nombre} es esta imagen? «${sinNombre(c.imagen,c.nombre)}»`,
+      altura:r=>`¿En cuál de estas etapas pasa más alto el viaje de ${r.nombre}?`,alturaNota:'La altura en cada etapa: ',frase:r=>`¿Qué frase guarda el orden de las etapas del viaje de ${r.nombre}?`,
+      fecha:(r,c)=>`¿En qué año llegó ${r.nombre} a ${c.nombre}?`,fechaNota:r=>'Etapa por etapa: '+r.paradas.map(c=>`${c.nombre} ${c.fecha||'?'}`).join(' · ')+'.',ordenPregunta:r=>`¿En qué orden pasó ${r.nombre} por estas etapas?`},
+    voces:{ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y me gano un puñado de dátiles.","Volvamos a recorrer el viaje juntos, con la frase en la mano."],
+      quizBien:["¡Sí! ¡Te lo sabías!","¡Eso! Yo estaba segura.","¡Bravo! Otra más.","¡Claro que sí!","¡Ese es mi viaje!"],
+      resultado:["¡Sos guía de este viaje!","¡Bien! Un par de vueltas más y sos guía.","Recorramos el viaje otra vez; yo te acompaño."],
+      recitarInicio:["Decí cada etapa antes de revelarla. Yo no soplo.","Cerrá los ojos si querés: el camino ya está en tu cabeza."],
+      recitarFin:["¡Todas! Ya podés recorrerlo con menos pista.","Casi todas. Otra vuelta y sale.","Volvamos a recorrer el camino juntos."],
+      guiaBien:["¡Esa! Salimos hacia {c}.","Sí, {c}. Yo también me acordaba.","¡Exacto! Rumbo a {c}."],
+      guiaMal:["Nop, era {c}. Vamos igual, pero ahí solo vas a poder vender.","Casi. La siguiente es {c}; en ese alto no vas a poder cambiar nada."],
+      guiaMalH:["Nop, era {c}. Vamos igual.","Casi: la siguiente es {c}."],
+      eventoAviso:["¡Ojo! El camino nos puso una prueba.","¡Alto ahí! Esto se pasa recordando.","Tranquilo: esto lo sabemos."],
+      eventoBien:["¡Eso era! Seguimos.","¡Bien ahí! El camino nos deja pasar.","¡Lo sabías! Adelante."],
+      compra:["{g}: buen cambio.","Cargado. Ahora a cambiarlo más adelante.","{g} en el morral. ¿Cuánto valdrá más adelante?"],
+      podrido:["Uy, {g}: se pasó. A la arena.","{g} podrido. Hay que cambiar más rápido."],
+      sinMonedas:["No alcanzan las monedas. Vendé algo primero.","Estamos sin plata. ¿Qué tenés en el morral?"],
+      sinEspacio:["El morral está lleno. Vendé algo o dejalo.","Solo caben tres cosas. Elegí."],
+      fantasma:["¡Le ganaste al viajero de la ruta!","El viajero de la ruta llegó con {n}; la próxima le ganás.","Empataste con el viajero de la ruta."]}}
 };
+const VZ=()=>{const r=S.rio&&rutaPor(S.rio);return r?r.vocesEfectivas:VOCES};/* voces del compañero según la ruta abierta */
 const VJ=()=>VOCAB[(typeof JUEGO!=='undefined'&&JUEGO.tipo)||'rio'];/* vocabulario del juego, para las pantallas sin ruta */
 function desdeRio(r){if(r.tipo)return r;r.tipo='rio';r.region=r.continente;
   r.inicio={nombre:r.nace,nota:r.naceNota,escena:r.escenaNace};r.fin={nombre:r.mar,en:r.marEn,escena:r.escenaMar};
@@ -82,7 +124,8 @@ function desdeRio(r){if(r.tipo)return r;r.tipo='rio';r.region=r.continente;
   r.carga=r.mercado=MERCADOS[r.id]||[];r.eventos=EVENTOS[r.id]||[];r.perfil=ALTURAS[r.id]||null;
   const n=NAVES[r.id];if(n){r.vehiculo=r.nave=n;r.paradas.forEach((c,i)=>{if(n.puertos[i]){c.puerto=n.puertos[i][0];c.carga=n.puertos[i][1]}})}
   return r}
-function normalizar(r){r.vocab=Object.assign({},VOCAB[r.tipo]||VOCAB.rio,r.vocab||{});
+function normalizar(r){r.ramas=r.ramas||[];r.carga=r.carga||[];r.eventos=r.eventos||[];r.perfil=r.perfil||null;if(r.vehiculo&&r.vehiculo.puertos)r.paradas.forEach((c,i)=>{const pu=r.vehiculo.puertos[i];if(pu&&c.puerto==null){c.puerto=pu[0];c.carga=pu[1]}});
+  r.vocab=Object.assign({},VOCAB[r.tipo]||VOCAB.rio,r.vocab||{});r.vocesEfectivas=Object.assign({},VOCES,r.vocab.voces||{});r.pref=(r.tipo==='rio'?'rio:':'ruta:')+r.id+':';/* prefijo de las tarjetas: rio: se conserva por el progreso guardado */
   r.curso=r.trazo.length===1?r.trazo[0]:[].concat(...r.trazo);r.cortes=[];let k=0;r.trazo.forEach((seg,i)=>{if(i)r.cortes.push(k);k+=seg.length});/* cortes: índice donde empieza cada segmento nuevo */
   r.acum=[0];for(let i=1;i<r.curso.length;i++)r.acum[i]=r.acum[i-1]+hav(r.curso[i-1],r.curso[i]);r.kmPoly=r.acum[r.acum.length-1];
   let ult=0;r.paradas.forEach(c=>{let best=ult,bd=1e9;for(let i=ult;i<r.curso.length;i++){const d=(r.curso[i][0]-c.pos[0])**2+(r.curso[i][1]-c.pos[1])**2;if(d<bd){bd=d;best=i}}c.idx=best;ult=best;c.km=Math.round(r.acum[best]/r.kmPoly*(r.longitud||r.kmPoly))});
@@ -96,7 +139,18 @@ const alturaParada=(r,i)=>{const a=alturaEn(r,fracParada(r,i));return a==null?nu
 const textoAltura=(r,i)=>{const a=alturaParada(r,i);return a==null?'':a<0?` · el río va ${km(-a)} m bajo el nivel del océano`:a<5?' · el río ya va al nivel del mar':` · el río pasa a ${km(a)} m sobre el mar`};
 const fraseAltura=(r,i)=>{const a=alturaParada(r,i);return a==null?'':a<0?`El río va ${-a} metros bajo el nivel del océano.`:a<5?'El río ya va al nivel del mar.':`El río pasa a ${a} metros sobre el mar.`};
 function fracActual(r){const n=r.paradas.length,p=S.paso,fp=k=>k<=0?0:k>n?1:fracParada(r,k-1);return S.evento?(fp(p)+fp(p+1))/2:fp(p)}
-function perfilSVG(r){const P=r.perfil;if(!P)return '';const el=document.getElementById('perfil'),W=Math.max(300,(el&&el.clientWidth)||380),H=56,x0=8,x1=W-8,yb=44,yt=10,top=Math.max(P[0][1],1),piso=Math.min(0,P[P.length-1][1]);
+const anio=f=>{const m=String(f||'').match(/-?\d{3,4}/);return m?+m[0]:null};
+const conFranja=r=>!!(r.perfil||(anio(r.inicio.fecha)!=null&&anio(r.fin.fecha)!=null&&r.paradas.some(c=>anio(c.fecha)!=null)));
+function tiempoSVG(r){/* línea de tiempo: para las rutas con fechas (itinerarios), lo que el perfil de altura es para los ríos */
+  const el=document.getElementById('perfil'),W=Math.max(300,(el&&el.clientWidth)||380),H=56,x0=12,x1=W-12,y=31,a0=anio(r.inicio.fecha),a1=anio(r.fin.fecha),ff=r.paradas.map(c=>anio(c.fecha));if(a0==null||a1==null||a1<=a0)return '';
+  const X=a=>x0+(a-a0)/(a1-a0)*(x1-x0),n=r.paradas.length,p=S.paso,ap=k=>k<=0?a0:k>n?a1:(ff[k-1]!=null?ff[k-1]:a0),aa=S.evento?(ap(p)+ap(p+1))/2:ap(p),xa=X(aa);
+  let h=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Línea de tiempo del viaje de ${esc(r.nombre)}: de ${a0} a ${a1}"><line class="perfil-base" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>`;
+  h+=`<text class="perfil-txt" x="${x0}" y="${y-9}">${a0}</text><text class="perfil-txt" x="${x1}" y="${y-9}" text-anchor="end">${a1}</text>`;
+  r.paradas.forEach((c,i)=>{if(ff[i]==null)return;const x=X(ff[i]);h+=`<circle class="perfil-tick" cx="${x.toFixed(1)}" cy="${y}" r="2.2"><title>${esc(c.nombre)}: ${esc(c.fecha)}</title></circle>${i%2?`<text class="perfil-txt k" x="${x.toFixed(1)}" y="${y+15}" text-anchor="middle">${ff[i]}</text>`:''}`});
+  const nom=p<=0?r.inicio.nombre:p>n?r.fin.en:r.paradas[p-1].nombre,fe=p>=1&&p<=n?r.paradas[p-1].fecha:p<=0?r.inicio.fecha:r.fin.fecha;
+  h+=`<circle class="perfil-aqui" cx="${xa.toFixed(1)}" cy="${y}" r="4"/><text class="perfil-txt" x="${Math.min(Math.max(xa,60),W-60).toFixed(1)}" y="${H-4}" text-anchor="middle">${esc(nom)}${fe?' · '+esc(fe):''}</text>`;
+  return h+'</svg>'}
+function perfilSVG(r){const P=r.perfil;if(!P)return tiempoSVG(r);const el=document.getElementById('perfil'),W=Math.max(300,(el&&el.clientWidth)||380),H=56,x0=8,x1=W-8,yb=44,yt=10,top=Math.max(P[0][1],1),piso=Math.min(0,P[P.length-1][1]);
   const X=f=>x0+f*(x1-x0),Y=a=>yb-(Math.max(a,piso)-piso)/(top-piso)*(yb-yt),fa=fracActual(r),aa=Math.round(alturaEn(r,fa)),xa=X(fa),ya=Y(aa);
   let h=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Perfil de altura del ${esc(r.nombre)}: de ${km(P[0][1])} m en la fuente a ${km(P[P.length-1][1])} m en el mar">`;
   h+=`<path class="perfil-tierra" d="M${X(0).toFixed(1)} ${yb}L${P.map(([f,a])=>`${X(f).toFixed(1)} ${Y(a).toFixed(1)}`).join('L')}L${X(1).toFixed(1)} ${yb}Z"/><line class="perfil-base" x1="${x0}" y1="${Y(0).toFixed(1)}" x2="${x1}" y2="${Y(0).toFixed(1)}"/>`;
@@ -111,7 +165,7 @@ function puntoMedio(r,de,a){if(a<=de)return{k:de,pt:r.curso[de]};const s=(r.acum
   const p=r.curso[k],q=r.curso[k+1],L=r.acum[k+1]-r.acum[k],u=L?(s-r.acum[k])/L:0;return{k,pt:[p[0]+(q[0]-p[0])*u,p[1]+(q[1]-p[1])*u]}}
 
 /* ---------- sonido de agua (ruido rosa filtrado; rápidos cerca de la fuente, mar al final) ---------- */
-const audio={ctx:null,on:false,nivel:0.7,frac:0.4,
+const audio={ctx:null,on:false,nivel:0.7,frac:0.4,modo:'agua',
   iniciar(){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;const ctx=this.ctx=new C();
     const buf=ctx.createBuffer(1,ctx.sampleRate*4,ctx.sampleRate),d=buf.getChannelData(0);let b0=0,b1=0,b2=0;
     for(let i=0;i<d.length;i++){const w=Math.random()*2-1;b0=0.99765*b0+w*0.0990460;b1=0.96300*b1+w*0.2965164;b2=0.57000*b2+w*1.0526913;d[i]=(b0+b1+b2+w*0.1848)*0.15}
@@ -123,7 +177,8 @@ const audio={ctx:null,on:false,nivel:0.7,frac:0.4,
     src.connect(bp);bp.connect(lp);lp.connect(mod);mod.connect(g);g.connect(ctx.destination);src.start();lfo.start();return true},
   toggle(){if(!this.ctx&&!this.iniciar())return;this.on=!this.on;if(this.on)this.ctx.resume();const t=this.ctx.currentTime;this.g.gain.cancelScheduledValues(t);this.g.gain.setTargetAtTime(this.on?this.nivel:0,t,0.4);this.ajustar(this.frac);
     document.querySelectorAll('.son').forEach(b=>{b.classList.toggle('on',this.on);b.setAttribute('aria-pressed',this.on)})},
-  ajustar(frac){this.frac=frac;if(!this.ctx)return;const t=this.ctx.currentTime;this.bp.frequency.setTargetAtTime(1400-1000*frac,t,0.8);this.bp.Q.setTargetAtTime(0.6+0.6*frac,t,0.8);this.lfo.frequency.setTargetAtTime(0.6-0.4*frac,t,0.8);this.lfoG.gain.setTargetAtTime(0.22+0.3*frac,t,0.8)},
+  ajustar(frac){this.frac=frac;if(!this.ctx)return;const t=this.ctx.currentTime,v=this.modo==='viento';/* viento: más grave, más lento, sin rápidos */
+    this.bp.frequency.setTargetAtTime(v?700-300*frac:1400-1000*frac,t,0.8);this.bp.Q.setTargetAtTime(v?0.5:0.6+0.6*frac,t,0.8);this.lfo.frequency.setTargetAtTime(v?0.15:0.6-0.4*frac,t,0.8);this.lfoG.gain.setTargetAtTime(v?0.5:0.22+0.3*frac,t,0.8)},
   ping(f){if(!this.ctx||!this.on)return;const t=this.ctx.currentTime,o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.value=f||880;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.25,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+0.25);o.connect(g);g.connect(this.ctx.destination);o.start(t);o.stop(t+0.3)},
   remar(){if(!this.ctx||!this.on)return;const t=this.ctx.currentTime,g=this.g.gain;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(this.nivel*1.9,t+0.25);g.setTargetAtTime(this.nivel,t+0.3,0.6)},
   duck(on){if(!this.ctx||!this.on)return;const t=this.ctx.currentTime;this.g.gain.cancelScheduledValues(t);this.g.gain.setTargetAtTime(on?this.nivel*0.25:this.nivel,t,0.3)}};
@@ -138,13 +193,13 @@ const nivelQuiz=Q=>{const p=Q.aciertos/Q.qs.length;return p>=0.9?0:p>=0.6?1:2};
 function lectura(){const r=S.pantalla!=='inicio'&&S.pantalla!=='pasaporte'&&S.rio&&rioPor(S.rio);if(!r)return[];const V=r.vocab,n=r.paradas.length,m=r.companero,h=modo()==='historia',L=[];
   const di=(...t)=>t.forEach(x=>{if(x)L.push(String(x))});
   const opciones=(ops,pre)=>{di(pre);ops.forEach((o,i)=>di(`${ORD[i]||(i+1)}: ${sinHtml(o)}`))};
-  const quiz=Q=>{const N=Q.qs.length;if(Q.i>=N){const k=nivelQuiz(Q);di(Q.modo==='rio'?VOCES.resultado[k]:'',`${Q.aciertos} de ${N}.`,MSG_QUIZ(vocabQuiz())[k]);return}const q=Q.qs[Q.i];if(Q.modo==='rio'||Q.resp!=null)di(Q.dicho);di(q.texto);if(Q.resp==null)opciones(q.opciones);else di(q.nota)};
+  const quiz=Q=>{const N=Q.qs.length;if(Q.i>=N){const k=nivelQuiz(Q);di(Q.modo==='rio'?VZ().resultado[k]:'',`${Q.aciertos} de ${N}.`,MSG_QUIZ(vocabQuiz())[k]);return}const q=Q.qs[Q.i];if(Q.modo==='rio'||Q.resp!=null)di(Q.dicho);di(q.texto);if(Q.resp==null)opciones(q.opciones);else di(q.nota)};
   if(S.pantalla==='quiz'||S.tab==='preguntar'){if(S.quiz)quiz(S.quiz);return L}
   if(S.tab==='ordenar'){const o=S.orden;di(o.dicho);if(!o.listo)opciones(o.pool.map(i=>r.paradas[i].nombre),V.tocaEnOrden(n));return L}
-  if(S.tab==='recitar'){const R=S.rec;di(R.dicho);if(R.i>=n)di(`${R.ok.filter(Boolean).length} de ${n} recordadas.`);else if(!R.revelada)di(`Parada ${R.i+1} de ${n}: decila en voz alta y después revelá.`);else di(`${r.paradas[R.i].nombre}, ${r.paradas[R.i].pais}. ¿La sabías?`);return L}
+  if(S.tab==='recitar'){const R=S.rec;di(R.dicho);if(R.i>=n)di(`${R.ok.filter(Boolean).length} de ${n} recordadas.`);else if(!R.revelada)di(`${V.Parada} ${R.i+1} de ${n}: decila en voz alta y después revelá.`);else di(`${r.paradas[R.i].nombre}, ${r.paradas[R.i].pais}. ¿La sabías?`);return L}
   const E=S.evento,p=S.paso;
   if(E){di(E.dicho,E.def.titulo+'. '+E.def.texto,E.q.texto);if(E.resp==null)opciones(E.q.opciones);else di((E.ok?E.def.bien:E.def.mal)+(E.delta?` ${E.delta>0?'Ganás':'Perdés'} ${Math.abs(E.delta)} monedas.`:''),h?E.q.nota:'');return L}
-  const guia=()=>{const g=S.guias[p];if(g&&g.resp==null&&p<n)opciones(g.opciones.map(i=>r.paradas[i].nombre),'¿Cuál es la próxima parada?')};
+  const guia=()=>{const g=S.guias[p];if(g&&g.resp==null&&p<n)opciones(g.opciones.map(i=>r.paradas[i].nombre),V.proxima)};
   if(p===0){di(S.dicho||(m&&m.hola),V.vozInicio(r),h?r.inicio.nota:'');guia()}
   else if(p<=n){const c=r.paradas[p-1];di(S.dicho||(m&&m.paradas[p-1]),V.vozParada(p,n,c),'Imagen para recordar: '+c.imagen,h?c.dato:'',h?fraseAltura(r,p-1):'',S.selloNuevo===claveSello(r,p-1)?`¡Sello de ${c.nombre} en el pasaporte!`:'');guia()}
   else di(S.dicho||(m&&m.fin),V.vozFin(r));
@@ -225,7 +280,7 @@ const INTERVALOS=[0,1,3,7,14,30],DIA=86400000,NUEVAS_POR_DIA=10;
 let P=nuevoP();
 const guardar=()=>store.escribir(store.clave(PERFILES.activo),P);
 function marcar(id,ok){const c=P.cards[id]||{box:0,due:0};if(c.nuevo){delete c.nuevo;diaHoy().nuevas++}c.box=ok?Math.min(5,c.box+1):0;c.due=Date.now()+INTERVALOS[c.box]*DIA;P.cards[id]=c;guardar()}
-function idsDe(r){const ids=['orden','antigua','moderna','mar'].map(k=>'rio:'+r.id+':'+k);r.paradas.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
+function idsDe(r){const ids=['orden',...r.contexto.map(c=>c.clave),r.tipo==='rio'?'mar':'fin'].map(k=>r.pref+k);r.paradas.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
 function dominio(r){const ids=idsDe(r);let s=0;ids.forEach(id=>{const c=P.cards[id];if(c)s+=c.box});return s/(ids.length*5)}
 function sembrar(r){idsDe(r).forEach(id=>{if(!P.cards[id])P.cards[id]={box:0,due:Date.now(),nuevo:true}});guardar()}
 /* Hoy: las tarjetas vencidas ya repasadas entran todas; las nuevas (sembradas y nunca respondidas) entran de a NUEVAS_POR_DIA
@@ -249,14 +304,15 @@ function preguntaTipo(tipo,r,extra){const V=r.vocab;
   if(tipo==='ciudad'){const i=extra==null?Math.floor(Math.random()*n):extra,c=r.paradas[i];
     return armar({tipo,rio:r.id,ciudad:i,texto:V.preguntas.ciudad(r,c),nota:c.imagen,cardId:'ciudad:'+r.id+':'+i},esc(r.nombre),otrosRios(r,3).map(x=>esc(x.nombre)))}
   if(tipo==='cerca'){const idx=mezclar(r.paradas.map((c,i)=>i)).slice(0,3),max=Math.max(...idx);
-    return armar({tipo,rio:r.id,ciudad:max,texto:V.preguntas.cerca(r),nota:V.preguntas.orden(r),cardId:'rio:'+r.id+':orden'},esc(r.paradas[max].nombre),idx.filter(i=>i!==max).map(i=>esc(r.paradas[i].nombre)))}
-  if(tipo==='antigua'||tipo==='moderna'){const cx=r.contexto.find(x=>x.clave===tipo);
-    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.contexto(r,cx),nota:cx.texto,cardId:'rio:'+r.id+':'+tipo},esc(r.nombre),otrosRios(r,3).map(x=>esc(x.nombre)))}
-  if(tipo==='mar'){const z=zonaDe(r),mares=[...new Set(mezclar([...new Set(RUTAS.filter(x=>x.fin.nombre!==r.fin.nombre&&zonaDe(x)===z).map(x=>x.fin.nombre))]).concat(mezclar([...new Set(RUTAS.filter(x=>x.fin.nombre!==r.fin.nombre&&zonaDe(x)!==z).map(x=>x.fin.nombre))])))].slice(0,3);
-    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.fin(r),nota:V.preguntas.finNota(r),cardId:'rio:'+r.id+':mar'},esc(r.fin.nombre),mares.map(esc))}
+    return armar({tipo,rio:r.id,ciudad:max,texto:V.preguntas.cerca(r),nota:V.preguntas.orden(r),cardId:r.pref+'orden'},esc(r.paradas[max].nombre),idx.filter(i=>i!==max).map(i=>esc(r.paradas[i].nombre)))}
+  const cx=r.contexto.find(x=>x.clave===tipo);if(cx){
+    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.contexto(r,cx),nota:cx.texto,cardId:r.pref+tipo},esc(r.nombre),otrosRios(r,3).map(x=>esc(x.nombre)))}
+  if(tipo==='mar'||tipo==='fin'){const z=zonaDe(r);let fines=[...new Set(mezclar([...new Set(RUTAS.filter(x=>x.fin.nombre!==r.fin.nombre&&zonaDe(x)===z).map(x=>x.fin.nombre))]).concat(mezclar([...new Set(RUTAS.filter(x=>x.fin.nombre!==r.fin.nombre&&zonaDe(x)!==z).map(x=>x.fin.nombre))])))].slice(0,3);
+    if(fines.length<3)fines=fines.concat(mezclar(r.paradas.map(c=>c.nombre).filter(nm=>nm!==r.fin.nombre&&!fines.includes(nm))).slice(0,3-fines.length));/* con pocas rutas, etapas del mismo viaje */
+    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.fin(r),nota:V.preguntas.finNota(r),cardId:r.pref+(r.tipo==='rio'?'mar':'fin')},esc(r.fin.nombre),fines.map(esc))}
   if(tipo==='siguiente'){const i=extra==null?Math.floor(Math.random()*(n-1)):Math.min(extra,n-2),c=r.paradas[i],sig=i+1;const otras=mezclar(r.paradas.map((x,k)=>k).filter(k=>k!==sig&&k!==i)).slice(0,3).map(k=>esc(r.paradas[k].nombre));
     if(otras.length<3)otras.push(V.preguntas.relleno);/* ríos de cuatro paradas */
-    return armar({tipo,rio:r.id,ciudad:sig,texto:V.preguntas.siguiente(r,c),nota:V.preguntas.orden(r),cardId:'rio:'+r.id+':orden'},esc(r.paradas[sig].nombre),otras)}
+    return armar({tipo,rio:r.id,ciudad:sig,texto:V.preguntas.siguiente(r,c),nota:V.preguntas.orden(r),cardId:r.pref+'orden'},esc(r.paradas[sig].nombre),otras)}
   if(tipo==='imagen'){const i=extra==null?Math.floor(Math.random()*n):extra,c=r.paradas[i],otras=mezclar(r.paradas.map((x,k)=>k).filter(k=>k!==i)).slice(0,3);
     return armar({tipo,rio:r.id,ciudad:i,escena:c.escena,texto:V.preguntas.imagen(r,c),nota:c.dato,cardId:'ciudad:'+r.id+':'+i},esc(c.nombre),otras.map(k=>esc(r.paradas[k].nombre)))}
   if(tipo==='pais'){const i=extra==null?Math.floor(Math.random()*n):extra,c=r.paradas[i];
@@ -266,66 +322,76 @@ function preguntaTipo(tipo,r,extra){const V=r.vocab;
     for(let k=0;k<8&&!sel&&alts[0]!=null;k++){const g=mezclar(r.paradas.map((c,i)=>i)).slice(0,4),top=g.reduce((m,i)=>alts[i]>alts[m]?i:m,g[0]),seg=Math.max(...g.filter(i=>i!==top).map(i=>alts[i]));if(alts[top]>=seg+25&&alts[top]>=seg*1.15)sel={g,top}}
     if(!sel)return preguntaTipo('cerca',r);/* sin diferencia clara de altura: pregunta de orden */
     return armar({tipo,rio:r.id,ciudad:sel.top,texto:V.preguntas.altura(r),nota:V.preguntas.alturaNota+r.paradas.map((c,i)=>`${c.nombre} ${km(alts[i])} m`).join(' · ')+'.',cardId:null},esc(r.paradas[sel.top].nombre),sel.g.filter(i=>i!==sel.top).map(i=>esc(r.paradas[i].nombre)))}
+  if(tipo==='fecha'){const con=r.paradas.map((c,i)=>i).filter(i=>r.paradas[i].fecha),anos=[...new Set(con.map(i=>r.paradas[i].fecha))];if(anos.length<4)return preguntaTipo('cerca',r);
+    const i=extra!=null&&r.paradas[extra]&&r.paradas[extra].fecha?extra:azar(con),c=r.paradas[i],otras=mezclar(anos.filter(a=>a!==c.fecha)).slice(0,3);
+    return armar({tipo,rio:r.id,ciudad:i,texto:V.preguntas.fecha(r,c),nota:V.preguntas.fechaNota(r),cardId:'ciudad:'+r.id+':'+i},esc(c.fecha),otras.map(esc))}
+  if(tipo==='orden'){if(n<4)return preguntaTipo('cerca',r);const a=Math.floor(Math.random()*(n-3)),grupo=[a,a+1,a+2,a+3],nombre=g=>g.map(i=>esc(r.paradas[i].nombre)).join(' → '),ok=nombre(grupo),vistos=new Set([ok]),otras=[];let tries=0;
+    while(otras.length<3&&tries++<40){const k=nombre(mezclar(grupo));if(!vistos.has(k)){vistos.add(k);otras.push(k)}}
+    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.ordenPregunta(r),nota:V.preguntas.orden(r),cardId:r.pref+'orden'},ok,otras)}
   /* frase */
-  return armar({tipo:'frase',rio:r.id,ciudad:null,texto:V.preguntas.frase(r),nota:lista(r)+'.',cardId:'rio:'+r.id+':orden'},marcarFrase(r.frase),otrosRios(r,3).map(x=>marcarFrase(x.frase)))
+  return armar({tipo:'frase',rio:r.id,ciudad:null,texto:V.preguntas.frase(r),nota:lista(r)+'.',cardId:r.pref+'orden'},marcarFrase(r.frase),otrosRios(r,3).map(x=>marcarFrase(x.frase)))
 }
-function preguntaDeCard(id){const p=id.split(':'),r=rioPor(p[1]);if(!r)return null;
-  if(p[0]==='ciudad')return preguntaTipo(azar(['ciudad','imagen']),r,+p[2]);
-  if(p[2]==='orden')return preguntaTipo(azar(['cerca','frase','siguiente']),r);
+function tiposDisponibles(r){/* tipos de pregunta que se pueden armar para esta ruta en este juego; con menos de cuatro rutas no hay distractores de otras rutas */
+  if(RUTAS.length>=4&&r.tipo==='rio')return ['ciudad','imagen','cerca','siguiente','antigua','moderna','mar','frase','pais','altura'];
+  const t=['imagen','siguiente','cerca','pais','fin','orden'];if(RUTAS.length>=4)t.push('ciudad','frase',...r.contexto.map(c=>c.clave));if(r.paradas.some(c=>c.fecha))t.push('fecha');if(r.perfil)t.push('altura');return t}
+function preguntaDeCard(id){const p=id.split(':'),r=rutaPor(p[1]);if(!r)return null;const T=tiposDisponibles(r);
+  if(p[0]==='ciudad')return preguntaTipo(azar(['ciudad','imagen'].filter(t=>T.includes(t)).concat(T.includes('fecha')?['fecha']:[])),r,+p[2]);
+  if(p[2]==='orden')return preguntaTipo(azar(['cerca','frase','siguiente'].filter(t=>T.includes(t))),r);
   return preguntaTipo(p[2],r)}
 function iniciarQuiz(r){const n=r.paradas.length,a=Math.floor(Math.random()*n);let b=Math.floor(Math.random()*(n-1));if(b>=a)b++;
-  const qs=mezclar([preguntaTipo(azar(['ciudad','imagen']),r,a),preguntaTipo('siguiente',r,b),preguntaTipo(azar(['cerca','altura']),r),preguntaTipo(azar(['antigua','moderna']),r),preguntaTipo('mar',r),preguntaTipo('frase',r)]);
-  S.quiz={qs,i:0,aciertos:0,resp:null,titulo:r.nombre,modo:'rio',dicho:azar(VOCES.pregunta)}}
+  const qs=mezclar(RUTAS.length>=4?[preguntaTipo(azar(['ciudad','imagen']),r,a),preguntaTipo('siguiente',r,b),preguntaTipo(azar(['cerca','altura']),r),preguntaTipo(azar(r.contexto.map(c=>c.clave)),r),preguntaTipo(r.tipo==='rio'?'mar':'fin',r),preguntaTipo('frase',r)]
+    :[preguntaTipo('imagen',r,a),preguntaTipo('siguiente',r,b),preguntaTipo(azar(['cerca','fecha']),r),preguntaTipo('orden',r),preguntaTipo('fin',r),preguntaTipo(azar(['pais','fecha']),r)]);/* con una sola ruta no hay distractores de otras rutas */
+  S.quiz={qs,i:0,aciertos:0,resp:null,titulo:r.nombre,modo:'rio',dicho:azar(VZ().pregunta)}}
 function iniciarRepaso(){const ids=colaHoy().slice(0,10);
   if(!ids.length){S.pantalla='inicio';S.aviso=VJ().recorreFin;render();return}
   S.pantalla='quiz';S.aviso=null;S.quiz={qs:ids.map(preguntaDeCard).filter(Boolean),i:0,aciertos:0,resp:null,titulo:'Repaso',modo:'repaso'};render()}
 function iniciarReto(){const qs=[],claves=new Set();let tries=0;
-  while(qs.length<10&&tries++<60){const r=azar(RUTAS),t=azar(['ciudad','imagen','cerca','siguiente','antigua','moderna','mar','frase','pais','altura']);const q=preguntaTipo(t,r);const k=q.tipo+':'+q.rio+':'+q.ciudad;if(claves.has(k))continue;claves.add(k);qs.push(q)}
+  while(qs.length<10&&tries++<60){const r=azar(RUTAS),t=azar(tiposDisponibles(r));const q=preguntaTipo(t,r);const k=q.tipo+':'+q.rio+':'+q.ciudad;if(claves.has(k))continue;claves.add(k);qs.push(q)}
   S.pantalla='quiz';S.aviso=null;S.quiz={qs,i:0,aciertos:0,resp:null,titulo:'Reto mundial',modo:'reto'};render()}
 
 /* ---------- estado y navegación ---------- */
 const S={pantalla:'inicio',rio:null,tab:'descender',paso:0,orden:null,quiz:null,aviso:null,foco:null,viaje:null,guias:{},llaves:{},dicho:null,rec:null,evento:null,eventosVistos:{},viajeEv:false,perfilNuevo:false,zona:null,selloNuevo:null,dichoLeido:null,bamboleo:false};
 function verZona(z){S.zona=z;render(false)}
-function abrirRio(id){S.pantalla='rio';S.rio=id;S.tab='descender';S.paso=0;S.aviso=null;S.guias={};S.llaves={};S.dicho=null;S.evento=null;S.eventosVistos={};S.viajeEv=false;iniciarEco();prepararGuia(rioPor(id));render()}
+function abrirRio(id){S.pantalla='rio';S.rio=id;S.tab='descender';S.paso=0;S.aviso=null;S.guias={};S.llaves={};S.dicho=null;S.evento=null;S.eventosVistos={};S.viajeEv=false;iniciarEco();audio.modo=rioPor(id).vocab.sonidoTipo||'agua';prepararGuia(rioPor(id));render()}
 function prepararGuia(r){const n=r.paradas.length,p=S.paso;if(p>=n||S.guias[p])return;const otras=mezclar(r.paradas.map((c,i)=>i).filter(i=>i!==p)).slice(0,2);S.guias[p]={objetivo:p,opciones:mezclar([p,...otras]),resp:null,ok:null}}
 function responderGuia(i){const r=rioPor(S.rio),g=S.guias[S.paso];if(!g||g.resp!=null)return;g.resp=i;g.ok=i===g.objetivo;S.bamboleo=!g.ok;S.llaves[g.objetivo]=g.ok;marcar('ciudad:'+r.id+':'+g.objetivo,g.ok);
-  S.dicho=azar(g.ok?VOCES.guiaBien:(S.eco?VOCES.guiaMal:VOCES.guiaMalH)).replace('{c}',r.paradas[g.objetivo].nombre);if(g.ok)audio.ping(1046);render(false)}
+  S.dicho=azar(g.ok?VZ().guiaBien:(S.eco?VZ().guiaMal:VZ().guiaMalH)).replace('{c}',r.paradas[g.objetivo].nombre);if(g.ok)audio.ping(1046);render(false)}
 function lanzarEvento(r,def){const p=S.paso,q=def.reto==='imagen'?preguntaTipo('imagen',r,Math.floor(Math.random()*p)):def.reto==='pais'?preguntaTipo('pais',r,def.tramo-1):def.reto==='ruta'?preguntaTipo('siguiente',r,def.tramo-1):preguntaTipo(def.reto,r);
   S.eventosVistos[def.tramo]=true;S.dicho=null;S.viajeEv=true;
-  S.evento={def,q,resp:null,ok:null,delta:0,tramo:def.tramo,medio:puntoMedio(r,idxParada(r,p),idxParada(r,def.tramo)),dicho:azar(VOCES.eventoAviso)};audio.ping(392);render()}
+  S.evento={def,q,resp:null,ok:null,delta:0,tramo:def.tramo,medio:puntoMedio(r,idxParada(r,p),idxParada(r,def.tramo)),dicho:azar(VZ().eventoAviso)};audio.ping(392);render()}
 function responderEvento(i){const E=S.evento;if(!E||E.resp!=null)return;const q=E.q,e=S.eco;E.resp=i;E.ok=i===q.correcta;if(q.cardId)marcar(q.cardId,E.ok);
   if(e&&!e.cerrado){E.delta=E.ok?2:-Math.min(2,e.monedas);e.monedas+=E.delta}
-  E.dicho=azar(E.ok?VOCES.eventoBien:VOCES.eventoMal);if(E.ok)audio.ping(1319);render(false)}
+  E.dicho=azar(E.ok?VZ().eventoBien:VZ().eventoMal);if(E.ok)audio.ping(1319);render(false)}
 function continuarEvento(){const E=S.evento;if(!E||E.resp==null)return;S.evento=null;paso(1,E)}
 const modo=()=>P.modo==='historia'?'historia':'mercader';
 function setModo(m){P.modo=m;guardar();render(false)}
 function iniciarEco(){S.eco=modo()==='mercader'?{monedas:10,bodega:[],dicho:null,cerrado:false,final:null}:null}
 function precio(r,g,j){if(j<g.o)return null;const k=j-g.o;if(g.d&&k>g.d)return 0;let p=g.b*(1+0.5*k);if(g.m===j)p*=2;else if(j===r.paradas.length-1&&k>0)p*=1.25;return Math.round(p)}
 function comprar(gi){const r=rioPor(S.rio),g=r.carga[gi],e=S.eco;if(!e||e.cerrado)return;
-  if(e.bodega.length>=3)S.dicho=azar(VOCES.sinEspacio);else if(e.monedas<g.b)S.dicho=azar(VOCES.sinMonedas);else{e.monedas-=g.b;e.bodega.push(gi);S.dicho=azar(VOCES.compra).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));audio.ping(660)}
+  if(e.bodega.length>=3)S.dicho=azar(VZ().sinEspacio);else if(e.monedas<g.b)S.dicho=azar(VZ().sinMonedas);else{e.monedas-=g.b;e.bodega.push(gi);S.dicho=azar(VZ().compra).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));audio.ping(660)}
   render(false)}
 function vender(bi){const r=rioPor(S.rio),e=S.eco;if(!e||e.cerrado)return;const g=r.carga[e.bodega[bi]],p=precio(r,g,S.paso-1);e.bodega.splice(bi,1);
-  if(p>0){e.monedas+=p;S.dicho=azar(VOCES.venta).replace('{n}',p);audio.ping(1046)}else S.dicho=azar(VOCES.podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));
+  if(p>0){e.monedas+=p;S.dicho=azar(VZ().venta).replace('{n}',p);audio.ping(1046)}else S.dicho=azar(VZ().podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));
   render(false)}
 function cerrarEco(r){const e=S.eco;if(!e||e.cerrado)return;const j=r.paradas.length-1,vend=[];e.bodega.forEach(gi=>{const g=r.carga[gi],p=precio(r,g,j)||0;e.monedas+=p;vend.push(g.n+' · '+p)});e.bodega=[];
-  const gan=e.monedas-10;P.tesoro=(P.tesoro||0)+Math.max(0,gan);e.cerrado=true;e.final={fin:e.monedas,gan,vend};S.dicho=VOCES.ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+(r.fantasma!=null?' '+(e.monedas>r.fantasma?VOCES.fantasma[0]:e.monedas<r.fantasma?VOCES.fantasma[1].replace('{n}',r.fantasma):VOCES.fantasma[2]):'');guardar()}
+  const gan=e.monedas-10;P.tesoro=(P.tesoro||0)+Math.max(0,gan);e.cerrado=true;e.final={fin:e.monedas,gan,vend};S.dicho=VZ().ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+(r.fantasma!=null?' '+(e.monedas>r.fantasma?VZ().fantasma[0]:e.monedas<r.fantasma?VZ().fantasma[1].replace('{n}',r.fantasma):VZ().fantasma[2]):'');guardar()}
 function irInicio(){S.pantalla='inicio';S.aviso=null;render()}
 function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='preguntar')iniciarQuiz(r);render()}
 function paso(d,tras){const r=rioPor(S.rio),fin=r.paradas.length+1,antes=S.paso;
   if(d>0&&!tras&&!S.evento&&antes<fin){const def=r.eventos.find(e=>e.tramo===antes+1&&!S.eventosVistos[e.tramo]);if(def){lanzarEvento(r,def);return}}
   S.paso=Math.max(0,Math.min(fin,antes+d));S.viaje={de:antes,a:S.paso};if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
-function reiniciarOrden(r){S.orden={pool:mezclar(r.paradas.map((c,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VOCES.ordenInicio)}}
+function reiniciarOrden(r){S.orden={pool:mezclar(r.paradas.map((c,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VZ().ordenInicio)}}
 function tocarChip(i){const o=S.orden,r=rioPor(S.rio);if(o.listo)return;
-  if(i===o.seq.length){o.seq.push(i);o.pool=o.pool.filter(x=>x!==i);o.fallo=null;o.dicho=azar(VOCES.ordenBien);if(!o.pool.length){o.listo=true;o.dicho=VOCES.ordenFin[o.errores===0?0:o.errores===1?1:2];if(S.eco&&o.errores<=1){o.premio=o.errores===0?5:2;P.tesoro=(P.tesoro||0)+o.premio;o.dicho+=` +${o.premio} monedas al tesoro.`}marcar('rio:'+r.id+':orden',o.errores<=1)}}
-  else{o.errores++;o.fallo=i;o.dicho=azar(VOCES.ordenMal);setTimeout(()=>{if(S.orden===o&&o.fallo===i){o.fallo=null;render(false)}},600)}
+  if(i===o.seq.length){o.seq.push(i);o.pool=o.pool.filter(x=>x!==i);o.fallo=null;o.dicho=azar(VZ().ordenBien);if(!o.pool.length){o.listo=true;o.dicho=VZ().ordenFin[o.errores===0?0:o.errores===1?1:2];if(S.eco&&o.errores<=1){o.premio=o.errores===0?5:2;P.tesoro=(P.tesoro||0)+o.premio;o.dicho+=` +${o.premio} monedas al tesoro.`}marcar(r.pref+'orden',o.errores<=1)}}
+  else{o.errores++;o.fallo=i;o.dicho=azar(VZ().ordenMal);setTimeout(()=>{if(S.orden===o&&o.fallo===i){o.fallo=null;render(false)}},600)}
   render(false)}
-function responder(i){const q=S.quiz.qs[S.quiz.i];if(S.quiz.resp!=null)return;S.quiz.resp=i;const ok=i===q.correcta;S.quiz.dicho=azar(ok?VOCES.quizBien:VOCES.quizMal);if(ok)S.quiz.aciertos++;if(q.cardId)marcar(q.cardId,ok);render(false)}
-function siguiente(){S.quiz.i++;S.quiz.resp=null;S.quiz.dicho=azar(VOCES.pregunta);render()}
+function responder(i){const q=S.quiz.qs[S.quiz.i];if(S.quiz.resp!=null)return;S.quiz.resp=i;const ok=i===q.correcta;S.quiz.dicho=azar(ok?VZ().quizBien:VZ().quizMal);if(ok)S.quiz.aciertos++;if(q.cardId)marcar(q.cardId,ok);render(false)}
+function siguiente(){S.quiz.i++;S.quiz.resp=null;S.quiz.dicho=azar(VZ().pregunta);render()}
 function otraRonda(){if(S.quiz.modo==='rio'){iniciarQuiz(rioPor(S.rio));render()}else if(S.quiz.modo==='repaso')iniciarRepaso();else iniciarReto()}
 
 /* ---------- render ---------- */
 function cabecera(t,sub,volver){return `${volver?`<button class="volver" onclick="irInicio()" aria-label="${VJ().volver}">‹ ${VJ().Tipos}</button>`:''}<div><h1>${esc(t)}</h1>${sub?`<div class="sub">${esc(sub)}</div>`:''}</div><button class="son${audio.on?' on':''}" onclick="audio.toggle()" aria-pressed="${audio.on}" title="${VJ().sonido}">≈</button>`}
-function globoNeutro(texto){GLOBO=true;return `<div class="globo neutro"><span class="emo" aria-hidden="true"><svg class="barca" viewBox="-15 -16 30 22">${glifo('cuadrada')}</svg></span><div class="dice"><b>Cauces:</b> ${esc(texto||azar(VOCES.pregunta))} ${htmlVoz()}</div></div>`}
+function globoNeutro(texto){GLOBO=true;return `<div class="globo neutro"><span class="emo" aria-hidden="true"><svg class="barca" viewBox="-15 -16 30 22">${glifo('cuadrada')}</svg></span><div class="dice"><b>Cauces:</b> ${esc(texto||azar(VZ().pregunta))} ${htmlVoz()}</div></div>`}
 function globo(r,texto,extra){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;return `<div class="globo${extra?' '+extra:''}"><span class="emo" aria-hidden="true">${animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
 function bloqueFrase(r,conLista){return `<div class="frase"><div class="fkicker">Frase para el orden</div><div class="ftexto">${marcarFrase(r.frase)}</div>${r.fraseNota?`<div class="fnota">${esc(r.fraseNota)}</div>`:''}${conLista?`<div class="flista">${esc(lista(r))}</div>`:''}</div>`}
 function tabs(){return `<div class="tabs">${[['descender',VJ().bajar],['ordenar','Ordenar'],['recitar','Recitar'],['preguntar','Preguntar']].map(([k,t])=>`<button class="${S.tab===k?'on':''}" onclick="setTab('${k}')">${t}</button>`).join('')}</div>`}
@@ -350,7 +416,7 @@ function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;c
   return `${globo(r,S.dicho||(r.companero&&r.companero.fin))}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2>${escena(r.fin.escena)}<p>${esc(V.llegada(r))}</p>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">🪙 Tesoro: ${P.tesoro||0} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}<div class="nav"><button class="btn sec" onclick="paso(-1)">‹ Atrás</button><button class="btn" onclick="setTab('ordenar')">Ordenar de memoria ›</button></div>`}
 function renderGuia(r){const g=S.guias[S.paso];if(!g||S.paso>=r.paradas.length)return '';
   const chips=g.opciones.map(i=>{let cls='chip';if(g.resp!=null){if(i===g.objetivo)cls+=' bien';else if(i===g.resp)cls+=' mal'}return `<button class="${cls}" onclick="responderGuia(${i})"${g.resp!=null?' disabled':''}>${esc(r.paradas[i].nombre)}</button>`}).join('');
-  return `<div class="guia"><div class="fkicker">¿Cuál es la próxima parada?</div><div class="chips">${chips}</div></div>`}
+  return `<div class="guia"><div class="fkicker">${r.vocab.proxima}</div><div class="chips">${chips}</div></div>`}
 function renderEvento(r){const E=S.evento,d=E.def,q=E.q,n=r.paradas.length;
   const V=r.vocab,de=S.paso===0?V.entreInicio:r.paradas[S.paso-1].nombre,hacia=E.tramo<=n?r.paradas[E.tramo-1].nombre:V.entreFin;
   const ops=q.opciones.map((o,i)=>{let cls='op';if(E.resp!=null){if(i===q.correcta)cls+=' bien';else if(i===E.resp)cls+=' mal';else cls+=' apagada'}return `<button class="${cls}" onclick="responderEvento(${i})">${o}</button>`}).join('');
@@ -363,11 +429,11 @@ function renderMercado(r,j){const V=r.vocab;const e=S.eco;if(!e||!r.carga.length
   const abierto=S.llaves[j]!==false;
   const oferta=!abierto?'':r.carga.map((g,gi)=>({g,gi})).filter(x=>x.g.o===j).map(({g,gi})=>{const pista=g.d?`se pasa en ${g.d} ${g.d>1?V.puertosS:V.puertoS}`:g.m!=null?`se paga mejor en ${esc(oculta(r.paradas[g.m].nombre))}`:V.masAdelante;const no=e.monedas<g.b||e.bodega.length>=3;return `<button class="item${no?' no':''}" onclick="comprar(${gi})"><span class="ie">${g.e}</span>${esc(g.n)}<span class="ip">comprar · ${g.b}</span><small>${pista}</small></button>`}).join('');
   return `<div class="mercado"><div class="fkicker">${V.mercado} ${esc(c.nombre)}</div><div class="bolsa">🪙 ${e.monedas} monedas · ${V.carga} ${e.bodega.length} de 3</div><div class="slots">${slots}</div>${!abierto?`<small>${V.soloVender}</small>`:oferta?`<div class="fkicker">${V.seVende}</div><div class="slots">${oferta}</div>`:`<small>${V.nadaQueComprar}</small>`}</div>`}
-function iniciarRecitar(r){const d=dominio(r);S.rec={i:0,revelada:false,pista:d<0.3?'frase':d<0.7?'iniciales':'nada',ok:[],dicho:azar(VOCES.recitarInicio),premio:0}}
+function iniciarRecitar(r){const d=dominio(r);S.rec={i:0,revelada:false,pista:d<0.3?'frase':d<0.7?'iniciales':'nada',ok:[],dicho:azar(VZ().recitarInicio),premio:0}}
 function setPista(p){S.rec.pista=p;render(false)}
 function revelar(){S.rec.revelada=true;render(false)}
-function recordada(ok){const r=rioPor(S.rio),R=S.rec,n=r.paradas.length;if(R.i>=n||!R.revelada)return;marcar('ciudad:'+r.id+':'+R.i,ok);R.ok.push(ok);R.dicho=azar(ok?VOCES.recitarBien:VOCES.recitarMal);R.i++;R.revelada=false;
-  if(R.i>=n){const todas=R.ok.every(Boolean);R.dicho=VOCES.recitarFin[todas?0:R.ok.filter(Boolean).length>=n-1?1:2];if(S.eco&&todas){R.premio=R.pista==='nada'?5:R.pista==='iniciales'?3:1;P.tesoro=(P.tesoro||0)+R.premio;R.dicho+=` +${R.premio} monedas al tesoro.`;guardar()}}
+function recordada(ok){const r=rioPor(S.rio),R=S.rec,n=r.paradas.length;if(R.i>=n||!R.revelada)return;marcar('ciudad:'+r.id+':'+R.i,ok);R.ok.push(ok);R.dicho=azar(ok?VZ().recitarBien:VZ().recitarMal);R.i++;R.revelada=false;
+  if(R.i>=n){const todas=R.ok.every(Boolean);R.dicho=VZ().recitarFin[todas?0:R.ok.filter(Boolean).length>=n-1?1:2];if(S.eco&&todas){R.premio=R.pista==='nada'?5:R.pista==='iniciales'?3:1;P.tesoro=(P.tesoro||0)+R.premio;R.dicho+=` +${R.premio} monedas al tesoro.`;guardar()}}
   render(false)}
 function renderRecitar(r){const V=r.vocab,R=S.rec,n=r.paradas.length;
   const sel=`<div class="tabs modo"><button class="${R.pista==='frase'?'on':''}" onclick="setPista('frase')">Frase</button><button class="${R.pista==='iniciales'?'on':''}" onclick="setPista('iniciales')">Iniciales</button><button class="${R.pista==='nada'?'on':''}" onclick="setPista('nada')">Sin pista</button></div>`;
@@ -375,7 +441,7 @@ function renderRecitar(r){const V=r.vocab,R=S.rec,n=r.paradas.length;
   const seq=`<div class="secuencia"><span class="extremo">${V.extremoInicio}</span>${r.paradas.map((c,i)=>i<R.i?`<span class="puesto${R.ok[i]?'':' no'}">${esc(c.nombre)}</span>`:i===R.i&&R.revelada?`<span class="puesto actual">${esc(c.nombre)}</span>`:'<span class="hueco">—</span>').join('')}<span class="extremo">${V.extremoFin}</span></div>`;
   let cuerpo;
   if(R.i>=n){const ok=R.ok.filter(Boolean).length;cuerpo=`<div class="nota${ok===n?'':' no'}">${ok} de ${n} recordadas${R.premio?` · +${R.premio} monedas al tesoro`:''}.${ok===n&&R.pista!=='nada'?' Probá con menos pista.':''}</div><div class="acciones"><button class="btn" onclick="setTab('recitar')">Otra vez</button><button class="btn sec" onclick="setTab('preguntar')">Preguntar ›</button></div>`}
-  else if(!R.revelada)cuerpo=`<p class="pregunta">Parada ${R.i+1} de ${n}: decila en voz alta, o en tu cabeza, y después revelá.</p><div class="acciones"><button class="btn" onclick="revelar()">Revelar</button></div>`;
+  else if(!R.revelada)cuerpo=`<p class="pregunta">${V.Parada} ${R.i+1} de ${n}: decila en voz alta, o en tu cabeza, y después revelá.</p><div class="acciones"><button class="btn" onclick="revelar()">Revelar</button></div>`;
   else cuerpo=`<h2>${esc(r.paradas[R.i].nombre)}</h2><div class="pais">${esc(r.paradas[R.i].pais)}</div><div class="acciones"><button class="btn" onclick="recordada(true)">La sabía</button><button class="btn sec" onclick="recordada(false)">No la sabía</button></div>`;
   return `${globo(r,R.dicho)}<p class="kicker">${botonVoz()}Recitar · el palacio, habitación por habitación</p>${sel}${pista}${seq}${cuerpo}`}
 function renderOrden(r){const V=r.vocab,o=S.orden,n=r.paradas.length;
@@ -387,7 +453,7 @@ function renderOrden(r){const V=r.vocab,o=S.orden,n=r.paradas.length;
 function renderQuiz(){const Q=S.quiz,n=Q.qs.length;
   if(Q.i>=n){const k=nivelQuiz(Q),msg=MSG_QUIZ(vocabQuiz())[k];
     const rm=Q.modo==='rio'?rioPor(S.rio):null;
-    return `${rm?globo(rm,VOCES.resultado[k]):''}<div class="resultado"><p class="kicker">${botonVoz()}${esc(Q.titulo)}</p><h2>${Q.aciertos} de ${n}</h2><p>${msg}</p><div class="acciones"><button class="btn" onclick="otraRonda()">Otra ronda</button><button class="btn sec" onclick="irInicio()">Volver a los ríos</button></div></div>`}
+    return `${rm?globo(rm,VZ().resultado[k]):''}<div class="resultado"><p class="kicker">${botonVoz()}${esc(Q.titulo)}</p><h2>${Q.aciertos} de ${n}</h2><p>${msg}</p><div class="acciones"><button class="btn" onclick="otraRonda()">Otra ronda</button><button class="btn sec" onclick="irInicio()">Volver a los ríos</button></div></div>`}
   const q=Q.qs[Q.i],resp=Q.resp;
   const ops=q.opciones.map((o,i)=>{let cls='op';if(resp!=null){if(i===q.correcta)cls+=' bien';else if(i===resp)cls+=' mal';else cls+=' apagada'}return `<button class="${cls}" onclick="responder(${i})">${o}</button>`}).join('');
   const nota=resp!=null?`<div class="nota${resp===q.correcta?'':' no'}">${esc(q.nota)}</div><div class="nav"><span></span><button class="btn" onclick="siguiente()">${Q.i+1===n?'Ver resultado ›':'Siguiente ›'}</button></div>`:'';
@@ -400,7 +466,7 @@ function render(scroll){voz.callar();GLOBO=false;const arriba=document.getElemen
   else if(S.pantalla==='rio'){const r=rioPor(S.rio);cab.innerHTML=cabecera(r.nombre,r.vocab.cabecera(r),true);
     panel.innerHTML=tabs()+(S.tab==='descender'?renderDescender(r):S.tab==='ordenar'?renderOrden(r):S.tab==='recitar'?renderRecitar(r):renderQuiz());renderMapa(focoRio(r))}
   else{cab.innerHTML=cabecera(S.quiz.titulo,S.quiz.modo==='repaso'?'Lo que ya toca volver a ver':VJ().retoSub,true);panel.innerHTML=renderQuiz();renderMapa(focoQuiz(S.quiz.qs[S.quiz.i],null))}
-  const pf=document.getElementById('perfil');if(pf){const rp=S.pantalla==='rio'?rioPor(S.rio):null,ok=!!(rp&&rp.perfil);pf.hidden=!ok;pf.innerHTML=ok?perfilSVG(rp):''}
+  const pf=document.getElementById('perfil');if(pf){const rp=S.pantalla==='rio'?rioPor(S.rio):null,ok=!!(rp&&conFranja(rp));pf.hidden=!ok;pf.innerHTML=ok?perfilSVG(rp):''}
   if(leeSola()&&S.pantalla!=='inicio'){if(scroll!==false){S.dichoLeido=dichoActual();voz.decir(lectura())}else{const d=dichoActual();if(d&&d!==S.dichoLeido){S.dichoLeido=d;voz.decir([d])}}}
   if(scroll!==false)window.scrollTo(0,0)}
 
@@ -443,10 +509,12 @@ function colocar(q,nombre,puestos,px){const w=nombre.length*6.6*px,alto=12*px;
   for(const [dx,dy,an] of cands){const x=q[0]+dx*px,y=q[1]+dy*px;const box={x0:an==='end'?x-w:x,x1:an==='end'?x:x+w,y0:y-alto,y1:y+3*px};
     if(!puestos.some(b=>box.x0<b.x1&&box.x1>b.x0&&box.y0<b.y1&&box.y1>b.y0)){puestos.push(box);return[x,y,an]}}
   const x=q[0]+6*px,y=q[1]+4*px;return[x,y,'start']}
+const TERRESTRES={caravana:1,pie:1};
+function ventana(r){/* cámara por tramo: de la parada anterior a la siguiente, por el trazo */const n=r.paradas.length,p=S.paso,de=idxParada(r,Math.max(0,p-1)),a=idxParada(r,Math.min(n+1,p+1));return r.curso.slice(de,a+1)}
 function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa');let pts,vb;
   if(foco.modo==='mundo'){pts=[];RUTAS.forEach(r=>pts.push(...r.curso));vb=vbPara(pts,60,1.08)}
   else if(foco.modo==='zona'){pts=[];RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>pts.push(...r.curso,...r.paradas.map(c=>c.pos)));vb=vbPara(pts,3,1.25)}
-  else{const r=foco.rio;pts=r.curso.concat(r.paradas.map(c=>c.pos));vb=vbPara(pts,r.zona?3:20,1.3)}
+  else{const r=foco.rio;pts=r.camara==='tramo'&&S.pantalla==='rio'&&S.tab==='descender'?ventana(r):r.curso.concat(r.paradas.map(c=>c.pos));vb=vbPara(pts,r.zona?3:20,1.3)}
   setVB(vb,inmediato);const px=vb.w/(m.clientWidth||380),f=v=>(v*px).toFixed(2);const activo=foco.rio?foco.rio.id:null,enZona=foco.modo==='zona';let h='';
   const zr=foco.modo==='mundo'?'':enZona?foco.zona:(foco.rio.zona||'mundo'),rel=document.getElementById('relieve');/* franjas de altura: solo al acercarse (están recortadas a las vistas de los ríos) */
   if(rel){if(rel._z!==zr){rel._z=zr;rel.innerHTML=zr&&RELIEVE[zr]?RELIEVE[zr].map(([a,d])=>`<path class="a${a}" d="${d}"/>`).join(''):''}rel.setAttribute('stroke-width',f(1.2))}
@@ -470,10 +538,10 @@ function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa
       if(foco.actual===i)h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`});
     if(foco.halo){const q=proj(foco.halo);h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`}
     r.paradas.forEach((c,i)=>{if(!foco.etiquetas.has(i))return;const q=proj(c.pos),[x,y,an]=colocar(q,c.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(c.nombre)}</text>`})}
-  let barca=null;if(foco.rio&&foco.barca){const b=foco.barca;if(b.poly)barca={poly:b.poly.map(proj),t0:b.t0,t1:b.t1};else{const lo=Math.min(b.de,b.a),hi=Math.max(b.de,b.a);barca={poly:foco.rio.curso.slice(lo,hi+1).map(proj),t0:b.de<=b.a?0:1,t1:b.de<=b.a?1:0}}h+=`<path id="estela" class="estela" d="" stroke-width="${f(1.6)}" stroke-dasharray="${f(2)} ${f(3)}"/><g id="barca" class="barca${S.bamboleo?' duda':''}"><g class="mece"><g transform="scale(${px.toFixed(4)})">${glifo(foco.rio.vehiculo?foco.rio.vehiculo.tipo:'')}</g></g>${foco.rio.companero?`<g id="masc">${ANIMALES[foco.rio.companero.glifo]?`<g class="animal" transform="translate(-9 -9) scale(.6)">${ANIMALES[foco.rio.companero.glifo]}</g>`:`<text x="-13" y="-9" font-size="13" text-anchor="middle">${foco.rio.companero.emoji}</text>`}</g>`:''}</g>`;S.bamboleo=false}
+  let barca=null;if(foco.rio&&foco.barca){const b=foco.barca;if(b.poly)barca={poly:b.poly.map(proj),t0:b.t0,t1:b.t1};else{const lo=Math.min(b.de,b.a),hi=Math.max(b.de,b.a);barca={poly:foco.rio.curso.slice(lo,hi+1).map(proj),t0:b.de<=b.a?0:1,t1:b.de<=b.a?1:0}}const tv=foco.rio.vehiculo?foco.rio.vehiculo.tipo:'',tierra=!!TERRESTRES[tv];h+=`<path id="estela" class="estela${tierra?' huellas':''}" d="" stroke-width="${f(1.6)}" stroke-dasharray="${f(2)} ${f(3)}"/><g id="barca" class="barca${tierra?' tierra':''}${S.bamboleo?' duda':''}"><g class="mece"><g transform="scale(${px.toFixed(4)})">${tierra?'<g class="anda">':''}${glifo(tv)}${tierra?'</g>':''}</g></g>${foco.rio.companero?`<g id="masc">${ANIMALES[foco.rio.companero.glifo]?`<g class="animal" transform="translate(-9 -9) scale(.6)">${ANIMALES[foco.rio.companero.glifo]}</g>`:`<text x="-13" y="-9" font-size="13" text-anchor="middle">${foco.rio.companero.emoji}</text>`}</g>`:''}</g>`;S.bamboleo=false}
   const fr=document.getElementById('fronteras');fr.setAttribute('stroke-width',f(1));fr.setAttribute('stroke-dasharray',f(3)+' '+f(3));fr.style.display=foco.modo==='mundo'?'none':'';
   const bm=document.querySelector('.mundo');if(bm)bm.hidden=!enZona;
-  capa.innerHTML=h;if(barca)animarBarca(barca.poly,barca.t0,barca.t1,px);audio.ajustar(foco.frac!=null?foco.frac:0.45);ambiente(foco)}
+  capa.innerHTML=h;if(barca)animarBarca(barca.poly,barca.t0,barca.t1,px,!!(foco.rio.vehiculo&&TERRESTRES[foco.rio.vehiculo.tipo]));audio.ajustar(foco.frac!=null?foco.frac:0.45);ambiente(foco)}
 /* luz por avance (amanecer en la fuente, atardecer en el mar) y clima por evento (por icono, o `clima` explícito en el evento) */
 const CLIMA_ICONO={'🌫️':'niebla','🌪️':'arena','🌧️':'lluvia','🌊':'oleaje','🌬️':'oleaje','❄️':'niebla'};
 function ambiente(foco){const luz=document.getElementById('luz'),cl=document.getElementById('clima'),m=document.getElementById('mapa');if(!luz||!cl||!m)return;
@@ -484,6 +552,7 @@ function ambiente(foco){const luz=document.getElementById('luz'),cl=document.get
   cl.setAttribute('data-clima',c);m.setAttribute('data-mar',c==='oleaje'||(fr!=null&&fr>=0.85)?'vivo':'')}
 /* ---------- animales: un glifo SVG por especie (viewBox -14 -14 28 28, mirando a la derecha), en la paleta ---------- */
 const ANIMALES={
+dromedario:'<path class="cuerpo" d="M-11 2 Q-11 -4 -5 -5 Q-2 -9 2 -5 Q6 -5 7 -1 L7 3 L-11 3 Z"/><path class="cuerpo" d="M7 -1 L9 -8 L12 -9 L13 -7 L10 -6 L9 0 Z"/><circle class="oscuro" cx="11" cy="-7.5" r=".6"/><path class="pata" d="M-8 3 L-8 9 M-4 3 L-4 9 M2 3 L2 9 M5 3 L5 9"/><path class="rabo" d="M-11 0 L-13 5"/><path class="acento" d="M-6 -5 L1 -5 L0 -2 L-6 -2 Z"/>',
 hipo:'<ellipse class="cuerpo" cx="-2" cy="1" rx="9" ry="6"/><path class="cuerpo" d="M4 -3 Q12 -4 12 1 Q12 5 5 5 Z"/><circle class="cuerpo" cx="4" cy="-5" r="1.7"/><circle class="cuerpo" cx="8" cy="-5" r="1.7"/><circle class="oscuro" cx="7" cy="-1.5" r=".9"/><circle class="oscuro" cx="10.5" cy=".5" r=".7"/><path class="cuerpo" d="M-8 6h3v3h-3zM1 6h3v3h-3z"/>',
 delfin:'<path class="cuerpo" d="M-12 3 Q-8 -2 -2 -4 Q4 -6 12 -2 L9 0 Q4 3 -3 3 Q-7 3 -9 5 Z"/><path class="cuerpo" d="M-12 3 L-11 -1 L-8 2 Z"/><path class="cuerpo" d="M-1 -4 L1 -8 L4 -4 Z"/><circle class="oscuro" cx="6" cy="-2.5" r=".8"/>',
 marsopa:'<path class="cuerpo" d="M-12 2 Q-6 -4 0 -4 Q9 -4 12 0 Q9 3 0 3 Q-6 3 -9 5 Z"/><path class="cuerpo" d="M-12 2 L-12 -2 L-8 1 Z"/><path class="claro" d="M-4 3 Q2 4 8 2 Q2 2 -4 3 Z"/><circle class="oscuro" cx="8" cy="-1" r=".8"/>',
@@ -555,16 +624,18 @@ function glifo(t){/* vista lateral, proa a la derecha, origen en el centro del c
     case 'balsa':return '<path class="casco" d="M-10 -2.5 Q-11 -2.5 -11 -1.5 L-11 1.5 Q-11 2.5 -10 2.5 L10 2.5 Q11 2.5 11 1.5 L11 -1.5 Q11 -2.5 10 -2.5 Z"/><path class="linea" d="M-6 -2.5 L-6 2.5 M-2 -2.5 L-2 2.5 M2 -2.5 L2 2.5 M6 -2.5 L6 2.5" stroke-width=".6"/><path class="vela" d="M-2 -2.5 Q0 -6.5 3 -2.5 Z"/><path class="palo" d="M-5 -2.5 L-8 -8 M5 -2.5 L8 -8" stroke-width="1"/><path class="casco" d="M-9 -9 L-7 -7 L-8.5 -6.5 Z M9 -9 L7 -7 L8.5 -6.5 Z"/>';
     case 'canoa':return '<path class="casco" d="M-13 -1 Q-9 -3 0 -3 Q9 -3 13 -1 Q9 2 0 2.5 Q-9 2 -13 -1 Z"/><path class="palo" d="M2 -3 L2 -7 L10 -7 L10 -3 M1 -7 L11 -7" stroke-width=".8"/><circle class="fig" cx="-3" cy="-6" r="1.6"/><path class="palo" d="M-3 -4.4 L-3 -3 M-2 -7.5 L2 0" stroke-width="1"/>';
     case 'barcaza':return '<path class="casco" d="M-13 -1 L13 -1 L12 3 L-12 3 Z"/><path class="linea" d="M-5 -1 L-5 -2.5 L9 -2.5 L9 -1" stroke-width=".8"/><path class="vela" d="M-12 -1 L-12 -6 L-6 -6 L-6 -1 Z"/><path class="linea" d="M-10.5 -4.5 L-7.5 -4.5" stroke-width=".7"/><path class="palo" d="M11 -1 L11 -6" stroke-width=".8"/><path class="casco" d="M11 -6 L14 -5 L11 -4 Z"/>';
+    case 'caravana':return '<path class="casco" d="M-9 0 Q-10 -6 -4 -7 Q0 -11 4 -7 Q8 -7 8 -2 L8 0 Z"/><path class="casco" d="M8 -2 L10 -10 L13 -11 L14 -9 L11 -8 L10 0 Z"/><path class="palo" d="M-7 0 L-7 4 M-3 0 L-3 4 M2 0 L2 4 M6 0 L6 4" stroke-width="1"/><path class="vela" d="M-5 -10 L1 -10 L2 -7 L-6 -7 Z"/><path class="linea" d="M-2 -10 L-2 -7" stroke-width=".6"/><path class="palo" d="M-9 -1 L-12 3" stroke-width=".8"/>';
+    case 'pie':return '<circle class="fig" cx="0" cy="-10.5" r="2"/><path class="palo" d="M0 -8.5 L0 -2 M0 -2 L-3 4 M0 -2 L3 4 M0 -7 L4 -4 M0 -7 L-3 -2" stroke-width="1.2"/><path class="palo" d="M5 -13 L5 4" stroke-width=".9"/><path class="casco" d="M-4 -8 L-1 -9 L-1 -4 L-4 -3 Z"/>';
     default:return '<path class="casco" d="M-10 -1 Q-6 -3 0 -3 Q7 -3 11 -1 L9 3 L-8 3 Z"/><path class="palo" d="M0 -3 L0 -13" stroke-width="1"/><path class="vela" d="M-6 -12 L6 -12 Q7 -7 6 -3 L-6 -3 Q-7 -7 -6 -12 Z"/><path class="casco" d="M0 -13 L4 -12 L0 -11 Z"/>'}}
 let animB=null;
-function animarBarca(poly,t0,t1,px){const g=document.getElementById('barca'),m=document.getElementById('masc');if(!g)return;if(animB)cancelAnimationFrame(animB);
+function animarBarca(poly,t0,t1,px,tierra){const g=document.getElementById('barca'),m=document.getElementById('masc');if(!g)return;if(animB)cancelAnimationFrame(animB);
   const poner=p=>{let ang=p.ang,sx=1;if(Math.cos(ang*Math.PI/180)<0){ang=ang-180;sx=-1}g.setAttribute('transform',`translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${ang.toFixed(1)}) scale(${sx} 1)`);if(m)m.setAttribute('transform',`rotate(${(-ang*sx).toFixed(1)}) scale(${px.toFixed(4)})`)}/* derecho y mirando hacia adelante: se anula el giro, no el espejo */;
   if(poly.length<2){poner({x:poly[0][0],y:poly[0][1],ang:0});return}
   const L=[0];for(let i=1;i<poly.length;i++)L[i]=L[i-1]+Math.hypot(poly[i][0]-poly[i-1][0],poly[i][1]-poly[i-1][1]);const tot=L[L.length-1]||1;
   const pos=t=>{const s=t*tot;let i=1;while(i<L.length-1&&L[i]<s)i++;const a=poly[i-1],b=poly[i],u=(L[i]-L[i-1])?(s-L[i-1])/(L[i]-L[i-1]):0;return{x:a[0]+(b[0]-a[0])*u,y:a[1]+(b[1]-a[1])*u,ang:Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI,i}};
   const estela=document.getElementById('estela'),capa=document.getElementById('capa');
   const dibujarEstela=p=>{if(!estela)return;const pts=t1>=t0?poly.slice(0,p.i).concat([[p.x,p.y]]):[[p.x,p.y]].concat(poly.slice(p.i));estela.setAttribute('d','M'+pts.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join('L'))};
-  const salpicar=p=>{if(!capa||!capa.insertAdjacentHTML)return;capa.insertAdjacentHTML('beforeend',`<g class="salpicon" transform="translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) scale(${px.toFixed(4)})"><g class="sal"><circle r="4"/><circle cx="-5" cy="-2" r="1.5"/><circle cx="5" cy="-2" r="1.5"/><circle cy="-5" r="1.2"/></g></g>`);setTimeout(()=>{const s=capa.querySelector('.salpicon');if(s)s.remove()},1000)};
+  const salpicar=p=>{if(!capa||!capa.insertAdjacentHTML)return;capa.insertAdjacentHTML('beforeend',`<g class="salpicon${tierra?' polvo':''}" transform="translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) scale(${px.toFixed(4)})"><g class="sal"><circle r="4"/><circle cx="-5" cy="-2" r="1.5"/><circle cx="5" cy="-2" r="1.5"/><circle cy="-5" r="1.2"/></g></g>`);setTimeout(()=>{const s=capa.querySelector('.salpicon');if(s)s.remove()},1000)};
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(t0===t1||reduce){poner(pos(t1));return}
   const T=performance.now(),dur=1400;

@@ -1,6 +1,7 @@
 """Regenera src/data/relieve.js: franjas de altura del mapa, nombres de relieve y perfil de altura de cada recorrido.
 
-Uso: python tools/relieve.py     (requiere: pip install shapely numpy pillow matplotlib; descarga a tools/ne/ la primera vez)
+Uso: python tools/relieve.py [juego]   (juego: cauces, por defecto, o exploradores; requiere: pip install shapely numpy pillow matplotlib;
+descarga a tools/ne/ la primera vez). Para otro juego escribe src/data/relieve-<juego>.js; las rutas y sus vistas las da tools/rutas.py.
 
 Fuentes (todas públicas y citables):
 - Alturas del mundo: ETOPO1 (NOAA NCEI, 1 minuto de arco ≈ 1,8 km), servido por recortes desde el ImageServer de NCEI.
@@ -24,7 +25,8 @@ Qué produce:
   muestreado en cada vértice del curso (mínimo de una ventana de 3x3 celdas, para caer al fondo del valle), forzado a no
   subir río abajo y simplificado; los vértices de las paradas siempre se conservan, así altura(r, parada) es exacta.
 """
-import json,os,subprocess,urllib.request,urllib.parse,hashlib,time,math,sys
+import json,os,urllib.request,urllib.parse,hashlib,time,math,sys
+import rutas as RUTAS
 import numpy as np
 from PIL import Image
 from shapely.geometry import shape,box,Polygon,MultiPolygon,LineString,Point
@@ -98,8 +100,9 @@ def muestra(a,bbox,lat,lon):
     return float(a[max(i-1,0):i+2,max(j-1,0):j+2].min())
 
 # ---- ríos y rectángulos de vista (mismos que mapa.py / vbPara)
-rios_js=open(os.path.join(RAIZ,'src','data','rios.js'),encoding='utf8').read()
-RIOS=json.loads(subprocess.run(['node'],input=rios_js+";console.log(JSON.stringify(RIVERS.map(r=>({id:r.id,nombre:r.nombre,zona:r.zona||null,curso:r.curso,ciudades:r.ciudades.map(c=>({n:c.nombre,pos:c.pos}))}))))",capture_output=True,text=True,encoding='utf8').stdout)
+JUEGO=sys.argv[1] if len(sys.argv)>1 else 'cauces'
+RIOS=RUTAS.cargar(JUEGO)
+for r in RIOS: r['ciudades']=[{'n':n,'pos':p} for n,p in zip(r['nombres'],r['paradas'])]
 def rect_vista(pts,minW,margen,asp,extra):
     xs=[px(*p)[0] for p in pts];ys=[px(*p)[1] for p in pts]
     x0,x1,y0,y1=min(xs),max(xs),min(ys),max(ys);cx,cy=(x0+x1)/2,(y0+y1)/2
@@ -107,11 +110,13 @@ def rect_vista(pts,minW,margen,asp,extra):
     if w/h<asp: w=h*asp
     else: h=w/asp
     return box(cx-w/2-extra,cy-h/2-extra,cx+w/2+extra,cy+h/2+extra)
-VISTA={};NUCLEO={}   # por río: unión de sus rectángulos de vista (aspectos 1.0 y 2.4) y su intersección (lo que se ve con cualquier aspecto)
+VISTA={};NUCLEO={}   # por ruta: unión de sus rectángulos de vista (todos los aspectos) y núcleo (lo que se ve con cualquier aspecto); con cámara por tramo, una ventana por parada
 for r in RIOS:
-    pts=r['curso']+[c['pos'] for c in r['ciudades']]
-    rr=[rect_vista(pts,3 if r['zona'] else 20,1.3,asp,0.5 if r['zona'] else 3) for asp in ASPECTOS]
-    VISTA[r['id']]=unary_union(rr);NUCLEO[r['id']]=rr[0].intersection(rr[-1])
+    rr=[];nn=[]
+    for pts in RUTAS.vistas(r):
+        rv=[rect_vista(pts,3 if r['zona'] else 20,1.3,asp,0.5 if r['zona'] else 3) for asp in ASPECTOS]
+        rr+=rv;nn.append(rv[0].intersection(rv[-1]))
+    VISTA[r['id']]=unary_union(rr);NUCLEO[r['id']]=unary_union(nn)
 ZONAS=sorted({r['zona'] for r in RIOS if r['zona']})
 UNION={'mundo':unary_union([VISTA[r['id']] for r in RIOS if not r['zona']])}
 for z in ZONAS:
@@ -206,7 +211,7 @@ for reg in regiones:
         c=reg['g'].intersection(vista)
         if c.is_empty or c.area<1.5: continue
         curso=LineString([px(*p) for p in r['curso']]);w=vista.bounds[2]-vista.bounds[0]
-        if reg['s']>2 and c.distance(curso)>(0.04 if reg['s']>3 else 0.12)*w: continue
+        if (reg['s']>2 or r['camara']=='tramo') and c.distance(curso)>(0.04 if reg['s']>3 else 0.12)*w: continue   # con cámara por tramo, solo lo que queda cerca del camino
         cn=reg['g'].intersection(NUCLEO[r['id']])   # el ancla va en la parte visible con cualquier aspecto de pantalla, si la hay
         pt=(cn if cn.area>=1 else c).representative_point();v[r['id']]=(pt,c.area,giro(cn if cn.area>=1 else c))
     if v: NOMBRES.append({'n':reg['n'],'t':reg['t'],'s':reg['s'],'v':v})
@@ -241,14 +246,14 @@ def picos_osm():
             if n in (llano(p),'volcan '+llano(p),'cerro '+llano(p)) and ele.replace('.','',1).isdigit():
                 if p not in out or int(float(ele))>out[p][1]: out[p]=([round(e['lat'],3),round(e['lon'],3)],int(float(ele)))
     return out
-picos=picos_osm() or {}
+picos=(picos_osm() if 'cr' in ZONAS else None) or {}
 faltan=[p for p in PICOS_CR if p not in picos]
-if faltan: print('  picos sin nodo en OpenStreetMap, con posición de respaldo:',faltan)
-for p in PICOS_CR:
+if faltan and 'cr' in ZONAS: print('  picos sin nodo en OpenStreetMap, con posición de respaldo:',faltan)
+for p in (PICOS_CR if 'cr' in ZONAS else []):
     pos=(picos.get(p) or PICOS_ALTURA[p])[0];ele=PICOS_ALTURA[p][1]
     if p in picos and abs(picos[p][1]-ele)>25: print('  aviso: %s mide %d m en OpenStreetMap y %d m en la altura publicada que usa el juego'%(p,picos[p][1],ele))
     salida_nombres.append({'n':p,'t':'pico','z':'cr','p':pos,'e':ele})
-for n,t,pos,a in CR_NOMBRES: salida_nombres.append({'n':n,'t':t,'z':'cr','p':pos,**({'a':a} if a else {})})
+for n,t,pos,a in (CR_NOMBRES if 'cr' in ZONAS else []): salida_nombres.append({'n':n,'t':t,'z':'cr','p':pos,**({'a':a} if a else {})})
 
 # ---- perfiles de altura
 def dp(pts,tol):  # Douglas-Peucker sobre [(x,y)] normalizados
@@ -260,6 +265,7 @@ def dp(pts,tol):  # Douglas-Peucker sobre [(x,y)] normalizados
 ALTURAS={};PARADAS={}
 print('perfiles…')
 for r in RIOS:
+    if r['tipo']!='rio': continue   # el perfil de altura es de los ríos; los viajes llevan línea de tiempo
     z=r['zona'] or 'mundo';pts=r['curso'];m=0.05 if r['zona'] else 0.3
     la=[p[0] for p in pts];lo=[p[1] for p in pts];bb=(min(lo)-m,min(la)-m,max(lo)+m,max(la)+m)
     res=RES_PERFIL[z];W=min(int((bb[2]-bb[0])/res),6000);H=max(int(W*(bb[3]-bb[1])/(bb[2]-bb[0])),8)
@@ -292,7 +298,7 @@ cab='// Generado por tools/relieve.py: no editar a mano. Alturas de ETOPO1 y del
 rel='const RELIEVE={'+','.join(f'{z}:['+','.join(f'[{u},"{d}"]' for u,d in RELIEVE[z])+']' for z in RELIEVE)+'};\n'
 nom='const NOMBRES_RELIEVE='+js(salida_nombres)+';\n'
 per='const ALTURAS={'+','.join(f'{k}:'+js(v) for k,v in ALTURAS.items())+'};\n'
-open(os.path.join(RAIZ,'src','data','relieve.js'),'w',encoding='utf8').write(cab+rel+nom+per)
-print('relieve.js: franjas %d KB (%s), nombres %d KB (%d etiquetas), perfiles %d KB'%(len(rel)//1024,', '.join('%s %d KB'%(z,sum(len(d) for u,d in RELIEVE[z])//1024) for z in RELIEVE),len(nom)//1024,len(salida_nombres),len(per)//1024))
+open(os.path.join(RAIZ,'src','data','relieve'+RUTAS.sufijo(JUEGO)+'.js'),'w',encoding='utf8').write(cab+rel+nom+per)
+print('relieve'+RUTAS.sufijo(JUEGO)+'.js: franjas %d KB (%s), nombres %d KB (%d etiquetas), perfiles %d KB'%(len(rel)//1024,', '.join('%s %d KB'%(z,sum(len(d) for u,d in RELIEVE[z])//1024) for z in RELIEVE),len(nom)//1024,len(salida_nombres),len(per)//1024))
 for r in RIOS:
     if not r['zona']: print('  %-10s %2d nombres: %s'%(r['id'],sum(1 for x in salida_nombres if x.get('v') and r['id'] in x['v']),', '.join(x['n'] for x in salida_nombres if x.get('v') and r['id'] in x['v'])))

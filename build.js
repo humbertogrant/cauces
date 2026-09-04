@@ -3,7 +3,8 @@
 const fs=require('fs'),path=require('path');
 const src=p=>fs.readFileSync(path.join(__dirname,'src',p),'utf8');
 const JUEGOS={
-  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js']}
+  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js']},
+  exploradores:{titulo:'Exploradores: los grandes viajes, etapa por etapa',archivos:['data/mapa-exploradores.js','data/itinerarios.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js']}
 };
 fs.mkdirSync(path.join(__dirname,'dist'),{recursive:true});
 for(const [id,j] of Object.entries(JUEGOS)){

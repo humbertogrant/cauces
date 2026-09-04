@@ -11,7 +11,7 @@ const VOCES={
   resultado:["¡Sos capitán de este río!","¡Bien! Un par de viajes más y sos capitán.","Bajemos el río otra vez; yo te acompaño."]
 };
 const RANGOS=[[500,"Señor de los Cauces"],[250,"Almirante"],[100,"Capitán"],[30,"Marinero"],[0,"Grumete"]];
-const rango=t=>RANGOS.find(x=>t>=x[0])[1];
+const rango=t=>((typeof JUEGO!=='undefined'&&JUEGO.rangos)||RANGOS).find(x=>t>=x[0])[1];
 Object.assign(VOCES,{
   compra:["{g}: buena compra.","Cargado. Ahora a venderlo río abajo.","{g} en la bodega. ¿Cuánto valdrá más adelante?"],
   venta:["¡{n} monedas! Buen negocio.","Vendido por {n}. Yo ya lo sabía.","{n} monedas a la bolsa."],
