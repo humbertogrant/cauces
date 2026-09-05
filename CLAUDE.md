@@ -58,6 +58,7 @@ test/arnes.js        DOM simulado y carga de los archivos de un juego; test/prue
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap
 tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js) desde Natural Earth (110/50 m; 10 m en las cuencas de zona; shapely)
 tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo)
+tools/safari.js      prueba en WebKit (motor de Safari) con Playwright, por http y file://; ver el encabezado del archivo
 tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de paso a mano (geodésicas cada 80 km)
 tools/relieve.py     regenera src/data/relieve.js: alturas de NOAA NCEI (ETOPO1 y mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
@@ -321,6 +322,9 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
   `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español.
 - Textos para niño: frases cortas, concretas, sin sarcasmo; el animal nunca regaña.
 - Accesibilidad mínima: botones reales, `aria-label` en iconos, `prefers-reduced-motion` respetado.
+- iPhone: un `.html` copiado al aparato se abre en la vista previa de Archivos (Quick Look), que no ejecuta JavaScript y
+  muestra solo el fondo; no es un fallo del juego (WebKit lo corre sin errores por http y por file://, `tools/safari.js`).
+  Para iPhone hay que servirlo desde un hosting estático (GitHub Pages, Netlify) o desde una app que sirva HTML local.
 - Móvil (revisado el 2026-09-04 a 375×812, 360×640 y 812×375): nada desborda a lo ancho, toques de 36 px o más, campo de
   texto de 17 px (sin zoom en iPhone). Reglas en cabeza.html: con ancho ≤ 480 px el mapa baja a 34vh (el bloque pegajoso
   queda en ~55 % del alto); con alto ≤ 520 px (teléfono en horizontal) `#arriba` deja de ser pegajoso. En el panel de vista
