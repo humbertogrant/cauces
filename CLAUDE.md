@@ -321,3 +321,7 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
   `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español.
 - Textos para niño: frases cortas, concretas, sin sarcasmo; el animal nunca regaña.
 - Accesibilidad mínima: botones reales, `aria-label` en iconos, `prefers-reduced-motion` respetado.
+- Móvil (revisado el 2026-09-04 a 375×812, 360×640 y 812×375): nada desborda a lo ancho, toques de 36 px o más, campo de
+  texto de 17 px (sin zoom en iPhone). Reglas en cabeza.html: con ancho ≤ 480 px el mapa baja a 34vh (el bloque pegajoso
+  queda en ~55 % del alto); con alto ≤ 520 px (teléfono en horizontal) `#arriba` deja de ser pegajoso. En el panel de vista
+  previa las transiciones CSS no avanzan: para medir alturas hay que poner `transition:none`.
