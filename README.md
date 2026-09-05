@@ -4,7 +4,10 @@ Juego de un solo archivo para aprender los grandes ríos del mundo: se baja cada
 ciudad por ciudad, con acrósticos, imágenes mnemónicas, una barca sobre el cauce real, un animal guía que habla,
 un mercado, eventos entre puertos y repaso espaciado.
 
-- Jugar: abrir `dist/cauces.html` en cualquier navegador. Basta un doble clic: no necesita servidor, instalación
+- Dos juegos con el mismo motor: `dist/cauces.html` (los grandes ríos) y `dist/exploradores.html` (los grandes viajes,
+  etapa por etapa; el primero es el de Ibn Battuta, 1325-1354, con caravana, dromedaria, morral de trueque y línea de tiempo).
+  Cada uno guarda su progreso aparte.
+- Jugar: abrir `dist/cauces.html` (o `dist/exploradores.html`) en cualquier navegador. Basta un doble clic: no necesita servidor, instalación
   ni red (solo baja las fuentes de Google la primera vez; sin red usa las del sistema) y no llama a ningún
   servicio. Para el teléfono, copiar ese único archivo al aparato o subirlo a cualquier hosting estático.
 - Ríos: trece grandes ríos del mundo y un paquete de Costa Rica (Tempisque, Reventazón, Sarapiquí, San Juan,

@@ -59,9 +59,9 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Nankín · dato: El Tratado de Nankín (1842) abrió China al comercio británico tras la guerra del opio.
 - Shanghái · dato: Puerto de contenedores más grande del mundo; el Bund colonial mira a los rascacielos de Pudong al otro lado del agua.
 - Chongqing · puerto (Historia): Cargás sal de los pozos de Zigong y pimienta de Sichuan; la sal de pozo fue durante siglos el monopolio que financiaba al imperio.
-- Yichang · puerto (Historia): Bajás por las esclusas de las Tres Gargantas; hasta hace un siglo aquí se contrataban los sirgadores que subían los juncos a pulso.
+- Yichang · puerto (Historia): Bajás por las esclusas de las Tres Gargantas; hasta hace un siglo aquí se contrataban los sirgadores que subían los juncos a pulso. ⚠
 - Tun en Wuhan: Un puente enorme, el primero que cruzó este río.
-- Evento · Las Tres Gargantas: Hasta hace un siglo, cientos de sirgadores subían los juncos a pulso por aquí.
+- Evento · Las Tres Gargantas: Hasta hace un siglo, cientos de sirgadores subían los juncos a pulso por aquí. ⚠
 - Evento · El primer puente: Hasta 1957 ningún puente cruzaba el Yangtsé: los trenes pasaban en ferry. ⚠
 - Evento · El primer puente: El puente de Wuhan fue el primero, con dos pisos, uno para el tren y otro para los carros.
 
@@ -185,7 +185,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 
 - Ruta antigua: Mesopotamia, «entre ríos», es donde Sumer inventó la escritura (Uruk, hacia 3300 a. C.), la rueda y la ciudad.
 - Ruta antigua: En 762 el califa Al-Mansur fundó Bagdad, la ciudad redonda: en el siglo IX era la mayor del mundo y en su Casa de la Sabiduría se tradujo a Aristóteles.
-- Ruta antigua: En 1258 los mongoles la saquearon y, dice la leyenda, el Tigris corrió negro de tinta.
+- Ruta antigua: En 1258 los mongoles la saquearon y, dice la leyenda, el Tigris corrió negro de tinta. ⚠
 - Ruta moderna: Las presas turcas del proyecto GAP (Ilısu, 2020) reducen el caudal que llega a Irak, y la presa de Mosul, construida sobre yeso soluble, es considerada la más peligrosa del mundo. ⚠
 - Ruta moderna: Basora exporta la mayor parte del petróleo iraquí por el Shatt al-Arab.
 - Pista antigua: Una ciudad redonda fundada en 762 en su orilla fue la mayor del mundo; siglos después una biblioteca entera terminó en sus aguas.
@@ -196,7 +196,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Tikrit · dato: Ciudad natal del sultán que reconquistó Jerusalén (1187) y del dictador que gobernó Irak (1979-2003). ⚠
 - Samarra · imagen: Un minarete en espiral como cono de helado: la Malwiya de Samarra, capital abasí del siglo IX.
 - Samarra · dato: Capital del califato entre 836 y 892.
-- Bagdad · imagen: Una ciudad redonda con una biblioteca gigante en el centro, y luego el río teñido de tinta: Bagdad, 762 y 1258.
+- Bagdad · imagen: Una ciudad redonda con una biblioteca gigante en el centro, y luego el río teñido de tinta: Bagdad, 762 y 1258. ⚠
 - Bagdad · dato: A 35 km, el arco de Ctesifonte, capital sasánida, sigue en pie.
 - Basora · dato: Fundada en 636 como campamento del ejército árabe.
 - Diyarbakır · puerto (Historia): Cargás sandías gigantes, las que aquí crecen de hasta 50 kilos, y lingotes de cobre de las minas de Ergani. ⚠
@@ -376,6 +376,39 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Palmar · dato: Palmar Norte y Palmar Sur, a los dos lados del río, nacieron con las fincas bananeras de 1938. ⚠
 - Palmar · dato: En Finca 6 se ven esferas de piedra en el lugar donde las dejaron sus creadores, Patrimonio de la Humanidad desde 2014. ⚠
 - Ciudad Cortés · dato: Cabecera del cantón de Osa; río abajo se abre el manglar de Térraba-Sierpe, el más grande del país. ⚠
+
+# Exploradores
+
+Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. El trazo del mapa es ilustrativo (puntos de paso a mano en tools/itinerarios.py); lo verificable son las etapas, sus fechas y los textos.
+
+## Ibn Battuta (1325-1354, de Tánger a Fez)
+
+- Partida: Salió de Tánger, en Marruecos, en 1325, a los 21 años, para peregrinar a La Meca.
+- Partida: Tardó 24 años en volver a casa y siguió viajando después: se calcula que recorrió unos 120 000 km, más que ningún otro viajero antes de la era de los barcos de vapor. ⚠
+- El mundo que vio: De Marruecos a China, un viajero musulmán del siglo XIV encontraba en cada ciudad gente que hablaba árabe, hospedaje para peregrinos y sultanes que pagaban a un letrado por servir de juez.
+- Lo que queda: Su relato, la Rihla, dictado en Fez en 1355, es la mejor fuente que existe sobre muchas de esas ciudades en el siglo XIV. ⚠
+- Lo que queda · pista: Un relato dictado al volver a casa que hoy es la mejor fuente sobre medio mundo en aquel siglo.
+- El Cairo · fecha: 1326 ⚠
+- El Cairo · dato: Con los sultanes mamelucos, El Cairo era la ciudad más grande del mundo islámico; Ibn Battuta la llama «madre de ciudades». ⚠
+- El Cairo · dato: Llegó en 1326, en su primer año de viaje, y desde aquí siguió a Damasco y a La Meca.
+- La Meca · fecha: 1326 ⚠
+- La Meca · dato: Aquí hizo su primer hach, la peregrinación, en 1326: era el motivo del viaje.
+- Bagdad · fecha: 1327 ⚠
+- Bagdad · dato: Setenta años antes, en 1258, los mongoles habían arrasado Bagdad. ⚠
+- Kilwa · fecha: 1331 ⚠
+- Constantinopla · fecha: hacia 1332 ⚠
+- Constantinopla · imagen: Una princesa lo lleva de la mano por una ciudad de cúpulas y murallas, y él va contando campanas: era la primera gran ciudad cristiana que veía.
+- Delhi · fecha: 1334 ⚠
+- Delhi · dato: El sultán Muhammad ibn Tughluq lo nombró cadí, es decir juez, y en 1341 lo mandó como embajador a China. ⚠
+- Malé · fecha: 1344 ⚠
+- Malé · dato: Fue cadí en las islas cerca de un año, entre 1343 y 1344, y se casó allí.
+- Quanzhou · fecha: hacia 1346 ⚠
+- Tombuctú · fecha: 1353 ⚠
+- Tombuctú · dato: Volvió a Fez en 1354 y en 1355 dictó su relato, la Rihla. ⚠
+- Llegada: Veintinueve años y unos 120 000 km después, la caravana entra en Fez. ⚠
+- Llegada: Ahí, en 1355, dicta la Rihla. ⚠
+- Evento · El naufragio: Cerca de Calicut, en 1341, los barcos que llevaban los regalos del sultán de Delhi para el emperador de China se hunden en una tormenta. ⚠
+- Evento · La peste negra: De regreso, en 1348, la peste negra recorre Siria y Egipto. ⚠
 
 ## Relieve: alturas (m) que muestra el juego
 

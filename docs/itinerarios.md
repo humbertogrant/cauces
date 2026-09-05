@@ -1,5 +1,14 @@
 # De Cauces a rutas: diagnóstico y propuesta (fase 1)
 
+> **Estado (2026-09-04, noche): fases 2 y 3 hechas.** Decisiones de Humberto: viajeros y conquista, para niños y adultos;
+> repositorio git abierto; los nombres internos (`rioPor`, `abrirRio`) quedan como alias; relieve en Exploradores desde
+> el principio; cámara por tramo para los viajes largos. Lo hecho: `RUTAS`, `desdeRio`, `normalizar`, `VOCAB`
+> (rio e itinerario), `JUEGO` por juego, `voces.js`, `build.js` con dos objetivos, instantánea de 200 pantallas,
+> `itinerarios.js` con Ibn Battuta (9 etapas), `tools/rutas.py`, `tools/itinerarios.py`, mapa y relieve por juego,
+> preguntas `fin`/`fecha`/`orden`, línea de tiempo, cámara por tramo, glifos de caravana y caminante, viento,
+> `casos-exploradores.js` y `verificacion.md` con el itinerario. Pendiente: `VOCAB.derrota`, cortes en la animación,
+> antimeridiano (secciones 3 y 4.4). CLAUDE.md es la referencia viva; este documento queda como diseño y memoria.
+
 Estado de partida (2026-09-04): `npm test` termina en TODO OK y `npm run build` deja `dist/cauces.html` en 460 KB.
 Este documento es solo lectura del código: no se tocó el motor. Responde a `instruccion-itinerarios.md` con tres
 salvedades, porque son decisiones ya tomadas que la instrucción no conocía:

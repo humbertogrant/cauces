@@ -73,5 +73,5 @@ def path_pol(g,dec=1):
 def path_lin(g,dec=1):
     return ''.join('M'+'L'.join(f'{x:.{dec}f} {y:.{dec}f}' for x,y in l.coords) for l in lineas(g))
 LAND=path_pol(land)+path_pol(land10,3); LAGOS=path_pol(lagos)+path_pol(lagos10,3); BORDES=path_lin(bordes)+path_lin(bordes10,3)
-open(os.path.join(RAIZ,'src','data','mapa'+RUTAS.sufijo(JUEGO)+'.js'),'w',encoding='utf8').write(f'const LAND="{LAND}";const LAGOS="{LAGOS}";const BORDES="{BORDES}";\n')
+open(os.path.join(RAIZ,'src','data','mapa'+RUTAS.sufijo(JUEGO)+'.js'),'w',encoding='utf8',newline='\n').write(f'const LAND="{LAND}";const LAGOS="{LAGOS}";const BORDES="{BORDES}";\n')
 print(f'mapa{RUTAS.sufijo(JUEGO)}.js: costa {len(LAND)//1024} KB (10 m: {len(path_pol(land10,3))//1024} KB), lagos {len(LAGOS)//1024} KB, fronteras {len(BORDES)//1024} KB')

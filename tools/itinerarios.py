@@ -52,4 +52,4 @@ for rid,puntos in PUNTOS.items():
     s=s[:m.start()]+m.group(1)+'['+txt+']'+s[m.end():]
     saltos=max(hav(a,b) for a,b in zip(t,t[1:]));km=sum(hav(a,b) for a,b in zip(t,t[1:]))
     print('%s: %d vértices, salto máximo %.0f km, largo del dibujo %.0f km, pasa por %s'%(rid,len(t),saltos,km,', '.join(nombres)))
-open(p,'w',encoding='utf8').write(s)
+open(p,'w',encoding='utf8',newline='\n').write(s)

@@ -6,6 +6,12 @@ guía, un mercado de trueque y repaso espaciado (Leitner). Dos audiencias, con u
 hijos (Niño, por defecto: mercader, textos plegados, voz que lee sola) y Humberto (Adulto: historia completa y carga
 fija). El animal acompaña igual en los dos modos. Idioma: español de Costa Rica, voseo, sin jerga sin explicar.
 
+Desde el 2026-09-04 el motor juega **rutas** de paradas (tipo `rio`, `derrota` o `itinerario`; ver `docs/itinerarios.md`)
+y hay un segundo juego con el mismo motor y la misma identidad: **Exploradores** (`dist/exploradores.html`), viajes de
+exploradores y conquistadores etapa por etapa, para niños y adultos. El primer itinerario es Ibn Battuta (1325-1354).
+Los ríos se convierten al esquema de ruta al cargar (`desdeRio`); ningún texto de Cauces cambió con la migración y una
+instantánea de 200 pantallas (`test/instantanea.js`) lo vigila.
+
 ## Principios (no negociables)
 
 1. **Memoria primero.** Nada divertido ocurre sin recordar algo. Cada capa nueva (eventos, voz, sellos) tiene que
@@ -33,24 +39,62 @@ src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por p
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
 src/data/eventos.js  EVENTOS: pruebas entre puertos por río (tramo, reto, textos)
+src/data/voces.js    VOCES (frases genéricas del compañero), RANGOS y voces de la economía: compartidos por los dos juegos
+src/data/itinerarios.js  ITINERARIOS: rutas de Exploradores ya en el esquema RUTA; el trazo lo genera tools/itinerarios.py
+src/data/mapa-exploradores.js, relieve-exploradores.js  mapa y relieve de Exploradores (mapa.py y relieve.py con el juego como argumento)
+src/juegos/cauces.js, src/juegos/exploradores.js  JUEGO: nombre, subtítulo, tipo de ruta, clave de guardado, zonas, grupos de la lista, portada, rangos
 src/data/relieve.js  RELIEVE (franjas de altura por vista), NOMBRES_RELIEVE (cordilleras, mesetas, desiertos, volcanes) y ALTURAS
                      (perfil de altura de cada cauce); lo genera tools/relieve.py
 src/motor.js         todo el motor: estado, perfiles y guardado, Leitner, preguntas, render, mapa, audio, economía, eventos, voz
-build.js             ensambla dist/cauces.html en el orden de arriba
-test/pruebas.js      arnés con DOM simulado; test/casos.js son los casos. `npm test` debe terminar en "TODO OK"
+build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores), cada uno con sus datos, su src/juegos/<id>.js y el motor
+test/arnes.js        DOM simulado y carga de los archivos de un juego; test/pruebas.js [juego] corre test/casos.js (Cauces) o
+                     test/casos-exploradores.js; test/instantanea.js compara 200 pantallas de Cauces con test/instantanea.json.gz.
+                     `npm test` corre los tres y debe terminar en "TODO OK" dos veces e "INSTANTÁNEA OK"
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap
-tools/mapa.py        regenera src/data/mapa.js desde Natural Earth (110/50 m; 10 m en las cuencas de zona; shapely)
+tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js) desde Natural Earth (110/50 m; 10 m en las cuencas de zona; shapely)
+tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo)
+tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de paso a mano (geodésicas cada 80 km)
 tools/relieve.py     regenera src/data/relieve.js: alturas de NOAA NCEI (ETOPO1 y mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
 ```
 
-Comandos: `npm run build`, `npm test`, `npm run verificacion`, `npm run mapa`, `npm run cauces`, `npm run relieve` (los de Python
+Comandos: `npm run build`, `npm test`, `npm run instantanea` (vuelve a tomar la instantánea; solo cuando un cambio de texto de Cauces es
+a propósito), `npm run verificacion`, `npm run mapa`, `npm run cauces`, `npm run relieve`, `npm run itinerarios`; para Exploradores,
+`python tools/mapa.py exploradores` y `python tools/relieve.py exploradores` (los de Python
 descargan Natural Earth a `tools/ne/` la primera vez; en Windows no hay `python3`: correrlos como
 `python tools/….py`). Antes de dar por terminado un
 cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador (o `python3 -m http.server`).
 
 ## Cómo está hecho el motor
 
+- Rutas: el motor no sabe de ríos, sabe de rutas (`RUTAS`, `rutaPor`; `rioPor`, `abrirRio`, `S.rio`, `focoRio` son alias:
+  «rio» en un identificador quiere decir «ruta»). `JUEGO.rutas()` entrega las rutas: en Cauces, `RIVERS.map(desdeRio)`,
+  que sobre el mismo objeto del río agrega `region`, `inicio {nombre, nota, escena}`, `fin {nombre, en, escena}`,
+  `contexto [{clave, titulo, texto, pista}]`, `trazo [[…]]`, `ramas`, `paradas` (= `ciudades`), `vehiculo` (= NAVES),
+  `companero` (= MASCOTAS, con `fin` = `mar`), `carga` (= MERCADOS), `eventos`, `perfil` (= ALTURAS); los nombres
+  viejos quedan como alias para rios.js y las pruebas. `normalizar(r)` calcula `acum`, `kmPoly`, `idx` y `km` de cada
+  parada, `cortes` (dónde empieza cada segmento del trazo), el mercader fantasma, el vocabulario efectivo y `pref`
+  (prefijo de tarjetas: `rio:` para ríos, por el progreso guardado; `ruta:` para lo demás).
+- Vocabulario: `VOCAB[tipo]` (rio | itinerario; derrota pendiente) tiene todas las palabras y frases que cambian con el
+  tipo de ruta (inicio/fin, parada/etapa, bodega/morral, Zarpar/Seguir, Descender/Viajar, kickers, preguntas, cabeceras,
+  voces del compañero que nombran el río) y cada ruta puede sobreescribir claves con `vocab`. `r.vocab` es el efectivo;
+  `VJ()` da el del juego para pantallas sin ruta; `VZ()` da las voces del compañero de la ruta abierta (`VOCES` más
+  `vocab.voces`). Las cadenas de `VOCAB.rio` son, letra por letra, las que Cauces tenía antes.
+- Juego (`JUEGO`, de src/juegos/<id>.js, cargado antes del motor): `id`, `nombre`, `sub`, `tipo` (vocabulario por
+  defecto), `clave` (prefijo de localStorage: en `file://` los dos juegos comparten el almacenamiento), `zonas`,
+  `rutas()`, `grupos` de la lista y del pasaporte (`titulo`, `filtro`, `nota`, `antes`, `clase`), `rangos` y
+  `comoSeJuega`. `progresoJSON.app` lleva el id del juego.
+- Preguntas por tipo: `tiposDisponibles(r)`; con menos de cuatro rutas en el juego no hay distractores de otras rutas,
+  así que `ciudad`, `frase` y las de contexto no se ofrecen y entran `orden` (cuatro secuencias, una verdadera) y
+  `fecha` (¿en qué año llegó a…?). `fin` (alias `mar`) toma etapas del mismo viaje como distractores si hace falta.
+  Los tipos de contexto se llaman como la `clave` de cada capa (`antigua`/`moderna` en ríos, `entonces`/`hoy` en Ibn
+  Battuta) y son a la vez claves de tarjeta.
+- Mapa por tipo: `trazoTramo` dibuja el trazo por segmentos (`cortes`); `camara:'tramo'` encuadra en Descender la
+  ventana de la parada anterior a la siguiente (`ventana(r)`), pensada para viajes de medio mundo; los vehículos
+  terrestres (`TERRESTRES`: caravana, pie) van sin balanceo, con `.anda`, huellas en vez de estela y polvo en vez de
+  salpicón; el sonido pasa a viento (`audio.modo`). La franja bajo el mapa es el perfil de altura si la ruta tiene
+  `perfil` y una línea de tiempo (`tiempoSVG`) si tiene fechas. Pendiente: partir la animación del vehículo en los
+  cortes y el antimeridiano (`lon0` + `<use>` de la tierra), diseñados en docs/itinerarios.md.
 - Estado en dos objetos: `S` (sesión: pantalla, río, pestaña, paso, orden, quiz, eco, guías, recitar, evento) y `P`
   (persistente: `cards` Leitner, `vistos`, `tesoro`, `modo`, `voz`, `sellos`). `P` se guarda con `guardar()` en `localStorage`
   bajo `cauces:progreso:<perfil>` (memoria si no hay o falla). `PERFILES` (`cauces:perfiles`: lista y activo) da
@@ -173,6 +217,13 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
 
 ## Esquema de datos
 
+RUTA (lo que el motor lee; docs/itinerarios.md trae el esquema completo con ejemplo): `id, tipo, nombre, region, zona?,
+longitud?, inicio {nombre, nota, escena, fecha?}, fin {nombre, en, escena, fecha?}, contexto [dos capas {clave, titulo,
+texto, pista}], frase, fraseNota?, trazo [segmentos de [lat,lon]], ramas?, paradas [{nombre, pais, pos, imagen, dato,
+escena, fecha?}], vehiculo {nombre, tipo, desc, zarpe, llegada, puertos}, companero {nombre, especie, emoji, glifo,
+hola, fin, paradas}, carga [bienes], eventos [], perfil?, camara?, vocab?`. Los itinerarios se escriben así directamente
+(`itinerarios.js`); los ríos siguen en su esquema de siempre y `desdeRio` los convierte.
+
 RIVERS[]: `id, nombre, continente (o región, en los ríos de zona), zona? ('cr'), longitud (km), mar (etiqueta), marEn (con artículo), nace, naceNota, antigua,
 moderna, pistaAntigua (sin nombres propios), pistaModerna, frase ("[M]i [S]obrino…": corchetes = iniciales),
 fraseNota?, curso [[lat,lon]…] de la fuente al mar, brazos? [[[lat,lon]…]], ciudades [{nombre, pais, pos:[lat,lon],
@@ -215,20 +266,44 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
    cubiertas por la costa fina, `npm run relieve` (franjas, nombres y perfil del río nuevo; revisar las alturas
    que imprime), `npm run verificacion` y revisar las líneas nuevas.
 
+### Para agregar un itinerario (o una derrota)
+
+1. Objeto en `src/data/itinerarios.js` en el esquema RUTA: `tipo:'itinerario'`, `region` (los años), `inicio` y `fin`
+   con `fecha`, dos capas de `contexto` con `clave`, `titulo`, `texto` y `pista` sin nombres propios, 8-10 `paradas`
+   en orden cronológico con `pos` verificada, `fecha` («hacia 1332» si el relato no la fija), `imagen`, `dato` y
+   `escena`; acróstico con las iniciales; `vehiculo` (`tipo` caravana, pie o uno náutico) con `puertos` por etapa;
+   `companero` (animal real del viaje, `glifo` en `ANIMALES`); `carga` (el morral: algo que cambiar en cada etapa
+   salvo la última); uno o dos `eventos`. `camara:'tramo'` si el viaje es largo. Donde el relato es discutido, el
+   dato lo dice («según su relato», «los historiadores dudan»).
+2. Puntos de paso en `PUNTOS` de `tools/itinerarios.py` (con las paradas nombradas) y `npm run itinerarios`: cada
+   parada debe quedar como vértice y en orden.
+3. `python tools/mapa.py exploradores` y `python tools/relieve.py exploradores` (cubren las ventanas de la cámara por
+   tramo), `node test/pruebas.js exploradores`, `npm run build`, `npm run verificacion` y revisar las líneas nuevas.
+4. Una derrota (ruta marítima) va igual con `tipo:'derrota'`; falta definir `VOCAB.derrota` (propuesta en
+   docs/itinerarios.md, sección 3) y, si cruza 180°, el antimeridiano.
+
 ## Pendientes, en orden de valor
 
-1. Inmersión, lo que queda de la evaluación del 2026-09-04: retos sobre el mapa («tocá dónde queda…», que pagan
+1. Exploradores: más viajes (Marco Polo, Zheng He, Elcano como derrota, Humboldt) y rutas de conquista (Alejandro,
+   Cortés, Napoleón, Gengis Kan), aprobadas para niños y adultos; con cuatro o más rutas vuelven las preguntas de
+   «¿en qué viaje…?», frase y contexto. Con cada viaje, revisar las líneas nuevas de docs/verificacion.md.
+2. Motor de rutas, lo que falta: `VOCAB.derrota`; partir la animación del vehículo en los `cortes`; antimeridiano
+   (`lon0` y `<use>` de la tierra); pulir la línea de tiempo cuando dos etapas caen en el mismo año.
+3. Inmersión, lo que queda de la evaluación del 2026-09-04: retos sobre el mapa («tocá dónde queda…», que pagan
    memoria espacial) y paisaje sonoro por tramo sintetizado. (La bitácora imprimible se descartó.)
-2. Más ríos de Costa Rica: Pacuare y Sixaola están en Natural Earth 10 m Norteamérica (`capa:'ne10na'`) pero casi
+4. Más ríos de Costa Rica: Pacuare y Sixaola están en Natural Earth 10 m Norteamérica (`capa:'ne10na'`) pero casi
    no tienen pueblos a la orilla (Tres Equis y la barra; Suretka, Bribri y Sixaola): habría que armar paradas con
    sitios (rápidos, reservas, puentes) y verificarlos. Los demás ríos saldrían de OpenStreetMap ampliando `OSM_Q`.
-3. Más eventos: hoy hay 40, dos por río salvo el Danubio y el Níger (tres). Cada uno con un hecho real detrás.
+5. Más eventos: hoy hay 40, dos por río salvo el Danubio y el Níger (tres). Cada uno con un hecho real detrás.
 
 
 ## Reglas de trabajo
 
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
-- Mantener `dist/cauces.html` por debajo de ~500 KB (tope subido de 400 a 500 el 2026-09-04 para el relieve; hoy ≈ 460 KB).
+- Mantener cada `dist/*.html` por debajo de ~500 KB (tope subido de 400 a 500 el 2026-09-04 para el relieve; hoy Cauces ≈ 477 KB y
+  Exploradores ≈ 315 KB).
+- Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,
+  `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español.
 - Textos para niño: frases cortas, concretas, sin sarcasmo; el animal nunca regaña.
 - Accesibilidad mínima: botones reales, `aria-label` en iconos, `prefers-reduced-motion` respetado.

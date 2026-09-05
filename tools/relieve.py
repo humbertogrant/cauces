@@ -298,7 +298,7 @@ cab='// Generado por tools/relieve.py: no editar a mano. Alturas de ETOPO1 y del
 rel='const RELIEVE={'+','.join(f'{z}:['+','.join(f'[{u},"{d}"]' for u,d in RELIEVE[z])+']' for z in RELIEVE)+'};\n'
 nom='const NOMBRES_RELIEVE='+js(salida_nombres)+';\n'
 per='const ALTURAS={'+','.join(f'{k}:'+js(v) for k,v in ALTURAS.items())+'};\n'
-open(os.path.join(RAIZ,'src','data','relieve'+RUTAS.sufijo(JUEGO)+'.js'),'w',encoding='utf8').write(cab+rel+nom+per)
+open(os.path.join(RAIZ,'src','data','relieve'+RUTAS.sufijo(JUEGO)+'.js'),'w',encoding='utf8',newline='\n').write(cab+rel+nom+per)
 print('relieve'+RUTAS.sufijo(JUEGO)+'.js: franjas %d KB (%s), nombres %d KB (%d etiquetas), perfiles %d KB'%(len(rel)//1024,', '.join('%s %d KB'%(z,sum(len(d) for u,d in RELIEVE[z])//1024) for z in RELIEVE),len(nom)//1024,len(salida_nombres),len(per)//1024))
 for r in RIOS:
     if not r['zona']: print('  %-10s %2d nombres: %s'%(r['id'],sum(1 for x in salida_nombres if x.get('v') and r['id'] in x['v']),', '.join(x['n'] for x in salida_nombres if x.get('v') and r['id'] in x['v'])))
