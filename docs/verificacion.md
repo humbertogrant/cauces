@@ -276,6 +276,35 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Bulán en Sukkur: Cerca hay ruinas de hace 4 500 años.
 - Evento · El monzón de 2010: En 2010 las lluvias del monzón desbordaron el Indo y una quinta parte de Pakistán quedó bajo el agua. ⚠
 
+## Congo (4 700 km hasta el Atlántico)
+
+- Nacimiento: Nace como Lualaba en la meseta de Katanga, en el sureste del Congo, a unos 1 400 m; su fuente más lejana es el Chambeshi, en Zambia. ⚠
+- Nacimiento: Con unos 4 700 km es el segundo río de África, el segundo del mundo por caudal y el más profundo: pasa de 200 m en algunos tramos. ⚠
+- Ruta antigua: El reino del Kongo, en la desembocadura, ya tenía rey y capital cuando el portugués Diogo Cão llegó al estuario en 1482 y plantó un padrón de piedra; el reino se hizo cristiano y sus reyes se cartearon con Lisboa.
+- Ruta antigua: Nadie en Europa supo de dónde venía el río hasta que Stanley lo bajó entero entre 1874 y 1877, en un viaje de 999 días desde Zanzíbar hasta Boma. ⚠
+- Ruta antigua: Después el rey Leopoldo II de Bélgica se quedó con la cuenca como propiedad privada, el Estado Libre del Congo (1885-1908): el trabajo forzado del caucho costó millones de vidas, según la mayoría de los cálculos, y su denuncia fue una de las primeras campañas mundiales por los derechos humanos. ⚠
+- Ruta moderna: Las presas de Inga (1972 y 1982), en las cataratas Livingstone, dan luz a las minas de Katanga, y el proyecto Gran Inga sería la central más grande del mundo, pero lleva décadas en planos.
+- Pista antigua: Un navegante lo encontró desde el mar hace cinco siglos, un explorador lo bajó entero en tres años y un rey europeo convirtió su cuenca en finca privada.
+- Bukama · dato: Puerto del alto Lualaba, donde el río se vuelve navegable, y estación del tren que sube al cobre de Katanga: en el siglo XX la «vía nacional» del Congo alternaba tren y barco para sacar el cobre hasta el Atlántico.
+- Bukama · dato: Alrededor está la depresión de Upemba, con decenas de lagos y un parque nacional desde 1939. ⚠
+- Kindu · dato: Capital de la provincia de Maniema y puerto del tramo navegable que llega hasta Ubundu, unos 300 km río abajo; de ahí, desde 1906, un tren de 125 km rodea las siete cataratas Boyoma hasta Kisangani.
+- Kisangani · imagen: Un pescador le tira un beso (Kis-angani) a la catarata mientras cuelga trampas de madera sobre el torrente: así pescan los wagenia desde hace siglos.
+- Kisangani · dato: Nació en 1883 como estación de Stanley junto a las cataratas Boyoma: siete saltos en cien kilómetros por los que pasa más agua que por ninguna otra catarata del mundo. ⚠
+- Kisangani · dato: Aquí el Lualaba pasa a llamarse Congo y empieza el tramo navegable de 1 700 km hasta Kinshasa. ⚠
+- Mbandaka · dato: Fundada por Stanley en 1883 como Équateur, porque la línea del ecuador pasa por aquí: el Congo es el único gran río que cruza el ecuador dos veces.
+- Mbandaka · dato: Frente a la ciudad mide hasta quince kilómetros de ancho, lleno de islas, y recibe al Ruki; el jardín botánico de Eala, de 1900, está a la salida. ⚠
+- Kinshasa · dato: Kinshasa y Brazzaville son las capitales más cercanas del mundo: se ven a través del Pool Malebo, un ensanche del río de 35 km. ⚠
+- Kinshasa · dato: Kinshasa, la Léopoldville de 1881, pasa de 15 millones de habitantes y es la mayor ciudad de habla francesa; en 1974 recibió la pelea de Ali y Foreman.
+- Kinshasa · dato: Río abajo empiezan las cataratas Livingstone: 350 km de rápidos que ningún barco pasa.
+- Matadi · dato: Puerto de mar del Congo, a 150 km del Atlántico, hasta donde suben los barcos grandes; desde 1898 el tren a Kinshasa rodea las cataratas.
+- Matadi · dato: Su puente colgante (1983) es el más largo de África, con 722 m de vano. ⚠
+- Matadi · dato: Cerca, en la roca de Yelala, Diogo Cão grabó su nombre en 1485. ⚠
+- Boma · dato: Capital del Estado Libre del Congo y del Congo Belga entre 1886 y 1923, cuando la capital pasó a Léopoldville.
+- Boma · dato: Río abajo, en Banana, el Congo entra al Atlántico y sigue bajo el mar por un cañón de 800 km. ⚠
+- Evento · Las cataratas Boyoma: Desde 1906 un tren de 125 km las rodea, de Ubundu a Kisangani; hay que saber adónde sigue el río para no perder el tren.
+- Evento · Las cataratas Livingstone: Entre Kinshasa y Matadi el río baja 270 m en 350 km de rápidos, treinta y dos saltos donde Stanley perdió a varios compañeros en 1877.
+- Evento · Las cataratas Livingstone: El tren de 1898 los rodea; la barcaza se queda en el Pool.
+
 ## Tempisque (144 km hasta el golfo de Nicoya)
 
 - Nacimiento: Es el río principal de la provincia; su longitud suele darse en unos 144 km. ⚠
@@ -528,19 +557,20 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 
 Altura del cauce en cada parada, muestreada del mosaico DEM global de NOAA NCEI sobre el vértice del cauce (no es la altura del pueblo: Juan Viñas está a 1 160 m y el río pasa a 860). Se regenera con `python tools/relieve.py`; contrastar con alturas publicadas. ⚠ = revisar.
 
-- Nilo: fuente 1157 m → Jinja 1157 m · Juba 456 m · Jartum 374 m · Asuán 107 m · Luxor 76 m · El Cairo 20 m → mar 0 m ⚠
-- Amazonas: fuente 4505 m → Iquitos 82 m · Leticia 62 m · Manaos 12 m · Santarém 4 m · Belém 0 m → mar 0 m ⚠
-- Yangtsé: fuente 4954 m → Chongqing 204 m · Yichang 67 m · Wuhan 21 m · Nankín 3 m · Shanghái 0 m → mar 0 m ⚠
-- Misisipi: fuente 456 m → Mineápolis 252 m · San Luis 124 m · Memphis 65 m · Baton Rouge 0 m · Nueva Orleans 0 m → mar 0 m ⚠
-- Danubio: fuente 724 m → Ulm 482 m · Ratisbona 341 m · Passau 307 m · Linz 262 m · Viena 161 m · Bratislava 136 m · Budapest 105 m · Belgrado 70 m → mar 0 m ⚠
-- Rin: fuente 1791 m → Basilea 241 m · Estrasburgo 135 m · Maguncia 85 m · Coblenza 73 m · Colonia 43 m · Duisburgo 26 m · Rotterdam 0 m → mar 0 m ⚠
-- Ganges: fuente 3567 m → Haridwar 287 m · Kanpur 113 m · Prayagraj 80 m · Benarés 72 m · Patna 47 m · Calcuta 4 m → mar 0 m ⚠
-- Volga: fuente 213 m → Tver 131 m · Yaroslavl 93 m · Nizhni Nóvgorod 69 m · Kazán 50 m · Samara 29 m · Volgogrado -10 m · Astracán -24 m → mar -28 m ⚠
-- Tigris: fuente 787 m → Diyarbakır 604 m · Mosul 216 m · Tikrit 88 m · Samarra 64 m · Bagdad 34 m · Basora 1 m → mar 0 m ⚠
-- Mekong: fuente 4623 m → Jinghong 558 m · Luang Prabang 317 m · Vientián 168 m · Phnom Penh 5 m · Can Tho 0 m → mar 0 m ⚠
-- Níger: fuente 540 m → Bamako 325 m · Mopti 265 m · Tombuctú 259 m · Gao 247 m · Niamey 185 m · Lokoja 40 m · Port Harcourt 6 m → mar 0 m ⚠
-- Paraná: fuente 327 m → Foz do Iguaçu 152 m · Encarnación 81 m · Corrientes 45 m · Rosario 6 m · Buenos Aires 0 m · Montevideo 0 m → mar 0 m ⚠
-- Indo: fuente 5190 m → Leh 3232 m · Skardu 2194 m · Attock 280 m · Sukkur 60 m · Hyderabad 19 m · Karachi 0 m → mar 0 m ⚠
+- Nilo: fuente 1149 m → Jinja 1149 m · Juba 457 m · Jartum 373 m · Asuán 106 m · Luxor 75 m · El Cairo 21 m → mar 0 m ⚠
+- Amazonas: fuente 4527 m → Iquitos 83 m · Leticia 64 m · Manaos 11 m · Santarém 4 m · Belém 0 m → mar 0 m ⚠
+- Yangtsé: fuente 4939 m → Chongqing 193 m · Yichang 56 m · Wuhan 18 m · Nankín 2 m · Shanghái 0 m → mar 0 m ⚠
+- Misisipi: fuente 452 m → Mineápolis 255 m · San Luis 124 m · Memphis 64 m · Baton Rouge 1 m · Nueva Orleans 0 m → mar 0 m ⚠
+- Danubio: fuente 689 m → Ulm 474 m · Ratisbona 337 m · Passau 306 m · Linz 258 m · Viena 161 m · Bratislava 139 m · Budapest 105 m · Belgrado 70 m → mar 0 m ⚠
+- Rin: fuente 1522 m → Basilea 244 m · Estrasburgo 138 m · Maguncia 85 m · Coblenza 69 m · Colonia 43 m · Duisburgo 26 m · Rotterdam 0 m → mar 0 m ⚠
+- Ganges: fuente 3389 m → Haridwar 301 m · Kanpur 113 m · Prayagraj 80 m · Benarés 67 m · Patna 44 m · Calcuta 3 m → mar 0 m ⚠
+- Volga: fuente 210 m → Tver 132 m · Yaroslavl 84 m · Nizhni Nóvgorod 64 m · Kazán 47 m · Samara 29 m · Volgogrado -11 m · Astracán -24 m → mar -28 m ⚠
+- Tigris: fuente 754 m → Diyarbakır 591 m · Mosul 218 m · Tikrit 86 m · Samarra 61 m · Bagdad 34 m · Basora 0 m → mar 0 m ⚠
+- Mekong: fuente 4625 m → Jinghong 551 m · Luang Prabang 308 m · Vientián 167 m · Phnom Penh 3 m · Can Tho 0 m → mar 0 m ⚠
+- Níger: fuente 766 m → Bamako 318 m · Mopti 265 m · Tombuctú 258 m · Gao 248 m · Niamey 183 m · Lokoja 38 m · Port Harcourt 5 m → mar 0 m ⚠
+- Paraná: fuente 325 m → Foz do Iguaçu 141 m · Encarnación 80 m · Corrientes 44 m · Rosario 5 m · Buenos Aires 0 m · Montevideo 0 m → mar 0 m ⚠
+- Indo: fuente 5155 m → Leh 3208 m · Skardu 2191 m · Attock 276 m · Sukkur 59 m · Hyderabad 19 m · Karachi 0 m → mar 0 m ⚠
+- Congo: fuente 1410 m → Bukama 580 m · Kindu 451 m · Kisangani 387 m · Mbandaka 302 m · Kinshasa 268 m · Matadi 90 m · Boma 8 m → mar 0 m ⚠
 - Tempisque: fuente 69 m → Liberia 57 m · Guardia 30 m · Filadelfia 17 m · Bolsón 5 m · Puerto Humo 3 m → mar 0 m ⚠
 - Reventazón: fuente 2181 m → Orosi 1056 m · Cachí 990 m · Juan Viñas 863 m · Turrialba 555 m · Siquirres 91 m · Parismina 3 m → mar 0 m ⚠
 - Sarapiquí: fuente 1756 m → San Miguel 438 m · La Virgen 183 m · Chilamate 79 m · Puerto Viejo 38 m · Trinidad 0 m → mar 0 m ⚠

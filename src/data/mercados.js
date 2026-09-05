@@ -12,6 +12,7 @@ mekong:[{n:"té pu'er",e:"🍵",o:0,b:4},{n:"seda",e:"🧵",o:1,b:4},{n:"mangos"
 niger:[{n:"oro",e:"🪙",o:0,b:5,m:2},{n:"pescado",e:"🐟",o:1,b:2,d:2},{n:"sal",e:"🧂",o:2,b:3},{n:"manuscrito",e:"📜",o:2,b:4},{n:"telas índigo",e:"🧵",o:3,b:3},{n:"cacahuate",e:"🥜",o:4,b:2},{n:"aceite de palma",e:"🫙",o:5,b:3}],
 parana:[{n:"yerba mate",e:"🧉",o:0,b:3,m:4},{n:"naranjas",e:"🍊",o:1,b:2,d:2},{n:"algodón",e:"☁️",o:2,b:3},{n:"soya",e:"🫘",o:3,b:3},{n:"carne",e:"🥩",o:4,b:4,d:1}],
 indo:[{n:"pashmina",e:"🧣",o:0,b:5},{n:"albaricoques",e:"🍑",o:1,b:2},{n:"almendras",e:"🌰",o:2,b:3},{n:"dátiles",e:"🌴",o:3,b:3},{n:"ajrak",e:"🧵",o:4,b:4}],
+congo:[{n:"cobre",e:"🟠",o:0,b:4,m:5},{n:"arroz",e:"🍚",o:1,b:2},{n:"madera",e:"🪵",o:1,b:3},{n:"pescado ahumado",e:"🐟",o:2,b:2,d:2},{n:"aceite de palma",e:"🫙",o:3,b:3},{n:"mandioca",e:"🥔",o:3,b:2,d:3},{n:"café",e:"☕",o:4,b:3,m:6},{n:"plátanos",e:"🍌",o:4,b:2,d:2},{n:"sal",e:"🧂",o:5,b:2}],
 tempisque:[{n:"cueros",e:"🐂",o:0,b:3,m:4},{n:"queso",e:"🧀",o:1,b:2,d:3},{n:"marañón",e:"🌰",o:2,b:3,m:4},{n:"maíz",e:"🌽",o:3,b:2}],
 reventazon:[{n:"café",e:"☕",o:0,b:3,m:4},{n:"tallas",e:"🪵",o:1,b:2},{n:"tapa de dulce",e:"🍯",o:2,b:2,m:5},{n:"queso",e:"🧀",o:3,b:3,d:2},{n:"bananos",e:"🍌",o:4,b:2,d:2}],
 sarapiqui:[{n:"queso",e:"🧀",o:0,b:2,d:3},{n:"palmito",e:"🥬",o:1,b:3,m:3},{n:"piñas",e:"🍍",o:2,b:2,d:2},{n:"cacao",e:"🍫",o:3,b:3}],

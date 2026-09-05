@@ -45,7 +45,7 @@ DEC={'mundo':1,'cr':3}
 SIMPL={'mundo':(0.75,4),'cr':(0.02,0.02)}          # (tolerancia, área mínima) en unidades del mapa
 RES_MUNDO=(2000,800); BB_MUNDO=(-180,-60,180,84)   # ETOPO1 a ~0,18° para las franjas del mundo
 RES_CR=0.003                                        # grados por celda para las franjas de Costa Rica (~330 m)
-RES_PERFIL={'mundo':0.03,'cr':0.0007}               # grados por celda para muestrear los perfiles
+RES_PERFIL={'mundo':0.015,'cr':0.0007}               # grados por celda para muestrear los perfiles
 CLASES={'Range/mtn':'cordillera','Plateau':'llano','Plain':'llano','Basin':'llano','Valley':'llano','Lowland':'llano','Tundra':'llano','Wetlands':'llano','Foothills':'llano','Desert':'desierto'}
 RANGO_MAX={'cordillera':4,'llano':2,'desierto':3}   # scalerank de Natural Earth admitido por tipo (las cordilleras de rango 4 solo pegadas al cauce)
 BAJO_MAR={'volga':-28}                              # ríos que terminan bajo el nivel del océano (Caspio); los demás no bajan de 0
