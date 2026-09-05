@@ -9,7 +9,9 @@ un mercado, eventos entre puertos y repaso espaciado.
   ejército, un animal de guía, una carga de trueque y una línea de tiempo bajo el mapa). Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
 - Jugar: abrir `dist/cauces.html` (o `dist/exploradores.html`) en cualquier navegador. Basta un doble clic: no necesita servidor, instalación
   ni red (solo baja las fuentes de Google la primera vez; sin red usa las del sistema) y no llama a ningún
-  servicio. Para el teléfono, copiar ese único archivo al aparato o subirlo a cualquier hosting estático.
+  servicio. En Android basta copiar el archivo al aparato y abrirlo con el navegador. En iPhone, no: la app Archivos (y el
+  adjunto de correo o WhatsApp) solo muestra una vista previa sin JavaScript, y se ve el fondo vacío; hay que subir el archivo a
+  cualquier hosting estático (GitHub Pages, Netlify) y abrir esa dirección en Safari, o usar una app que sirva HTML local.
 - Ríos: quince grandes ríos del mundo, con el Congo y el Huang He recién llegados, y un paquete de Costa Rica (Tempisque, Reventazón, Sarapiquí, San Juan,
   Tárcoles y Térraba) con su historia económica; en el mapa mundial, el punto dorado sobre Costa Rica abre esa zona.
 - Escenas: cada ciudad, cada fuente y cada desembocadura tienen su postal, compuesta con pictogramas de lo que
