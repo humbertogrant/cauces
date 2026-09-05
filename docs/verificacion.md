@@ -49,7 +49,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Ruta moderna: La presa de las Tres Gargantas (Yichang, terminada en 2012) es la central hidroeléctrica más grande del mundo y desplazó a 1,3 millones de personas. ⚠
 - Ruta moderna: El delta, con Shanghái a la cabeza, produce cerca de un cuarto del PIB de China, y Chongqing, río arriba, es una de las ciudades más pobladas del planeta. ⚠
 - Pista antigua: Una batalla naval con barcos incendiados en el año 208 partió un imperio en tres reinos.
-- Pista moderna: La central hidroeléctrica más grande del mundo desplazó a más de un millón de personas en sus orillas.
+- Pista moderna: La central hidroeléctrica más grande del mundo desplazó a más de un millón de personas en sus orillas. ⚠
 - Chongqing · dato: Fue la capital de China durante la guerra contra Japón (1937-1945); su municipio tiene más de 30 millones de habitantes. ⚠
 - Yichang · imagen: El río choca contra un muro de 2,3 km y hace «¡chan!»: en Yichang está la presa de las Tres Gargantas.
 - Yichang · dato: La presa produce más de 100 TWh al año y sus esclusas dejan subir barcos de 10 000 toneladas hasta Chongqing. ⚠
@@ -79,7 +79,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Memphis · dato: Beale Street, Sun Records, Graceland; Martin Luther King fue asesinado aquí en 1968.
 - Nueva Orleans · dato: Fundada por Francia en 1718, española de 1763 a 1800, comprada por Estados Unidos en 1803.
 - Nueva Orleans · dato: Katrina (2005) rompió los diques; el delta se hunde y pierde tierra cada año.
-- Mineápolis · puerto (Historia): Cargás sacos de harina de los molinos de las cataratas de San Antonio: hacia 1880 Mineápolis molía más trigo que ninguna otra ciudad del mundo.
+- Mineápolis · puerto (Historia): Cargás sacos de harina de los molinos de las cataratas de San Antonio: hacia 1880 Mineápolis molía más trigo que ninguna otra ciudad del mundo. ⚠
 - Memphis · puerto (Historia): Vendés las pieles y cargás algodón en pacas de más de 200 kilos: Memphis fue el mayor mercado de algodón al contado del mundo. ⚠
 - Croac en San Luis: Y aquí entra el Misuri, que es más largo que nosotros.
 - Evento · La gran crecida de 1927: En 1927 el río se salió de madre y cubrió unos 70 000 km²: pueblos enteros bajo el agua y cientos de miles de personas sin casa. ⚠
@@ -409,6 +409,120 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Llegada: Ahí, en 1355, dicta la Rihla. ⚠
 - Evento · El naufragio: Cerca de Calicut, en 1341, los barcos que llevaban los regalos del sultán de Delhi para el emperador de China se hunden en una tormenta. ⚠
 - Evento · La peste negra: De regreso, en 1348, la peste negra recorre Siria y Egipto. ⚠
+
+## Marco Polo (1271-1295, de Venecia a Venecia)
+
+- Partida: Salió de Venecia en 1271, a los 17 años, con su padre Niccolò y su tío Maffeo, mercaderes que ya habían estado en la corte de Kublai Kan. ⚠
+- Partida: Tardó 24 años en volver; el libro de sus viajes, dictado en una cárcel de Génova en 1298, fue durante siglos la descripción de Asia más leída en Europa. ⚠
+- Lo que queda: Las ruinas de Shangdu, la capital de verano de Kublai, son Patrimonio de la Humanidad desde 2012. ⚠
+- Lo que queda: Algunos historiadores dudan de que llegara a China, porque no menciona la muralla ni el té; la mayoría cree que sí estuvo.
+- Lo que queda · pista: Un libro tan famoso que un navegante lo llevó anotado siglos después, y una ciudad de verano en ruinas.
+- Acre · fecha: 1271 ⚠
+- Acre · dato: Acre era en 1271 la capital de lo que quedaba de los Estados cruzados; cayó en 1291.
+- Ormuz · fecha: 1272 ⚠
+- Ormuz · dato: Volvió a pasar por aquí en 1294, de regreso.
+- Kashgar · fecha: hacia 1274 ⚠
+- Shangdu · fecha: 1275 ⚠
+- Shangdu · dato: Capital de verano de Kublai, al norte de la Gran Muralla; aquí llegaron en 1275, tres años y medio después de salir de Venecia. ⚠
+- Shangdu · dato: Su descripción del palacio inspiró siglos después el poema «Kubla Khan» de Coleridge. ⚠
+- Pekín · fecha: 1275 ⚠
+- Hangzhou · fecha: hacia 1285 ⚠
+- Hangzhou · dato: Había sido la capital de la dinastía Song hasta 1276.
+- Sumatra · fecha: 1292 ⚠
+- Ceilán · fecha: 1293 ⚠
+- Trebisonda · fecha: 1295 ⚠
+- Trebisonda · dato: De aquí siguieron a Constantinopla y a Venecia, adonde llegaron en 1295 y, cuenta la leyenda, nadie los reconoció. ⚠
+
+## Alejandro Magno (334-323 a. C., de Pela a Babilonia)
+
+- Partida: Salió de Pela, la capital de Macedonia, en la primavera del 334 a. C., a los 22 años, con unos 40 000 soldados, para conquistar el Imperio persa. ⚠
+- El mundo que vio: El Imperio persa era el más grande que había existido: de Egipto a la India, con caminos reales, sátrapas y tesoros enormes.
+- El mundo que vio · pista: El imperio más grande que había existido, con caminos reales y tesoros, cayó en tres batallas ante un ejército mucho más chico.
+- Lo que queda: Después de él, el griego se habló de Egipto a la India durante siglos, y las ciudades que fundó siguen ahí: Alejandría es la primera.
+- Lo que queda · pista: Una lengua hablada desde el Nilo hasta el Indo durante siglos y una ciudad fundada por él que todavía lleva su nombre.
+- Gordio · fecha: 333 a. C. ⚠
+- Issos · fecha: 333 a. C. ⚠
+- Issos · dato: En la llanura de Issos, entre las montañas y el mar, Alejandro venció a Darío III en el 333 a. C.
+- Tiro · fecha: 332 a. C. ⚠
+- Alejandría · fecha: 331 a. C. ⚠
+- Alejandría · dato: La fundó en el 331 a. C. en la costa de Egipto, donde lo habían recibido como libertador y como faraón.
+- Alejandría · dato: Fue la primera de muchas Alejandrías y llegó a ser la ciudad más grande del Mediterráneo, con su faro y su biblioteca.
+- Gaugamela · fecha: 331 a. C. ⚠
+- Gaugamela · dato: La batalla decisiva, el 1 de octubre del 331 a. C., cerca de Mosul.
+- Persépolis · fecha: 330 a. C. ⚠
+- Persépolis · dato: Alejandro la ocupó en el 330 a. C. y, meses después, su palacio ardió tras un banquete; si fue venganza por Atenas o un accidente, todavía se discute.
+- Samarcanda · fecha: 329 a. C. ⚠
+- Hidaspes · fecha: 326 a. C. ⚠
+- Hidaspes · dato: A orillas del río Hidaspes, hoy Jhelum, venció al rey Poros y a sus elefantes en el 326 a. C., en plena lluvia del monzón.
+- Vehículo: Unos 40 000 soldados: la falange a pie, con sarisas de seis metros, y la caballería de los Compañeros, con Alejandro al frente.
+- Llegada: Once años y más de 30 000 km después, el camino termina en Babilonia, en junio del 323 a. C. ⚠
+- Evento · El dique de Tiro: Alejandro manda construir un dique de piedra desde la costa; los tirios lo queman con un barco en llamas y los macedonios lo vuelven a levantar, más ancho.
+
+## Hernán Cortés (1519-1521, de Santiago de Cuba a Tenochtitlan)
+
+- Partida: Salió de Cuba en febrero de 1519 con once naves, unos 500 soldados, 16 caballos y unos cañones, contra la orden del gobernador Velázquez, que a última hora quiso quitarle el mando.
+- Partida: Dos años y medio después, Tenochtitlan, la ciudad más grande de América, había caído.
+- El mundo que vio: Los mexicas gobernaban desde Tenochtitlan, una ciudad de más de 150 000 personas construida sobre un lago, y cobraban tributo a decenas de pueblos que no los querían. ⚠
+- El mundo que vio: Y la viruela, que llegó con los españoles en 1520, mató a más gente que las batallas.
+- Lo que queda: La Ciudad de México está sobre el lago seco y sobre las ruinas de Tenochtitlan: el Templo Mayor apareció junto a la catedral en 1978. ⚠
+- Lo que queda: En 2021, a los 500 años, México discutió si conmemorar la caída o la resistencia; la palabra «conquista» sigue en debate.
+- Cozumel · fecha: 1519 ⚠
+- Cozumel · imagen: Una cosa que muele (Cozu-mel) tortillas en una isla, y un náufrago español que llevaba ocho años entre mayas aparece hablando su lengua: Jerónimo de Aguilar, el primer traductor.
+- Cozumel · dato: Primera escala en tierra maya, en febrero de 1519.
+- Cozumel · dato: Aquí recogieron a Jerónimo de Aguilar, náufrago de 1511 que hablaba maya; con Malintzin, que hablaba maya y náhuatl, formó la cadena de traducción de toda la expedición.
+- Tabasco · fecha: 1519 ⚠
+- Tabasco · imagen: Una tabla de surf con sombrero (Tabas-co) donde por primera vez los caballos entran en batalla, y los mayas creen que caballo y jinete son un solo animal.
+- Tabasco · dato: En la batalla de Centla, en marzo de 1519, los mayas chontales vieron caballos por primera vez.
+- Veracruz · fecha: 1519 ⚠
+- Veracruz · dato: Cortés desembarcó en abril de 1519 y fundó la Villa Rica de la Vera Cruz; el nuevo cabildo lo nombró capitán, con lo que se libró de la autoridad del gobernador de Cuba. ⚠
+- Veracruz · dato: Aquí recibió a los primeros embajadores de Moctezuma con regalos de oro.
+- Cempoala · fecha: 1519 ⚠
+- Cempoala · dato: Ciudad totonaca, la primera aliada de Cortés: su cacique se quejó del tributo mexica y Cortés apresó a los recaudadores.
+- Tlaxcala · fecha: 1519 ⚠
+- Tlaxcala · imagen: Tlaxcala es una taza (Tlax-cala) que primero te tira y después te invita a comer: pelearon dos semanas y luego se hicieron aliados para siempre.
+- Tlaxcala · dato: Los tlaxcaltecas, enemigos de los mexicas, combatieron a los españoles en septiembre de 1519 y después pactaron con ellos.
+- Cholula · fecha: 1519 ⚠
+- Cholula · imagen: La pirámide más grande del mundo con una iglesia encima y un chorro de lula (Cho-lula): aquí la expedición mató a cientos de personas en la plaza, un día de octubre.
+- Cholula · dato: Ciudad sagrada con la pirámide más grande del mundo por volumen, hoy con una iglesia en la cima.
+- Cholula · dato: En octubre de 1519, diciendo que preparaban una emboscada, los españoles y sus aliados mataron a cientos de cholultecas en la plaza; las fuentes discuten si la emboscada era real.
+- Tenochtitlan · fecha: 1519 ⚠
+- Tenochtitlan · imagen: Una ciudad flotante con calles de agua y un emperador que baja de su litera para saludar a un extranjero en un puente: el 8 de noviembre, Moctezuma y Cortés se dieron collares.
+- Tenochtitlan · dato: El 8 de noviembre de 1519 Moctezuma recibió a Cortés en la calzada de Iztapalapa.
+- Otumba · fecha: 1520 ⚠
+- Otumba · dato: La noche del 30 de junio de 1520, la Noche Triste, los españoles escaparon de Tenochtitlan con cientos de muertos.
+- Otumba · dato: El 7 de julio, en la llanura de Otumba, vencieron al ejército que los perseguía y llegaron a Tlaxcala a rehacerse.
+- Texcoco · fecha: 1521 ⚠
+- Texcoco · dato: Cortés instaló aquí su base en 1521, en la orilla del lago.
+- Texcoco · dato: Tenochtitlan cayó el 13 de agosto de 1521, cuando Cuauhtémoc, el último tlatoani, fue capturado.
+- Rabona en Tabasco: Mi primera batalla.
+
+## Zheng He (1405-1433, de Nankín a Nankín)
+
+- Partida: La flota del tesoro zarpó de Nankín, la capital de los Ming, en 1405, al mando de Zheng He, un eunuco musulmán de Yunnan que había sido capturado de niño.
+- Partida: En 28 años hizo siete viajes por el océano Índico; el emperador Yongle quería que todos los reinos del mar conocieran el poder de China.
+- El mundo que vio: Fue la armada más grande del mundo hasta el siglo XX.
+- Lo que queda: En 1433, con el último viaje, la corte mandó parar: los barcos se pudrieron en los astilleros y China dejó el mar justo cuando Portugal empezaba a bajar por África.
+- Champa · fecha: 1405 ⚠
+- Champa · imagen: Un champú (Cham-pa) de madera de aloe que huele a incienso en una costa de torres de ladrillo: la primera escala de todos los viajes.
+- Champa · dato: Era la primera escala de la flota, a unos diez días de China, y vendía madera de aloe, incienso y marfil. ⚠
+- Java · fecha: 1406 ⚠
+- Java · imagen: Una taza de café (Java) tan grande que dentro caben 170 marineros: en Java, en una guerra ajena, la flota perdió tripulantes y cobró una indemnización en oro. ⚠
+- Java · dato: En 1406 la flota llegó a Java en medio de una guerra entre dos reyes; 170 hombres de Zheng He murieron por error y el rey de Majapahit tuvo que pagar una indemnización a China. ⚠
+- Malaca · fecha: hacia 1406 ⚠
+- Malaca · dato: Zheng He instaló aquí un almacén fortificado para la flota y llevó a su rey a Nankín en 1411; con la protección china, Malaca se volvió el gran mercado del Asia del sur.
+- Calicut · fecha: 1407 ⚠
+- Calicut · dato: Zheng He murió, según muchos, en el viaje de vuelta desde aquí, en 1433.
+- Palembang · fecha: 1407 ⚠
+- Palembang · dato: En 1407, de regreso del primer viaje, Zheng He lo derrotó en batalla, lo llevó preso a Nankín y dejó el puerto en manos de un aliado; fue la primera batalla de la flota.
+- Adén · fecha: hacia 1418 ⚠
+- Adén · dato: La flota llegó en su quinto viaje, hacia 1418, y el sultán mandó regalos al emperador; los chinos compraron piedras preciosas, ámbar gris y animales raros.
+- Mogadiscio · fecha: hacia 1418 ⚠
+- Malindi · fecha: hacia 1418 ⚠
+- Malindi · dato: De aquí salió en 1415 una embajada con una jirafa para el emperador Yongle, que la recibió como un qilin, animal de buen augurio de las leyendas chinas; un pintor de la corte la retrató.
+- Vehículo: Las crónicas cuentan unas 300 naves y 27 000 hombres en el primer viaje; el tamaño exacto de los barcos grandes se discute.
+- Salida: Zarpás de Nankín con la flota más grande que ha visto el mar.
+- Llegada: Siete viajes en 28 años.
+- Llegada: En 1433 la corte manda parar y los barcos del tesoro se quedan en el puerto, hasta pudrirse.
 
 ## Relieve: alturas (m) que muestra el juego
 

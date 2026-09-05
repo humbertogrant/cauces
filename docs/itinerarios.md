@@ -6,8 +6,10 @@
 > (rio e itinerario), `JUEGO` por juego, `voces.js`, `build.js` con dos objetivos, instantánea de 200 pantallas,
 > `itinerarios.js` con Ibn Battuta (9 etapas), `tools/rutas.py`, `tools/itinerarios.py`, mapa y relieve por juego,
 > preguntas `fin`/`fecha`/`orden`, línea de tiempo, cámara por tramo, glifos de caravana y caminante, viento,
-> `casos-exploradores.js` y `verificacion.md` con el itinerario. Pendiente: `VOCAB.derrota`, cortes en la animación,
-> antimeridiano (secciones 3 y 4.4). CLAUDE.md es la referencia viva; este documento queda como diseño y memoria.
+> `casos-exploradores.js` y `verificacion.md` con el itinerario. Después entraron Marco Polo, Alejandro Magno, Hernán Cortés
+> y Zheng He (tipo `travesia`, la «derrota» de este documento), con lo que volvieron las preguntas de viaje, frase y contexto.
+> Pendiente: cortes en la animación, antimeridiano (sección 4.4). CLAUDE.md es la referencia viva; este documento queda como
+> diseño y memoria.
 
 Estado de partida (2026-09-04): `npm test` termina en TODO OK y `npm run build` deja `dist/cauces.html` en 460 KB.
 Este documento es solo lectura del código: no se tocó el motor. Responde a `instruccion-itinerarios.md` con tres

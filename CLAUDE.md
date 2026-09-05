@@ -10,7 +10,9 @@ Desde el 2026-09-04 el motor juega **rutas** de paradas (tipo `rio`, `derrota` o
 y hay un segundo juego con el mismo motor y la misma identidad: **Exploradores** (`dist/exploradores.html`), viajes de
 exploradores y conquistadores etapa por etapa, para niños y adultos. El primer itinerario es Ibn Battuta (1325-1354).
 Los ríos se convierten al esquema de ruta al cargar (`desdeRio`); ningún texto de Cauces cambió con la migración y una
-instantánea de 200 pantallas (`test/instantanea.js`) lo vigila.
+instantánea de 200 pantallas (`test/instantanea.js`) lo vigila. Exploradores trae cinco rutas: Ibn Battuta, Marco Polo,
+Alejandro Magno y Hernán Cortés (itinerarios, los dos últimos con `conquista:true`) y Zheng He (tipo `travesia`, la ruta
+marítima que el diseño llamaba «derrota»; se evitó esa palabra porque para un niño es «perder»).
 
 ## Principios (no negociables)
 
@@ -75,7 +77,7 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
   viejos quedan como alias para rios.js y las pruebas. `normalizar(r)` calcula `acum`, `kmPoly`, `idx` y `km` de cada
   parada, `cortes` (dónde empieza cada segmento del trazo), el mercader fantasma, el vocabulario efectivo y `pref`
   (prefijo de tarjetas: `rio:` para ríos, por el progreso guardado; `ruta:` para lo demás).
-- Vocabulario: `VOCAB[tipo]` (rio | itinerario; derrota pendiente) tiene todas las palabras y frases que cambian con el
+- Vocabulario: `VOCAB[tipo]` (rio | itinerario | travesia) tiene todas las palabras y frases que cambian con el
   tipo de ruta (inicio/fin, parada/etapa, bodega/morral, Zarpar/Seguir, Descender/Viajar, kickers, preguntas, cabeceras,
   voces del compañero que nombran el río) y cada ruta puede sobreescribir claves con `vocab`. `r.vocab` es el efectivo;
   `VJ()` da el del juego para pantallas sin ruta; `VZ()` da las voces del compañero de la ruta abierta (`VOCES` más
@@ -86,12 +88,15 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
   `comoSeJuega`. `progresoJSON.app` lleva el id del juego.
 - Preguntas por tipo: `tiposDisponibles(r)`; con menos de cuatro rutas en el juego no hay distractores de otras rutas,
   así que `ciudad`, `frase` y las de contexto no se ofrecen y entran `orden` (cuatro secuencias, una verdadera) y
-  `fecha` (¿en qué año llegó a…?). `fin` (alias `mar`) toma etapas del mismo viaje como distractores si hace falta.
+  `fecha` (¿en qué año llegó a…?; los años se comparan con `anio`, que entiende «334 a. C.» como -334, y los distractores
+  son años distintos, no textos distintos). Con cuatro rutas o más, el reto del río de un viaje reparte cerca/fecha y
+  frase/orden; el de un río no cambia. `fin` (alias `mar`) toma etapas del mismo viaje como distractores si hace falta.
+  Ninguna parada puede repetirse entre rutas del mismo juego (la pregunta «¿en qué viaje está…?» sería ambigua; el test lo exige).
   Los tipos de contexto se llaman como la `clave` de cada capa (`antigua`/`moderna` en ríos, `entonces`/`hoy` en Ibn
   Battuta) y son a la vez claves de tarjeta.
 - Mapa por tipo: `trazoTramo` dibuja el trazo por segmentos (`cortes`); `camara:'tramo'` encuadra en Descender la
   ventana de la parada anterior a la siguiente (`ventana(r)`), pensada para viajes de medio mundo; los vehículos
-  terrestres (`TERRESTRES`: caravana, pie) van sin balanceo, con `.anda`, huellas en vez de estela y polvo en vez de
+  terrestres (`TERRESTRES`: caravana, pie, jinete) van sin balanceo, con `.anda`, huellas en vez de estela y polvo en vez de
   salpicón; el sonido pasa a viento (`audio.modo`). La franja bajo el mapa es el perfil de altura si la ruta tiene
   `perfil` y una línea de tiempo (`tiempoSVG`) si tiene fechas. Pendiente: partir la animación del vehículo en los
   cortes y el antimeridiano (`lon0` + `<use>` de la tierra), diseñados en docs/itinerarios.md.
@@ -284,11 +289,12 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 
 ## Pendientes, en orden de valor
 
-1. Exploradores: más viajes (Marco Polo, Zheng He, Elcano como derrota, Humboldt) y rutas de conquista (Alejandro,
-   Cortés, Napoleón, Gengis Kan), aprobadas para niños y adultos; con cuatro o más rutas vuelven las preguntas de
-   «¿en qué viaje…?», frase y contexto. Con cada viaje, revisar las líneas nuevas de docs/verificacion.md.
-2. Motor de rutas, lo que falta: `VOCAB.derrota`; partir la animación del vehículo en los `cortes`; antimeridiano
-   (`lon0` y `<use>` de la tierra); pulir la línea de tiempo cuando dos etapas caen en el mismo año.
+1. Exploradores: más viajes (Elcano como travesía que cruza el antimeridiano, Humboldt, Darwin) y de conquista (Napoleón,
+   Gengis Kan), aprobados para niños y adultos. Con cada viaje, revisar las líneas nuevas de docs/verificacion.md y que
+   ninguna parada se repita entre rutas.
+2. Motor de rutas, lo que falta: partir la animación del vehículo en los `cortes`; antimeridiano (`lon0` y `<use>` de la
+   tierra); pulir la línea de tiempo cuando varias etapas caen en el mismo año (Cortés); recortar del motor el VOCAB
+   de los tipos que un juego no usa (Cauces carga el de viajes sin usarlo: unos 10 KB).
 3. Inmersión, lo que queda de la evaluación del 2026-09-04: retos sobre el mapa («tocá dónde queda…», que pagan
    memoria espacial) y paisaje sonoro por tramo sintetizado. (La bitácora imprimible se descartó.)
 4. Más ríos de Costa Rica: Pacuare y Sixaola están en Natural Earth 10 m Norteamérica (`capa:'ne10na'`) pero casi
@@ -301,8 +307,8 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
-- Mantener cada `dist/*.html` por debajo de ~500 KB (tope subido de 400 a 500 el 2026-09-04 para el relieve; hoy Cauces ≈ 477 KB y
-  Exploradores ≈ 315 KB).
+- Mantener cada `dist/*.html` por debajo de ~500 KB (tope subido de 400 a 500 el 2026-09-04 para el relieve; hoy Cauces ≈ 484 KB y
+  Exploradores ≈ 377 KB).
 - Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,
   `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español.
 - Textos para niño: frases cortas, concretas, sin sarcasmo; el animal nunca regaña.
