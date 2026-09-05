@@ -19,7 +19,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - El Cairo · dato: Fundada en 969 por los fatimíes junto a la antigua Menfis y las pirámides de Guiza.
 - El Cairo · dato: Es la mayor ciudad de África, con más de 20 millones de personas en su área metropolitana. ⚠
 - Jinja · puerto (Historia): Cargás sacos de café robusta de las laderas del lago: Uganda es uno de los dos mayores exportadores de café de África. ⚠
-- Juba · puerto (Historia): Dejás el café y cargás colmillos de marfil, el comercio que hizo rica a Jartum en el siglo XIX.
+- Juba · puerto (Historia): Dejás el café y cargás colmillos de marfil, el comercio que hizo rica a Jartum en el siglo XIX. ⚠
 - Jartum · puerto (Historia): Cambiás el marfil por sacos de goma arábiga: la resina de las acacias sudanesas espesa refrescos y dulces en todo el mundo, y Sudán produce la mayor parte.
 - Evento · Cocodrilos del Sudd: En el pantano del Sudd viven cocodrilos del Nilo, los más grandes de África, y uno se cruzó delante de la falúa.
 
@@ -35,7 +35,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Santarém · dato: La terminal de Cargill (2003) conectó el río con la carretera BR-163 y la frontera agrícola.
 - Belém · dato: Fundada en 1616 para cerrar el río a franceses y holandeses.
 - Belém · dato: Puerta del caucho en el siglo XIX y sede de la COP30 en 2025. ⚠
-- Iquitos · puerto (Historia): Cargás bolas de caucho ahumado, las «bolachas» que hicieron ricos a los barones del siglo XIX.
+- Iquitos · puerto (Historia): Cargás bolas de caucho ahumado, las «bolachas» que hicieron ricos a los barones del siglo XIX. ⚠
 - Manaos · puerto (Historia): Vendés el caucho en el puerto flotante, que sube y baja hasta 14 m con el río, y cargás castañas de Pará. ⚠
 - Santarém · puerto (Historia): Sumás sacos de soya de la terminal de Cargill; el grano llegó en camión desde Mato Grosso por la BR-163.
 - Belém · puerto (Historia): Todo se descarga en el mercado Ver-o-Peso, el más grande de la Amazonía, entre montañas de açaí recién bajado de las barcas. ⚠
@@ -113,7 +113,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 
 - Ruta antigua: En Maguncia, hacia 1455, Gutenberg imprimió la primera Biblia.
 - Ruta moderna: Es la vía fluvial más transitada de Europa: Rotterdam es el mayor puerto del continente y Duisburgo el mayor puerto interior.
-- Ruta moderna: Tulla lo enderezó en el siglo XIX y la Convención de Mannheim (1868) garantizó la navegación libre.
+- Ruta moderna: Tulla lo enderezó en el siglo XIX y la Convención de Mannheim (1868) garantizó la navegación libre. ⚠
 - Ruta moderna: Las sequías de 2018 y 2022 lo dejaron tan bajo que las barcazas viajaron casi vacías. ⚠
 - Pista antigua: Junto a este río, un orfebre inventó la imprenta de tipos móviles hacia 1450.
 - Pista moderna: La vía fluvial más transitada de Europa; su mayor puerto marítimo y su mayor puerto interior están en el mismo cauce.
@@ -166,9 +166,9 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Ruta moderna: El canal Volga-Don (1952) y el Volga-Báltico hicieron de Moscú un «puerto de cinco mares».
 - Ruta moderna: Stalingrado (Volgogrado, 1942-1943) fue el giro de la Segunda Guerra Mundial.
 - Pista moderna: Un canal de 1952 lo conectó con otro río y convirtió a una capital lejana en «puerto de cinco mares».
-- Tver · dato: Rival de Moscú en el siglo XIV; hoy ciudad de paso entre Moscú y San Petersburgo.
+- Tver · dato: Rival de Moscú en el siglo XIV; hoy ciudad de paso entre Moscú y San Petersburgo. ⚠
 - Yaroslavl · imagen: Un príncipe mata un oso con un hacha: Yaroslavl lleva ese oso en su escudo desde su fundación (1010).
-- Nizhni Nóvgorod · imagen: La feria donde Oriente y Occidente regateaban: en Nizhni Nóvgorod el Oká entra al Volga y la gran feria del siglo XIX fijaba el precio del té y las pieles.
+- Nizhni Nóvgorod · imagen: La feria donde Oriente y Occidente regateaban: en Nizhni Nóvgorod el Oká entra al Volga y la gran feria del siglo XIX fijaba el precio del té y las pieles. ⚠
 - Kazán · dato: Tomada por Iván el Terrible en 1552; la mezquita Kul Sharif y la catedral comparten el Kremlin.
 - Samara · dato: Capital de reserva de la URSS en 1941, con búnker para Stalin.
 - Volgogrado · imagen: Una mujer de 85 m alza una espada sobre el río: la Madre Patria de Mamáyev Kurgán, donde se decidió Stalingrado.
@@ -242,7 +242,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Ruta antigua: La Guerra de la Triple Alianza (1864-1870) se libró por el control del río; la fortaleza de Humaitá lo cerraba con cadenas.
 - Ruta moderna: Itaipú (1984, Brasil-Paraguay) fue la mayor hidroeléctrica del mundo hasta las Tres Gargantas; Yacyretá completa el sistema.
 - Ruta moderna: La Hidrovía Paraguay-Paraná (3 400 km) saca la soya de Bolivia, Paraguay y Argentina por Rosario, el mayor complejo agroexportador del mundo. ⚠
-- Pista antigua: Su nombre viene de una sierra de plata que los conquistadores buscaban río arriba; una guerra del siglo XIX se libró por controlarlo.
+- Pista antigua: Su nombre viene de una sierra de plata que los conquistadores buscaban río arriba; una guerra del siglo XIX se libró por controlarlo. ⚠
 - Pista moderna: Una hidrovía de 3 400 km saca la soya de tres países por el mayor complejo agroexportador del mundo. ⚠
 - Foz do Iguaçu · dato: Itaipú produce alrededor del 90 % de la electricidad de Paraguay y cerca del 10 % de la de Brasil. ⚠
 - Encarnación · dato: Las misiones de Trinidad y Jesús son patrimonio de la humanidad; la represa de Yacyretá (1994) inundó parte de la ciudad vieja. ⚠
@@ -304,6 +304,32 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Evento · Las cataratas Boyoma: Desde 1906 un tren de 125 km las rodea, de Ubundu a Kisangani; hay que saber adónde sigue el río para no perder el tren.
 - Evento · Las cataratas Livingstone: Entre Kinshasa y Matadi el río baja 270 m en 350 km de rápidos, treinta y dos saltos donde Stanley perdió a varios compañeros en 1877.
 - Evento · Las cataratas Livingstone: El tren de 1898 los rodea; la barcaza se queda en el Pool.
+
+## Huang He (5 464 km hasta el golfo de Bohai)
+
+- Nacimiento: Nace en los montes Bayan Har, en Qinghai, a unos 4 500 m, y pasa por los lagos Gyaring y Ngoring antes de bajar a la meseta de loes. ⚠
+- Nacimiento: Con 5 464 km es el segundo río de China y el sexto del mundo, y arrastra más barro que ningún otro: de ahí el color y el nombre, río Amarillo. ⚠
+- Ruta antigua: En sus orillas nacieron las primeras dinastías chinas, Xia, Shang y Zhou, y capitales como Anyang, Luoyang y Kaifeng: por eso lo llaman la cuna de China.
+- Ruta antigua: Pero también «la pena de China»: el barro del loes le levanta el lecho, rompe los diques y en dos mil quinientos años cambió de curso más de veinte veces; la inundación de 1887 mató a cientos de miles de personas, quizá más de un millón. ⚠
+- Ruta moderna: Hoy lo sujetan presas como Sanmenxia (1960), que se llenó de barro, y Xiaolangdi (2001), que cada verano abre las compuertas y lanza un chorro amarillo para limpiar el cauce.
+- Ruta moderna: En los años noventa el río dejó de llegar al mar durante meses por tanto riego: 226 días en 1997. ⚠
+- Pista antigua: Cuna de las primeras dinastías de su país y a la vez su pena: cambió de curso más de veinte veces y sus diques medían el poder del emperador. ⚠
+- Lanzhou · imagen: Un lanchón (Lan-zhou) que cruza el río lleno de fideos: en Lanzhou inventaron los fideos de carne estirados a mano y el primer puente de hierro sobre el Amarillo.
+- Lanzhou · dato: El puente Zhongshan (1909), de hierro, fue el primero permanente sobre el Huang He; los fideos lamian de Lanzhou se comen en toda China. ⚠
+- Lanzhou · dato: Durante siglos el río se bajaba en balsas de pieles de oveja infladas. ⚠
+- Yinchuan · dato: Cerca están las tumbas de los reyes de Xia Occidental, del siglo XI. ⚠
+- Baotou · dato: Cerca, en Bayan Obo, está el yacimiento de tierras raras más grande del mundo. ⚠
+- Zhengzhou · imagen: Un zapato de bronce gigante (Zheng-zhou) marca el kilómetro cero de China: aquí hubo una capital Shang hace 3 500 años. ⚠
+- Zhengzhou · dato: Capital de Henan y cruce de trenes de toda China; bajo la ciudad hay murallas de una capital Shang de hace unos 3 500 años. ⚠
+- Zhengzhou · dato: En Huayuankou, al norte, el ejército rompió los diques en 1938 para frenar a los japoneses, y la inundación mató a cientos de miles de personas. ⚠
+- Zhengzhou · dato: A 70 km está el templo Shaolin.
+- Kaifeng · dato: Capital de la dinastía Song del Norte (960-1127), entonces una de las ciudades más grandes del mundo, pintada en el rollo «Escenas junto al río en el festival Qingming». ⚠
+- Jinan · dato: Capital de Shandong, la «ciudad de los manantiales»: 72 famosos, con Baotu a la cabeza. ⚠
+- Jinan · dato: El río llegó aquí recién en 1855, cuando cambió de curso y dejó de salir al mar Amarillo para salir al golfo de Bohai. ⚠
+- Jinan · dato: Confucio nació a 130 km, en Qufu.
+- Dongying · dato: Ciudad joven (1983) del campo petrolero de Shengli, el segundo de China. ⚠
+- Li en Zhengzhou: Debajo de la ciudad hay otra ciudad, de hace 3 500 años. ⚠
+- Evento · El río que se mudó: En 1855 el Huang He rompió los diques en Tongwaxiang y se fue al norte: dejó de salir al mar Amarillo y desde entonces sale al golfo de Bohai, cientos de kilómetros más arriba. ⚠
 
 ## Tempisque (144 km hasta el golfo de Nicoya)
 
@@ -414,7 +440,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 
 - Partida: Salió de Tánger, en Marruecos, en 1325, a los 21 años, para peregrinar a La Meca.
 - Partida: Tardó 24 años en volver a casa y siguió viajando después: se calcula que recorrió unos 120 000 km, más que ningún otro viajero antes de la era de los barcos de vapor. ⚠
-- El mundo que vio: De Marruecos a China, un viajero musulmán del siglo XIV encontraba en cada ciudad gente que hablaba árabe, hospedaje para peregrinos y sultanes que pagaban a un letrado por servir de juez.
+- El mundo que vio: De Marruecos a China, un viajero musulmán del siglo XIV encontraba en cada ciudad gente que hablaba árabe, hospedaje para peregrinos y sultanes que pagaban a un letrado por servir de juez. ⚠
 - Lo que queda: Su relato, la Rihla, dictado en Fez en 1355, es la mejor fuente que existe sobre muchas de esas ciudades en el siglo XIV. ⚠
 - Lo que queda · pista: Un relato dictado al volver a casa que hoy es la mejor fuente sobre medio mundo en aquel siglo.
 - El Cairo · fecha: 1326 ⚠
@@ -571,6 +597,7 @@ Altura del cauce en cada parada, muestreada del mosaico DEM global de NOAA NCEI 
 - Paraná: fuente 325 m → Foz do Iguaçu 141 m · Encarnación 80 m · Corrientes 44 m · Rosario 5 m · Buenos Aires 0 m · Montevideo 0 m → mar 0 m ⚠
 - Indo: fuente 5155 m → Leh 3208 m · Skardu 2191 m · Attock 276 m · Sukkur 59 m · Hyderabad 19 m · Karachi 0 m → mar 0 m ⚠
 - Congo: fuente 1410 m → Bukama 580 m · Kindu 451 m · Kisangani 387 m · Mbandaka 302 m · Kinshasa 268 m · Matadi 90 m · Boma 8 m → mar 0 m ⚠
+- Huang He: fuente 4467 m → Lanzhou 1567 m · Yinchuan 1108 m · Baotou 1004 m · Zhengzhou 91 m · Kaifeng 80 m · Jinan 25 m · Dongying 7 m → mar 0 m ⚠
 - Tempisque: fuente 69 m → Liberia 57 m · Guardia 30 m · Filadelfia 17 m · Bolsón 5 m · Puerto Humo 3 m → mar 0 m ⚠
 - Reventazón: fuente 2181 m → Orosi 1056 m · Cachí 990 m · Juan Viñas 863 m · Turrialba 555 m · Siquirres 91 m · Parismina 3 m → mar 0 m ⚠
 - Sarapiquí: fuente 1756 m → San Miguel 438 m · La Virgen 183 m · Chilamate 79 m · Puerto Viejo 38 m · Trinidad 0 m → mar 0 m ⚠

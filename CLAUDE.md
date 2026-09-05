@@ -36,7 +36,7 @@ marítima que el diseño llamaba «derrota»; se evitó esa palabra porque para 
 src/cabeza.html      DOCTYPE, <head>, CSS completo y esqueleto del body (cabecera + mapa SVG + panel)
 src/cola.html        cierre
 src/data/mapa.js     LAND, LAGOS, BORDES: paths SVG (Natural Earth 110 m fuera de las cuencas, 50 m dentro)
-src/data/rios.js     RIVERS: 20 ríos, 14 del mundo y 6 de Costa Rica (zona 'cr'); curso y brazos los genera tools/cauces.py
+src/data/rios.js     RIVERS: 21 ríos, 15 del mundo y 6 de Costa Rica (zona 'cr'); curso y brazos los genera tools/cauces.py
 src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por puerto (modo Historia)
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
@@ -292,9 +292,8 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 
 ## Pendientes, en orden de valor
 
-0. Más ríos del mundo, por lo que pagan en memoria y por los huecos del mapa: Huang He (la carpa que salta la Puerta del
-   Dragón), Orinoco (Humboldt, Angostura), Murray (Oceanía, ornitorrinco), San Lorenzo (belugas, Cartier), Zambeze
-   (cataratas Victoria). Cada río del mundo pesa 12-15 KB; con Cauces cerca del tope, un paquete aparte («Ríos de España»:
+0. Más ríos del mundo, por lo que pagan en memoria y por los huecos del mapa: Orinoco (Humboldt, Angostura), Murray
+   (Oceanía, ornitorrinco), San Lorenzo (belugas, Cartier), Zambeze (cataratas Victoria). Cada río del mundo pesa 12-15 KB; con Cauces cerca del tope, un paquete aparte («Ríos de España»:
    Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
 
 1. Exploradores: más viajes (Elcano como travesía que cruza el antimeridiano, Humboldt, Darwin) y de conquista (Napoleón,

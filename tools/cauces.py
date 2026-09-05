@@ -52,6 +52,8 @@ CAUCES={
  'indo':{'nombres':['ne10:Shiquan','Indus'],'desde':[31.4,81.6],'hasta':[24.04,67.45],'brazos':[]},
  'congo':{'nombres':['Lualaba','Congo'],'desde':[-11.74,26.25],'hasta':[-5.86,13.07],'cola':[[-5.95,12.75],[-6.05,12.45]],
    'brazos':[{'nombres':['Kasai'],'desde':[-11.25,22.24],'hasta':[-3.19,16.19]},{'nombres':['Ubangi'],'desde':[3.68,18.6],'hasta':[-0.55,17.75]}]},
+ 'huanghe':{'nombres':['Huang'],'desde':[35.13,96.16],'hasta':[37.81,119.04],
+   'brazos':[{'nombres':['ne10:Wei'],'desde':[34.99,104.06],'hasta':[34.62,110.29]},{'nombres':['ne10:Fen'],'desde':[38.86,112.08],'hasta':[35.46,110.55]}]},
  # Costa Rica (zona 'cr'): Natural Earth 50 m no los trae. Reventazón: NE 10 m Norteamérica; San Juan: NE 10 m global;
  # Tempisque y Sarapiquí (y los afluentes): OpenStreetMap. Tres decimales y simplificación de 0,003° porque el mapa se acerca mucho.
  'tempisque':{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Tempisque'],'desde':[10.73,-85.5],'hasta':[10.18,-85.24],'dec':3,'simpl':0.003,

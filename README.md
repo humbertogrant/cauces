@@ -10,7 +10,7 @@ un mercado, eventos entre puertos y repaso espaciado.
 - Jugar: abrir `dist/cauces.html` (o `dist/exploradores.html`) en cualquier navegador. Basta un doble clic: no necesita servidor, instalación
   ni red (solo baja las fuentes de Google la primera vez; sin red usa las del sistema) y no llama a ningún
   servicio. Para el teléfono, copiar ese único archivo al aparato o subirlo a cualquier hosting estático.
-- Ríos: catorce grandes ríos del mundo, con el Congo recién llegado, y un paquete de Costa Rica (Tempisque, Reventazón, Sarapiquí, San Juan,
+- Ríos: quince grandes ríos del mundo, con el Congo y el Huang He recién llegados, y un paquete de Costa Rica (Tempisque, Reventazón, Sarapiquí, San Juan,
   Tárcoles y Térraba) con su historia económica; en el mapa mundial, el punto dorado sobre Costa Rica abre esa zona.
 - Escenas: cada ciudad, cada fuente y cada desembocadura tienen su postal, compuesta con pictogramas de lo que
   hay ahí (presa, templo, puente, manglar…); en el reto de imagen la postal sirve de pista.
