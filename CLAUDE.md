@@ -48,10 +48,13 @@ src/juegos/cauces.js, src/juegos/exploradores.js  JUEGO: nombre, subtítulo, tip
 src/data/relieve.js  RELIEVE (franjas de altura por vista), NOMBRES_RELIEVE (cordilleras, mesetas, desiertos, volcanes) y ALTURAS
                      (perfil de altura de cada cauce); lo genera tools/relieve.py
 src/motor.js         todo el motor: estado, perfiles y guardado, Leitner, preguntas, render, mapa, audio, economía, eventos, voz
-build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores), cada uno con sus datos, su src/juegos/<id>.js y el motor
+build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores), cada uno con sus datos, su src/juegos/<id>.js y el motor;
+                     recorta del motor lo que el juego no usa: los VOCAB de otros tipos (marcas /*@vocab:tipo*/ … /*@fin:tipo*/),
+                     y los animales, pictogramas y glifos de vehículo que no aparecen en sus datos
 test/arnes.js        DOM simulado y carga de los archivos de un juego; test/pruebas.js [juego] corre test/casos.js (Cauces) o
                      test/casos-exploradores.js; test/instantanea.js compara 200 pantallas de Cauces con test/instantanea.json.gz.
-                     `npm test` corre los tres y debe terminar en "TODO OK" dos veces e "INSTANTÁNEA OK"
+                     test/dist.js [juego] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte).
+                     `npm test` corre todo: "TODO OK" dos veces, "INSTANTÁNEA OK" y "DIST OK" dos veces
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap
 tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js) desde Natural Earth (110/50 m; 10 m en las cuencas de zona; shapely)
 tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo)
@@ -293,8 +296,7 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
    Gengis Kan), aprobados para niños y adultos. Con cada viaje, revisar las líneas nuevas de docs/verificacion.md y que
    ninguna parada se repita entre rutas.
 2. Motor de rutas, lo que falta: partir la animación del vehículo en los `cortes`; antimeridiano (`lon0` y `<use>` de la
-   tierra); pulir la línea de tiempo cuando varias etapas caen en el mismo año (Cortés); recortar del motor el VOCAB
-   de los tipos que un juego no usa (Cauces carga el de viajes sin usarlo: unos 10 KB).
+   tierra); pulir la línea de tiempo cuando varias etapas caen en el mismo año (Cortés).
 3. Inmersión, lo que queda de la evaluación del 2026-09-04: retos sobre el mapa («tocá dónde queda…», que pagan
    memoria espacial) y paisaje sonoro por tramo sintetizado. (La bitácora imprimible se descartó.)
 4. Más ríos de Costa Rica: Pacuare y Sixaola están en Natural Earth 10 m Norteamérica (`capa:'ne10na'`) pero casi
@@ -307,8 +309,10 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
-- Mantener cada `dist/*.html` por debajo de ~500 KB (tope subido de 400 a 500 el 2026-09-04 para el relieve; hoy Cauces ≈ 484 KB y
-  Exploradores ≈ 377 KB).
+- Mantener cada `dist/*.html` por debajo de ~500 KB (tope subido de 400 a 500 el 2026-09-04 para el relieve; hoy Cauces ≈ 452 KB y
+  Exploradores ≈ 324 KB). Palancas de peso ya usadas: recorte del motor por juego en build.js; en mapa.py, fronteras a 0,5 y lagos
+  ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
+  Lo que queda por probar si hace falta: cauces del mundo con dos decimales y un minificador de desarrollo.
 - Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,
   `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español.
 - Textos para niño: frases cortas, concretas, sin sarcasmo; el animal nunca regaña.

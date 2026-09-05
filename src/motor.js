@@ -48,6 +48,7 @@ const hav=(a,b)=>{const R=6371,toR=x=>x*Math.PI/180,dl=toR(b[0]-a[0]),dn=toR(b[1
    idx y km de cada parada, mercader fantasma, vocabulario efectivo). Esquema y migración: docs/itinerarios.md ---------- */
 const cap=t=>t[0].toUpperCase()+t.slice(1);
 const VOCAB={
+  /*@vocab:rio*/
   rio:{tipo:'río',tipos:'ríos',Tipos:'Ríos',
     inicio:'Nacimiento',fin:'Desembocadura',extremoInicio:'Fuente',extremoFin:'Mar',entreInicio:'la fuente',entreFin:'el mar',Parada:'Parada',proxima:'¿Cuál es la próxima parada?',
     llegarFin:'Llegar al mar',avanzar:'Zarpar a',bajar:'Descender',
@@ -73,6 +74,8 @@ const VOCAB={
       siguiente:(r,c)=>`En el ${r.nombre}, ¿qué parada sigue después de ${c.nombre}?`,relleno:'La desembocadura',imagen:(r,c)=>`¿De qué ciudad del ${r.nombre} es esta imagen? «${sinNombre(c.imagen,c.nombre)}»`,
       altura:r=>`¿En cuál de estas paradas del ${r.nombre} pasa el río más alto sobre el mar?`,alturaNota:'El cauce en cada parada: ',frase:r=>`¿Qué frase guarda el orden de las ciudades del ${r.nombre}?`,
       fecha:(r,c)=>`¿En qué año pasó el ${r.nombre} por ${c.nombre}?`,fechaNota:r=>'Parada por parada: '+r.paradas.map(c=>`${c.nombre} ${c.fecha||'?'}`).join(' · ')+'.',ordenPregunta:r=>`¿En qué orden van estas ciudades del ${r.nombre}?`}},
+  /*@fin:rio*/
+  /*@vocab:itinerario*/
   itinerario:{tipo:'viaje',tipos:'viajes',Tipos:'Viajes',
     inicio:'Partida',fin:'Regreso',extremoInicio:'Partida',extremoFin:'Regreso',entreInicio:'la partida',entreFin:'el regreso',Parada:'Etapa',proxima:'¿Cuál es la próxima etapa?',
     llegarFin:'Volver a casa',avanzar:'Seguir a',bajar:'Viajar',
@@ -113,6 +116,8 @@ const VOCAB={
       sinMonedas:["No alcanzan las monedas. Vendé algo primero.","Estamos sin plata. ¿Qué tenés en el morral?"],
       sinEspacio:["El morral está lleno. Vendé algo o dejalo.","Solo caben tres cosas. Elegí."],
       fantasma:["¡Le ganaste al viajero de la ruta!","El viajero de la ruta llegó con {n}; la próxima le ganás.","Empataste con el viajero de la ruta."]}},
+  /*@fin:itinerario*/
+  /*@vocab:travesia*/
   travesia:{tipo:'travesía',tipos:'travesías',Tipos:'Viajes',
     inicio:'Zarpe',fin:'Regreso',extremoInicio:'Zarpe',extremoFin:'Regreso',entreInicio:'el zarpe',entreFin:'el regreso',Parada:'Escala',proxima:'¿Cuál es la próxima escala?',
     llegarFin:'Volver a puerto',avanzar:'Zarpar a',bajar:'Navegar',
@@ -146,7 +151,8 @@ const VOCAB={
       eventoAviso:["¡Ojo! El mar nos puso una prueba.","¡Alto ahí! Esto se pasa recordando.","Tranquilo: esto lo sabemos."],
       eventoBien:["¡Eso era! Seguimos.","¡Bien ahí! El mar nos deja pasar.","¡Lo sabías! Adelante."],
       compra:["{g}: buena compra.","Cargado. Ahora a venderlo en la próxima escala.","{g} en la bodega. ¿Cuánto valdrá más adelante?"],
-      fantasma:["¡Le ganaste al mercader de la flota!","El mercader de la flota llegó con {n}; la próxima le ganás.","Empataste con el mercader de la flota."]}}
+      fantasma:["¡Le ganaste al mercader de la flota!","El mercader de la flota llegó con {n}; la próxima le ganás.","Empataste con el mercader de la flota."]}},
+  /*@fin:travesia*/
 };
 const VZ=()=>{const r=S.rio&&rutaPor(S.rio);return r?r.vocesEfectivas:VOCES};/* voces del compañero según la ruta abierta */
 const VJ=()=>VOCAB[(typeof JUEGO!=='undefined'&&JUEGO.tipo)||'rio'];/* vocabulario del juego, para las pantallas sin ruta */

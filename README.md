@@ -6,7 +6,7 @@ un mercado, eventos entre puertos y repaso espaciado.
 
 - Dos juegos con el mismo motor: `dist/cauces.html` (los grandes ríos) y `dist/exploradores.html` (los grandes viajes,
   etapa por etapa: Ibn Battuta, Marco Polo, Zheng He, Alejandro Magno y Hernán Cortés, cada uno con su caravana, flota o
-  ejército, un animal de guía, una carga de trueque y una línea de tiempo bajo el mapa). Cada juego guarda su progreso aparte.
+  ejército, un animal de guía, una carga de trueque y una línea de tiempo bajo el mapa). Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
 - Jugar: abrir `dist/cauces.html` (o `dist/exploradores.html`) en cualquier navegador. Basta un doble clic: no necesita servidor, instalación
   ni red (solo baja las fuentes de Google la primera vez; sin red usa las del sistema) y no llama a ningún
   servicio. Para el teléfono, copiar ese único archivo al aparato o subirlo a cualquier hosting estático.

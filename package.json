@@ -5,7 +5,7 @@
   "description": "Juego de un solo archivo para aprender los grandes ríos del mundo con trucos mnemónicos",
   "scripts": {
     "build": "node build.js",
-    "test": "node test/pruebas.js && node test/pruebas.js exploradores && node test/instantanea.js",
+    "test": "node test/pruebas.js && node test/pruebas.js exploradores && node test/instantanea.js && node test/dist.js && node test/dist.js exploradores",
     "verificacion": "python3 tools/verificacion.py",
     "mapa": "python3 tools/mapa.py",
     "cauces": "python3 tools/cauces.py",

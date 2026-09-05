@@ -42,7 +42,7 @@ UA={'User-Agent':'cauces (juego educativo de un solo archivo)'}
 
 NIVELES={'mundo':[500,2000],'cr':[500,1500]}
 DEC={'mundo':1,'cr':3}
-SIMPL={'mundo':(0.6,3),'cr':(0.016,0.012)}          # (tolerancia, área mínima) en unidades del mapa
+SIMPL={'mundo':(0.75,4),'cr':(0.02,0.02)}          # (tolerancia, área mínima) en unidades del mapa
 RES_MUNDO=(2000,800); BB_MUNDO=(-180,-60,180,84)   # ETOPO1 a ~0,18° para las franjas del mundo
 RES_CR=0.003                                        # grados por celda para las franjas de Costa Rica (~330 m)
 RES_PERFIL={'mundo':0.03,'cr':0.0007}               # grados por celda para muestrear los perfiles

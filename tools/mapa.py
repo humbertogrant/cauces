@@ -25,6 +25,7 @@ def ne(nombre):
 def proj(g): return affinity.affine_transform(g,[1000/360,0,0,-500/180,500,250])
 
 JUEGO=sys.argv[1] if len(sys.argv)>1 else 'cauces'
+SIMPL_COSTA=0.3 if JUEGO=='cauces' else 0.45   # unidades del mapa; en Exploradores las vistas son enormes y la costa pesa el doble
 rects={'fino':[],'zona':[]}
 for r in RUTAS.cargar(JUEGO):
   for pts in RUTAS.vistas(r):
@@ -52,16 +53,16 @@ land110=unary_union([proj(g) for g in ne('ne_110m_land')]).buffer(0)
 land50=unary_union([proj(g) for g in ne('ne_50m_land')]).buffer(0)
 mundo=box(0,0,1000,470)  # sin Antártida
 grueso=land110.intersection(mundo).difference(fino).difference(zona).simplify(1.4,preserve_topology=True)
-finoLand=land50.intersection(fino).difference(zona).simplify(0.3,preserve_topology=True)
+finoLand=land50.intersection(fino).difference(zona).simplify(SIMPL_COSTA,preserve_topology=True)
 land=unary_union([grueso,finoLand]).buffer(0)
 land=MultiPolygon([p for p in polys(land) if p.area>=(2 if fino.intersects(p) else 12)])
 land10=unary_union(dentro('ne_10m_land')).buffer(0).intersection(zona).simplify(0.015,preserve_topology=True)
 land10=MultiPolygon([p for p in polys(land10) if p.area>=0.002])
 lagos=unary_union([proj(g) for g in ne('ne_50m_lakes')]).intersection(fino).difference(zona).simplify(0.3,preserve_topology=True)
-lagos=MultiPolygon([p for p in polys(lagos) if p.area>=0.6])
+lagos=MultiPolygon([p for p in polys(lagos) if p.area>=1.0])
 lagos10=unary_union(dentro('ne_10m_lakes')).intersection(zona).simplify(0.015,preserve_topology=True)
 lagos10=MultiPolygon([p for p in polys(lagos10) if p.area>=0.001])
-bordes=unary_union([proj(g) for g in ne('ne_50m_admin_0_boundary_lines_land')]).intersection(fino).difference(zona).simplify(0.3,preserve_topology=True)
+bordes=unary_union([proj(g) for g in ne('ne_50m_admin_0_boundary_lines_land')]).intersection(fino).difference(zona).simplify(0.5,preserve_topology=True)
 bordes10=unary_union(dentro('ne_10m_admin_0_boundary_lines_land')).intersection(zona).simplify(0.015,preserve_topology=True)
 
 def path_pol(g,dec=1):
