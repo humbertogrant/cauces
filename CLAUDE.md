@@ -111,8 +111,21 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
   salpicón; el sonido pasa a viento (`audio.modo`). La franja bajo el mapa es el perfil de altura si la ruta tiene
   `perfil` y una línea de tiempo (`tiempoSVG`) si tiene fechas. Pendiente: partir la animación del vehículo en los
   cortes y el antimeridiano (`lon0` + `<use>` de la tierra), diseñados en docs/itinerarios.md.
+- Navegación (rediseño del 2026-09-06): en las pantallas de ruta y de reto hay una barra fija al pie, `#pie`, que `render()`
+  arma con `renderPie()` a partir de `S`: arriba las acciones del momento (la guía «¿cuál es la próxima parada?» con sus fichas
+  y «Zarpar a…», «Llegar al mar», «Seguir hacia…» tras un evento, Revelar / La sabía / No la sabía en Recitar, Otra vez y
+  Preguntar al terminar, Siguiente y Ver resultado en las preguntas, Otra ronda y Volver al final) y abajo el riel de viaje
+  (`renderRiel`: Bajar · Ordenar · Recitar · Preguntar), que es a la vez menú y mapa del progreso: el paso actual va en
+  dorado y los hechos con un check (`P.etapas[id]`, marcados por `hecha()`: bajar = `P.vistos`, ordenar con ≤ 1 error,
+  recitar con ≥ n−1 aciertos, preguntar con una ronda del río al 60 % o más). `body.con-pie` acolcha el panel con el alto
+  real de la barra (`acomodarPie`) y en teléfono baja el mapa a 28vh. En el inicio y el pasaporte no hay barra.
+  La portada empieza por Hoy, sigue «¿Quién juega?», el tesoro y las rutas en tarjetas (`.tarjeta`: animal, nombre,
+  `vocab.tarjeta(r)` y barra de dominio; tres columnas en teléfono), agrupadas por región cuando el grupo trae
+  `porRegion` (Cauces: por continente, en el orden del río más largo); «Tocá un río…» vive en «¿Cómo se juega?».
+  Los números van en Oswald con `num()` (`<span class="num">`): cabecera, kickers, tramos, alturas, monedas y precios;
+  las pruebas comparan textos sin esas etiquetas (`sinNum`) y miran `#panel` más `#pie` (`todo()` / `panel()`).
 - Estado en dos objetos: `S` (sesión: pantalla, río, pestaña, paso, orden, quiz, eco, guías, recitar, evento) y `P`
-  (persistente: `cards` Leitner, `vistos`, `tesoro`, `modo`, `voz`, `sellos`). `P` se guarda con `guardar()` en `localStorage`
+  (persistente: `cards` Leitner, `vistos`, `tesoro`, `modo`, `voz`, `sellos`, `etapas`). `P` se guarda con `guardar()` en `localStorage`
   bajo `cauces:progreso:<perfil>` (memoria si no hay o falla). `PERFILES` (`cauces:perfiles`: lista y activo) da
   un `P` por persona; "¿Quién juega?" en el inicio los elige o crea (`elegirPerfil`, `crearPerfil`,
   `quitarPerfil`); `cargarPerfiles()` migra el guardado viejo (`cauces:progreso`) al perfil Capitán. Copia y
@@ -142,6 +155,10 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
   el dato de la ciudad (presa, templo, puente, manglar…), nunca al azar.
   Todo respeta `prefers-reduced-motion`. Los cauces son de Natural Earth
   50 m (`tools/cauces.py`), con un vértice propio frente a cada ciudad para que `c.idx` la ancle justo ahí.
+- Iconos (`ICONOS`, `ico(clave)`): un juego propio de iconos de línea (caja 24×24, trazo `currentColor`, clase `.ico`) para los
+  bienes del mercado (por categoría, campo `i`), los eventos (campo `icono`, que también decide el clima) y los controles
+  (moneda, voz, ok). No hay emojis en la interfaz: se ven distintos en cada teléfono y no son de nadie. build.js recorta los
+  que el juego no usa. `animal:<glifo>` y `barca:<tipo>` reutilizan los animales y las barcas.
 - Relieve (`src/data/relieve.js`, de `tools/relieve.py`; alturas de NOAA NCEI: ETOPO1 para las franjas del mundo,
   el mosaico DEM fino para Costa Rica y el mosaico global para los perfiles, porque ETOPO1 trae el fondo de los lagos):
   · Franjas (`RELIEVE[vista]`: mundo ≥500 y ≥2 000 m, cr ≥500 y ≥1 500 m) en el grupo `#relieve` entre la tierra y
@@ -257,10 +274,10 @@ MASCOTAS[id]: `nombre, especie, emoji, glifo, hola, mar, paradas[]` (una frase p
 `cuerpo` verde claro, `claro`, `oscuro`, `acento` dorado, `bigote`, `dientes`, `rabo`, `pata`); `animal(m)` lo
 dibuja en el globo, la lista, el pasaporte y la barca; el emoji queda de respaldo si no hay glifo.
 
-MERCADOS[id]: `[{n: nombre, e: emoji, o: puerto de origen (índice), b: precio base, d?: puertos antes de
+MERCADOS[id]: `[{n: nombre, i: icono (clave de ICONOS: grano, fruta, pez, cesta, bebida, frasco, hoja, tela, piel, madera, metal, gema, mineral, vasija, papel, moneda…), o: puerto de origen (índice), b: precio base, d?: puertos antes de
 pudrirse, m?: puerto donde se paga doble}]`. Cada puerto salvo el último debería ofrecer algo.
 
-EVENTOS[id]: `[{tramo (parada de llegada, 1..n+1; n+1 es el mar), icono (emoji), titulo, texto (la situación, con
+EVENTOS[id]: `[{tramo (parada de llegada, 1..n+1; n+1 es el mar), icono (clave de ICONOS: ola, niebla, viento, lluvia, arena, hielo, piedra, puente, aduana, vela, nudo, tren, espada, castillo, mascara, pez, o `animal:<glifo>` / `barca:<tipo>`; niebla, arena, lluvia, ola y viento traen clima), titulo, texto (la situación, con
 un hecho real del tramo), reto (imagen, tramo ≥ 2 | ruta, tramo ≤ n-1 | pais, tramo ≤ n | frase | mar), bien, mal
 (desenlace corto, amable; sin mencionar monedas: se agregan solas)}]`. Uno o dos por río, un tramo por evento,
 anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con un animal que no sea la mascota.
@@ -300,6 +317,10 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 
 ## Pendientes, en orden de valor
 
+Hecho el 2026-09-06: el rediseño estético en tres fases (identidad, navegación con barra al pie y riel, iconos propios).
+Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente contenido a la vista; si no, la salida es plegar
+el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
+
 0. Más ríos del mundo, por lo que pagan en memoria y por los huecos del mapa: Orinoco (Humboldt, Angostura), Murray
    (Oceanía, ornitorrinco), San Lorenzo (belugas, Cartier), Zambeze (cataratas Victoria). Cada río del mundo pesa 12-15 KB; con Cauces cerca del tope, un paquete aparte («Ríos de España»:
    Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
@@ -338,5 +359,6 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
   En iPhone se abre la dirección de Pages (o cualquier hosting estático, o una app que sirva HTML local).
 - Móvil (revisado el 2026-09-04 a 375×812, 360×640 y 812×375): nada desborda a lo ancho, toques de 36 px o más, campo de
   texto de 17 px (sin zoom en iPhone). Reglas en cabeza.html: con ancho ≤ 480 px el mapa baja a 34vh (el bloque pegajoso
-  queda en ~55 % del alto); con alto ≤ 520 px (teléfono en horizontal) `#arriba` deja de ser pegajoso. En el panel de vista
+  queda en ~55 % del alto); con alto ≤ 520 px (teléfono en horizontal) `#arriba` deja de ser pegajoso; con la barra al pie (`body.con-pie`) y ancho < 760 px el mapa
+  baja a 28vh (mínimo 190 px) y el panel se acolcha con el alto de la barra. En el panel de vista
   previa las transiciones CSS no avanzan: para medir alturas hay que poner `transition:none`.

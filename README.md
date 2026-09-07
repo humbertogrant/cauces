@@ -18,8 +18,12 @@ un mercado, eventos entre puertos y repaso espaciado.
   Tárcoles y Térraba) con su historia económica; en el mapa mundial, el punto dorado sobre Costa Rica abre esa zona.
 - Escenas: cada ciudad, cada fuente y cada desembocadura tienen su postal, compuesta con pictogramas de lo que
   hay ahí (presa, templo, puente, manglar…); en el reto de imagen la postal sirve de pista.
-- Barcas y animales: dibujados en SVG propio (una barca por tipo, un animal por río), sin depender de los emojis
-  del aparato.
+- Barcas, animales e iconos: dibujados en SVG propio (una barca por tipo, un animal por río y un juego de iconos de
+  línea para los bienes, los eventos y los controles), sin depender de los emojis del aparato.
+- Navegación: la pregunta de la próxima parada y el botón de zarpar viven en una barra fija al pie, siempre al alcance
+  del pulgar, con el riel Bajar · Ordenar · Recitar · Preguntar que marca lo ya hecho; la portada empieza por «Hoy» y
+  muestra los ríos en tarjetas por continente. Panel de papel cálido, mapa oscuro, dos tipos de bloque (la voz del
+  animal y la ficha) y dorado solo para «estás aquí».
 - Relieve: al acercarse a un río, el mapa muestra las tierras altas en dos tonos (más de 500 y de 2 000 m; en Costa
   Rica, 500 y 1 500) con los nombres de cordilleras, mesetas, desiertos y llanuras, y en los ríos ticos los volcanes
   con su altura. Bajo el mapa, un perfil del cauce de la fuente al mar marca a qué altura va la barca, y cada parada

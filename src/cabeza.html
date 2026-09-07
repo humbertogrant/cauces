@@ -143,7 +143,6 @@ body.nino{font-size:19px}
 .nave .ntit{font-weight:600;font-size:20px;color:var(--verde);line-height:1.2}
 .nave p{margin:6px 0 6px}
 .evento{display:flex;gap:12px;align-items:flex-start;background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
-.evento .eicono{font-size:34px;line-height:1;flex:none}
 .evento .etit{font-weight:600;font-size:20px;color:var(--verde);line-height:1.2;margin-bottom:4px}
 .evento p{margin:0}
 .puerto{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
@@ -189,15 +188,25 @@ body.nino{font-size:19px}
 @keyframes salta{0%,100%{transform:translateY(0)}35%{transform:translateY(-9px)}}
 @media (prefers-reduced-motion:reduce){.globo.salta .emo svg{animation:none}}
 .mercado{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
-.bolsa{font:600 17px var(--cuerpo);color:var(--verde);margin:0 0 10px}
+.bolsa{display:flex;align-items:center;gap:4px;font:600 17px var(--cuerpo);color:var(--verde);margin:0 0 10px}
+.ico{width:1.2em;height:1.2em;vertical-align:-.25em;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ie{display:block;color:var(--verde);line-height:0;margin-bottom:3px}
+.ie .ico,.ie .animal,.ie .barca{width:26px;height:26px}
+.eicono{flex:none;color:var(--verde);line-height:0}
+.eicono .ico{width:34px;height:34px}
+.eicono .animal{width:38px;height:38px}
+.eicono .barca{width:40px;height:30px}
+.voz .ico{width:20px;height:20px;vertical-align:middle}
+.paso i .ico{width:12px;height:12px;stroke-width:3}
+.tesoro .ico,.bolsa .ico{width:20px;height:20px;flex:none}
+.tarjeta .listo .ico{width:13px;height:13px;stroke-width:2.5}
 .slots{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 .item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:var(--papel);border:1px solid var(--linea);border-radius:10px;padding:8px 10px;font:400 15px var(--cuerpo);color:var(--gris);cursor:pointer;min-width:100px;text-align:left;line-height:1.25}
-.item .ie{font-size:22px;line-height:1.1}
 .item .ip{font:600 14px var(--cuerpo);color:var(--verde-medio)}
 .item small{font-size:12px;color:var(--gris2)}
 .item.vacio{border-style:dashed;border-color:var(--gris3);color:var(--gris3);justify-content:center;align-items:center;cursor:default;min-height:64px}
 .item.no{opacity:.45}
-.tesoro{font:600 16px var(--cuerpo);color:var(--verde);margin:0 0 14px}
+.tesoro{display:flex;align-items:center;gap:4px;font:600 16px var(--cuerpo);color:var(--verde);margin:0 0 14px}
 .tabs.modo{max-width:320px;margin-bottom:6px}
 .chip.bien{background:var(--verde);color:#fff;border-color:var(--verde)}
 .chip[disabled]{cursor:default}
