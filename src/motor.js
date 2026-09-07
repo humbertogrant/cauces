@@ -182,14 +182,17 @@ const textoAltura=(r,i)=>{const a=alturaParada(r,i);return a==null?'':a<0?` · e
 const fraseAltura=(r,i)=>{const a=alturaParada(r,i);return a==null?'':a<0?`El río va ${-a} metros bajo el nivel del océano.`:a<5?'El río ya va al nivel del mar.':`El río pasa a ${a} metros sobre el mar.`};
 function fracActual(r){const n=r.paradas.length,p=S.paso,fp=k=>k<=0?0:k>n?1:fracParada(r,k-1);return S.evento?(fp(p)+fp(p+1))/2:fp(p)}
 const anio=f=>{const t=String(f||''),m=t.match(/\d{3,4}/);return m?(/a\.\s?C/.test(t)?-m[0]:+m[0]):null};/* «334 a. C.» → -334 */
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+/* año con fracción de mes («junio de 1812» → 1812,46) para colocar en la línea de tiempo y medir lapsos cortos; anio() sigue dando el año entero */
+const fechaNum=f=>{const a=anio(f);if(a==null)return null;const t=String(f).toLowerCase(),k=MESES.findIndex(x=>t.includes(x));return k<0?a:a+(k+0.5)/12};
 const txtAnio=a=>a<0?`${-a} a. C.`:String(a);
-const conFranja=r=>!!(r.perfil||(anio(r.inicio.fecha)!=null&&anio(r.fin.fecha)!=null&&r.paradas.some(c=>anio(c.fecha)!=null)));
+const conFranja=r=>!!(r.perfil||(fechaNum(r.inicio.fecha)!=null&&fechaNum(r.fin.fecha)!=null&&fechaNum(r.fin.fecha)>fechaNum(r.inicio.fecha)));
 function tiempoSVG(r){/* línea de tiempo: para las rutas con fechas (itinerarios), lo que el perfil de altura es para los ríos */
-  const el=document.getElementById('perfil'),W=Math.max(300,(el&&el.clientWidth)||380),H=56,x0=12,x1=W-12,y=31,a0=anio(r.inicio.fecha),a1=anio(r.fin.fecha),ff=r.paradas.map(c=>anio(c.fecha));if(a0==null||a1==null||a1<=a0)return '';
+  const el=document.getElementById('perfil'),W=Math.max(300,(el&&el.clientWidth)||380),H=56,x0=12,x1=W-12,y=31,a0=fechaNum(r.inicio.fecha),a1=fechaNum(r.fin.fecha),ff=r.paradas.map(c=>fechaNum(c.fecha)),mismoAnio=anio(r.inicio.fecha)===anio(r.fin.fecha),t0=mismoAnio?esc(r.inicio.fecha):txtAnio(anio(r.inicio.fecha)),t1=mismoAnio?esc(r.fin.fecha):txtAnio(anio(r.fin.fecha));if(a0==null||a1==null||a1<=a0)return '';
   const X=a=>x0+(a-a0)/(a1-a0)*(x1-x0),n=r.paradas.length,p=S.paso,ap=k=>k<=0?a0:k>n?a1:(ff[k-1]!=null?ff[k-1]:a0),aa=S.evento?(ap(p)+ap(p+1))/2:ap(p),xa=X(aa);
-  let h=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Línea de tiempo del viaje de ${esc(r.nombre)}: de ${txtAnio(a0)} a ${txtAnio(a1)}"><line class="perfil-base" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>`;
-  h+=`<text class="perfil-txt" x="${x0}" y="${y-9}">${txtAnio(a0)}</text><text class="perfil-txt" x="${x1}" y="${y-9}" text-anchor="end">${txtAnio(a1)}</text>`;
-  r.paradas.forEach((c,i)=>{if(ff[i]==null)return;const x=X(ff[i]);h+=`<circle class="perfil-tick" cx="${x.toFixed(1)}" cy="${y}" r="2.2"><title>${esc(c.nombre)}: ${esc(c.fecha)}</title></circle>${i%2?`<text class="perfil-txt k" x="${x.toFixed(1)}" y="${y+15}" text-anchor="middle">${txtAnio(ff[i])}</text>`:''}`});
+  let h=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Línea de tiempo del viaje de ${esc(r.nombre)}: de ${t0} a ${t1}"><line class="perfil-base" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>`;
+  h+=`<text class="perfil-txt" x="${x0}" y="${y-9}">${t0}</text><text class="perfil-txt" x="${x1}" y="${y-9}" text-anchor="end">${t1}</text>`;let ult=null;
+  r.paradas.forEach((c,i)=>{if(ff[i]==null)return;const x=X(ff[i]);h+=`<circle class="perfil-tick" cx="${x.toFixed(1)}" cy="${y}" r="2.2"><title>${esc(c.nombre)}: ${esc(c.fecha)}</title></circle>${(()=>{const e=mismoAnio?'':txtAnio(anio(c.fecha));if(!e||e===ult)return '';ult=e;return `<text class="perfil-txt k" x="${x.toFixed(1)}" y="${y+15}" text-anchor="middle">${e}</text>`})()}`});
   const nom=p<=0?r.inicio.nombre:p>n?r.fin.en:r.paradas[p-1].nombre,fe=p>=1&&p<=n?r.paradas[p-1].fecha:p<=0?r.inicio.fecha:r.fin.fecha;
   h+=`<circle class="perfil-aqui" cx="${xa.toFixed(1)}" cy="${y}" r="4"/><text class="perfil-txt" x="${Math.min(Math.max(xa,60),W-60).toFixed(1)}" y="${H-4}" text-anchor="middle">${esc(nom)}${fe?' · '+esc(fe):''}</text>`;
   return h+'</svg>'}
@@ -373,7 +376,7 @@ function preguntaTipo(tipo,r,extra){const V=r.vocab;
     for(let k=0;k<8&&!sel&&alts[0]!=null;k++){const g=mezclar(r.paradas.map((c,i)=>i)).slice(0,4),top=g.reduce((m,i)=>alts[i]>alts[m]?i:m,g[0]),seg=Math.max(...g.filter(i=>i!==top).map(i=>alts[i]));if(alts[top]>=seg+25&&alts[top]>=seg*1.15)sel={g,top}}
     if(!sel)return preguntaTipo('cerca',r);/* sin diferencia clara de altura: pregunta de orden */
     return armar({tipo,rio:r.id,ciudad:sel.top,texto:V.preguntas.altura(r),nota:V.preguntas.alturaNota+r.paradas.map((c,i)=>`${c.nombre} ${km(alts[i])} m`).join(' · ')+'.',cardId:null},esc(r.paradas[sel.top].nombre),sel.g.filter(i=>i!==sel.top).map(i=>esc(r.paradas[i].nombre)))}
-  if(tipo==='fecha'){const con=r.paradas.map((c,i)=>i).filter(i=>anio(r.paradas[i].fecha)!=null),porAnio={};con.forEach(i=>{const a=anio(r.paradas[i].fecha);if(!(a in porAnio))porAnio[a]=r.paradas[i].fecha});const anos=Object.values(porAnio);if(anos.length<4)return preguntaTipo('cerca',r);
+  if(tipo==='fecha'){const con=r.paradas.map((c,i)=>i).filter(i=>anio(r.paradas[i].fecha)!=null),porAnio={};con.forEach(i=>{const a=anio(r.paradas[i].fecha);if(!(a in porAnio))porAnio[a]=r.paradas[i].fecha});const anos=Object.values(porAnio);if(anos.length<4)return preguntaTipo(r.tipo==='rio'?'cerca':'imagen',r);
     const i=extra!=null&&r.paradas[extra]&&anio(r.paradas[extra].fecha)!=null?extra:azar(con),c=r.paradas[i],otras=mezclar(anos.filter(a=>anio(a)!==anio(c.fecha))).slice(0,3);
     return armar({tipo,rio:r.id,ciudad:i,texto:V.preguntas.fecha(r,c),nota:V.preguntas.fechaNota(r),cardId:'ciudad:'+r.id+':'+i},esc(c.fecha),otras.map(esc))}
   if(tipo==='orden'){const U=unidades(r),N=U.length;if(N<4)return preguntaTipo(r.tipo==='rio'?'cerca':'imagen',r);const a=Math.floor(Math.random()*(N-3)),grupo=[a,a+1,a+2,a+3],nombre=g=>g.map(i=>esc(U[i].nombre)).join(' → '),ok=nombre(grupo),vistos=new Set([ok]),otras=[];let tries=0;
@@ -385,7 +388,7 @@ function preguntaTipo(tipo,r,extra){const V=r.vocab;
 function tiposDisponibles(r){/* tipos de pregunta que se pueden armar para esta ruta en este juego; con menos de cuatro rutas no hay distractores de otras rutas */
   if(RUTAS.length>=4&&r.tipo==='rio')return ['ciudad','imagen','cerca','siguiente','antigua','moderna','mar','frase','pais','altura'];
   /* viajes: sin «cerca» ni «siguiente» (secuencia fina, cosa de ríos); en su lugar la magnitud: punto más lejano, lo que cruzó, cuánto duró, cuál fue primero */
-  const t=['imagen','pais','fin','orden'];if(RUTAS.length>=4)t.push('ciudad','frase',...r.contexto.map(c=>c.clave));if(r.paradas.some(c=>anio(c.fecha)!=null))t.push('fecha');if(r.perfil)t.push('altura');if(typeof TIPOS_VIAJE==='function')t.push(...TIPOS_VIAJE(r));return t}
+  const t=['imagen','pais','fin','orden'];if(RUTAS.length>=4)t.push('ciudad','frase',...r.contexto.map(c=>c.clave));if(new Set(r.paradas.map(c=>anio(c.fecha)).filter(a=>a!=null)).size>=4)t.push('fecha');if(r.perfil)t.push('altura');if(typeof TIPOS_VIAJE==='function')t.push(...TIPOS_VIAJE(r));return t}
 /* unidades de una ruta para ordenar y preguntar el orden: las paradas, o los tramos con nombre si el viaje los trae */
 const unidades=r=>r.tramos?r.tramos.map((t,i)=>({nombre:t.nombre,desde:i?r.tramos[i-1].hasta+1:0,hasta:t.hasta})):r.paradas.map((c,i)=>({nombre:c.nombre,desde:i,hasta:i}));
 /*@vocab:itinerario*/
@@ -393,12 +396,13 @@ const unidades=r=>r.tramos?r.tramos.map((t,i)=>({nombre:t.nombre,desde:i?r.tramo
 const redondoKm=k=>k>=10000?Math.round(k/1000)*1000:Math.round(k/100)*100;
 const aniosEntre=(a,b)=>{const x=anio(a),y=anio(b);return x!=null&&y!=null&&y>x?y-x:null};
 const txtAnios=y=>y+(y===1?' año':' años');
+const lapso=(a,b)=>{const y=aniosEntre(a,b);if(y)return txtAnios(y);const x=fechaNum(a),z=fechaNum(b);if(x==null||z==null||z<=x)return '';const m=Math.round((z-x)*12);return m>=1?m+(m===1?' mes':' meses'):''};
 /* escala acumulada hasta una etapa: kilómetros del dibujo desde la partida y años desde la fecha de partida */
-const escalaViaje=(r,c)=>{const y=aniosEntre(r.inicio.fecha,c.fecha);return `${num('≈'+km(redondoKm(c.km))+' km')}${y?` y ${num(txtAnios(y))}`:''} desde ${esc(r.inicio.nombre)}`};
-const resumenViaje=r=>{const y=aniosEntre(r.inicio.fecha,r.fin.fecha);return `unos ${km(redondoKm(r.kmPoly))} km de etapa en etapa${y?` y ${txtAnios(y)}`:''}`};
+const escalaViaje=(r,c)=>{const d=lapso(r.inicio.fecha,c.fecha);return `${num('≈'+km(redondoKm(c.km))+' km')}${d?` y ${num(d)}`:''} desde ${esc(r.inicio.nombre)}`};
+const resumenViaje=r=>{const d=lapso(r.inicio.fecha,r.fin.fecha);return `unos ${km(redondoKm(r.kmPoly))} km de etapa en etapa${d?` y ${d}`:''}`};
 const duracionViaje=r=>aniosEntre(r.inicio.fecha,r.fin.fecha);
 const masLejana=r=>{const d=r.paradas.map(c=>hav(r.curso[0],c.pos)),top=d.indexOf(Math.max(...d)),seg=Math.max(...d.filter((x,i)=>i!==top));return d[top]>=seg*1.15?top:null};
-function TIPOS_VIAJE(r){const t=[];if(masLejana(r)!=null)t.push('lejos');if(r.cruza&&r.cruza.length&&RUTAS.some(x=>x.id!==r.id&&x.cruza))t.push('cruza');if(duracionViaje(r))t.push('duracion');if(duracionViaje(r)&&RUTAS.filter(x=>duracionViaje(x)).length>=4)t.push('primero');return t}
+function TIPOS_VIAJE(r){const t=[];if(masLejana(r)!=null)t.push('lejos');if(r.cruza&&r.cruza.length&&RUTAS.some(x=>x.id!==r.id&&x.cruza))t.push('cruza');if(duracionViaje(r))t.push('duracion');if(anio(r.inicio.fecha)!=null&&RUTAS.filter(x=>anio(x.inicio.fecha)!=null).length>=4)t.push('primero');return t}
 function preguntaViaje(tipo,r){const V=r.vocab,card=r.pref+'escala';
   if(tipo==='lejos'){const top=masLejana(r),otras=mezclar(r.paradas.map((c,i)=>i).filter(i=>i!==top)).slice(0,3);
     return armar({tipo,rio:r.id,ciudad:top,texto:V.preguntas.lejos(r),nota:V.preguntas.lejosNota(r,r.paradas[top]),cardId:card},esc(r.paradas[top].nombre),otras.map(i=>esc(r.paradas[i].nombre)))}
@@ -408,7 +412,7 @@ function preguntaViaje(tipo,r){const V=r.vocab,card=r.pref+'escala';
     for(const v of [Math.max(1,Math.round(y/2)),y*2,y+3,y+10])if(dis.length<3&&v!==y&&!dis.includes(v))dis.push(v);
     return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.duracion(r),nota:V.preguntas.duracionNota(r),cardId:card},txtAnios(y),dis.map(txtAnios))}
   /* primero: ¿cuál de estos viajes empezó primero (o de último)? */
-  const con=mezclar(RUTAS.filter(x=>x.id!==r.id&&duracionViaje(x))).slice(0,3).concat([r]),ultimo=Math.random()<0.5,a=x=>anio(x.inicio.fecha);
+  const con=mezclar(RUTAS.filter(x=>x.id!==r.id&&anio(x.inicio.fecha)!=null)).slice(0,3).concat([r]),ultimo=Math.random()<0.5,a=x=>anio(x.inicio.fecha);
   const ok=con.reduce((m,x)=>(ultimo?a(x)>a(m):a(x)<a(m))?x:m,con[0]);
   return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.primero(ultimo),nota:V.preguntas.primeroNota(con.slice().sort((x,y)=>a(x)-a(y))),cardId:card},esc(ok.nombre),con.filter(x=>x!==ok).map(x=>esc(x.nombre)))}
 /*@fin:itinerario*/
@@ -429,7 +433,7 @@ function renderTrazar(r){const V=r.vocab,T=S.tra,n=r.paradas.length,prev=T.i?r.p
 function focoTrazar(r){const T=S.tra,f={modo:'rio',rio:r,tocar:false,etiquetas:new Set(),actual:null,halo:null,trazar:true,ocultarResto:true};for(let i=0;i<T.i;i++)f.etiquetas.add(i);
   const a=idxParada(r,T.i);if(T.viaje){f.barca={de:idxParada(r,T.i-1),a};T.viaje=false}else f.barca={de:a,a};f.corte=a;f.frac=T.i/(r.paradas.length+1);return f}
 function renderComparar(){const rs=RUTAS.filter(r=>r.tipo!=='rio');if(rs.length<2)return '';const maxK=Math.max(...rs.map(r=>r.kmPoly));
-  return `<div class="ficha comparar"><span class="rotulo">Los viajes, en escala</span>${rs.slice().sort((a,b)=>b.kmPoly-a.kmPoly).map(r=>{const y=duracionViaje(r);return `<button class="cmp" onclick="abrirRio('${r.id}')"><span class="cn">${esc(r.nombre)}</span><span class="cm">${num('≈'+km(redondoKm(r.kmPoly))+' km')}${y?` · ${num(txtAnios(y))}`:''}</span><span class="barra"><i style="width:${Math.round(r.kmPoly/maxK*100)}%"></i></span></button>`}).join('')}<p class="fnota">Kilómetros de etapa en etapa según el dibujo del mapa; años entre la partida y el regreso.</p></div>`}
+  return `<div class="ficha comparar"><span class="rotulo">Los viajes, en escala</span>${rs.slice().sort((a,b)=>b.kmPoly-a.kmPoly).map(r=>{const d=lapso(r.inicio.fecha,r.fin.fecha);return `<button class="cmp" onclick="abrirRio('${r.id}')"><span class="cn">${esc(r.nombre)}</span><span class="cm">${num('≈'+km(redondoKm(r.kmPoly))+' km')}${d?` · ${num(d)}`:''}</span><span class="barra"><i style="width:${Math.round(r.kmPoly/maxK*100)}%"></i></span></button>`}).join('')}<p class="fnota">Kilómetros de etapa en etapa según el dibujo del mapa; años entre la partida y el regreso.</p></div>`}
 /*@fin:itinerario*/
 function preguntaDeCard(id){const p=id.split(':'),r=rutaPor(p[1]);if(!r)return null;const T=tiposDisponibles(r);
   if(p[0]==='ciudad')return preguntaTipo(azar(['ciudad','imagen'].filter(t=>T.includes(t)).concat(T.includes('fecha')?['fecha']:[])),r,+p[2]);

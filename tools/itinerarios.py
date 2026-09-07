@@ -11,6 +11,7 @@ muestran con nombre: son solo el dibujo del camino.
 import json,os,re,math
 RAIZ=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PASO=80  # km entre vértices
+PASO_RUTA={'napoleon':45}  # rutas cortas: vértices más seguidos para que el trazo tenga cuerpo (el test pide 40 o más)
 # Puntos de paso [lat, lon] en orden; los que coinciden con una parada llevan el nombre para comprobar que el trazo pasa por ella.
 PUNTOS={
  'ibnbattuta':[
@@ -42,6 +43,10 @@ PUNTOS={
   [34.3,11.6],[35.6,12.8],[36.7,14.0],[37.1,15.4],('Etna',[37.6,15.17]),[38.0,15.45],[38.25,15.63],[38.4,15.4],('Lípari',[38.47,14.95]),[39.3,14.3],[40.3,13.4],[41.0,12.9],('Circeo',[41.23,13.05]),
   [40.9,13.6],[40.7,14.2],('Sirenas',[40.58,14.43]),[40.0,15.0],[39.3,15.4],[38.6,15.7],('Mesina',[38.25,15.63]),[37.6,15.5],[36.9,15.4],[36.4,14.9],('Gozo',[36.05,14.25]),
   [36.0,15.5],[36.8,18.0],[38.4,19.6],('Corfú',[39.62,19.92]),[39.0,20.4],[38.6,20.6],('Ítaca',[38.37,20.72])],
+ 'napoleon':[
+  ('Kaunas',[54.9,23.9]),[54.8,24.6],('Vilna',[54.69,25.28]),[54.95,26.4],[55.1,27.7],[55.15,29.0],('Vítebsk',[55.19,30.2]),[54.95,31.1],('Smolensk',[54.78,32.05]),[54.95,33.3],[55.2,34.3],[55.55,35.0],('Borodinó',[55.52,35.83]),
+  [55.5,36.6],('Moscú',[55.75,37.62]),[55.45,37.3],('Maloyaroslávets',[55.02,36.46]),[55.35,35.95],[55.55,35.0],[55.2,34.3],[54.95,33.3],[54.78,32.05],('Krasny',[54.57,31.45]),[54.5,30.4],[54.4,29.4],('Berézina',[54.3,28.48]),
+  [54.35,27.4],[54.48,26.4],('Vilna',[54.69,25.28])],
  'zhenghe':[
   ('Nankín',[32.06,118.8]),[31.45,121.1],[26.0,120.5],[19.5,113.0],('Champa',[13.78,109.22]),[6.0,109.0],[-3.0,110.5],('Java',[-7.25,112.75]),[-6.1,106.8],[1.3,103.8],('Malaca',[2.19,102.25]),[5.1,97.2],[6.03,80.22],('Calicut',[11.25,75.78]),
   [6.03,80.22],[5.1,97.2],[1.3,103.8],('Palembang',[-2.99,104.76]),[1.3,103.8],[2.19,102.25],[5.1,97.2],[6.03,80.22],[11.25,75.78],[15.5,60.0],[13.5,50.5],('Adén',[12.8,45.03]),[11.5,45.5],[9.5,50.9],('Mogadiscio',[2.05,45.34]),[-1.0,42.5],('Malindi',[-3.22,40.12]),
@@ -60,15 +65,15 @@ def geodesica(a,b,n):
         x=A*math.cos(la1)*math.cos(lo1)+B*math.cos(la2)*math.cos(lo2);y=A*math.cos(la1)*math.sin(lo1)+B*math.cos(la2)*math.sin(lo2);z=A*math.sin(la1)+B*math.sin(la2)
         out.append([round(math.degrees(math.atan2(z,math.hypot(x,y))),2),round(math.degrees(math.atan2(y,x)),2)])
     return out
-def trazo(puntos):
+def trazo(puntos,paso=PASO):
     pts=[p[1] if isinstance(p,tuple) else p for p in puntos];out=[pts[0]]
     for a,b in zip(pts,pts[1:]):
-        n=int(hav(a,b)//PASO);out+=geodesica(a,b,n)+[b]
+        n=int(hav(a,b)//paso);out+=geodesica(a,b,n)+[b]
     return out
 
 p=os.path.join(RAIZ,'src','data','itinerarios.js');s=open(p,encoding='utf8').read()
 for rid,puntos in PUNTOS.items():
-    t=trazo(puntos);nombres=[x[0] for x in puntos if isinstance(x,tuple)]
+    t=trazo(puntos,PASO_RUTA.get(rid,PASO));nombres=[x[0] for x in puntos if isinstance(x,tuple)]
     txt='['+','.join('[%s,%s]'%(('%.2f'%la).rstrip('0').rstrip('.'),('%.2f'%lo).rstrip('0').rstrip('.')) for la,lo in t)+']'
     pat=re.compile(r"(\{id:'%s',.*?\n trazo:)\[\[.*?\]\]\]"%rid,re.S);m=pat.search(s);assert m,rid
     s=s[:m.start()]+m.group(1)+'['+txt+']'+s[m.end():]

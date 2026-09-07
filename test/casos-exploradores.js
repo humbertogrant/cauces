@@ -38,7 +38,8 @@ for(const r of RUTAS){
 }
 {const qd=preguntaTipo('fecha',rioPor('alejandro'));if(qd.tipo!=='fecha'||!/a\. C\./.test(qd.opciones[qd.correcta])||new Set(qd.opciones.map(anio)).size!==4)throw 'fecha antes de Cristo: '+JSON.stringify(qd.opciones);
  const qz=preguntaTipo('fecha',rioPor('zhenghe'));if(qz.tipo!=='fecha'||new Set(qz.opciones.map(anio)).size!==4)throw 'fechas repetidas por año: '+JSON.stringify(qz.opciones);
- if(preguntaTipo('fecha',rioPor('cortes')).tipo!=='cerca')throw 'Cortés tiene tres años: la pregunta de fecha debía caer a cerca';
+ if(preguntaTipo('fecha',rioPor('cortes')).tipo!=='imagen'||tiposDisponibles(rioPor('cortes')).includes('fecha'))throw 'Cortés tiene tres años: sin pregunta de fecha, y si se pide cae a imagen';
+ {const r=rioPor('napoleon');if(fechaNum('junio de 1812')<1812.4||fechaNum('junio de 1812')>1812.5||lapso(r.inicio.fecha,r.fin.fecha)!=='6 meses'||!conFranja(r)||tiempoSVG(r).indexOf('junio de 1812')<0)throw 'fechas con mes: '+lapso(r.inicio.fecha,r.fin.fecha);if(tiposDisponibles(r).includes('duracion')||!tiposDisponibles(r).includes('primero'))throw 'Napoleón: sin duración en años, con «primero»'}
  if(anio('334 a. C.')!==-334||anio('hacia 1332')!==1332||txtAnio(-323)!=='323 a. C.')throw 'años';
  const qd2=preguntaTipo('duracion',rioPor('ibnbattuta'));if(qd2.opciones[qd2.correcta]!=='29 años'||new Set(qd2.opciones).size!==4)throw 'duración de Ibn Battuta: '+JSON.stringify(qd2.opciones);
  const qp=preguntaTipo('primero',rioPor('marcopolo')),ini=nm=>anio(RUTAS.find(x=>esc(x.nombre)===nm).inicio.fecha),vals=qp.opciones.map(ini),esp=/último/.test(qp.texto)?Math.max(...vals):Math.min(...vals);if(ini(qp.opciones[qp.correcta])!==esp)throw 'primero: '+qp.texto+' '+JSON.stringify(qp.opciones);
