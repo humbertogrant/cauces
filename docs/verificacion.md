@@ -445,22 +445,22 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - El mundo que vio: De Marruecos a China, un viajero musulmán del siglo XIV encontraba en cada ciudad gente que hablaba árabe, hospedaje para peregrinos y sultanes que pagaban a un letrado por servir de juez. ⚠
 - Lo que queda: Su relato, la Rihla, dictado en Fez en 1355, es la mejor fuente que existe sobre muchas de esas ciudades en el siglo XIV. ⚠
 - Lo que queda · pista: Un relato dictado al volver a casa que hoy es la mejor fuente sobre medio mundo en aquel siglo.
-- El Cairo · fecha: 1326 ⚠
+- El Cairo · fecha: 1326 · rumbo: Por tierra, a lo largo del norte de África, hasta el Nilo ⚠
 - El Cairo · dato: Con los sultanes mamelucos, El Cairo era la ciudad más grande del mundo islámico; Ibn Battuta la llama «madre de ciudades». ⚠
 - El Cairo · dato: Llegó en 1326, en su primer año de viaje, y desde aquí siguió a Damasco y a La Meca.
-- La Meca · fecha: 1326 ⚠
+- La Meca · fecha: 1326 · rumbo: Al sur, por el desierto de Arabia, en la caravana de peregrinos ⚠
 - La Meca · dato: Aquí hizo su primer hach, la peregrinación, en 1326: era el motivo del viaje.
-- Bagdad · fecha: 1327 ⚠
+- Bagdad · fecha: 1327 · rumbo: Al noreste, hacia los ríos de Irak ⚠
 - Bagdad · dato: Setenta años antes, en 1258, los mongoles habían arrasado Bagdad. ⚠
-- Kilwa · fecha: 1331 ⚠
-- Constantinopla · fecha: hacia 1332 ⚠
+- Kilwa · fecha: 1331 · rumbo: Por mar, costa abajo de África oriental ⚠
+- Constantinopla · fecha: hacia 1332 · rumbo: Al norte, por Anatolia y el mar Negro, con una princesa ⚠
 - Constantinopla · imagen: Una princesa lo lleva de la mano por una ciudad de cúpulas y murallas, y él va contando campanas: era la primera gran ciudad cristiana que veía.
-- Delhi · fecha: 1334 ⚠
+- Delhi · fecha: 1334 · rumbo: Al este, por Asia Central y las montañas, hasta la India ⚠
 - Delhi · dato: El sultán Muhammad ibn Tughluq lo nombró cadí, es decir juez, y en 1341 lo mandó como embajador a China. ⚠
-- Malé · fecha: 1344 ⚠
+- Malé · fecha: 1344 · rumbo: Por mar, a unas islas pequeñas al sur de la India ⚠
 - Malé · dato: Fue cadí en las islas cerca de un año, entre 1343 y 1344, y se casó allí.
-- Quanzhou · fecha: hacia 1346 ⚠
-- Tombuctú · fecha: 1353 ⚠
+- Quanzhou · fecha: hacia 1346 · rumbo: Por mar, con los monzones, hasta China ⚠
+- Tombuctú · fecha: 1353 · rumbo: A través del Sáhara, en caravana, hasta el Níger ⚠
 - Tombuctú · dato: Volvió a Fez en 1354 y en 1355 dictó su relato, la Rihla. ⚠
 - Llegada: Veintinueve años y unos 120 000 km después, la caravana entra en Fez. ⚠
 - Llegada: Ahí, en 1355, dicta la Rihla. ⚠
@@ -476,20 +476,20 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Lo que queda: Las ruinas de Shangdu, la capital de verano de Kublai, son Patrimonio de la Humanidad desde 2012. ⚠
 - Lo que queda: Algunos historiadores dudan de que llegara a China, porque no menciona la muralla ni el té; la mayoría cree que sí estuvo.
 - Lo que queda · pista: Un libro tan famoso que un navegante lo llevó anotado siglos después, y una ciudad de verano en ruinas.
-- Acre · fecha: 1271 ⚠
+- Acre · fecha: 1271 · rumbo: Por mar, a Tierra Santa ⚠
 - Acre · dato: Acre era en 1271 la capital de lo que quedaba de los Estados cruzados; cayó en 1291.
-- Ormuz · fecha: 1272 ⚠
+- Ormuz · fecha: 1272 · rumbo: Por tierra, atravesando Persia hasta el golfo ⚠
 - Ormuz · dato: Volvió a pasar por aquí en 1294, de regreso.
-- Kashgar · fecha: hacia 1274 ⚠
-- Shangdu · fecha: 1275 ⚠
+- Kashgar · fecha: hacia 1274 · rumbo: Al norte y al este, por las montañas del Pamir ⚠
+- Shangdu · fecha: 1275 · rumbo: Por el desierto, hasta el palacio de verano del Gran Kan ⚠
 - Shangdu · dato: Capital de verano de Kublai, al norte de la Gran Muralla; aquí llegaron en 1275, tres años y medio después de salir de Venecia. ⚠
 - Shangdu · dato: Su descripción del palacio inspiró siglos después el poema «Kubla Khan» de Coleridge. ⚠
-- Pekín · fecha: 1275 ⚠
-- Hangzhou · fecha: hacia 1285 ⚠
+- Pekín · fecha: 1275 · rumbo: Al sur, a la capital del Gran Kan ⚠
+- Hangzhou · fecha: hacia 1285 · rumbo: Al sur, por la China de los ríos y los canales ⚠
 - Hangzhou · dato: Había sido la capital de la dinastía Song hasta 1276.
-- Sumatra · fecha: 1292 ⚠
-- Ceilán · fecha: 1293 ⚠
-- Trebisonda · fecha: 1295 ⚠
+- Sumatra · fecha: 1292 · rumbo: Por mar, rumbo al sur, con una princesa para Persia ⚠
+- Ceilán · fecha: 1293 · rumbo: Por mar, cruzando el golfo de Bengala ⚠
+- Trebisonda · fecha: 1295 · rumbo: Por mar y por tierra, de vuelta hacia el mar Negro ⚠
 - Trebisonda · dato: De aquí siguieron a Constantinopla y a Venecia, adonde llegaron en 1295 y, cuenta la leyenda, nadie los reconoció. ⚠
 
 ## Alejandro Magno (334-323 a. C., de Pela a Babilonia)
@@ -501,19 +501,19 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - El mundo que vio · pista: El imperio más grande que había existido, con caminos reales y tesoros, cayó en tres batallas ante un ejército mucho más chico.
 - Lo que queda: Después de él, el griego se habló de Egipto a la India durante siglos, y las ciudades que fundó siguen ahí: Alejandría es la primera.
 - Lo que queda · pista: Una lengua hablada desde el Nilo hasta el Indo durante siglos y una ciudad fundada por él que todavía lleva su nombre.
-- Gordio · fecha: 333 a. C. ⚠
-- Issos · fecha: 333 a. C. ⚠
+- Gordio · fecha: 333 a. C. · rumbo: Cruzando el Helesponto, tierra adentro en Asia Menor ⚠
+- Issos · fecha: 333 a. C. · rumbo: Al sureste, bajando a la costa de Cilicia ⚠
 - Issos · dato: En la llanura de Issos, entre las montañas y el mar, Alejandro venció a Darío III en el 333 a. C.
-- Tiro · fecha: 332 a. C. ⚠
-- Alejandría · fecha: 331 a. C. ⚠
+- Tiro · fecha: 332 a. C. · rumbo: Al sur, por la costa de Fenicia ⚠
+- Alejandría · fecha: 331 a. C. · rumbo: Al suroeste, hasta la boca del Nilo ⚠
 - Alejandría · dato: La fundó en el 331 a. C. en la costa de Egipto, donde lo habían recibido como libertador y como faraón.
 - Alejandría · dato: Fue la primera de muchas Alejandrías y llegó a ser la ciudad más grande del Mediterráneo, con su faro y su biblioteca.
-- Gaugamela · fecha: 331 a. C. ⚠
+- Gaugamela · fecha: 331 a. C. · rumbo: Al noreste, cruzando el Éufrates y el Tigris ⚠
 - Gaugamela · dato: La batalla decisiva, el 1 de octubre del 331 a. C., cerca de Mosul.
-- Persépolis · fecha: 330 a. C. ⚠
+- Persépolis · fecha: 330 a. C. · rumbo: Al sureste, al corazón de Persia ⚠
 - Persépolis · dato: Alejandro la ocupó en el 330 a. C. y, meses después, su palacio ardió tras un banquete; si fue venganza por Atenas o un accidente, todavía se discute.
-- Samarcanda · fecha: 329 a. C. ⚠
-- Hidaspes · fecha: 326 a. C. ⚠
+- Samarcanda · fecha: 329 a. C. · rumbo: Al noreste, cruzando el Hindu Kush hasta Asia Central ⚠
+- Hidaspes · fecha: 326 a. C. · rumbo: Al sureste, a la India, hasta el río de la batalla con Poros ⚠
 - Hidaspes · dato: A orillas del río Hidaspes, hoy Jhelum, venció al rey Poros y a sus elefantes en el 326 a. C., en plena lluvia del monzón.
 - Vehículo: Unos 40 000 soldados: la falange a pie, con sarisas de seis metros, y la caballería de los Compañeros, con Alejandro al frente.
 - Llegada: Once años y más de 30 000 km después, el camino termina en Babilonia, en junio del 323 a. C. ⚠
@@ -529,32 +529,32 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - El mundo que vio: Y la viruela, que llegó con los españoles en 1520, mató a más gente que las batallas.
 - Lo que queda: La Ciudad de México está sobre el lago seco y sobre las ruinas de Tenochtitlan: el Templo Mayor apareció junto a la catedral en 1978. ⚠
 - Lo que queda: En 2021, a los 500 años, México discutió si conmemorar la caída o la resistencia; la palabra «conquista» sigue en debate.
-- Cozumel · fecha: 1519 ⚠
+- Cozumel · fecha: 1519 · rumbo: Por mar, al oeste, hasta una isla de Yucatán ⚠
 - Cozumel · imagen: Una cosa que muele (Cozu-mel) tortillas en una isla, y un náufrago español que llevaba ocho años entre mayas aparece hablando su lengua: Jerónimo de Aguilar, el primer traductor.
 - Cozumel · dato: Primera escala en tierra maya, en febrero de 1519.
 - Cozumel · dato: Aquí recogieron a Jerónimo de Aguilar, náufrago de 1511 que hablaba maya; con Malintzin, que hablaba maya y náhuatl, formó la cadena de traducción de toda la expedición.
-- Tabasco · fecha: 1519 ⚠
+- Tabasco · fecha: 1519 · rumbo: Por mar, bordeando la costa hacia el oeste ⚠
 - Tabasco · imagen: Una tabla de surf con sombrero (Tabas-co) donde por primera vez los caballos entran en batalla, y los mayas creen que caballo y jinete son un solo animal.
 - Tabasco · dato: En la batalla de Centla, en marzo de 1519, los mayas chontales vieron caballos por primera vez.
-- Veracruz · fecha: 1519 ⚠
+- Veracruz · fecha: 1519 · rumbo: Por mar, más al norte, hasta la costa del Golfo ⚠
 - Veracruz · dato: Cortés desembarcó en abril de 1519 y fundó la Villa Rica de la Vera Cruz; el nuevo cabildo lo nombró capitán, con lo que se libró de la autoridad del gobernador de Cuba. ⚠
 - Veracruz · dato: Aquí recibió a los primeros embajadores de Moctezuma con regalos de oro.
-- Cempoala · fecha: 1519 ⚠
+- Cempoala · fecha: 1519 · rumbo: Tierra adentro, a la ciudad de los totonacas ⚠
 - Cempoala · dato: Ciudad totonaca, la primera aliada de Cortés: su cacique se quejó del tributo mexica y Cortés apresó a los recaudadores.
-- Tlaxcala · fecha: 1519 ⚠
+- Tlaxcala · fecha: 1519 · rumbo: Subiendo la sierra, hasta la meseta ⚠
 - Tlaxcala · imagen: Tlaxcala es una taza (Tlax-cala) que primero te tira y después te invita a comer: pelearon dos semanas y luego se hicieron aliados para siempre.
 - Tlaxcala · dato: Los tlaxcaltecas, enemigos de los mexicas, combatieron a los españoles en septiembre de 1519 y después pactaron con ellos.
-- Cholula · fecha: 1519 ⚠
+- Cholula · fecha: 1519 · rumbo: Al sur, a la ciudad de las pirámides ⚠
 - Cholula · imagen: La pirámide más grande del mundo con una iglesia encima y un chorro de lula (Cho-lula): aquí la expedición mató a cientos de personas en la plaza, un día de octubre.
 - Cholula · dato: Ciudad sagrada con la pirámide más grande del mundo por volumen, hoy con una iglesia en la cima.
 - Cholula · dato: En octubre de 1519, diciendo que preparaban una emboscada, los españoles y sus aliados mataron a cientos de cholultecas en la plaza; las fuentes discuten si la emboscada era real.
-- Tenochtitlan · fecha: 1519 ⚠
+- Tenochtitlan · fecha: 1519 · rumbo: Al oeste, entre los volcanes, hasta el lago ⚠
 - Tenochtitlan · imagen: Una ciudad flotante con calles de agua y un emperador que baja de su litera para saludar a un extranjero en un puente: el 8 de noviembre, Moctezuma y Cortés se dieron collares.
 - Tenochtitlan · dato: El 8 de noviembre de 1519 Moctezuma recibió a Cortés en la calzada de Iztapalapa.
-- Otumba · fecha: 1520 ⚠
+- Otumba · fecha: 1520 · rumbo: Huyendo del lago hacia el noreste, la Noche Triste ⚠
 - Otumba · dato: La noche del 30 de junio de 1520, la Noche Triste, los españoles escaparon de Tenochtitlan con cientos de muertos.
 - Otumba · dato: El 7 de julio, en la llanura de Otumba, vencieron al ejército que los perseguía y llegaron a Tlaxcala a rehacerse.
-- Texcoco · fecha: 1521 ⚠
+- Texcoco · fecha: 1521 · rumbo: De vuelta a la orilla del lago, para el asedio ⚠
 - Texcoco · dato: Cortés instaló aquí su base en 1521, en la orilla del lago.
 - Texcoco · dato: Tenochtitlan cayó el 13 de agosto de 1521, cuando Cuauhtémoc, el último tlatoani, fue capturado.
 - Rabona en Tabasco: Mi primera batalla.
@@ -567,22 +567,22 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Tramos: Los mares de China y Java · La India · Arabia · África oriental
 - El mundo que vio: Fue la armada más grande del mundo hasta el siglo XX.
 - Lo que queda: En 1433, con el último viaje, la corte mandó parar: los barcos se pudrieron en los astilleros y China dejó el mar justo cuando Portugal empezaba a bajar por África.
-- Champa · fecha: 1405 ⚠
+- Champa · fecha: 1405 · rumbo: Por mar, al sur, hasta la costa de Vietnam ⚠
 - Champa · imagen: Un champú (Cham-pa) de madera de aloe que huele a incienso en una costa de torres de ladrillo: la primera escala de todos los viajes.
 - Champa · dato: Era la primera escala de la flota, a unos diez días de China, y vendía madera de aloe, incienso y marfil. ⚠
-- Java · fecha: 1406 ⚠
+- Java · fecha: 1406 · rumbo: Por mar, al sur, cruzando el ecuador hasta una isla de volcanes ⚠
 - Java · imagen: Una taza de café (Java) tan grande que dentro caben 170 marineros: en Java, en una guerra ajena, la flota perdió tripulantes y cobró una indemnización en oro. ⚠
 - Java · dato: En 1406 la flota llegó a Java en medio de una guerra entre dos reyes; 170 hombres de Zheng He murieron por error y el rey de Majapahit tuvo que pagar una indemnización a China. ⚠
-- Malaca · fecha: hacia 1406 ⚠
+- Malaca · fecha: hacia 1406 · rumbo: Al noroeste, al estrecho por donde pasa todo el comercio ⚠
 - Malaca · dato: Zheng He instaló aquí un almacén fortificado para la flota y llevó a su rey a Nankín en 1411; con la protección china, Malaca se volvió el gran mercado del Asia del sur.
-- Calicut · fecha: 1407 ⚠
+- Calicut · fecha: 1407 · rumbo: Por el golfo de Bengala, con el monzón, hasta la costa de la pimienta ⚠
 - Calicut · dato: Zheng He murió, según muchos, en el viaje de vuelta desde aquí, en 1433.
-- Palembang · fecha: 1407 ⚠
+- Palembang · fecha: 1407 · rumbo: De vuelta al este, a un puerto de río en Sumatra ⚠
 - Palembang · dato: En 1407, de regreso del primer viaje, Zheng He lo derrotó en batalla, lo llevó preso a Nankín y dejó el puerto en manos de un aliado; fue la primera batalla de la flota.
-- Adén · fecha: hacia 1418 ⚠
+- Adén · fecha: hacia 1418 · rumbo: Cruzando el mar Arábigo, hasta la puerta del mar Rojo ⚠
 - Adén · dato: La flota llegó en su quinto viaje, hacia 1418, y el sultán mandó regalos al emperador; los chinos compraron piedras preciosas, ámbar gris y animales raros.
-- Mogadiscio · fecha: hacia 1418 ⚠
-- Malindi · fecha: hacia 1418 ⚠
+- Mogadiscio · fecha: hacia 1418 · rumbo: Al suroeste, a la costa de África ⚠
+- Malindi · fecha: hacia 1418 · rumbo: Al sur, por la costa suajili, hasta el punto más lejano ⚠
 - Malindi · dato: De aquí salió en 1415 una embajada con una jirafa para el emperador Yongle, que la recibió como un qilin, animal de buen augurio de las leyendas chinas; un pintor de la corte la retrató.
 - Vehículo: Las crónicas cuentan unas 300 naves y 27 000 hombres en el primer viaje; el tamaño exacto de los barcos grandes se discute.
 - Salida: Zarpás de Nankín con la flota más grande que ha visto el mar.
@@ -596,18 +596,18 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Tramos: Tracia y África · Sicilia y las Eolias · Las costas de Italia · Las islas del regreso
 - El poema: La Odisea es un poema de veinticuatro cantos, compuesto en griego hacia el siglo VIII a. C. y atribuido a Homero, que cuenta el regreso de Odiseo (Ulises para los romanos) desde Troya hasta Ítaca.
 - El mapa de la tradición · pista: Lugares que la gente lleva siglos buscando en un mar, sabiendo que el poema no los da.
-- Ísmaro · fecha: año 1 del regreso ⚠
+- Ísmaro · fecha: año 1 del regreso · rumbo: Por el Egeo, a la costa de Tracia ⚠
 - Ísmaro · dato: Ciudad de los cícones en la costa de Tracia, la primera del regreso: los griegos la saquean y Marón, sacerdote de Apolo, regala a Odiseo doce ánforas de un vino tan fuerte que se bebe con veinte partes de agua; es el vino que después embriaga al cíclope.
-- Yerba · fecha: año 1 del regreso ⚠
-- Etna · fecha: año 1 del regreso ⚠
+- Yerba · fecha: año 1 del regreso · rumbo: Al sur, con la tormenta, hasta la costa de África ⚠
+- Etna · fecha: año 1 del regreso · rumbo: Al norte, a la isla de los cíclopes ⚠
 - Etna · dato: Tucídides cuenta que los cíclopes fueron los primeros habitantes de Sicilia; la tradición los pone al pie del Etna, y las rocas que el gigante lanzó se muestran frente a Acitrezza.
-- Lípari · fecha: año 1 del regreso ⚠
+- Lípari · fecha: año 1 del regreso · rumbo: A las islas al norte de Sicilia ⚠
 - Lípari · dato: Las islas Eolias, al norte de Sicilia, llevan su nombre desde la Antigüedad; Lípari es la mayor.
-- Circeo · fecha: año 2 del regreso ⚠
-- Sirenas · fecha: año 2 del regreso ⚠
-- Mesina · fecha: año 2 del regreso ⚠
-- Gozo · fecha: años 3 a 10 del regreso ⚠
-- Corfú · fecha: año 10 del regreso ⚠
+- Circeo · fecha: año 2 del regreso · rumbo: Costa arriba, hacia el norte, a la isla de la maga ⚠
+- Sirenas · fecha: año 2 del regreso · rumbo: De vuelta al sur, por el golfo de Nápoles ⚠
+- Mesina · fecha: año 2 del regreso · rumbo: Al estrecho entre Sicilia y Calabria ⚠
+- Gozo · fecha: años 3 a 10 del regreso · rumbo: Al sur, a una isla pequeña, náufrago en un madero ⚠
+- Corfú · fecha: año 10 del regreso · rumbo: Al este, en balsa, hasta las islas griegas ⚠
 
 ## Relieve: alturas (m) que muestra el juego
 

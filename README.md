@@ -5,8 +5,11 @@ ciudad por ciudad, con acrósticos, imágenes mnemónicas, una barca sobre el ca
 un mercado, eventos entre puertos y repaso espaciado.
 
 - Dos juegos con el mismo motor: `dist/cauces.html` (los grandes ríos) y `dist/exploradores.html` (los grandes viajes,
-  etapa por etapa: Ibn Battuta, Marco Polo, Zheng He, Alejandro Magno y Hernán Cortés, cada uno con su caravana, flota o
-  ejército, un animal de guía, una carga de trueque y una línea de tiempo bajo el mapa). Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
+  etapa por etapa: Ibn Battuta, Marco Polo, Zheng He, Odiseo, Alejandro Magno y Hernán Cortés, cada uno con su caravana,
+  flota o ejército, un animal de guía, una carga de trueque y una línea de tiempo bajo el mapa). En los viajes la memoria es
+  la del viaje entero: cada etapa dice cuántos kilómetros y años lleva, la guía pregunta hacia dónde sigue, Ordenar va por
+  tramos, Trazar reconstruye la forma del viaje tocando el mapa y las preguntas miden la magnitud: cuánto duró, hasta dónde
+  llegó, qué mares y desiertos cruzó, cuál viaje fue primero. Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
   carpeta `dist`, publicada por GitHub Pages con cada cambio de `main`; desde ahí abre también en iPhone.
 - Jugar: abrir `dist/cauces.html` (o `dist/exploradores.html`) en cualquier navegador. Basta un doble clic: no necesita servidor, instalación

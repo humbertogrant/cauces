@@ -10,9 +10,11 @@ Desde el 2026-09-04 el motor juega **rutas** de paradas (tipo `rio`, `derrota` o
 y hay un segundo juego con el mismo motor y la misma identidad: **Exploradores** (`dist/exploradores.html`), viajes de
 exploradores y conquistadores etapa por etapa, para niños y adultos. El primer itinerario es Ibn Battuta (1325-1354).
 Los ríos se convierten al esquema de ruta al cargar (`desdeRio`); ningún texto de Cauces cambió con la migración y una
-instantánea de 200 pantallas (`test/instantanea.js`) lo vigila. Exploradores trae cinco rutas: Ibn Battuta, Marco Polo,
+instantánea de 200 pantallas (`test/instantanea.js`) lo vigila. Exploradores trae seis rutas: Ibn Battuta, Marco Polo,
 Alejandro Magno y Hernán Cortés (itinerarios, los dos últimos con `conquista:true`) y Zheng He (tipo `travesia`, la ruta
-marítima que el diseño llamaba «derrota»; se evitó esa palabra porque para un niño es «perder»).
+marítima que el diseño llamaba «derrota»; se evitó esa palabra porque para un niño es «perder») y Odiseo (travesía de mito: nueve escalas de Troya a Ítaca según
+la tradición que ubica el poema; sin años, con «año 1 del regreso» en el kicker). Desde el 2026-09-07 los viajes juegan
+con otra unidad de memoria que los ríos: no la parada en orden fino, sino el tramo, el rumbo y la escala (ver «Viajes»).
 
 ## Principios (no negociables)
 
@@ -111,6 +113,17 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
   salpicón; el sonido pasa a viento (`audio.modo`). La franja bajo el mapa es el perfil de altura si la ruta tiene
   `perfil` y una línea de tiempo (`tiempoSVG`) si tiene fechas. Pendiente: partir la animación del vehículo en los
   cortes y el antimeridiano (`lon0` + `<use>` de la tierra), diseñados en docs/itinerarios.md.
+- Viajes (Exploradores; funciones dentro de bloques `/*@vocab:itinerario*/ … /*@fin:itinerario*/` que build.js recorta de
+  Cauces): la unidad de memoria es el tramo, el rumbo y la escala, no la parada en orden fino. El kicker suma kilómetros del
+  dibujo y años desde la partida (`escalaViaje`) y el final resume la escala (`resumenViaje`). La guía pregunta «¿hacia
+  dónde sigue el viaje?» con el `rumbo` de cada etapa (`rotuloGuia`); el nombre aparece al acertar. Sin «cerca» ni
+  «siguiente»: `TIPOS_VIAJE` ofrece `lejos` (punto más lejano, si es claro), `cruza` (campo `cruza`), `duracion` y
+  `primero` (con años), todas sobre la tarjeta `ruta:ID:escala`. Ordenar y la pregunta de orden usan `unidades(r)`: los
+  `tramos` con nombre si el viaje los trae. El riel de un viaje lleva Trazar en vez de Recitar (`iniciarTrazar`,
+  `trazarEn`, `renderTrazar`, `focoTrazar`): el mapa muestra solo el camino trazado y todas las etapas como puntos sin
+  nombre (`hitz` con `trazarEn(i)`, `ocultarResto`), tocar la siguiente a la primera cuenta como recuerdo con pista
+  (`marcar(…, 'recordar', 1)`), hasta dos errores dejan la etapa hecha (`P.etapas[id].trazar`) y en Mercader dan monedas.
+  La portada de Exploradores cierra con «Los viajes, en escala» (`renderComparar`): kilómetros y años por viaje.
 - Navegación (rediseño del 2026-09-06): en las pantallas de ruta y de reto hay una barra fija al pie, `#pie`, que `render()`
   arma con `renderPie()` a partir de `S`: arriba las acciones del momento (la guía «¿cuál es la próxima parada?» con sus fichas
   y «Zarpar a…», «Llegar al mar», «Seguir hacia…» tras un evento, Revelar / La sabía / No la sabía en Recitar, Otra vez y
@@ -260,8 +273,9 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
 RUTA (lo que el motor lee; docs/itinerarios.md trae el esquema completo con ejemplo): `id, tipo, nombre, region, zona?,
 longitud?, inicio {nombre, nota, escena, fecha?}, fin {nombre, en, escena, fecha?}, contexto [dos capas {clave, titulo,
 texto, pista}], frase, fraseNota?, trazo [segmentos de [lat,lon]], ramas?, paradas [{nombre, pais, pos, imagen, dato,
-escena, fecha?}], vehiculo {nombre, tipo, desc, zarpe, llegada, puertos}, companero {nombre, especie, emoji, glifo,
-hola, fin, paradas}, carga [bienes], eventos [], perfil?, camara?, vocab?`. Los itinerarios se escriben así directamente
+escena, fecha?, rumbo (viajes)}], vehiculo {nombre, tipo, desc, zarpe, llegada, puertos}, companero {nombre, especie, emoji, glifo,
+hola, fin, paradas}, carga [bienes], eventos [], perfil?, camara?, vocab?, cruza? [mares, desiertos o montañas que cruzó],
+tramos? [{nombre, hasta: índice de la última etapa del tramo}]`. Los itinerarios se escriben así directamente
 (`itinerarios.js`); los ríos siguen en su esquema de siempre y `desdeRio` los convierte.
 
 RIVERS[]: `id, nombre, continente (o región, en los ríos de zona), zona? ('cr'), longitud (km), mar (etiqueta), marEn (con artículo), nace, naceNota, antigua,
@@ -319,8 +333,14 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
    parada debe quedar como vértice y en orden.
 3. `python tools/mapa.py exploradores` y `python tools/relieve.py exploradores` (cubren las ventanas de la cámara por
    tramo), `node test/pruebas.js exploradores`, `npm run build`, `npm run verificacion` y revisar las líneas nuevas.
-4. Una derrota (ruta marítima) va igual con `tipo:'derrota'`; falta definir `VOCAB.derrota` (propuesta en
-   docs/itinerarios.md, sección 3) y, si cruza 180°, el antimeridiano.
+4. Una travesía (ruta marítima) va igual con `tipo:'travesia'` (vocabulario de escalas y flota); si cruza 180°, falta el
+   antimeridiano.
+5. Campos propios de los viajes: `rumbo` en cada etapa (hacia dónde sigue el viaje para llegar a ella: medio y dirección,
+   distinto dentro del viaje; es lo que preguntan las fichas de la guía), `tramos` (tres a cinco tramos con nombre que
+   cubren todas las etapas en orden; Ordenar y la pregunta de orden los usan) y `cruza` (mares, desiertos o montañas que
+   el viaje cruzó, para la pregunta «¿cuál de estos cruzó…?»). Un viaje sin años (Odiseo) lleva en `fecha` un texto sin
+   cifra («año 1 del regreso»): no tiene línea de tiempo ni preguntas de fecha, duración o «cuál fue primero». Cuando el
+   lugar es tradición y no dato (los sitios de la Odisea), el `dato` lo dice.
 
 ## Pendientes, en orden de valor
 
@@ -333,8 +353,8 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
    Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
 
 1. Exploradores: más viajes (Elcano como travesía que cruza el antimeridiano, Humboldt, Darwin) y de conquista (Napoleón,
-   Gengis Kan), aprobados para niños y adultos. Con cada viaje, revisar las líneas nuevas de docs/verificacion.md y que
-   ninguna parada se repita entre rutas.
+   Gengis Kan), aprobados para niños y adultos. Cada viaje nuevo trae rumbo por etapa, tramos y cruza. Con cada viaje,
+   revisar las líneas nuevas de docs/verificacion.md y que ninguna parada se repita entre rutas.
 2. Motor de rutas, lo que falta: partir la animación del vehículo en los `cortes`; antimeridiano (`lon0` y `<use>` de la
    tierra); pulir la línea de tiempo cuando varias etapas caen en el mismo año (Cortés).
 3. Inmersión, lo que queda de la evaluación del 2026-09-04: retos sobre el mapa («tocá dónde queda…», que pagan
