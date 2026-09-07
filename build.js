@@ -26,6 +26,9 @@ function recortar(motor,j,u){
   bloque('const ANIMALES={','function animal(',u.glifos,'animales');
   bloque('const PICTOS={','function picto(',new Set([...u.pictos,...enMotor]),'pictos');
   const icoMotor=new Set([...motor.matchAll(/ico\('([a-z]+)'\)/g)].map(x=>x[1]));bloque('const ICONOS={','function ico(',new Set([...u.iconos,...icoMotor]),'iconos');
+  /* sin comentarios ni sangría: el motor los conserva en src; en dist pesan unos 9 KB (bloques y líneas de comentario,
+     comentarios al final de línea y la sangría, que dentro de las plantillas HTML solo es espacio en blanco) */
+  m=m.replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*\n?/gm,'').replace(/^[ \t]*\/\/[^\n]*\n/gm,'').replace(/[ \t]*\/\*[^\n]*?\*\/[ \t]*$/gm,'').replace(/^[ \t]+/gm,'').replace(/\n{2,}/g,'\n');
   {const a=m.indexOf('function glifo('),b=m.indexOf('let animB',a);const lineas=m.slice(a,b).split('\n');
     const out=lineas.filter(l=>{const k=l.match(/^\s*case '([a-z]+)':/);if(!k||u.tipos.has(k[1]))return true;quitado.glifos++;return false});m=m.slice(0,a)+out.join('\n')+m.slice(b)}
   return{motor:m,quitado}}
