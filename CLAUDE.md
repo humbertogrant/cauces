@@ -135,7 +135,10 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
   `renderRecitar`, `renderQuiz`) y mapa (`renderMapa(foco)`), a partir de `S`. Los manejadores son funciones
   globales llamadas desde `onclick` en el HTML generado. No hay componentes ni eventos delegados.
 - Mapa: SVG con proyección equirectangular (`proj`), viewBox animado (`setVB`), tamaños en píxeles constantes
-  (`px = vb.w / ancho del contenedor`). La barca se anima con `animarBarca` sobre la polilínea del río entre
+  (`px = vb.w / ancho del contenedor`). El SVG lleva `preserveAspectRatio` slice y `vbPara` ajusta la vista a la proporción
+  del mapa desplegado; plegado (▾, `#arriba.compacto`) recorta esa misma vista a la altura chica centrando la barca (misma
+  escala, nunca un mapa encogido). Como el alto del CSS cambia con transición, `dimsMapa` mide los dos altos sin transición y
+  restaura la animación (FLIP) en cada render; al plegar la caja se anima y al desplegar salta y solo destapa. La barca se anima con `animarBarca` sobre la polilínea del río entre
   paradas; la mascota va en `#masc` y se contrarrota para quedar derecha. Fuera de Descender (Ordenar, Recitar, el
   reto del río) la barca queda estacionada en la parada actual (`estacionada(r)`) para que no desaparezca; en reto
   mundial y repaso, antes de responder, hay un globo neutro «Cauces» (`globoNeutro`) para no delatar el río sin

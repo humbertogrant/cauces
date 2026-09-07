@@ -320,7 +320,7 @@ label.enlace{cursor:pointer}
 <body>
 <div id="arriba">
   <div id="cab"></div>
-  <div id="mapa"><button class="plegar" onclick="plegarMapa()" aria-label="Plegar o desplegar el mapa" title="Mapa más chico o más grande">▾</button><button class="mundo" onclick="verZona(null)" hidden>‹ Mundo</button><svg id="svg" viewBox="0 40 1000 360" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path id="tierra" fill-rule="evenodd"/><g id="relieve" fill-rule="evenodd"></g><path id="lagos" fill-rule="evenodd"/><path id="fronteras"/><g id="capa"></g></svg><div class="luz" id="luz" aria-hidden="true"></div><div class="clima" id="clima" aria-hidden="true"></div><div class="olas" id="olas" aria-hidden="true"></div></div>
+  <div id="mapa"><button class="plegar" onclick="plegarMapa()" aria-label="Plegar o desplegar el mapa" title="Mapa más chico o más grande">▾</button><button class="mundo" onclick="verZona(null)" hidden>‹ Mundo</button><svg id="svg" viewBox="0 40 1000 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><path id="tierra" fill-rule="evenodd"/><g id="relieve" fill-rule="evenodd"></g><path id="lagos" fill-rule="evenodd"/><path id="fronteras"/><g id="capa"></g></svg><div class="luz" id="luz" aria-hidden="true"></div><div class="clima" id="clima" aria-hidden="true"></div><div class="olas" id="olas" aria-hidden="true"></div></div>
   <div id="perfil" hidden></div>
 </div>
 <main id="panel"></main>
@@ -1496,9 +1496,22 @@ function focoQuiz(q,rDef){
 const proj=p=>[(p[1]+180)/360*1000,(90-p[0])/180*500];
 const trazo=pts=>pts.map((p,i)=>{const q=proj(p);return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join('');
 const trazoTramo=(r,a,b)=>{let d='';for(let i=a;i<=b;i++){const q=proj(r.curso[i]);d+=(i===a||r.cortes.includes(i)?'M':'L')+q[0].toFixed(1)+' '+q[1].toFixed(1)}return d};/* vértices a..b del trazo; cada segmento nuevo (cortes) empieza con M */
-function vbPara(pts,minW,margen){const m=$('#mapa'),asp=(m.clientWidth||380)/(m.clientHeight||260);
+/* caja de vista para unos puntos: se ajusta a la proporción del mapa desplegado (ancho/altoDes) y, si el mapa está plegado
+   (alto < altoDes), recorta esa misma vista a la altura plegada centrando el punto de foco: misma escala, menos cielo, nunca
+   un mapa encogido. El SVG lleva preserveAspectRatio slice, así que durante la transición de altura también se ve un recorte. */
+function vbPara(pts,minW,margen,foco,dims){const m=$('#mapa'),ancho=(dims&&dims.ancho)||m.clientWidth||380,altoDes=(dims&&dims.des)||m.clientHeight||260,alto=(dims&&dims.alto)||altoDes,asp=ancho/altoDes;
   let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;pts.forEach(p=>{const q=proj(p);x0=Math.min(x0,q[0]);y0=Math.min(y0,q[1]);x1=Math.max(x1,q[0]);y1=Math.max(y1,q[1])});
-  let w=(x1-x0)*margen,h=(y1-y0)*margen;const cx=(x0+x1)/2,cy=(y0+y1)/2;w=Math.max(w,minW);h=Math.max(h,minW/asp);if(w/h<asp)w=h*asp;else h=w/asp;return{x:cx-w/2,y:cy-h/2,w,h}}
+  let w=(x1-x0)*margen,h=(y1-y0)*margen;const cx=(x0+x1)/2,cy=(y0+y1)/2;w=Math.max(w,minW);h=Math.max(h,minW/asp);if(w/h<asp)w=h*asp;else h=w/asp;
+  if(alto<altoDes-1){const hc=w*alto/ancho,f=foco&&puntoFoco(foco),y=cy-h/2;let yc=(f?f[1]:cy)-hc/2;yc=Math.max(y,Math.min(y+h-hc,yc));return{x:cx-w/2,y:yc,w,h:hc}}
+  return{x:cx-w/2,y:cy-h/2,w,h}}
+function puntoFoco(foco){if(foco.modo!=='rio')return null;const b=foco.barca;if(b){if(b.poly)return proj(b.poly[b.t1>=b.t0?b.poly.length-1:0]);return proj(foco.rio.curso[b.a])}return foco.halo?proj(foco.halo):null}
+/* medidas del mapa: ancho, alto desplegado y alto actual (plegado). El alto del CSS cambia con transición (plegar, entrar a un
+   río, la barra al pie), así que clientHeight puede ir a medio camino: se miden los dos altos sin transición y después se
+   restaura la animación desde la altura que tenía (FLIP), en vez de esperar los 300 ms del CSS */
+function dimsMapa(){const a=document.getElementById('arriba'),m=$('#mapa'),ancho=m.clientWidth||380,h=m.clientHeight||260;
+  const compacto=!!(a&&a.classList&&a.classList.contains('compacto'));if(!a||!m.style||typeof a.classList.remove!=='function')return{ancho,des:h,alto:h};
+  m.style.transition='none';a.classList.remove('compacto');const des=m.clientHeight||h;a.classList.add('compacto');const ple=m.clientHeight||h;if(!compacto)a.classList.remove('compacto');
+  m.style.height=h+'px';void m.offsetHeight;m.style.transition='';m.style.height='';return{ancho,des,alto:compacto?ple:des}}
 let VB=null,anim=null;
 function setVB(t,inmediato){const svg=$('#svg'),fmt=v=>`${v.x.toFixed(2)} ${v.y.toFixed(2)} ${v.w.toFixed(2)} ${v.h.toFixed(2)}`;
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(anim)cancelAnimationFrame(anim);
@@ -1513,10 +1526,10 @@ function colocar(q,nombre,puestos,px){const w=nombre.length*6.6*px,alto=12*px;
   const x=q[0]+6*px,y=q[1]+4*px;return[x,y,'start']}
 const TERRESTRES={caravana:1,pie:1,jinete:1};
 function ventana(r){/* cámara por tramo: de la parada anterior a la siguiente, por el trazo */const n=r.paradas.length,p=S.paso,de=idxParada(r,Math.max(0,p-1)),a=idxParada(r,Math.min(n+1,p+1));return r.curso.slice(de,a+1)}
-function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa');let pts,vb;
-  if(foco.modo==='mundo'){pts=[];RUTAS.forEach(r=>pts.push(...r.curso));vb=vbPara(pts,60,1.08)}
-  else if(foco.modo==='zona'){pts=[];RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>pts.push(...r.curso,...r.paradas.map(c=>c.pos)));vb=vbPara(pts,3,1.25)}
-  else{const r=foco.rio;pts=r.camara==='tramo'&&S.pantalla==='rio'&&S.tab==='descender'?ventana(r):r.curso.concat(r.paradas.map(c=>c.pos));vb=vbPara(pts,r.zona?3:20,1.3)}
+function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa'),dims=dimsMapa();let pts,vb;
+  if(foco.modo==='mundo'){pts=[];RUTAS.forEach(r=>pts.push(...r.curso));vb=vbPara(pts,60,1.08,foco,dims)}
+  else if(foco.modo==='zona'){pts=[];RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>pts.push(...r.curso,...r.paradas.map(c=>c.pos)));vb=vbPara(pts,3,1.25,foco,dims)}
+  else{const r=foco.rio;pts=r.camara==='tramo'&&S.pantalla==='rio'&&S.tab==='descender'?ventana(r):r.curso.concat(r.paradas.map(c=>c.pos));vb=vbPara(pts,r.zona?3:20,1.3,foco,dims)}
   setVB(vb,inmediato);const px=vb.w/(m.clientWidth||380),f=v=>(v*px).toFixed(2);const activo=foco.rio?foco.rio.id:null,enZona=foco.modo==='zona';let h='';
   const zr=foco.modo==='mundo'?'':enZona?foco.zona:(foco.rio.zona||'mundo'),rel=document.getElementById('relieve');/* franjas de altura: solo al acercarse (están recortadas a las vistas de los ríos) */
   if(rel){if(rel._z!==zr){rel._z=zr;rel.innerHTML=zr&&RELIEVE[zr]?RELIEVE[zr].map(([a,d])=>`<path class="a${a}" d="${d}"/>`).join(''):''}rel.setAttribute('stroke-width',f(1.2))}
@@ -1687,7 +1700,8 @@ function olear(){const o=document.getElementById('olas');if(!o||!o.classList)ret
 /* ---------- arranque ---------- */
 (function init(){cargarPerfiles();if(voz.soporte())window.speechSynthesis.getVoices();render(true)})();
 window.addEventListener('resize',()=>{acomodarPie();if(S.foco)renderMapa(S.foco,true);const pf=document.getElementById('perfil');if(pf&&!pf.hidden&&S.pantalla==='rio')pf.innerHTML=perfilSVG(rioPor(S.rio))});
-function plegarMapa(){const a=document.getElementById('arriba');a.classList.toggle('compacto');const b=document.querySelector('.plegar');b.textContent=a.classList.contains('compacto')?'▴':'▾';if(S.foco)renderMapa(S.foco,true)}
+function plegarMapa(){const a=document.getElementById('arriba');a.classList.toggle('compacto');const b=document.querySelector('.plegar');b.textContent=a.classList.contains('compacto')?'▴':'▾';
+  if(S.foco)renderMapa(S.foco,!a.classList.contains('compacto'))/* al plegar, la caja se anima (el alto del CSS va más rápido y manda); al desplegar salta ya, y el mapa solo destapa */}
 </script>
 </body>
 </html>
