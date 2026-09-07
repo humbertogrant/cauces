@@ -26,9 +26,16 @@ marítima que el diseño llamaba «derrota»; se evitó esa palabra porque para 
    aproximada, se marca (≈, "hacia", "unos"). Si no hay certeza, se quita. `docs/verificacion.md` lista las
    afirmaciones a revisar; se regenera con `npm run verificacion`.
 4. **Prototipo primero.** "Funciona feo pero funciona" es un resultado válido. Pulir después.
-5. **Identidad visual de La Ruta.** Paleta: verde oscuro #0F423A, verde claro #64C8AA, dorado #E8B952 (solo el
-   río activo, la barca y acentos), gris #2D2D2D/#6B6B6B, rojo teja #A6472E para errores. Mar #0C3A33 con patrón
-   seigaiha, tierra #215A4F. Tipografías Oswald (títulos) y Source Sans 3 (cuerpo). No cambiar sin pedirlo.
+5. **Identidad visual de La Ruta** (rediseñada el 2026-09-06 a pedido de Humberto). El verde oscuro #0F423A es tinta,
+   no fondo: títulos, botones y énfasis. El panel es papel cálido #FAF7F1 y el mapa (mar #0C3A33 con patrón seigaiha,
+   tierra #215A4F) la única superficie oscura: ese contraste es la firma. Dos tipos de bloque en todo el juego: la voz
+   (burbuja del animal, fondo #E9F3EE, siempre igual) y la ficha (tarjeta blanca con un solo filete #E4DFD3). El dorado
+   #E8B952 solo dice «estás aquí»: río activo, barca, parada actual, paso actual; como texto sobre papel se usa el oro
+   tinta #8A6A1A (iniciales de la frase). Verde claro #64C8AA para los ríos; gris #2D2D2D/#6B6B6B; rojo teja #A6472E solo
+   para errores. Oswald solo en nombres de lugar y números (río en la cabecera, ciudad, kilómetros, monedas); Source
+   Sans 3 para todo lo demás, dos puntos más grande en Niño (`body.nino`, 19 px). Movimiento: la barca y sus efectos, el
+   oleaje lento del mar (`marea`) y una barrida de olas doradas al llegar al mar (`olear`); la luz, el clima, el salto del
+   animal y el sello que cae se conservan. No cambiar sin pedirlo.
 
 ## Estructura
 

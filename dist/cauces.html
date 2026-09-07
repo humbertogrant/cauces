@@ -6,13 +6,14 @@
 <title>Cauces: los grandes ríos, ciudad por ciudad</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--verde:#0F423A;--verde-claro:#64C8AA;--verde-medio:#2E8570;--dorado:#E8B952;--gris:#2D2D2D;--gris2:#6B6B6B;--gris3:#ABABAB;--grid:#E8E8E8;--suave:#F7F7F7;--teja:#A6472E;--teja-fondo:#F5E3DC;--mar:#0C3A33;--tierra:#215A4F;--relieve1:#2C6B5C;--relieve2:#478A76;--tit:'Oswald','Arial Narrow',sans-serif;--cuerpo:'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif}
+:root{--verde:#0F423A;--verde-claro:#64C8AA;--verde-medio:#2E8570;--dorado:#E8B952;--gris:#2D2D2D;--gris2:#6B6B6B;--gris3:#ABABAB;--grid:#E4DFD3;--suave:#F3EFE7;--papel:#FAF7F1;--ficha:#fff;--linea:#E4DFD3;--voz:#E9F3EE;--oro-tinta:#8A6A1A;--teja:#A6472E;--teja-fondo:#F5E3DC;--mar:#0C3A33;--tierra:#215A4F;--relieve1:#2C6B5C;--relieve2:#478A76;--tit:'Oswald','Arial Narrow',sans-serif;--cuerpo:'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-size:17px;line-height:1.5}
-#arriba{position:sticky;top:0;z-index:2;background:#fff}
+body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:var(--papel);font-size:17px;line-height:1.5}
+body.nino{font-size:19px}
+#arriba{position:sticky;top:0;z-index:2;background:var(--papel)}
 #cab{display:flex;align-items:center;gap:12px;padding:10px 16px;min-height:60px}
-#cab h1{font-family:var(--tit);font-weight:700;font-size:24px;line-height:1.1;color:var(--verde);margin:0}
+#cab h1{font-family:var(--tit);font-weight:700;font-size:28px;line-height:1.1;color:var(--verde);margin:0}
 #cab .sub{font-size:14px;color:var(--gris2);margin-top:2px}
 .volver{border:0;background:none;color:var(--verde);font:600 15px var(--cuerpo);padding:8px 8px 8px 0;cursor:pointer;flex:none}
 #mapa{height:40vh;min-height:220px;max-height:440px;background:var(--mar) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'><g fill='%230C3A33' stroke='%2364C8AA' stroke-opacity='.16' stroke-width='1'><circle cx='20' cy='0' r='19'/><circle cx='20' cy='0' r='13' fill='none'/><circle cx='20' cy='0' r='7' fill='none'/><circle cx='0' cy='10' r='19'/><circle cx='0' cy='10' r='13' fill='none'/><circle cx='0' cy='10' r='7' fill='none'/><circle cx='40' cy='10' r='19'/><circle cx='40' cy='10' r='13' fill='none'/><circle cx='40' cy='10' r='7' fill='none'/><circle cx='20' cy='20' r='19'/><circle cx='20' cy='20' r='13' fill='none'/><circle cx='20' cy='20' r='7' fill='none'/><circle cx='0' cy='30' r='19'/><circle cx='0' cy='30' r='13' fill='none'/><circle cx='0' cy='30' r='7' fill='none'/><circle cx='40' cy='30' r='19'/><circle cx='40' cy='30' r='13' fill='none'/><circle cx='40' cy='30' r='7' fill='none'/></g></svg>");background-size:40px 20px}
@@ -38,7 +39,8 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 #fronteras{fill:none;stroke:var(--verde-claro);stroke-opacity:.35;stroke-linejoin:round}
 #arriba.portada #mapa{height:52vh;max-height:560px}
 #arriba.compacto #mapa,#arriba.portada.compacto #mapa{height:22vh;min-height:150px}
-#mapa{transition:height .3s ease}
+#mapa{transition:height .3s ease;animation:marea 120s linear infinite}
+@keyframes marea{to{background-position-x:-400px}}
 .luz,.clima{position:absolute;inset:0;pointer-events:none}
 .luz{opacity:0;transition:opacity 1.2s ease}
 .luz[data-luz="amanecer"]{background:linear-gradient(180deg,rgba(232,185,82,.95),rgba(232,185,82,.35) 40%,rgba(232,185,82,0) 75%)}
@@ -48,15 +50,18 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 .clima[data-clima="arena"]{opacity:1;background:repeating-linear-gradient(115deg,rgba(232,185,82,.38) 0 3px,rgba(166,71,46,.2) 3px 9px);animation:deriva 2.2s linear infinite}
 .clima[data-clima="lluvia"]{opacity:1;background:repeating-linear-gradient(105deg,rgba(255,255,255,.38) 0 1px,transparent 1px 13px),linear-gradient(rgba(12,58,51,.22),rgba(12,58,51,.22));animation:cae 1s linear infinite}
 .clima[data-clima="oleaje"]{opacity:1;background:linear-gradient(0deg,rgba(100,200,170,.2),rgba(100,200,170,0) 55%)}
-#mapa[data-mar="vivo"]{animation:mar 4s ease-in-out infinite}
+.olas{position:absolute;left:0;right:0;bottom:-70%;height:70%;pointer-events:none;opacity:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'><g fill='%230C3A33' stroke='%23E8B952' stroke-opacity='.9' stroke-width='1'><circle cx='20' cy='0' r='19'/><circle cx='20' cy='0' r='13' fill='none'/><circle cx='20' cy='0' r='7' fill='none'/><circle cx='0' cy='10' r='19'/><circle cx='0' cy='10' r='13' fill='none'/><circle cx='0' cy='10' r='7' fill='none'/><circle cx='40' cy='10' r='19'/><circle cx='40' cy='10' r='13' fill='none'/><circle cx='40' cy='10' r='7' fill='none'/><circle cx='20' cy='20' r='19'/><circle cx='20' cy='20' r='13' fill='none'/><circle cx='20' cy='20' r='7' fill='none'/><circle cx='0' cy='30' r='19'/><circle cx='0' cy='30' r='13' fill='none'/><circle cx='0' cy='30' r='7' fill='none'/><circle cx='40' cy='30' r='19'/><circle cx='40' cy='30' r='13' fill='none'/><circle cx='40' cy='30' r='7' fill='none'/></g></svg>") 0 0/40px 20px;-webkit-mask-image:linear-gradient(0deg,transparent,#000 40%,#000 60%,transparent);mask-image:linear-gradient(0deg,transparent,#000 40%,#000 60%,transparent)}
+.olas.va{animation:barrida 2.4s ease-in-out 1}
+@keyframes barrida{0%{opacity:0;transform:translateY(0)}20%{opacity:.95}75%{opacity:.95}100%{opacity:0;transform:translateY(-240%)}}
+#mapa[data-mar="vivo"]{animation:marea 120s linear infinite,mar 4s ease-in-out infinite}
 @keyframes deriva{to{background-position:420px 0}}
 @keyframes cae{to{background-position:-30px 130px,0 0}}
-@keyframes mar{0%,100%{background-position:0 0}50%{background-position:0 -7px}}
-@media (prefers-reduced-motion:reduce){.clima,#mapa{animation:none!important}.luz,.clima,#mapa{transition:none}}
+@keyframes mar{0%,100%{background-position-y:0}50%{background-position-y:-7px}}
+@media (prefers-reduced-motion:reduce){.clima,#mapa,.olas{animation:none!important}.luz,.clima,#mapa{transition:none}}
 .ajustes summary{font:600 16px var(--cuerpo);color:var(--verde)}
 .ajustes{border-top:1px solid var(--grid);padding-top:8px}
 .plegar{position:absolute;right:8px;bottom:8px;z-index:1;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--verde-claro);background:rgba(12,58,51,.75);color:#fff;font:400 16px var(--tit);cursor:pointer}
-.mundo{position:absolute;left:8px;top:8px;z-index:1;border:1.5px solid var(--verde-claro);background:rgba(12,58,51,.75);color:#fff;font:500 14px var(--tit);letter-spacing:.02em;padding:6px 12px;border-radius:999px;cursor:pointer}
+.mundo{position:absolute;left:8px;top:8px;z-index:1;border:1.5px solid var(--verde-claro);background:rgba(12,58,51,.75);color:#fff;font:600 14px var(--cuerpo);padding:6px 12px;border-radius:999px;cursor:pointer}
 .zona{fill:var(--dorado);stroke:var(--mar)}
 .hitz{fill:transparent;cursor:pointer}
 .zona-titulo{margin-top:22px}
@@ -82,8 +87,7 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 .pas-rio{border-bottom:1px solid var(--grid);padding:10px 0 12px}
 .pas-cab{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:6px 0;text-align:left;cursor:pointer;font:500 20px var(--tit);color:var(--verde)}
 .pas-cab .fmeta{font:400 14px var(--cuerpo);color:var(--gris2);margin-left:auto}
-.sello-nuevo,.sello-nota{display:flex;align-items:center;gap:14px;background:var(--suave);border-left:4px solid var(--dorado);padding:10px 14px;margin:0 0 14px}
-.sello-nota{border-left-color:var(--verde-claro)}
+.sello-nuevo,.sello-nota{display:flex;align-items:center;gap:14px;background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 14px}
 .sello.nuevo{animation:sellar .6s cubic-bezier(.2,.9,.3,1.3)}
 @keyframes sellar{0%{transform:scale(2.4) rotate(-25deg);opacity:0}100%{transform:scale(1) rotate(var(--rot,0deg));opacity:1}}
 @media (prefers-reduced-motion:reduce){.sello.nuevo{animation:none}}
@@ -95,8 +99,8 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 .mas[open] summary::before{content:'▾ '}
 .mas p{margin:6px 0 0}
 .kicker .voz{margin:0 8px 0 0;font-size:16px}
-.hoy{background:var(--suave);border-left:4px solid var(--dorado);padding:12px 14px;margin:0 0 18px}
-.hoy .htit{font-family:var(--tit);font-weight:500;font-size:22px;color:var(--verde);line-height:1.2}
+.hoy{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 18px}
+.hoy .htit{font-weight:600;font-size:22px;color:var(--verde);line-height:1.2}
 .hoy .fnota{margin:4px 0 10px}
 .hoy .acciones{margin:0}
 #mapa{position:relative}
@@ -131,24 +135,24 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 .estela.huellas{stroke-opacity:.45;stroke-dasharray:1 3}
 .sal.polvo circle{stroke:var(--dorado)}
 @media (prefers-reduced-motion:reduce){.mece,.barca.duda .mece,.sal,.anda{animation:none}.estela{transition:none}}
-.son{margin-left:auto;flex:none;width:40px;height:40px;border-radius:999px;border:1.5px solid var(--verde);background:#fff;color:var(--verde);font:400 22px var(--tit);line-height:1;cursor:pointer}
+.son{margin-left:auto;flex:none;width:40px;height:40px;border-radius:999px;border:1px solid var(--linea);background:var(--ficha);color:var(--verde);font:400 22px var(--tit);line-height:1;cursor:pointer}
 .son.on{background:var(--verde);color:#fff}
 #barca .vela,.barca .vela{fill:#fff;stroke:var(--mar);stroke-width:1}
 #barca .linea,.barca .linea{fill:none;stroke:var(--mar)}
-.nave{background:var(--suave);border-left:4px solid var(--dorado);padding:12px 14px;margin:0 0 16px}
-.nave .ntit{font-family:var(--tit);font-weight:500;font-size:22px;color:var(--verde);line-height:1.2}
+.nave{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
+.nave .ntit{font-weight:600;font-size:20px;color:var(--verde);line-height:1.2}
 .nave p{margin:6px 0 6px}
-.evento{display:flex;gap:12px;align-items:flex-start;background:var(--suave);border-left:4px solid var(--dorado);padding:12px 14px;margin:0 0 16px}
+.evento{display:flex;gap:12px;align-items:flex-start;background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
 .evento .eicono{font-size:34px;line-height:1;flex:none}
-.evento .etit{font-family:var(--tit);font-weight:500;font-size:22px;color:var(--verde);line-height:1.2;margin-bottom:4px}
+.evento .etit{font-weight:600;font-size:20px;color:var(--verde);line-height:1.2;margin-bottom:4px}
 .evento p{margin:0}
-.puerto{border-left:4px solid var(--verde-claro);background:var(--suave);padding:12px 14px;margin:0 0 16px}
+.puerto{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
 .puerto p{margin:0}
-.bodega{font:500 15px var(--tit);letter-spacing:.02em;color:var(--verde);margin-top:8px}
+.bodega{font:600 15px var(--cuerpo);color:var(--verde);margin-top:8px}
 .globo{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px}
 .globo .emo{flex:none;width:44px;height:44px;border-radius:50%;background:var(--verde);display:flex;align-items:center;justify-content:center;font-size:26px;line-height:1}
-.globo .dice{position:relative;background:#fff;border:1.5px solid var(--verde-claro);border-radius:12px;padding:9px 12px;font-size:16px;line-height:1.35}
-.globo .dice:before{content:"";position:absolute;left:-8px;top:14px;border:7px solid transparent;border-right-color:var(--verde-claro);border-left:0}
+.globo .dice{position:relative;background:var(--voz);border-radius:14px;padding:10px 14px;font-size:.95em;line-height:1.35}
+.globo .dice:before{content:"";position:absolute;left:-8px;top:15px;border:8px solid transparent;border-right-color:var(--voz);border-left:0}
 .globo .dice b{font-weight:600;color:var(--verde)}
 .voz{border:0;background:none;padding:10px 8px;margin:-10px -2px -10px 4px;font-size:18px;line-height:1;cursor:pointer;vertical-align:middle;border-radius:50%}
 .voz.on{box-shadow:0 0 0 3px var(--verde-claro)}
@@ -165,8 +169,12 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 .globo .emo svg{width:36px;height:36px;display:block}
 .globo.neutro .emo{background:var(--verde-medio)}
 .globo.neutro .emo svg{width:30px;height:24px}
-.escena{display:block;width:100%;height:auto;margin:0 0 10px;border-radius:8px;border-left:4px solid var(--dorado)}
-.escena.quiz{max-width:440px;margin:0 0 12px}
+.escena{display:block;width:100%;height:auto;margin:0;border:0;border-radius:0}
+.escena.quiz{max-width:440px;margin:0 0 12px;border:1px solid var(--linea);border-radius:12px}
+.ficha{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+.ficha.recuerdo{padding:0;overflow:hidden}
+.recuerdo .cuerpo{padding:12px 16px 4px}
+.recuerdo .cuerpo>p{margin-bottom:10px}
 .escena .cielo{fill:#E6F3EE}
 .escena .suelo{fill:var(--tierra)}
 .escena .agua{fill:var(--mar)}
@@ -182,16 +190,16 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 .globo.salta .emo svg{animation:salta .7s ease-out}
 @keyframes salta{0%,100%{transform:translateY(0)}35%{transform:translateY(-9px)}}
 @media (prefers-reduced-motion:reduce){.globo.salta .emo svg{animation:none}}
-.mercado{border:1.5px solid var(--grid);border-radius:8px;padding:12px 14px;margin:0 0 16px}
-.bolsa{font:500 17px var(--tit);color:var(--verde);margin:0 0 10px}
+.mercado{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
+.bolsa{font:600 17px var(--cuerpo);color:var(--verde);margin:0 0 10px}
 .slots{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
-.item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:#fff;border:1.5px solid var(--verde);border-radius:8px;padding:8px 10px;font:400 15px var(--cuerpo);color:var(--gris);cursor:pointer;min-width:100px;text-align:left;line-height:1.25}
+.item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:var(--papel);border:1px solid var(--linea);border-radius:10px;padding:8px 10px;font:400 15px var(--cuerpo);color:var(--gris);cursor:pointer;min-width:100px;text-align:left;line-height:1.25}
 .item .ie{font-size:22px;line-height:1.1}
-.item .ip{font:500 14px var(--tit);color:var(--verde-medio)}
+.item .ip{font:600 14px var(--cuerpo);color:var(--verde-medio)}
 .item small{font-size:12px;color:var(--gris2)}
 .item.vacio{border-style:dashed;border-color:var(--gris3);color:var(--gris3);justify-content:center;align-items:center;cursor:default;min-height:64px}
 .item.no{opacity:.45}
-.tesoro{font:500 16px var(--tit);color:var(--verde);margin:0 0 14px}
+.tesoro{font:600 16px var(--cuerpo);color:var(--verde);margin:0 0 14px}
 .tabs.modo{max-width:320px;margin-bottom:6px}
 .chip.bien{background:var(--verde);color:#fff;border-color:var(--verde)}
 .chip[disabled]{cursor:default}
@@ -207,33 +215,32 @@ body{margin:0;font-family:var(--cuerpo);color:var(--gris);background:#fff;font-s
 @media (prefers-reduced-motion:reduce){.halo{animation:none;opacity:.5}}
 .etq{fill:#fff;font-family:var(--cuerpo);font-weight:600;paint-order:stroke;stroke:var(--mar);stroke-linejoin:round;pointer-events:none}
 #panel{max-width:680px;margin:0 auto;padding:18px 18px 64px}
-.kicker{font-family:var(--tit);font-weight:400;font-size:15px;color:var(--gris2);margin-bottom:2px}
-h2{font-family:var(--tit);font-weight:700;font-size:30px;line-height:1.1;color:var(--verde);margin:0 0 6px}
-h3{font-family:var(--tit);font-weight:500;font-size:19px;color:var(--verde);margin:14px 0 4px}
+.kicker{font-weight:600;font-size:14px;letter-spacing:.02em;color:var(--gris2);margin-bottom:2px}
+h2{font-family:var(--tit);font-weight:700;font-size:34px;line-height:1.1;color:var(--verde);margin:0 0 6px}
+h3{font-weight:600;font-size:19px;color:var(--verde);margin:14px 0 4px}
 .pais{color:var(--gris2);margin-bottom:12px}
 p{margin:0 0 14px}
-.imagen{background:var(--verde);color:#fff;border-left:4px solid var(--dorado);padding:12px 14px;margin:0 0 14px;font-size:17px}
-.imagen .fkicker{color:var(--verde-claro)}
-.frase{background:var(--suave);border-left:4px solid var(--verde);padding:12px 14px;margin:0 0 16px}
-.fkicker{font-family:var(--tit);font-size:13px;color:var(--gris2);margin-bottom:4px}
-.ftexto{font-family:var(--tit);font-size:22px;font-weight:400;color:var(--verde);line-height:1.2}
-.ftexto b,.op b{font-weight:700;color:var(--verde-medio)}
+.imagen{padding:0 0 8px;font-size:1.06em;line-height:1.4}
+.frase{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 16px}
+.fkicker{font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris2);margin-bottom:6px}
+.ftexto{font-size:22px;font-weight:600;color:var(--verde);line-height:1.25}
+.ftexto b,.op b{font-weight:700;color:var(--oro-tinta)}
 .fnota{font-size:14px;color:var(--gris2);margin-top:4px}
 .flista{font-size:15px;color:var(--gris2);margin-top:6px}
-.btn{font:500 16px var(--tit);letter-spacing:.02em;background:var(--verde);color:#fff;border:1.5px solid var(--verde);border-radius:6px;padding:12px 18px;cursor:pointer}
-.btn.sec{background:#fff;color:var(--verde)}
+.btn{font:600 17px var(--cuerpo);background:var(--verde);color:#fff;border:1px solid var(--verde);border-radius:10px;padding:12px 18px;min-height:46px;cursor:pointer}
+.btn.sec{background:var(--ficha);color:var(--verde);border-color:var(--linea)}
 .btn:focus-visible,.son:focus-visible,.op:focus-visible,.chip:focus-visible,.fila:focus-visible,.tabs button:focus-visible,.volver:focus-visible{outline:3px solid var(--verde-claro);outline-offset:2px}
 .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
 .acciones{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
 .enlace{background:none;border:0;padding:0;color:var(--verde-medio);font:600 15px var(--cuerpo);text-decoration:underline;cursor:pointer;margin-bottom:8px}
-.campo{flex:1;min-width:0;font:400 17px var(--cuerpo);color:var(--gris);padding:10px 12px;border:1.5px solid var(--verde);border-radius:6px;background:#fff}
+.campo{flex:1;min-width:0;font:400 17px var(--cuerpo);color:var(--gris);padding:10px 12px;border:1px solid var(--linea);border-radius:10px;background:var(--ficha)}
 .campo:focus-visible{outline:3px solid var(--verde-claro);outline-offset:2px}
 .perfiles{margin-bottom:14px}
 .progreso{border-top:1px solid var(--grid);margin-top:8px;padding-top:12px}
 .progreso .enlace{margin:-4px 0;padding:8px 0;font-size:14px}
 label.enlace{cursor:pointer}
-.tabs{display:flex;border:1.5px solid var(--verde);border-radius:6px;overflow:hidden;margin-bottom:16px}
-.tabs button{flex:1;border:0;background:#fff;color:var(--verde);font:500 15px var(--tit);letter-spacing:.02em;padding:10px 4px;cursor:pointer}
+.tabs{display:flex;border:1px solid var(--linea);border-radius:10px;background:var(--ficha);overflow:hidden;margin-bottom:16px}
+.tabs button{flex:1;border:0;background:var(--ficha);color:var(--verde);font:600 15px var(--cuerpo);padding:10px 4px;cursor:pointer}
 .tabs button.on{background:var(--verde);color:#fff}
 .lista{border-top:1px solid var(--grid);margin-top:6px}
 .fila{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--grid);padding:12px 0;cursor:pointer;font-family:var(--cuerpo);color:var(--gris)}
@@ -241,29 +248,29 @@ label.enlace{cursor:pointer}
 .fmeta{display:block;font-size:14px;color:var(--gris2);margin:2px 0 6px}
 .barra{display:block;height:4px;background:var(--grid)}
 .barra i{display:block;height:100%;background:var(--verde-claro)}
-.aviso{background:var(--suave);border-left:4px solid var(--verde-claro);padding:10px 12px;margin-bottom:14px}
+.aviso{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin-bottom:14px}
 .secuencia{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 14px}
-.extremo{font:400 14px var(--tit);color:var(--gris2)}
+.extremo{font:600 12px var(--cuerpo);letter-spacing:.06em;text-transform:uppercase;color:var(--gris2)}
 .puesto{background:var(--verde);color:#fff;padding:6px 10px;border-radius:999px;font-size:15px;font-weight:600}
 .hueco{color:var(--gris3);font-size:14px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.chip{background:#fff;border:1.5px solid var(--verde);color:var(--verde);padding:10px 14px;border-radius:999px;font:600 16px var(--cuerpo);cursor:pointer}
+.chip{background:var(--papel);border:1px solid var(--linea);color:var(--verde);padding:10px 16px;min-height:44px;border-radius:999px;font:600 16px var(--cuerpo);cursor:pointer}
 .chip.mal{border-color:var(--teja);color:var(--teja);background:var(--teja-fondo);animation:sacudir .4s}
 @keyframes sacudir{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){.chip.mal{animation:none}}
 .pista{margin-bottom:12px}
-.pregunta{font-size:22px;font-weight:500;line-height:1.25}
+.pregunta{font-size:22px;font-weight:600;line-height:1.3;color:var(--verde)}
 .opciones{display:flex;flex-direction:column;gap:8px;margin:12px 0 14px}
-.op{text-align:left;background:#fff;border:1.5px solid var(--verde);color:var(--gris);padding:12px 14px;border-radius:6px;font:400 17px var(--cuerpo);line-height:1.3;cursor:pointer}
+.op{text-align:left;background:var(--papel);border:1px solid var(--linea);color:var(--gris);padding:12px 14px;border-radius:10px;font:400 1em var(--cuerpo);line-height:1.3;cursor:pointer}
 .op.bien{background:var(--verde);color:#fff}
 .op.bien b{color:var(--verde-claro)}
 .op.mal{background:var(--teja-fondo);border-color:var(--teja);color:var(--teja)}
 .op.apagada{opacity:.45}
-.nota{padding:10px 12px;margin-bottom:12px;border-left:4px solid var(--verde-claro);background:var(--suave);font-size:16px}
-.nota.no{border-left-color:var(--teja)}
+.nota{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;padding:12px 16px;margin-bottom:12px}
+.nota.no{border-color:var(--teja)}
 .resultado h2{font-size:44px}
 .pie{font-size:13px;color:var(--gris3);margin-top:32px}
-@media (min-width:760px){#mapa{height:46vh}h2{font-size:34px}#cab h1{font-size:28px}}
+@media (min-width:760px){#mapa{height:46vh}h2{font-size:38px}#cab h1{font-size:32px}}
 @media (max-width:480px){#mapa{height:34vh}}
 @media (max-height:520px){#arriba{position:static}}
 </style>
@@ -271,7 +278,7 @@ label.enlace{cursor:pointer}
 <body>
 <div id="arriba">
   <div id="cab"></div>
-  <div id="mapa"><button class="plegar" onclick="plegarMapa()" aria-label="Plegar o desplegar el mapa" title="Mapa más chico o más grande">▾</button><button class="mundo" onclick="verZona(null)" hidden>‹ Mundo</button><svg id="svg" viewBox="0 40 1000 360" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path id="tierra" fill-rule="evenodd"/><g id="relieve" fill-rule="evenodd"></g><path id="lagos" fill-rule="evenodd"/><path id="fronteras"/><g id="capa"></g></svg><div class="luz" id="luz" aria-hidden="true"></div><div class="clima" id="clima" aria-hidden="true"></div></div>
+  <div id="mapa"><button class="plegar" onclick="plegarMapa()" aria-label="Plegar o desplegar el mapa" title="Mapa más chico o más grande">▾</button><button class="mundo" onclick="verZona(null)" hidden>‹ Mundo</button><svg id="svg" viewBox="0 40 1000 360" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path id="tierra" fill-rule="evenodd"/><g id="relieve" fill-rule="evenodd"></g><path id="lagos" fill-rule="evenodd"/><path id="fronteras"/><g id="capa"></g></svg><div class="luz" id="luz" aria-hidden="true"></div><div class="clima" id="clima" aria-hidden="true"></div><div class="olas" id="olas" aria-hidden="true"></div></div>
   <div id="perfil" hidden></div>
 </div>
 <main id="panel"></main>
@@ -1295,7 +1302,7 @@ function irInicio(){S.pantalla='inicio';S.aviso=null;render()}
 function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='preguntar')iniciarQuiz(r);render()}
 function paso(d,tras){const r=rioPor(S.rio),fin=r.paradas.length+1,antes=S.paso;
   if(d>0&&!tras&&!S.evento&&antes<fin){const def=r.eventos.find(e=>e.tramo===antes+1&&!S.eventosVistos[e.tramo]);if(def){lanzarEvento(r,def);return}}
-  S.paso=Math.max(0,Math.min(fin,antes+d));S.viaje={de:antes,a:S.paso};if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
+  S.paso=Math.max(0,Math.min(fin,antes+d));S.viaje={de:antes,a:S.paso};S.olas=d>0&&S.paso===fin;if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
 function reiniciarOrden(r){S.orden={pool:mezclar(r.paradas.map((c,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VZ().ordenInicio)}}
 function tocarChip(i){const o=S.orden,r=rioPor(S.rio);if(o.listo)return;
   if(i===o.seq.length){o.seq.push(i);o.pool=o.pool.filter(x=>x!==i);o.fallo=null;o.dicho=azar(VZ().ordenBien);if(!o.pool.length){o.listo=true;o.dicho=VZ().ordenFin[o.errores===0?0:o.errores===1?1:2];if(S.eco&&o.errores<=1){o.premio=o.errores===0?5:2;P.tesoro=(P.tesoro||0)+o.premio;o.dicho+=` +${o.premio} monedas al tesoro.`}marcar(r.pref+'orden',o.errores<=1)}}
@@ -1324,12 +1331,12 @@ ${grupos}
 <details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}</details>
 <details class="mas ajustes"><summary>Ajustes: modo, voz y progreso</summary><div class="fkicker">Modo de juego</div><div class="tabs modo"><button class="${esNino()?'on':''}" onclick="setModo('mercader')">Niño</button><button class="${esNino()?'':'on'}" onclick="setModo('historia')">Adulto</button></div><p class="fnota">${esNino()?VJ().ajustesNino:VJ().ajustesAdulto}</p>${esNino()&&voz.soporte()?`<div class="tabs modo"><button class="${P.voz!=='boton'?'on':''}" onclick="setVoz('auto')">🔊 Lee sola</button><button class="${P.voz==='boton'?'on':''}" onclick="setVoz('boton')">Solo con el botón</button></div><p class="fnota">Con «Lee sola», el animal lee cada pantalla al abrirla y lo que dice al responder.</p>`:''}${renderProgreso()}</details>`}
 function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;const n=r.paradas.length,p=S.paso;
-  if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2>${escena(r.inicio.escena)}<p>${esc(r.inicio.nota)}</p>${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}${bloqueFrase(r,true)}${renderGuia(r)}<div class="nav"><span></span>${botonZarpar(r)}</div>`;
+  if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2><div class="ficha recuerdo">${escena(r.inicio.escena)}<div class="cuerpo"><p>${esc(r.inicio.nota)}</p></div></div>${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}${bloqueFrase(r,true)}${renderGuia(r)}<div class="nav"><span></span>${botonZarpar(r)}</div>`;
   if(p<=n){const c=r.paradas[p-1];
     const prev=p>1?r.paradas[p-2]:null;
-    return `${globo(r,S.dicho||(r.companero&&r.companero.paradas[p-1]))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div>${escena(c.escena)}<div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}${renderGuia(r)}<div class="nav"><button class="btn sec" onclick="paso(-1)">‹ Atrás</button>${p===n?`<button class="btn" onclick="paso(1)">${V.llegarFin} ›</button>`:botonZarpar(r)}</div>`}
+    return `${globo(r,S.dicho||(r.companero&&r.companero.paradas[p-1]))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div><div class="ficha recuerdo">${escena(c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}${renderGuia(r)}<div class="nav"><button class="btn sec" onclick="paso(-1)">‹ Atrás</button>${p===n?`<button class="btn" onclick="paso(1)">${V.llegarFin} ›</button>`:botonZarpar(r)}</div>`}
   const f=S.eco&&S.eco.final;
-  return `${globo(r,S.dicho||(r.companero&&r.companero.fin))}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2>${escena(r.fin.escena)}<p>${esc(V.llegada(r))}</p>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">🪙 Tesoro: ${P.tesoro||0} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}<div class="nav"><button class="btn sec" onclick="paso(-1)">‹ Atrás</button><button class="btn" onclick="setTab('ordenar')">Ordenar de memoria ›</button></div>`}
+  return `${globo(r,S.dicho||(r.companero&&r.companero.fin))}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">${escena(r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">🪙 Tesoro: ${P.tesoro||0} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}<div class="nav"><button class="btn sec" onclick="paso(-1)">‹ Atrás</button><button class="btn" onclick="setTab('ordenar')">Ordenar de memoria ›</button></div>`}
 function renderGuia(r){const g=S.guias[S.paso];if(!g||S.paso>=r.paradas.length)return '';
   const chips=g.opciones.map(i=>{let cls='chip';if(g.resp!=null){if(i===g.objetivo)cls+=' bien';else if(i===g.resp)cls+=' mal'}return `<button class="${cls}" onclick="responderGuia(${i})"${g.resp!=null?' disabled':''}>${esc(r.paradas[i].nombre)}</button>`}).join('');
   return `<div class="guia"><div class="fkicker">${r.vocab.proxima}</div><div class="chips">${chips}</div></div>`}
@@ -1375,7 +1382,7 @@ function renderQuiz(){const Q=S.quiz,n=Q.qs.length;
   const nota=resp!=null?`<div class="nota${resp===q.correcta?'':' no'}">${esc(q.nota)}</div><div class="nav"><span></span><button class="btn" onclick="siguiente()">${Q.i+1===n?'Ver resultado ›':'Siguiente ›'}</button></div>`:'';
   const rq=Q.modo==='rio'?rioPor(S.rio):(resp!=null?rioPor(q.rio):null);
   return `${rq?globo(rq,Q.dicho):globoNeutro(Q.dicho)}<p class="kicker">${botonVoz()}Pregunta ${Q.i+1} de ${n} · ${esc(Q.titulo)}</p>${q.escena?escena(q.escena,'quiz'):''}<p class="pregunta">${esc(q.texto)}</p><div class="opciones">${ops}</div>${nota}`}
-function render(scroll){voz.callar();GLOBO=false;const arriba=document.getElementById('arriba');if(arriba)arriba.classList.toggle('portada',S.pantalla==='inicio'||S.pantalla==='pasaporte');
+function render(scroll){voz.callar();GLOBO=false;const arriba=document.getElementById('arriba');if(arriba)arriba.classList.toggle('portada',S.pantalla==='inicio'||S.pantalla==='pasaporte');if(document.body&&document.body.classList)document.body.classList.toggle('nino',esNino());
   const cab=$('#cab'),panel=$('#panel');
   if(S.pantalla==='inicio'){cab.innerHTML=cabecera(JUEGO.nombre,JUEGO.sub);panel.innerHTML=renderInicio();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
   else if(S.pantalla==='pasaporte'){cab.innerHTML=cabecera('Pasaporte',`${totalSellos()} sellos · ${RUTAS.filter(completo).length} ${VJ().completos}`,true);panel.innerHTML=renderPasaporte();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
@@ -1552,10 +1559,13 @@ function animarBarca(poly,t0,t1,px,tierra){const g=document.getElementById('barc
   const dibujarEstela=p=>{if(!estela)return;const pts=t1>=t0?poly.slice(0,p.i).concat([[p.x,p.y]]):[[p.x,p.y]].concat(poly.slice(p.i));estela.setAttribute('d','M'+pts.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join('L'))};
   const salpicar=p=>{if(!capa||!capa.insertAdjacentHTML)return;capa.insertAdjacentHTML('beforeend',`<g class="salpicon${tierra?' polvo':''}" transform="translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) scale(${px.toFixed(4)})"><g class="sal"><circle r="4"/><circle cx="-5" cy="-2" r="1.5"/><circle cx="5" cy="-2" r="1.5"/><circle cy="-5" r="1.2"/></g></g>`);setTimeout(()=>{const s=capa.querySelector('.salpicon');if(s)s.remove()},1000)};
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(t0===t1||reduce){poner(pos(t1));return}
+  if(t0===t1||reduce){poner(pos(t1));S.olas=false;return}
   const T=performance.now(),dur=1400;
-  const step=now=>{let k=Math.min(1,(now-T)/dur);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const p=pos(t0+(t1-t0)*k);poner(p);dibujarEstela(p);if(k<1)animB=requestAnimationFrame(step);else{animB=null;if(estela)estela.setAttribute('class','estela fin');salpicar(p)}};
+  const step=now=>{let k=Math.min(1,(now-T)/dur);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const p=pos(t0+(t1-t0)*k);poner(p);dibujarEstela(p);if(k<1)animB=requestAnimationFrame(step);else{animB=null;if(estela)estela.setAttribute('class','estela fin');salpicar(p);if(S.olas){S.olas=false;olear()}}};
   animB=requestAnimationFrame(step)}
+
+/* olas doradas: una barrida sobre el mar al llegar al final de la ruta (clase .va en #olas, se quita sola al terminar) */
+function olear(){const o=document.getElementById('olas');if(!o||!o.classList)return;o.classList.remove('va');void o.offsetWidth;o.classList.add('va')}
 
 /* ---------- arranque ---------- */
 (function init(){cargarPerfiles();if(voz.soporte())window.speechSynthesis.getVoices();render(true)})();
