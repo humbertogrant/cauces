@@ -308,6 +308,11 @@ label.enlace{cursor:pointer}
 .tarjeta .tm .num{font-size:13px}
 .tarjeta .listo{color:var(--verde);font-weight:700}
 .tarjeta .barra{width:100%;height:3px;margin-top:7px;border-radius:2px;overflow:hidden}
+.comparar .cmp{display:grid;grid-template-columns:1fr auto;gap:2px 10px;width:100%;margin:8px 0 0;padding:0;background:none;border:0;text-align:left;cursor:pointer;font-family:var(--cuerpo)}
+.comparar .cn{font:500 17px var(--tit);color:var(--verde)}
+.comparar .cm{font-size:13px;color:var(--gris2)}
+.comparar .barra{grid-column:1/3;height:3px;border-radius:2px;overflow:hidden}
+.comparar .fnota{margin-top:10px}
 .quien{padding:12px 16px}
 .quien .fkicker{margin-bottom:8px}
 .quien .chips{margin-bottom:0}
@@ -554,6 +559,7 @@ function setVoz(v){P.voz=v;guardar();render(false)}
 function dichoActual(){if(S.pantalla==='quiz')return S.quiz&&S.quiz.resp!=null?S.quiz.dicho:null;if(S.pantalla!=='rio')return null;const r=rioPor(S.rio);
 if(S.tab==='descender'){const E=S.evento;if(E)return E.resp!=null?(E.ok?E.def.bien:E.def.mal):E.dicho;return S.dicho}
 if(S.tab==='ordenar')return S.orden&&S.orden.dicho;
+if(S.tab==='trazar')return S.tra&&S.tra.dicho;
 if(S.tab==='recitar'){const R=S.rec;if(!R)return null;return R.revelada&&R.i<r.paradas.length?r.paradas[R.i].nombre:R.dicho}
 return S.quiz&&S.quiz.dicho}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -601,7 +607,7 @@ recorre:'Recorré un viaje o jugá un reto: lo que hagás vuelve cuando toque.',
 ajustesNino:'Mercader: diez monedas, tres espacios y precios que suben etapa a etapa. El animal acompaña, los textos largos quedan plegados en «Contame más» y la voz puede leer sola.',
 ajustesAdulto:'Historia: lo que el viajero llevaba, alto por alto, sin monedas. Todo el texto a la vista y el animal calladito, salvo para reaccionar.',
 dominas:'Reconocés todo el viaje: ahora recitalo de memoria.',conCalma:'Volvé a recorrer el viaje con calma; el repaso te lo va a recordar.',
-ordenBien:'Sin errores: el camino ya es tuyo.',ordenMal:e=>`${e} errores: volvé a recorrer el viaje con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} etapas en orden, de la partida al regreso.`,
+ordenBien:'Sin errores: el camino ya es tuyo.',ordenMal:e=>`${e} errores: volvé a recorrer el viaje con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} etapas en orden, de la partida al regreso.`,tocaTramos:n=>`Tocá los ${n} tramos en orden, de la partida al regreso.`,trazar:'Trazar',trazaKicker:'Trazar · la forma del viaje',trazaPregunta:(i,n,prev)=>`Tocá en el mapa la etapa ${i} de ${n}: ¿adónde siguió el viaje después de ${esc(prev)}?`,trazaNo:'Ahí no. Mirá el mapa otra vez: ¿hacia dónde siguió?',trazaFin:(ok,n)=>`${ok} de ${n} etapas a la primera`,
 cabecera:r=>`${esc(r.region)} · de ${esc(r.inicio.nombre)} a ${esc(r.fin.en)}`,tarjeta:r=>esc(r.region),
 kickerInicio:r=>`Partida${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Etapa ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''} · ${escalaViaje(r,c)}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
 tramo:(r,c,prev)=>prev?`después de ${esc(prev.nombre)}`:`primera etapa desde ${esc(r.inicio.nombre)}`,
@@ -641,7 +647,7 @@ recorre:'Recorré un viaje o jugá un reto: lo que hagás vuelve cuando toque.',
 ajustesNino:'Mercader: diez monedas, tres espacios y precios que suben escala a escala. El animal acompaña, los textos largos quedan plegados en «Contame más» y la voz puede leer sola.',
 ajustesAdulto:'Historia: lo que la flota llevaba, puerto por puerto, sin monedas. Todo el texto a la vista y el animal calladito, salvo para reaccionar.',
 dominas:'Reconocés toda la travesía: ahora recitala de memoria.',conCalma:'Volvé a navegar la travesía con calma; el repaso te lo va a recordar.',
-ordenBien:'Sin errores: la ruta ya es tuya.',ordenMal:e=>`${e} errores: volvé a navegar con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} escalas en orden, del zarpe al regreso.`,
+ordenBien:'Sin errores: la ruta ya es tuya.',ordenMal:e=>`${e} errores: volvé a navegar con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} escalas en orden, del zarpe al regreso.`,tocaTramos:n=>`Tocá los ${n} tramos en orden, del zarpe al regreso.`,trazar:'Trazar',trazaKicker:'Trazar · la forma de la travesía',trazaPregunta:(i,n,prev)=>`Tocá en el mapa la escala ${i} de ${n}: ¿adónde siguió la travesía después de ${esc(prev)}?`,trazaNo:'Ahí no. Mirá el mapa otra vez: ¿hacia dónde siguió?',trazaFin:(ok,n)=>`${ok} de ${n} escalas a la primera`,
 cabecera:r=>`${esc(r.region)} · de ${esc(r.inicio.nombre)} a ${esc(r.fin.en)}`,tarjeta:r=>esc(r.region),
 kickerInicio:r=>`Zarpe${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Escala ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''} · ${escalaViaje(r,c)}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
 tramo:(r,c,prev)=>prev?`después de ${esc(prev.nombre)}`:`primera escala desde ${esc(r.inicio.nombre)}`,
@@ -739,7 +745,8 @@ const di=(...t)=>t.forEach(x=>{if(x)L.push(String(x))});
 const opciones=(ops,pre)=>{di(pre);ops.forEach((o,i)=>di(`${ORD[i]||(i+1)}: ${sinHtml(o)}`))};
 const quiz=Q=>{const N=Q.qs.length;if(Q.i>=N){const k=nivelQuiz(Q);di(Q.modo==='rio'?VZ().resultado[k]:'',`${Q.aciertos} de ${N}.`,MSG_QUIZ(vocabQuiz())[k]);return}const q=Q.qs[Q.i];if(Q.modo==='rio'||Q.resp!=null)di(Q.dicho);di(q.texto);if(Q.resp==null)opciones(q.opciones);else di(q.nota)};
 if(S.pantalla==='quiz'||S.tab==='preguntar'){if(S.quiz)quiz(S.quiz);return L}
-if(S.tab==='ordenar'){const o=S.orden;di(o.dicho);if(!o.listo)opciones(o.pool.map(i=>r.paradas[i].nombre),V.tocaEnOrden(n));return L}
+if(S.tab==='ordenar'){const o=S.orden,U=unidades(r);di(o.dicho);if(!o.listo)opciones(o.pool.map(i=>U[i].nombre),r.tramos?V.tocaTramos(U.length):V.tocaEnOrden(n));return L}
+if(S.tab==='trazar'){const T=S.tra;di(T.dicho);if(!T.listo)di(V.trazaPregunta(T.i+1,n,T.i?r.paradas[T.i-1].nombre:r.inicio.nombre));return L}
 if(S.tab==='recitar'){const R=S.rec;di(R.dicho);if(R.i>=n)di(`${R.ok.filter(Boolean).length} de ${n} recordadas.`);else if(!R.revelada)di(`${V.Parada} ${R.i+1} de ${n}: decila en voz alta y después revelá.`);else di(`${r.paradas[R.i].nombre}, ${r.paradas[R.i].pais}. ¿La sabías?`);return L}
 const E=S.evento,p=S.paso;
 if(E){di(E.dicho,E.def.titulo+'. '+E.def.texto,E.q.texto);if(E.resp==null)opciones(E.q.opciones);else di((E.ok?E.def.bien:E.def.mal)+(E.delta?` ${E.delta>0?'Ganás':'Perdés'} ${Math.abs(E.delta)} monedas.`:''),h?E.q.nota:'');return L}
@@ -889,6 +896,20 @@ return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.duracion(r),nota:V.pre
 const con=mezclar(RUTAS.filter(x=>x.id!==r.id&&duracionViaje(x))).slice(0,3).concat([r]),ultimo=Math.random()<0.5,a=x=>anio(x.inicio.fecha);
 const ok=con.reduce((m,x)=>(ultimo?a(x)>a(m):a(x)<a(m))?x:m,con[0]);
 return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.primero(ultimo),nota:V.preguntas.primeroNota(con.slice().sort((x,y)=>a(x)-a(y))),cardId:card},esc(ok.nombre),con.filter(x=>x!==ok).map(x=>esc(x.nombre)))}
+function iniciarTrazar(r){S.tra={i:0,errores:0,malos:0,fallo:null,listo:false,viaje:false,dicho:azar(VZ().recitarInicio),premio:0,ok:[]}}
+function trazarEn(i){const r=rioPor(S.rio),T=S.tra;if(!T||T.listo||S.tab!=='trazar')return;const n=r.paradas.length;
+if(i===T.i){const bien=T.malos===0;T.ok.push(bien);marcar('ciudad:'+r.id+':'+i,bien,'recordar',1);T.i++;T.malos=0;T.fallo=null;T.viaje=true;T.dicho=azar(VZ().ordenBien);audio.ping(1046);
+if(T.i>=n){T.listo=true;T.dicho=VZ().ordenFin[T.errores===0?0:T.errores<=2?1:2];if(S.eco&&T.errores<=2){T.premio=T.errores===0?5:2;P.tesoro=(P.tesoro||0)+T.premio;T.dicho+=` +${T.premio} monedas al tesoro.`}if(T.errores<=2)hecha(r,'trazar');guardar()}}
+else{T.errores++;T.malos++;T.fallo=i;T.dicho=azar(VZ().ordenMal);setTimeout(()=>{if(S.tra===T&&T.fallo===i){T.fallo=null;render(false)}},600)}
+render(false)}
+function renderTrazar(r){const V=r.vocab,T=S.tra,n=r.paradas.length,prev=T.i?r.paradas[T.i-1].nombre:r.inicio.nombre;
+const seq=`<div class="secuencia"><span class="extremo">${V.extremoInicio}</span>${r.paradas.map((c,i)=>i<T.i?`<span class="puesto${T.ok[i]?'':' no'}">${esc(c.nombre)}</span>`:'<span class="hueco">—</span>').join('')}<span class="extremo">${V.extremoFin}</span></div>`;
+const cuerpo=T.listo?`<div class="nota${T.errores>2?' no':''}">${V.trazaFin(T.ok.filter(Boolean).length,n)}${T.premio?` · +${T.premio} monedas al tesoro`:''}.</div>`:`<p class="pregunta">${V.trazaPregunta(T.i+1,n,prev)}</p>${T.fallo!=null?`<div class="nota no">${V.trazaNo}</div>`:''}`;
+return `${globo(r,T.dicho)}<p class="kicker">${botonVoz()}${V.trazaKicker}</p>${cuerpo}${seq}`}
+function focoTrazar(r){const T=S.tra,f={modo:'rio',rio:r,tocar:false,etiquetas:new Set(),actual:null,halo:null,trazar:true,ocultarResto:true};for(let i=0;i<T.i;i++)f.etiquetas.add(i);
+const a=idxParada(r,T.i);if(T.viaje){f.barca={de:idxParada(r,T.i-1),a};T.viaje=false}else f.barca={de:a,a};f.corte=a;f.frac=T.i/(r.paradas.length+1);return f}
+function renderComparar(){const rs=RUTAS.filter(r=>r.tipo!=='rio');if(rs.length<2)return '';const maxK=Math.max(...rs.map(r=>r.kmPoly));
+return `<div class="ficha comparar"><span class="rotulo">Los viajes, en escala</span>${rs.slice().sort((a,b)=>b.kmPoly-a.kmPoly).map(r=>{const y=duracionViaje(r);return `<button class="cmp" onclick="abrirRio('${r.id}')"><span class="cn">${esc(r.nombre)}</span><span class="cm">${num('≈'+km(redondoKm(r.kmPoly))+' km')}${y?` · ${num(txtAnios(y))}`:''}</span><span class="barra"><i style="width:${Math.round(r.kmPoly/maxK*100)}%"></i></span></button>`}).join('')}<p class="fnota">Kilómetros de etapa en etapa según el dibujo del mapa; años entre la partida y el regreso.</p></div>`}
 function preguntaDeCard(id){const p=id.split(':'),r=rutaPor(p[1]);if(!r)return null;const T=tiposDisponibles(r);
 if(p[0]==='ciudad')return preguntaTipo(azar(['ciudad','imagen'].filter(t=>T.includes(t)).concat(T.includes('fecha')?['fecha']:[])),r,+p[2]);
 if(p[2]==='orden')return preguntaTipo(azar(['cerca','frase','siguiente','orden'].filter(t=>T.includes(t))),r);
@@ -932,11 +953,11 @@ render(false)}
 function cerrarEco(r){const e=S.eco;if(!e||e.cerrado)return;const j=r.paradas.length-1,vend=[];e.bodega.forEach(gi=>{const g=r.carga[gi],p=precio(r,g,j)||0;e.monedas+=p;vend.push(g.n+' · '+p)});e.bodega=[];
 const gan=e.monedas-10;P.tesoro=(P.tesoro||0)+Math.max(0,gan);e.cerrado=true;e.final={fin:e.monedas,gan,vend};S.dicho=VZ().ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+(r.fantasma!=null?' '+(e.monedas>r.fantasma?VZ().fantasma[0]:e.monedas<r.fantasma?VZ().fantasma[1].replace('{n}',r.fantasma):VZ().fantasma[2]):'');guardar()}
 function irInicio(){S.pantalla='inicio';S.aviso=null;render()}
-function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='preguntar')iniciarQuiz(r);render()}
+function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='trazar')iniciarTrazar(r);if(t==='preguntar')iniciarQuiz(r);render()}
 function paso(d,tras){const r=rioPor(S.rio),fin=r.paradas.length+1,antes=S.paso;
 if(d>0&&!tras&&!S.evento&&antes<fin){const def=r.eventos.find(e=>e.tramo===antes+1&&!S.eventosVistos[e.tramo]);if(def){lanzarEvento(r,def);return}}
 S.paso=Math.max(0,Math.min(fin,antes+d));S.viaje={de:antes,a:S.paso};S.olas=d>0&&S.paso===fin;if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
-function reiniciarOrden(r){S.orden={pool:mezclar(r.paradas.map((c,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VZ().ordenInicio)}}
+function reiniciarOrden(r){S.orden={pool:mezclar(unidades(r).map((u,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VZ().ordenInicio)}}
 function tocarChip(i){const o=S.orden,r=rioPor(S.rio);if(o.listo)return;
 if(i===o.seq.length){o.seq.push(i);o.pool=o.pool.filter(x=>x!==i);o.fallo=null;o.dicho=azar(VZ().ordenBien);if(!o.pool.length){o.listo=true;o.dicho=VZ().ordenFin[o.errores===0?0:o.errores===1?1:2];if(S.eco&&o.errores<=1){o.premio=o.errores===0?5:2;P.tesoro=(P.tesoro||0)+o.premio;o.dicho+=` +${o.premio} monedas al tesoro.`}marcar(r.pref+'orden',o.errores<=1);if(o.errores<=1)hecha(r,'ordenar')}}
 else{o.errores++;o.fallo=i;o.dicho=azar(VZ().ordenMal);setTimeout(()=>{if(S.orden===o&&o.fallo===i){o.fallo=null;render(false)}},600)}
@@ -959,6 +980,7 @@ return `${renderHoy()}
 ${S.aviso?`<div class="aviso">${esc(S.aviso)}</div>`:''}
 ${modo()==='mercader'?`<div class="tesoro">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div>`:''}
 ${grupos}
+${typeof renderComparar==='function'?renderComparar():''}
 <details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}<p class="fnota">${VJ().toca}</p></details>
 <details class="mas ajustes"><summary>Ajustes: modo, voz y progreso</summary><div class="fkicker">Modo de juego</div><div class="tabs modo"><button class="${esNino()?'on':''}" onclick="setModo('mercader')">Niño</button><button class="${esNino()?'':'on'}" onclick="setModo('historia')">Adulto</button></div><p class="fnota">${esNino()?VJ().ajustesNino:VJ().ajustesAdulto}</p>${esNino()&&voz.soporte()?`<div class="tabs modo"><button class="${P.voz!=='boton'?'on':''}" onclick="setVoz('auto')">🔊 Lee sola</button><button class="${P.voz==='boton'?'on':''}" onclick="setVoz('boton')">Solo con el botón</button></div><p class="fnota">Con «Lee sola», el animal lee cada pantalla al abrirla y lo que dice al responder.</p>`:''}${renderProgreso()}</details>`}
 function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;const n=r.paradas.length,p=S.paso;
@@ -998,12 +1020,12 @@ if(R.i>=n){const ok=R.ok.filter(Boolean).length;cuerpo=`<div class="nota${ok===n
 else if(!R.revelada)cuerpo=`<p class="pregunta">${V.Parada} ${R.i+1} de ${n}: decila en voz alta, o en tu cabeza, y después revelá.</p>`;
 else cuerpo=`<h2>${esc(r.paradas[R.i].nombre)}</h2><div class="pais">${esc(r.paradas[R.i].pais)}</div>`;
 return `${globo(r,R.dicho)}<p class="kicker">${botonVoz()}Recitar · el palacio, habitación por habitación</p>${sel}${pista}${seq}${cuerpo}`}
-function renderOrden(r){const V=r.vocab,o=S.orden,n=r.paradas.length;
-const seq=`<div class="secuencia"><span class="extremo">${V.extremoInicio}</span>${o.seq.map(i=>`<span class="puesto">${esc(r.paradas[i].nombre)}</span>`).join('')}${o.pool.map(()=>'<span class="hueco">—</span>').join('')}<span class="extremo">${V.extremoFin}</span></div>`;
-const chips=`<div class="chips">${o.pool.map(i=>`<button class="chip${o.fallo===i?' mal':''}" onclick="tocarChip(${i})">${esc(r.paradas[i].nombre)}</button>`).join('')}</div>`;
+function renderOrden(r){const V=r.vocab,o=S.orden,U=unidades(r),n=U.length;
+const seq=`<div class="secuencia"><span class="extremo">${V.extremoInicio}</span>${o.seq.map(i=>`<span class="puesto">${esc(U[i].nombre)}</span>`).join('')}${o.pool.map(()=>'<span class="hueco">—</span>').join('')}<span class="extremo">${V.extremoFin}</span></div>`;
+const chips=`<div class="chips">${o.pool.map(i=>`<button class="chip${o.fallo===i?' mal':''}" onclick="tocarChip(${i})">${esc(U[i].nombre)}</button>`).join('')}</div>`;
 const pista=o.errores>=2&&!o.listo?`<div class="pista">${bloqueFrase(r,false)}</div>`:'';
 const fin=o.listo?`<div class="nota${o.errores>1?' no':''}">${o.errores===0?V.ordenBien+(o.premio?` +${o.premio} monedas al tesoro.`:''):o.errores===1?'Un error: cuenta como acierto, pero repasalo.'+(o.premio?` +${o.premio} monedas al tesoro.`:''):V.ordenMal(o.errores)}</div>`:'';
-return `${globo(r,o.dicho)}<p class="kicker">${botonVoz()}Ordenar</p><p class="pregunta">${V.tocaEnOrden(n)}</p>${seq}${o.listo?'':chips}${pista}${fin}`}
+return `${globo(r,o.dicho)}<p class="kicker">${botonVoz()}Ordenar</p><p class="pregunta">${r.tramos?V.tocaTramos(n):V.tocaEnOrden(n)}</p>${seq}${o.listo?'':chips}${pista}${fin}`}
 function renderQuiz(){const Q=S.quiz,n=Q.qs.length;
 if(Q.i>=n){const k=nivelQuiz(Q),msg=MSG_QUIZ(vocabQuiz())[k];
 const rm=Q.modo==='rio'?rioPor(S.rio):null;
@@ -1018,15 +1040,15 @@ const cab=$('#cab'),panel=$('#panel');
 if(S.pantalla==='inicio'){cab.innerHTML=cabecera(JUEGO.nombre,JUEGO.sub);panel.innerHTML=renderInicio();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
 else if(S.pantalla==='pasaporte'){cab.innerHTML=cabecera('Pasaporte',`${num(totalSellos())} sellos · ${num(RUTAS.filter(completo).length)} ${VJ().completos}`,true);panel.innerHTML=renderPasaporte();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
 else if(S.pantalla==='rio'){const r=rioPor(S.rio);cab.innerHTML=cabecera(r.nombre,r.vocab.cabecera(r),true);
-panel.innerHTML=(S.tab==='descender'?renderDescender(r):S.tab==='ordenar'?renderOrden(r):S.tab==='recitar'?renderRecitar(r):renderQuiz());renderMapa(focoRio(r))}
+panel.innerHTML=(S.tab==='descender'?renderDescender(r):S.tab==='ordenar'?renderOrden(r):S.tab==='recitar'?renderRecitar(r):S.tab==='trazar'?renderTrazar(r):renderQuiz());renderMapa(focoRio(r))}
 else{cab.innerHTML=cabecera(esc(S.quiz.titulo),S.quiz.modo==='repaso'?'Lo que ya toca volver a ver':VJ().retoSub,true);panel.innerHTML=renderQuiz();renderMapa(focoQuiz(S.quiz.qs[S.quiz.i],null))}
 const pf=document.getElementById('perfil');if(pf){const rp=S.pantalla==='rio'?rioPor(S.rio):null,ok=!!(rp&&conFranja(rp));pf.hidden=!ok;pf.innerHTML=ok?perfilSVG(rp):''}
 if(leeSola()&&S.pantalla!=='inicio'){if(scroll!==false){S.dichoLeido=dichoActual();voz.decir(lectura())}else{const d=dichoActual();if(d&&d!==S.dichoLeido){S.dichoLeido=d;voz.decir([d])}}}
 acomodarPie();if(scroll!==false)window.scrollTo(0,0)}
 const botones=(a,b)=>`<div class="botones">${a||'<span></span>'}${b||''}</div>`;
-function etapasHechas(r){const e=(P.etapas||{})[r.id]||{};return{descender:!!P.vistos[r.id],ordenar:!!e.ordenar,recitar:!!e.recitar,preguntar:!!e.preguntar}}
+function etapasHechas(r){const e=(P.etapas||{})[r.id]||{};return{descender:!!P.vistos[r.id],ordenar:!!e.ordenar,recitar:!!e.recitar,trazar:!!e.trazar,preguntar:!!e.preguntar}}
 function hecha(r,k){P.etapas=P.etapas||{};(P.etapas[r.id]=P.etapas[r.id]||{})[k]=true;guardar()}
-function renderRiel(r){const h=etapasHechas(r),V=r.vocab;return `<nav class="riel" aria-label="Etapas">${[['descender',V.bajar],['ordenar','Ordenar'],['recitar','Recitar'],['preguntar','Preguntar']].map(([k,t])=>`<button class="paso${S.tab===k?' aqui':''}${h[k]?' hecho':''}" onclick="setTab('${k}')"${S.tab===k?' aria-current="step"':''}><i aria-hidden="true">${h[k]?ico('ok'):''}</i><span>${t}</span></button>`).join('')}</nav>`}
+function renderRiel(r){const h=etapasHechas(r),V=r.vocab;return `<nav class="riel" aria-label="Etapas">${[['descender',V.bajar],['ordenar','Ordenar'],r.tipo==='rio'?['recitar','Recitar']:['trazar',V.trazar],['preguntar','Preguntar']].map(([k,t])=>`<button class="paso${S.tab===k?' aqui':''}${h[k]?' hecho':''}" onclick="setTab('${k}')"${S.tab===k?' aria-current="step"':''}><i aria-hidden="true">${h[k]?ico('ok'):''}</i><span>${t}</span></button>`).join('')}</nav>`}
 function pieQuiz(){const Q=S.quiz;if(!Q)return '';const n=Q.qs.length;
 if(Q.i>=n)return botones(`<button class="btn sec" onclick="irInicio()">${VJ().volver}</button>`,`<button class="btn" onclick="otraRonda()">Otra ronda</button>`);
 if(Q.resp!=null)return botones('',`<button class="btn" onclick="siguiente()">${Q.i+1===n?'Ver resultado ›':'Siguiente ›'}</button>`);
@@ -1046,6 +1068,7 @@ else if(S.tab==='recitar'){const R=S.rec;
 if(R.i>=n)acto=botones(`<button class="btn sec" onclick="setTab('recitar')">Otra vez</button>`,`<button class="btn" onclick="setTab('preguntar')">Preguntar ›</button>`);
 else if(!R.revelada)acto=botones('',`<button class="btn" onclick="revelar()">Revelar</button>`);
 else acto=botones(`<button class="btn sec" onclick="recordada(false)">No la sabía</button>`,`<button class="btn" onclick="recordada(true)">La sabía</button>`)}
+else if(S.tab==='trazar'){if(S.tra.listo)acto=botones(`<button class="btn sec" onclick="setTab('trazar')">Otra vez</button>`,`<button class="btn" onclick="setTab('preguntar')">Preguntar ›</button>`)}
 else acto=pieQuiz()}
 else acto=pieQuiz();
 return acto||riel?`<div class="dentro">${acto?`<div class="acto">${acto}</div>`:''}${riel}</div>`:''}
@@ -1056,7 +1079,8 @@ if(S.evento){for(let i=0;i<S.paso;i++)f.etiquetas.add(i);const m=S.evento.medio,
 f.barca={poly:r.curso.slice(de,m.k+1).concat([m.pt]),t0:S.viajeEv?0:1,t1:1};S.viajeEv=false;f.frac=(S.paso+0.5)/(n+1);return f}
 if(S.paso===0)f.halo=r.curso[0];else if(S.paso<=n){for(let i=0;i<S.paso;i++)f.etiquetas.add(i);f.actual=S.paso-1}else{for(let i=0;i<n;i++)f.etiquetas.add(i);f.halo=r.curso[r.curso.length-1]}
 const a=idxParada(r,S.paso);let de=a,poly=null;if(S.viaje&&S.viaje.a===S.paso){const m=S.viaje.medio;if(m)poly=[m.pt].concat(r.curso.slice(m.k+1,a+1));else de=idxParada(r,S.viaje.de)}S.viaje=null;f.corte=a;f.barca=poly?{poly,t0:0,t1:1}:{de,a};f.frac=S.paso/(n+1)}
-else if(S.tab==='ordenar'){S.orden.seq.forEach(i=>f.etiquetas.add(i));if(S.orden.listo)for(let i=0;i<n;i++)f.etiquetas.add(i);Object.assign(f,estacionada(r))}
+else if(S.tab==='ordenar'){const U=unidades(r);S.orden.seq.forEach(u=>{for(let i=U[u].desde;i<=U[u].hasta;i++)f.etiquetas.add(i)});if(S.orden.listo)for(let i=0;i<n;i++)f.etiquetas.add(i);Object.assign(f,estacionada(r))}
+else if(S.tab==='trazar')return focoTrazar(r);
 else if(S.tab==='recitar'){const R=S.rec;for(let i=0;i<Math.min(R.i,n);i++)f.etiquetas.add(i);if(R.i<n&&R.revelada){f.etiquetas.add(R.i);f.actual=R.i}Object.assign(f,estacionada(r))}
 else return focoQuiz(S.quiz.qs[S.quiz.i],r);
 return f}
@@ -1103,7 +1127,7 @@ const zr=foco.modo==='mundo'?'':enZona?foco.zona:(foco.rio.zona||'mundo'),rel=do
 if(rel){if(rel._z!==zr){rel._z=zr;rel.innerHTML=zr&&RELIEVE[zr]?RELIEVE[zr].map(([a,d])=>`<path class="a${a}" d="${d}"/>`).join(''):''}rel.setAttribute('stroke-width',f(1.2))}
 RUTAS.forEach(r=>{const cls=activo?(r.id===activo?' activo':' tenue'):(enZona&&r.zona!==foco.zona?' tenue':'');
 r.ramas.forEach(b=>{h+=`<path class="rio brazo${cls}" d="${trazo(b)}" stroke-width="${f(1.6)}"/>`});
-if(r.id===activo&&foco.corte!=null){h+=`<path class="rio activo resto" d="${trazoTramo(r,foco.corte,r.curso.length-1)}" stroke-width="${f(2.4)}"/>`;if(foco.corte>0)h+=`<path class="rio activo" d="${trazoTramo(r,0,foco.corte)}" stroke-width="${f(3.4)}"/>`;if(foco.extra)h+=`<path class="rio activo" d="${trazo(foco.extra)}" stroke-width="${f(3.4)}"/>`}
+if(r.id===activo&&foco.corte!=null){if(!foco.ocultarResto)h+=`<path class="rio activo resto" d="${trazoTramo(r,foco.corte,r.curso.length-1)}" stroke-width="${f(2.4)}"/>`;if(foco.corte>0)h+=`<path class="rio activo" d="${trazoTramo(r,0,foco.corte)}" stroke-width="${f(3.4)}"/>`;if(foco.extra)h+=`<path class="rio activo" d="${trazo(foco.extra)}" stroke-width="${f(3.4)}"/>`}
 else h+=`<path class="rio${cls}${!activo&&completo(r)?' hecho':''}" d="${trazoTramo(r,0,r.curso.length-1)}" stroke-width="${f(r.id===activo?3:2.2)}"/>`;
 if(foco.tocar&&(enZona?r.zona===foco.zona:!r.zona))h+=`<path class="hit" d="${trazoTramo(r,0,r.curso.length-1)}" stroke-width="${f(18)}" onclick="abrirRio('${r.id}')"/>`});
 const puestos=[];
@@ -1117,7 +1141,7 @@ puestos.push({x0:q[0]-bw/2,x1:q[0]+bw/2,y0:q[1]-bh/2-4*px,y1:q[1]+bh/2})})}
 if(foco.modo==='mundo')for(const z in ZONAS){const q=proj(ZONAS[z].pos);h+=`<circle class="zona" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(4.5)}" stroke-width="${f(1.5)}"/><text class="etq" x="${(q[0]+7*px).toFixed(1)}" y="${(q[1]+4*px).toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}">${esc(ZONAS[z].nombre)}</text>${foco.tocar?`<circle class="hitz" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(18)}" onclick="verZona('${z}')"><title>Ríos de ${esc(ZONAS[z].nombre)}</title></circle>`:''}`}
 if(enZona){RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>{const q=proj(r.curso[Math.floor(r.curso.length/2)]),[x,y,an]=colocar(q,r.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(r.nombre)}</text>`})}
 if(foco.rio){const r=foco.rio;
-r.paradas.forEach((c,i)=>{const q=proj(c.pos),on=foco.etiquetas.has(i);h+=`<circle class="ciudad${on?' on':''}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(3.5)}"/>`;
+r.paradas.forEach((c,i)=>{const q=proj(c.pos),on=foco.etiquetas.has(i);h+=`<circle class="ciudad${on?' on':''}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(3.5)}"/>`;if(foco.trazar)h+=`<circle class="hitz" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(16)}" onclick="trazarEn(${i})"/>`;
 if(foco.actual===i)h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`});
 if(foco.halo){const q=proj(foco.halo);h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`}
 r.paradas.forEach((c,i)=>{if(!foco.etiquetas.has(i))return;const q=proj(c.pos),[x,y,an]=colocar(q,c.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(c.nombre)}</text>`})}

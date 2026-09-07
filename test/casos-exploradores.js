@@ -65,12 +65,14 @@ for(const modo of ['mercader','historia']){crearPerfil('Prueba '+modo);setModo(m
       else{if(ph.indexOf(V.fin)<0||ph.indexOf('vuelve a '+esc(r.fin.en))<0&&ph.indexOf('termina en '+esc(r.fin.en))<0)throw k+': final mal: '+ph.slice(0,300)}}
     if(eventos!==r.eventos.length)throw k+' eventos vistos '+eventos+' de '+r.eventos.length;if(!P.vistos[r.id])throw k+' no visto';
     if(modo==='mercader'&&(!S.eco.cerrado||!S.eco.final))throw k+' sin cuentas finales';
-    setTab('ordenar');if(panel().indexOf(V.extremoInicio+'</span>')<0||panel().indexOf(V.extremoFin+'</span>')<0||panel().indexOf(V.tocaEnOrden(n))<0)throw k+' ordenar sin vocabulario';for(let i=0;i<n;i++)tocarChip(i);if(!S.orden.listo||panel().indexOf(V.ordenBien)<0)throw k+' orden no listo';
-    setTab('recitar');if(panel().indexOf(V.Parada+' 1 de')<0)throw k+' recitar sin vocabulario';for(let i=0;i<n;i++){revelar();recordada(true)}if(panel().indexOf(`${n} de ${n} recordadas`)<0)throw k+' recitar';
+    setTab('ordenar');const U=unidades(r);if(panel().indexOf(V.extremoInicio+'</span>')<0||panel().indexOf(V.extremoFin+'</span>')<0||panel().indexOf(r.tramos?V.tocaTramos(U.length):V.tocaEnOrden(n))<0)throw k+' ordenar sin vocabulario';if(r.tramos&&panel().indexOf(esc(r.tramos[0].nombre))<0)throw k+' ordenar sin tramos';for(let i=0;i<U.length;i++)tocarChip(i);if(!S.orden.listo||panel().indexOf(V.ordenBien)<0)throw k+' orden no listo';
+    setTab('trazar');{const pie=document.getElementById('pie').innerHTML;if(pie.indexOf('>Trazar<')<0||pie.indexOf('Recitar')>=0)throw k+' el riel de un viaje lleva Trazar';if(capa().indexOf('trazarEn(')<0||capa().indexOf('class="rio activo resto"')>=0)throw k+' el mapa de Trazar debe tener etapas tocables y esconder el resto del camino';
+      if(panel().indexOf(V.trazaPregunta(1,n,r.inicio.nombre))<0)throw k+' trazar sin pregunta';trazarEn(1);if(S.tra.errores!==1||panel().indexOf(V.trazaNo)<0)throw k+' error de trazar no contado';for(let i=0;i<n;i++)trazarEn(i);if(!S.tra.listo||panel().indexOf(V.trazaFin(n-1,n))<0)throw k+' trazar: '+sinHtml(panel()).slice(0,200);if(!etapasHechas(r).trazar)throw k+' trazar no marcado como hecho';
+      if(document.getElementById('pie').innerHTML.indexOf('Preguntar ›')<0)throw k+' sin Preguntar tras trazar'}
     setTab('preguntar');if(S.quiz.qs.length!==6)throw k+' quiz de '+S.quiz.qs.length;for(let i=0;i<6;i++){const q=S.quiz.qs[S.quiz.i];responder(q.correcta);siguiente()}if(panel().indexOf('6 de 6')<0||panel().indexOf(V.dominas)<0)throw k+' resultado';
     if(!lectura().length)throw k+' sin lectura';
     verPasaporte();if(sellosDe(r)<n-2)throw k+' pocos sellos '+sellosDe(r);irInicio()}
-  const ph=panel();if(ph.indexOf('Viajeros')<0||ph.indexOf('Conquistadores')<0||ph.indexOf('Tocá un viaje')<0)throw modo+' inicio sin grupos';
+  const ph=panel();if(ph.indexOf('Viajeros')<0||ph.indexOf('Conquistadores')<0||ph.indexOf('Tocá un viaje')<0)throw modo+' inicio sin grupos';if(ph.indexOf('Los viajes, en escala')<0||ph.indexOf('29 años')<0)throw modo+' inicio sin la comparación de viajes';
   iniciarReto();const tipos=new Set();for(let i=0;i<10;i++){const q=S.quiz.qs[S.quiz.i];tipos.add(q.tipo);responder(q.correcta);siguiente()}
   irInicio();const pend=colaHoy().length;iniciarRepaso();if(pend&&S.pantalla!=='quiz')throw 'repaso vacío con '+pend+' pendientes';if(S.pantalla==='quiz')for(const q of S.quiz.qs)if(!q)throw 'pregunta nula en el repaso';irInicio()}
 // tarjetas y guardado propios del juego
