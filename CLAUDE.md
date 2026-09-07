@@ -10,11 +10,13 @@ Desde el 2026-09-04 el motor juega **rutas** de paradas (tipo `rio`, `derrota` o
 y hay un segundo juego con el mismo motor y la misma identidad: **Exploradores** (`dist/exploradores.html`), viajes de
 exploradores y conquistadores etapa por etapa, para niños y adultos. El primer itinerario es Ibn Battuta (1325-1354).
 Los ríos se convierten al esquema de ruta al cargar (`desdeRio`); ningún texto de Cauces cambió con la migración y una
-instantánea de 200 pantallas (`test/instantanea.js`) lo vigila. Exploradores trae seis rutas: Ibn Battuta, Marco Polo,
+instantánea de 200 pantallas (`test/instantanea.js`) lo vigila. Exploradores trae nueve rutas: Ibn Battuta, Marco Polo,
 Alejandro Magno y Hernán Cortés (itinerarios, los dos últimos con `conquista:true`) y Zheng He (tipo `travesia`, la ruta
 marítima que el diseño llamaba «derrota»; se evitó esa palabra porque para un niño es «perder») y Odiseo (travesía de mito: nueve escalas de Troya a Ítaca según
 la tradición que ubica el poema; sin años, con «año 1 del regreso» en el kicker). Desde el 2026-09-07 los viajes juegan
-con otra unidad de memoria que los ríos: no la parada en orden fino, sino el tramo, el rumbo y la escala (ver «Viajes»).
+con otra unidad de memoria que los ríos: no la parada en orden fino, sino el tramo, el rumbo y la escala (ver «Viajes»). El 2026-09-07 entraron también Napoleón (la campaña de Rusia de 1812,
+conquista; todo en un año, con fechas con mes), Humboldt (1799-1804, en canoa) y James Cook (1768-1771, travesía que da la
+vuelta al mundo y cruza el antimeridiano: `antimeridiano:true`).
 
 ## Principios (no negociables)
 
@@ -66,9 +68,10 @@ test/arnes.js        DOM simulado y carga de los archivos de un juego; test/prue
                      `npm test` corre todo: "TODO OK" dos veces, "INSTANTÁNEA OK" y "DIST OK" dos veces
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap
 tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js) desde Natural Earth (110/50 m; 10 m en las cuencas de zona; shapely)
-tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo)
+tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo;
+                     las vistas que cruzan el antimeridiano se parten en su lado oeste y su lado este)
 tools/safari.js      prueba en WebKit (motor de Safari) con Playwright, por http y file://; ver el encabezado del archivo
-tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de paso a mano (geodésicas cada 80 km)
+tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de paso a mano (geodésicas cada 80 km, o el paso de PASO_RUTA)
 tools/relieve.py     regenera src/data/relieve.js: alturas de NOAA NCEI (ETOPO1 y mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
 ```
@@ -275,7 +278,7 @@ longitud?, inicio {nombre, nota, escena, fecha?}, fin {nombre, en, escena, fecha
 texto, pista}], frase, fraseNota?, trazo [segmentos de [lat,lon]], ramas?, paradas [{nombre, pais, pos, imagen, dato,
 escena, fecha?, rumbo (viajes)}], vehiculo {nombre, tipo, desc, zarpe, llegada, puertos}, companero {nombre, especie, emoji, glifo,
 hola, fin, paradas}, carga [bienes], eventos [], perfil?, camara?, vocab?, cruza? [mares, desiertos o montañas que cruzó],
-tramos? [{nombre, hasta: índice de la última etapa del tramo}]`. Los itinerarios se escriben así directamente
+tramos? [{nombre, hasta: índice de la última etapa del tramo}], antimeridiano? (la ruta cruza los 180°)`. Los itinerarios se escriben así directamente
 (`itinerarios.js`); los ríos siguen en su esquema de siempre y `desdeRio` los convierte.
 
 RIVERS[]: `id, nombre, continente (o región, en los ríos de zona), zona? ('cr'), longitud (km), mar (etiqueta), marEn (con artículo), nace, naceNota, antigua,
@@ -340,7 +343,12 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
    cubren todas las etapas en orden; Ordenar y la pregunta de orden los usan) y `cruza` (mares, desiertos o montañas que
    el viaje cruzó, para la pregunta «¿cuál de estos cruzó…?»). Un viaje sin años (Odiseo) lleva en `fecha` un texto sin
    cifra («año 1 del regreso»): no tiene línea de tiempo ni preguntas de fecha, duración o «cuál fue primero». Cuando el
-   lugar es tradición y no dato (los sitios de la Odisea), el `dato` lo dice.
+   lugar es tradición y no dato (los sitios de la Odisea), el `dato` lo dice. Las fechas admiten mes («junio de 1812»):
+   `fechaNum` las coloca en la línea de tiempo y `lapso` mide en meses lo que no llega a un año; la pregunta de fecha solo
+   se ofrece con cuatro años distintos. Si el viaje cruza los 180° (Cook), `antimeridiano:true`: `desenrollar` vuelve
+   continuas las longitudes al cargar, el mapa muestra los mundos vecinos (`#copias`, `data-copias` en `#mapa`) y dibuja la
+   ruta también a ±360°, y tools/rutas.py parte en dos las vistas que cruzan la línea para el mapa y el relieve. Una ruta
+   corta puede pedir vértices más seguidos en `PASO_RUTA` de tools/itinerarios.py (el test exige 40 vértices o más).
 
 ## Pendientes, en orden de valor
 
@@ -352,11 +360,10 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
    (Oceanía, ornitorrinco), San Lorenzo (belugas, Cartier), Zambeze (cataratas Victoria). Cada río del mundo pesa 12-15 KB; con Cauces cerca del tope, un paquete aparte («Ríos de España»:
    Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
 
-1. Exploradores: más viajes (Elcano como travesía que cruza el antimeridiano, Humboldt, Darwin) y de conquista (Napoleón,
-   Gengis Kan), aprobados para niños y adultos. Cada viaje nuevo trae rumbo por etapa, tramos y cruza. Con cada viaje,
+1. Exploradores: más viajes (Elcano, Darwin) y de conquista (Gengis Kan), aprobados para niños y adultos. Cada viaje nuevo trae rumbo por etapa, tramos y cruza. Con cada viaje,
    revisar las líneas nuevas de docs/verificacion.md y que ninguna parada se repita entre rutas.
-2. Motor de rutas, lo que falta: partir la animación del vehículo en los `cortes`; antimeridiano (`lon0` y `<use>` de la
-   tierra); pulir la línea de tiempo cuando varias etapas caen en el mismo año (Cortés).
+2. Motor de rutas, lo que falta: partir la animación del vehículo en los `cortes`. (El antimeridiano y la línea de tiempo
+   con meses quedaron hechos el 2026-09-07 con Cook y Napoleón.)
 3. Inmersión, lo que queda de la evaluación del 2026-09-04: retos sobre el mapa («tocá dónde queda…», que pagan
    memoria espacial) y paisaje sonoro por tramo sintetizado. (La bitácora imprimible se descartó.)
 4. Más ríos de Costa Rica: Pacuare y Sixaola están en Natural Earth 10 m Norteamérica (`capa:'ne10na'`) pero casi

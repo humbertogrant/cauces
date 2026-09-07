@@ -45,6 +45,10 @@ for(const r of RUTAS){
  const qp=preguntaTipo('primero',rioPor('marcopolo')),ini=nm=>anio(RUTAS.find(x=>esc(x.nombre)===nm).inicio.fecha),vals=qp.opciones.map(ini),esp=/último/.test(qp.texto)?Math.max(...vals):Math.min(...vals);if(ini(qp.opciones[qp.correcta])!==esp)throw 'primero: '+qp.texto+' '+JSON.stringify(qp.opciones);
  if(tiposDisponibles(rioPor('odiseo')).includes('duracion')||tiposDisponibles(rioPor('odiseo')).includes('primero'))throw 'Odiseo no tiene años: sin duración ni primero';
  if(!idsDe(rioPor('alejandro')).includes('ruta:alejandro:escala'))throw 'sin tarjeta de escala';
+ {const r=rioPor('cook');if(!r.antimeridiano)throw 'Cook cruza el antimeridiano';for(let i=1;i<r.curso.length;i++)if(Math.abs(r.curso[i][1]-r.curso[i-1][1])>180)throw 'trazo de Cook sin desenrollar';
+  const nz=r.paradas.find(c=>c.nombre==='Nueva Zelanda');if(!(nz.pos[1]<-180))throw 'Nueva Zelanda debe quedar desenrollada al oeste: '+nz.pos[1];const fin=r.curso[r.curso.length-1];if(!(fin[1]<-350))throw 'la vuelta al mundo debe terminar una vuelta al oeste: '+fin[1];
+  abrirRio('cook');const mapa=document.getElementById('mapa');if(mapa['_data-copias']!=='1')throw 'sin copias de la tierra';if(capa().indexOf('translate(1000 0)')<0||capa().indexOf('translate(-1000 0)')<0)throw 'sin copias de la ruta';
+  irInicio();if(mapa['_data-copias']!=='')throw 'copias fuera de la ruta';if(capa().indexOf('translate(1000 0)')<0)throw 'en el mundo la ruta desenrollada necesita su copia'}
  if(!RUTAS.some(r=>r.conquista)||!RUTAS.some(r=>!r.conquista))throw 'grupos de viajeros y conquistadores'}
 console.log('rutas',RUTAS.length,'etapas',RUTAS.reduce((a,r)=>a+r.paradas.length,0),'preguntas OK');
 setTimeout(()=>{

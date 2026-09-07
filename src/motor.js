@@ -166,7 +166,11 @@ function desdeRio(r){if(r.tipo)return r;r.tipo='rio';r.region=r.continente;
   r.carga=r.mercado=MERCADOS[r.id]||[];r.eventos=EVENTOS[r.id]||[];r.perfil=ALTURAS[r.id]||null;
   const n=NAVES[r.id];if(n){r.vehiculo=r.nave=n;r.paradas.forEach((c,i)=>{if(n.puertos[i]){c.puerto=n.puertos[i][0];c.carga=n.puertos[i][1]}})}
   return r}
-function normalizar(r){r.ramas=r.ramas||[];r.carga=r.carga||[];r.eventos=r.eventos||[];r.perfil=r.perfil||null;if(r.vehiculo&&r.vehiculo.puertos)r.paradas.forEach((c,i)=>{const pu=r.vehiculo.puertos[i];if(pu&&c.puerto==null){c.puerto=pu[0];c.carga=pu[1]}});
+/* rutas que cruzan el antimeridiano (Cook): al cargar se desenrollan las longitudes para que sigan continuas (174 E después de
+   149 O pasa a ser -186); proj() da entonces x fuera del mapa y el mapa muestra copias de la tierra a ±360° (#copias) */
+function desenrollar(r){let prev=null;const des=p=>{let lon=p[1];if(prev!=null){while(lon-prev>180)lon-=360;while(lon-prev<-180)lon+=360}prev=lon;return [p[0],lon]};
+  r.trazo=r.trazo.map(seg=>seg.map(des));prev=r.trazo[0][0][1];r.paradas.forEach(c=>{c.pos=des(c.pos)})}
+function normalizar(r){if(r.antimeridiano)desenrollar(r);r.ramas=r.ramas||[];r.carga=r.carga||[];r.eventos=r.eventos||[];r.perfil=r.perfil||null;if(r.vehiculo&&r.vehiculo.puertos)r.paradas.forEach((c,i)=>{const pu=r.vehiculo.puertos[i];if(pu&&c.puerto==null){c.puerto=pu[0];c.carga=pu[1]}});
   r.vocab=Object.assign({},VOCAB[r.tipo]||VOCAB.rio,r.vocab||{});r.vocesEfectivas=Object.assign({},VOCES,r.vocab.voces||{});r.pref=(r.tipo==='rio'?'rio:':'ruta:')+r.id+':';/* prefijo de las tarjetas: rio: se conserva por el progreso guardado */
   r.curso=r.trazo.length===1?r.trazo[0]:[].concat(...r.trazo);r.cortes=[];let k=0;r.trazo.forEach((seg,i)=>{if(i)r.cortes.push(k);k+=seg.length});/* cortes: índice donde empieza cada segmento nuevo */
   r.acum=[0];for(let i=1;i<r.curso.length;i++)r.acum[i]=r.acum[i-1]+hav(r.curso[i-1],r.curso[i]);r.kmPoly=r.acum[r.acum.length-1];
@@ -662,20 +666,23 @@ function colocar(q,nombre,puestos,px){const w=nombre.length*6.6*px,alto=12*px;
 const TERRESTRES={caravana:1,pie:1,jinete:1};
 function ventana(r){/* cámara por tramo: de la parada anterior a la siguiente, por el trazo */const n=r.paradas.length,p=S.paso,de=idxParada(r,Math.max(0,p-1)),a=idxParada(r,Math.min(n+1,p+1));return r.curso.slice(de,a+1)}
 function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa'),dims=dimsMapa();let pts,vb;
-  if(foco.modo==='mundo'){pts=[];RUTAS.forEach(r=>pts.push(...r.curso));vb=vbPara(pts,60,1.08,foco,dims)}
+  if(foco.modo==='mundo'){pts=[];RUTAS.forEach(r=>{if(!r.antimeridiano)pts.push(...r.curso)});vb=vbPara(pts,60,1.08,foco,dims)}/* las rutas desenrolladas se salen del mundo: no encuadran; su copia a +360° las trae de vuelta */
   else if(foco.modo==='zona'){pts=[];RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>pts.push(...r.curso,...r.paradas.map(c=>c.pos)));vb=vbPara(pts,3,1.25,foco,dims)}
   else{const r=foco.rio;pts=r.camara==='tramo'&&S.pantalla==='rio'&&S.tab==='descender'?ventana(r):r.curso.concat(r.paradas.map(c=>c.pos));vb=vbPara(pts,r.zona?3:20,1.3,foco,dims)}
   setVB(vb,inmediato);const px=vb.w/(m.clientWidth||380),f=v=>(v*px).toFixed(2);const activo=foco.rio?foco.rio.id:null,enZona=foco.modo==='zona';let h='';
   const zr=foco.modo==='mundo'?'':enZona?foco.zona:(foco.rio.zona||'mundo'),rel=document.getElementById('relieve');/* franjas de altura: solo al acercarse (están recortadas a las vistas de los ríos) */
   if(rel){if(rel._z!==zr){rel._z=zr;rel.innerHTML=zr&&RELIEVE[zr]?RELIEVE[zr].map(([a,d])=>`<path class="a${a}" d="${d}"/>`).join(''):''}rel.setAttribute('stroke-width',f(1.2))}
-  RUTAS.forEach(r=>{const cls=activo?(r.id===activo?' activo':' tenue'):(enZona&&r.zona!==foco.zona?' tenue':'');
+  m.setAttribute('data-copias',foco.rio&&foco.rio.antimeridiano?'1':'');
+  RUTAS.forEach(r=>{const cls=activo?(r.id===activo?' activo':' tenue'):(enZona&&r.zona!==foco.zona?' tenue':'');const desde=h.length;
     r.ramas.forEach(b=>{h+=`<path class="rio brazo${cls}" d="${trazo(b)}" stroke-width="${f(1.6)}"/>`});
     if(r.id===activo&&foco.corte!=null){if(!foco.ocultarResto)h+=`<path class="rio activo resto" d="${trazoTramo(r,foco.corte,r.curso.length-1)}" stroke-width="${f(2.4)}"/>`;if(foco.corte>0)h+=`<path class="rio activo" d="${trazoTramo(r,0,foco.corte)}" stroke-width="${f(3.4)}"/>`;if(foco.extra)h+=`<path class="rio activo" d="${trazo(foco.extra)}" stroke-width="${f(3.4)}"/>`}
     else h+=`<path class="rio${cls}${!activo&&completo(r)?' hecho':''}" d="${trazoTramo(r,0,r.curso.length-1)}" stroke-width="${f(r.id===activo?3:2.2)}"/>`;
-    if(foco.tocar&&(enZona?r.zona===foco.zona:!r.zona))h+=`<path class="hit" d="${trazoTramo(r,0,r.curso.length-1)}" stroke-width="${f(18)}" onclick="abrirRio('${r.id}')"/>`});
+    if(foco.tocar&&(enZona?r.zona===foco.zona:!r.zona))h+=`<path class="hit" d="${trazoTramo(r,0,r.curso.length-1)}" stroke-width="${f(18)}" onclick="abrirRio('${r.id}')"/>`;
+    if(r.antimeridiano){const seg=h.slice(desde);h+=`<g transform="translate(1000 0)">${seg}</g><g transform="translate(-1000 0)">${seg}</g>`}/* desenrollada, la ruta se sale del mapa: se dibuja también un mundo a la izquierda y a la derecha */});
   const puestos=[];
   if(zr){const rid=foco.rio?foco.rio.id:null;NOMBRES_RELIEVE.forEach(L=>{if(L.z!==zr)return;let p=L.p,a=L.a||0;if(L.v){const v=rid&&L.v[rid];if(!v)return;p=v;a=v[2]||0}
-    const q=proj(p);if(q[0]<vb.x-2*px||q[0]>vb.x+vb.w+2*px||q[1]<vb.y||q[1]>vb.y+vb.h)return;
+    const q=proj(p);if(foco.rio&&foco.rio.antimeridiano){if(q[0]<vb.x&&q[0]+1000<=vb.x+vb.w)q[0]+=1000;else if(q[0]>vb.x+vb.w&&q[0]-1000>=vb.x)q[0]-=1000}/* nombres de relieve en la copia visible */
+    if(q[0]<vb.x-2*px||q[0]>vb.x+vb.w+2*px||q[1]<vb.y||q[1]>vb.y+vb.h)return;
     if(L.t==='pico'){if(!foco.rio)return;/* los picos solo al acercarse a un río; en la zona entera se amontonan */
       const t=`${L.n} ${km(L.e)} m`,[x,y,an]=colocar(q,t,puestos,px);h+=`<path class="pico" d="M${q[0].toFixed(1)} ${(q[1]-4.5*px).toFixed(1)}l${f(3.6)} ${f(6.8)}h${f(-7.2)}z" stroke-width="${f(.8)}"/><text class="etq relieve pico" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(10)}" stroke-width="${f(2.5)}" text-anchor="${an}">${esc(t)}</text>`;return}
     const w=L.n.length*(L.t==='llano'?5.6:7.6)*px,rad=a*Math.PI/180,bw=Math.abs(Math.cos(rad))*w+Math.abs(Math.sin(rad))*12*px,bh=Math.abs(Math.sin(rad))*w+Math.abs(Math.cos(rad))*12*px;

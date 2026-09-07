@@ -25,8 +25,13 @@ def cargar(juego='cauces'):
             idx.append(best);ult=best
         r['idx']=idx
     return rutas
+def partir(pts):
+    """Una vista que cruza el antimeridiano (más de 180° de ancho) se parte en su lado oeste y su lado este."""
+    lons=[p[1] for p in pts]
+    if not pts or max(lons)-min(lons)<=180: return [pts]
+    return [[p for p in pts if p[1]<0],[p for p in pts if p[1]>=0]]
 def vistas(r):
-    if r['camara']!='tramo': return [r['curso']+r['paradas']]
+    if r['camara']!='tramo': return partir(r['curso']+r['paradas'])
     n=len(r['paradas']);ult=len(r['curso'])-1
     def idx(p): return 0 if p<=0 else ult if p>n else r['idx'][p-1]
-    return [r['curso'][idx(p-1):idx(p+1)+1] for p in range(0,n+2)]
+    return [v for p in range(0,n+2) for v in partir(r['curso'][idx(p-1):idx(p+1)+1])]

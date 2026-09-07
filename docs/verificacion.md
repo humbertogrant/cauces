@@ -609,6 +609,115 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Gozo · fecha: años 3 a 10 del regreso · rumbo: Al sur, a una isla pequeña, náufrago en un madero ⚠
 - Corfú · fecha: año 10 del regreso · rumbo: Al este, en balsa, hasta las islas griegas ⚠
 
+## Napoleón (1812, de Kaunas a Vilna)
+
+- Partida: El 24 de junio de 1812 la Grande Armée empezó a cruzar el Niemen cerca de Kovno, la Kaunas de hoy: cerca de 600 000 hombres de media Europa, el ejército más grande que el continente había visto.
+- Cruza: el río Niemen, el Dniéper, el Berézina, las llanuras de Rusia ⚠
+- Tramos: Cruzar el Niemen · Tras el enemigo · Borodinó y Moscú · La retirada
+- La Europa de Napoleón: En 1812 Napoleón mandaba, directamente o por medio de aliados, en casi toda Europa continental, e Inglaterra era su enemiga en el mar.
+- La Europa de Napoleón: Para ahogarla, prohibía comerciar con ella; cuando el zar Alejandro abrió otra vez sus puertos, Napoleón juntó el ejército más grande de la historia europea, con soldados de Francia, Polonia, Italia, Alemania, Austria y otros países, y marchó sobre Rusia.
+- La Europa de Napoleón · pista: Un emperador dueño de casi todo un continente que marcha con un ejército enorme contra el único país grande que no obedece su bloqueo.
+- Lo que quedó: La campaña de Rusia fue el principio del fin: en 1813 Napoleón perdió en Leipzig y en 1814 tuvo que abdicar.
+- Lo que quedó: Tolstói la contó en «Guerra y paz» y Chaikovski le puso música en la «Obertura 1812».
+- Lo que quedó: Un gráfico de 1869 del ingeniero Minard, que dibuja el ejército como una franja que se va adelgazando de Kaunas a Moscú y de vuelta, es todavía uno de los mapas más famosos del mundo.
+- Vilna · fecha: junio de 1812 · rumbo: Al este, cruzando el Niemen, tras el ejército ruso ⚠
+- Vilna · dato: Napoleón entró en Vilna el 28 de junio y se quedó dieciocho días organizando Lituania; las tormentas de esos días mataron miles de caballos y el ejército empezó a perder hombres antes de la primera batalla.
+- Vítebsk · fecha: julio de 1812 · rumbo: Al este, por Lituania y Bielorrusia, siguiendo al enemigo que se retira ⚠
+- Vítebsk · dato: Napoleón llegó el 28 de julio esperando batalla, pero el ejército ruso se había ido de noche.
+- Smolensk · fecha: agosto de 1812 · rumbo: Al sureste, hasta la ciudad amurallada del Dniéper ⚠
+- Smolensk · dato: La batalla fue el 16 y el 17 de agosto; los rusos se retiraron de noche y la ciudad ardió.
+- Smolensk · dato: Napoleón entró el 18 en una ciudad quemada y, otra vez, decidió seguir hacia Moscú, a unos 400 km.
+- Borodinó · fecha: septiembre de 1812 · rumbo: Por el camino de Moscú, hasta el campo de batalla ⚠
+- Borodinó · imagen: Un tambor (Bo-ro-din-ó) suena desde el amanecer hasta la noche en el campo más sangriento de la campaña; al final los dos ejércitos siguen donde estaban.
+- Borodinó · dato: El 7 de septiembre, a unos 120 km de Moscú, se dio la batalla más sangrienta de la campaña: cerca de 70 000 muertos y heridos entre los dos ejércitos en un solo día. ⚠
+- Moscú · fecha: septiembre de 1812 · rumbo: Al este, hasta la capital vacía ⚠
+- Moscú · dato: Napoleón entró el 14 de septiembre en una ciudad casi vacía; esa noche empezaron los incendios, que duraron días y quemaron unos dos tercios de Moscú.
+- Moscú · dato: Esperó cinco semanas una paz que el zar Alejandro nunca ofreció y el 19 de octubre salió con unos 100 000 hombres.
+- Maloyaroslávets · fecha: octubre de 1812 · rumbo: De vuelta, hacia el suroeste, buscando un camino nuevo ⚠
+- Maloyaroslávets · dato: El 24 de octubre, a unos 120 km al suroeste de Moscú, la batalla por este pueblo cerró el camino del sur, donde había comida.
+- Krasny · fecha: noviembre de 1812 · rumbo: Al oeste, por el mismo camino de la ida, con la nieve ⚠
+- Krasny · dato: Del 15 al 18 de noviembre, con nieve y cerca de veinte grados bajo cero, el ejército pasó en columnas separadas junto a Krasny bajo ataque ruso.
+- Krasny · dato: La retaguardia del mariscal Ney, dada por perdida, cruzó de noche el Dniéper helado y volvió con unos 800 hombres.
+- Berézina · fecha: noviembre de 1812 · rumbo: Al oeste, hasta un río sin puentes ⚠
+- Berézina · dato: Del 26 al 29 de noviembre los pontoneros del general Eblé levantaron dos puentes en el agua helada cerca de Borísov y el ejército cruzó entre dos ejércitos rusos.
+- Vehículo: Más de medio millón de hombres de Francia, Polonia, Italia, Alemania y otros países, con unos 200 000 caballos y más de mil cañones, en columnas que se extendían por cientos de kilómetros.
+- Salida: Cruzás el Niemen con el ejército más grande de Europa.
+- Krasny · en el camino (Historia): En Krasny la retaguardia de Ney volvió con 800 hombres.
+- Evento · El incendio de Moscú: La noche de la entrada, el 14 de septiembre, empezaron incendios en varios barrios; con el viento, el fuego duró cuatro días y quemó unos dos tercios de una ciudad casi toda de madera.
+- Evento · El general Invierno: A principios de noviembre cayó la primera nevada y el frío bajó hasta cerca de veinte grados bajo cero.
+
+## Humboldt (1799-1804, de A Coruña a Burdeos)
+
+- Partida: Alexander von Humboldt y el botánico Aimé Bonpland zarparon de A Coruña el 5 de junio de 1799 en la corbeta Pizarro, con un permiso del rey de España para recorrer sus colonias que casi ningún extranjero tenía.
+- Cruza: el océano Atlántico, el Orinoco, el mar Caribe, el río Magdalena, los Andes ⚠
+- Tramos: El Atlántico · Orinoco y Caribe · Los Andes · México y el norte
+- Un continente por medir: En cinco años él y Bonpland midieron alturas y posiciones, coleccionaron unas 60 000 plantas y anotaron minas, climas, pueblos y cuentas de cada país.
+- Lo que quedó: Sus 34 tomos sobre el viaje y su «Cosmos» fueron de los libros más leídos del siglo XIX. ⚠
+- Tenerife · fecha: junio de 1799 · rumbo: Por mar, al sur, hasta las islas Canarias ⚠
+- Tenerife · imagen: Un tenedor (Tene-rife) clavado en la punta de un volcán de 3 715 m, con plantas distintas en cada diente según la altura.
+- Tenerife · dato: Primera escala, en junio de 1799.
+- Tenerife · dato: Humboldt subió al Teide, de 3 715 m, y vio desde arriba cómo las plantas cambian por pisos con la altura: la idea que después dibujaría en los Andes.
+- Cumaná · fecha: julio de 1799 · rumbo: Cruzando el Atlántico, hasta la costa de Venezuela ⚠
+- Cumaná · dato: Llegaron el 16 de julio de 1799.
+- Casiquiare · fecha: mayo de 1800 · rumbo: Río arriba por el Orinoco, hasta la selva ⚠
+- Casiquiare · dato: En 1800 subieron el Orinoco en canoa, pasaron los raudales de Atures y Maipures y llegaron al Casiquiare, un brazo que une el Orinoco con el Amazonas por el río Negro.
+- La Habana · fecha: diciembre de 1800 · rumbo: Por mar, al norte, a la isla mayor del Caribe ⚠
+- La Habana · dato: Pasaron el invierno de 1800 a 1801 en Cuba.
+- Bogotá · fecha: julio de 1801 · rumbo: Por mar a Cartagena y río arriba por el Magdalena, hasta la sabana ⚠
+- Bogotá · imagen: Un botánico con la boca (Bo-gotá) llena de gotas de lluvia sube semanas en canoa un río marrón para ver el herbario más grande del mundo.
+- Bogotá · dato: Desembarcaron en Cartagena en marzo de 1801 y subieron el río Magdalena en canoa durante semanas; llegaron a Bogotá en julio para conocer a José Celestino Mutis y su herbario, uno de los más grandes del mundo.
+- Chimborazo · fecha: junio de 1802 · rumbo: Al sur por los Andes, hasta el volcán más alto que se conocía ⚠
+- Chimborazo · imagen: Un chimpancé con brazos (Chim-brazo) de hielo se detiene ante una grieta a 5 900 m: nadie había subido tan alto con un barómetro.
+- Chimborazo · dato: El 23 de junio de 1802 Humboldt, Bonpland y Carlos Montúfar subieron el Chimborazo hasta unos 5 900 m, donde una grieta los detuvo; nadie había llegado tan alto midiendo.
+- Chimborazo · dato: Entonces se creía que era la montaña más alta del mundo; mide 6 263 m.
+- Lima · fecha: octubre de 1802 · rumbo: Por la sierra y la costa del Pacífico, al sur ⚠
+- Lima · dato: Llegaron a Lima en octubre de 1802 por la sierra, pasando por Cajamarca.
+- Lima · dato: El 9 de noviembre Humboldt observó desde El Callao el paso de Mercurio delante del Sol, que le sirvió para fijar la longitud de la ciudad, y midió la corriente fría de la costa, que hoy lleva su nombre.
+- Ciudad de México · fecha: abril de 1803 · rumbo: Por mar hasta Acapulco y tierra adentro, a la meseta ⚠
+- Ciudad de México · dato: Desde Acapulco subieron a la capital en abril de 1803.
+- Filadelfia · fecha: mayo de 1804 · rumbo: Por mar, al norte, hasta el país recién independizado ⚠
+- Filadelfia · dato: En mayo de 1804 llegaron a Filadelfia y de allí fueron a Washington, donde el presidente Jefferson, curioso de ciencia, los recibió durante varios días para preguntarles por México y por sus mapas.
+- Vehículo: La corbeta Pizarro para cruzar el Atlántico, canoas en el Orinoco y el Magdalena, mulas en los Andes y barcos de cabotaje por el Pacífico; con ellos, unos cuarenta instrumentos y baúles que se fueron llenando de plantas secas: al final, unas 60 000.
+- Evento · Las anguilas eléctricas: En los llanos, cerca de Calabozo, en marzo de 1800, Humboldt quiso estudiar las anguilas eléctricas del río.
+- Evento · La grieta del Chimborazo: El 23 de junio de 1802, con los pies sangrando y mareados por la altura, Humboldt, Bonpland y Montúfar subieron por la nieve hasta que una grieta de unos veinte metros de ancho les cerró el paso, a unos 5 900 m.
+
+## James Cook (1768-1771, de Plymouth a Inglaterra)
+
+- Partida: El 26 de agosto de 1768 el Endeavour salió de Plymouth al mando de James Cook, un teniente hijo de campesinos que había aprendido a hacer mapas en las costas de Canadá.
+- Cruza: el océano Atlántico, el cabo de Hornos, el océano Pacífico, la Gran Barrera de Coral, el estrecho de Torres, el océano Índico ⚠
+- Tramos: El Atlántico · El Pacífico · Australia · La vuelta por el Índico
+- El mar del Sur por dibujar: En 1768 medio Pacífico era una mancha en blanco.
+- Lo que quedó: Los mapas de Cook de Nueva Zelanda y de la costa este de Australia eran tan buenos que se usaron más de un siglo.
+- Lo que quedó: En 1770 tomó posesión de esa costa para el rey de Inglaterra; en 1788 llegaron los primeros colonos y, para los pueblos aborígenes y maoríes, empezó la pérdida de sus tierras.
+- Lo que quedó · pista: Mapas que sirvieron un siglo, una toma de posesión que cambió la vida de pueblos enteros y un barco hundido lejos de donde nació.
+- Madeira · fecha: septiembre de 1768 · rumbo: Por mar, al suroeste, hasta una isla de vino ⚠
+- Madeira · dato: Primera escala, en septiembre de 1768: cinco días en Funchal para cargar agua, cebollas y miles de litros de vino.
+- Río de Janeiro · fecha: noviembre de 1768 · rumbo: Cruzando el Atlántico hacia el sur, hasta Brasil ⚠
+- Río de Janeiro · dato: En noviembre de 1768 el virrey portugués no creyó que un barco tan feo fuera de la Marina inglesa y no dejó bajar a casi nadie; Banks salía a escondidas de noche a recoger plantas.
+- Cabo de Hornos · fecha: enero de 1769 · rumbo: Al sur, hasta la punta de América, entre tormentas ⚠
+- Cabo de Hornos · dato: En enero de 1769 rodearon el cabo de Hornos, la punta de América, en pleno verano austral, con tormentas y nieve; en la Tierra del Fuego dos sirvientes de Banks murieron de frío en una noche. ⚠
+- Tahití · fecha: abril de 1769 · rumbo: Al noroeste por el Pacífico, hasta la isla donde se vería pasar Venus ⚠
+- Tahití · dato: Llegaron en abril de 1769 y construyeron un fuerte en la punta que hoy se llama Venus. ⚠
+- Tahití · dato: El 3 de junio midieron el paso del planeta por delante del Sol.
+- Nueva Zelanda · fecha: octubre de 1769 · rumbo: Al suroeste, cruzando el antimeridiano, hasta dos islas grandes ⚠
+- Nueva Zelanda · dato: En octubre de 1769 vieron tierra en la costa de Nueva Zelanda, que ningún europeo había visto desde Tasman en 1642. ⚠
+- Botany Bay · fecha: abril de 1770 · rumbo: Al oeste, hasta una costa que ningún europeo había dibujado ⚠
+- Botany Bay · dato: El 29 de abril de 1770 desembarcaron en una bahía de la costa este de Australia, que Cook llamó Botany Bay por las plantas que recogieron Banks y Solander.
+- Río Endeavour · fecha: junio de 1770 · rumbo: Al norte, por dentro de un arrecife enorme ⚠
+- Río Endeavour · dato: El 11 de junio de 1770 el barco encalló de noche en la Gran Barrera de Coral.
+- Río Endeavour · dato: Tiraron cañones y lastre al agua, taparon la vía de agua con una vela y llegaron a un río donde lo repararon durante siete semanas; allí vieron por primera vez canguros.
+- Batavia · fecha: octubre de 1770 · rumbo: Al noroeste, por el estrecho de Torres, hasta el puerto holandés ⚠
+- Batavia · dato: En octubre de 1770 llegaron a Batavia, la Yakarta de hoy, capital holandesa en Java, a reparar el casco.
+- Ciudad del Cabo · fecha: marzo de 1771 · rumbo: Cruzando el Índico, hasta la punta de África ⚠
+- Ciudad del Cabo · dato: En marzo de 1771 pararon un mes en la colonia holandesa del cabo de Buena Esperanza a recuperarse y cargar.
+- Ciudad del Cabo · dato: El 13 de julio de 1771 el Endeavour fondeó en Inglaterra, casi tres años después de zarpar.
+- Vehículo: Un barco carbonero de Whitby, de unos 30 m, comprado por la Marina y rebautizado Endeavour: robusto, de poco calado y con bodega para tres años.
+- Vehículo: Llevaba 94 personas entre marineros, científicos y sirvientes, y una cabra que ya había dado la vuelta al mundo en otro barco.
+- Llegada: El 13 de julio de 1771 el Endeavour fondea en Inglaterra: casi tres años, una vuelta al mundo y mapas que se usarían un siglo.
+- Marea · regreso: De los 94 que salieron, faltan muchos.
+- Evento · El paso de Venus: El 3 de junio de 1769, con cielo despejado, Cook, Green y Solander miraron con telescopios el puntito negro de Venus cruzar el Sol durante seis horas. ⚠
+- Evento · El arrecife: La noche del 11 de junio de 1770 el Endeavour encalló en un coral de la Gran Barrera, a más de 30 km de la costa.
+
 ## Relieve: alturas (m) que muestra el juego
 
 Altura del cauce en cada parada, muestreada del mosaico DEM global de NOAA NCEI sobre el vértice del cauce (no es la altura del pueblo: Juan Viñas está a 1 160 m y el río pasa a 860). Se regenera con `python tools/relieve.py`; contrastar con alturas publicadas. ⚠ = revisar.

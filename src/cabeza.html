@@ -36,6 +36,8 @@ body.nino{font-size:19px}
 .perfil-txt{fill:#fff;font:600 10px var(--cuerpo)}
 .perfil-txt.k{fill:var(--verde-claro);font-weight:500;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
 #lagos{fill:var(--mar)}
+#copias{display:none}
+#mapa[data-copias="1"] #copias{display:block}/* mundos vecinos, solo para las rutas que cruzan el antimeridiano */
 #fronteras{fill:none;stroke:var(--verde-claro);stroke-opacity:.35;stroke-linejoin:round}
 #arriba.portada #mapa{height:44vh;max-height:560px}
 #arriba.compacto #mapa,#arriba.portada.compacto #mapa{height:22vh;min-height:150px}
@@ -325,7 +327,7 @@ label.enlace{cursor:pointer}
 <body>
 <div id="arriba">
   <div id="cab"></div>
-  <div id="mapa"><button class="plegar" onclick="plegarMapa()" aria-label="Plegar o desplegar el mapa" title="Mapa más chico o más grande">▾</button><button class="mundo" onclick="verZona(null)" hidden>‹ Mundo</button><svg id="svg" viewBox="0 40 1000 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><path id="tierra" fill-rule="evenodd"/><g id="relieve" fill-rule="evenodd"></g><path id="lagos" fill-rule="evenodd"/><path id="fronteras"/><g id="capa"></g></svg><div class="luz" id="luz" aria-hidden="true"></div><div class="clima" id="clima" aria-hidden="true"></div><div class="olas" id="olas" aria-hidden="true"></div></div>
+  <div id="mapa"><button class="plegar" onclick="plegarMapa()" aria-label="Plegar o desplegar el mapa" title="Mapa más chico o más grande">▾</button><button class="mundo" onclick="verZona(null)" hidden>‹ Mundo</button><svg id="svg" viewBox="0 40 1000 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><path id="tierra" fill-rule="evenodd"/><g id="relieve" fill-rule="evenodd"></g><path id="lagos" fill-rule="evenodd"/><path id="fronteras"/><g id="copias" aria-hidden="true"><use href="#tierra" x="-1000"/><use href="#relieve" x="-1000"/><use href="#lagos" x="-1000"/><use href="#fronteras" x="-1000"/><use href="#tierra" x="1000"/><use href="#relieve" x="1000"/><use href="#lagos" x="1000"/><use href="#fronteras" x="1000"/></g><g id="capa"></g></svg><div class="luz" id="luz" aria-hidden="true"></div><div class="clima" id="clima" aria-hidden="true"></div><div class="olas" id="olas" aria-hidden="true"></div></div>
   <div id="perfil" hidden></div>
 </div>
 <main id="panel"></main>
