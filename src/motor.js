@@ -78,7 +78,7 @@ const VOCAB={
   /*@fin:rio*/
   /*@vocab:itinerario*/
   itinerario:{tipo:'viaje',tipos:'viajes',Tipos:'Viajes',
-    inicio:'Partida',fin:'Regreso',extremoInicio:'Partida',extremoFin:'Regreso',entreInicio:'la partida',entreFin:'el regreso',Parada:'Etapa',proxima:'¿Cuál es la próxima etapa?',
+    inicio:'Partida',fin:'Regreso',extremoInicio:'Partida',extremoFin:'Regreso',entreInicio:'la partida',entreFin:'el regreso',Parada:'Etapa',proxima:'¿Hacia dónde sigue el viaje?',
     llegarFin:'Volver a casa',avanzar:'Seguir a',bajar:'Viajar',
     parada:'etapa',paradas:'etapas',puertoS:'alto',puertosS:'altos',enPuerto:'En el camino',llevaba:'El viajero llevaba',
     tuVehiculo:'Tu caravana',carga:'morral',mercado:'Trueque en',seVende:'Se cambia aquí',masAdelante:'vale más adelante',mercader:'viajero de la ruta',
@@ -120,7 +120,7 @@ const VOCAB={
   /*@fin:itinerario*/
   /*@vocab:travesia*/
   travesia:{tipo:'travesía',tipos:'travesías',Tipos:'Viajes',
-    inicio:'Zarpe',fin:'Regreso',extremoInicio:'Zarpe',extremoFin:'Regreso',entreInicio:'el zarpe',entreFin:'el regreso',Parada:'Escala',proxima:'¿Cuál es la próxima escala?',
+    inicio:'Zarpe',fin:'Regreso',extremoInicio:'Zarpe',extremoFin:'Regreso',entreInicio:'el zarpe',entreFin:'el regreso',Parada:'Escala',proxima:'¿Hacia dónde sigue la travesía?',
     llegarFin:'Volver a puerto',avanzar:'Zarpar a',bajar:'Navegar',
     parada:'escala',paradas:'escalas',puertoS:'puerto',puertosS:'puertos',enPuerto:'En el puerto',llevaba:'La flota llevaba',
     tuVehiculo:'Tu flota',carga:'bodega',mercado:'Mercado de',seVende:'Se vende aquí',masAdelante:'vale más en la próxima escala',mercader:'mercader de la flota',
@@ -241,7 +241,7 @@ function lectura(){const r=S.pantalla!=='inicio'&&S.pantalla!=='pasaporte'&&S.ri
   if(S.tab==='recitar'){const R=S.rec;di(R.dicho);if(R.i>=n)di(`${R.ok.filter(Boolean).length} de ${n} recordadas.`);else if(!R.revelada)di(`${V.Parada} ${R.i+1} de ${n}: decila en voz alta y después revelá.`);else di(`${r.paradas[R.i].nombre}, ${r.paradas[R.i].pais}. ¿La sabías?`);return L}
   const E=S.evento,p=S.paso;
   if(E){di(E.dicho,E.def.titulo+'. '+E.def.texto,E.q.texto);if(E.resp==null)opciones(E.q.opciones);else di((E.ok?E.def.bien:E.def.mal)+(E.delta?` ${E.delta>0?'Ganás':'Perdés'} ${Math.abs(E.delta)} monedas.`:''),h?E.q.nota:'');return L}
-  const guia=()=>{const g=S.guias[p];if(g&&g.resp==null&&p<n)opciones(g.opciones.map(i=>r.paradas[i].nombre),V.proxima)};
+  const guia=()=>{const g=S.guias[p];if(g&&g.resp==null&&p<n)opciones(g.opciones.map(i=>rotuloGuia(r,i)),V.proxima)};
   if(p===0){di(S.dicho||(m&&m.hola),V.vozInicio(r),h?r.inicio.nota:'');guia()}
   else if(p<=n){const c=r.paradas[p-1];di(S.dicho||(m&&m.paradas[p-1]),V.vozParada(p,n,c),'Imagen para recordar: '+c.imagen,h?c.dato:'',h?fraseAltura(r,p-1):'',S.selloNuevo===claveSello(r,p-1)?`¡Sello de ${c.nombre} en el pasaporte!`:'');guia()}
   else di(S.dicho||(m&&m.fin),V.vozFin(r));
@@ -493,8 +493,10 @@ function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;c
     return `${globo(r,S.dicho||(r.companero&&r.companero.paradas[p-1]))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div><div class="ficha recuerdo">${escena(c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}
   const f=S.eco&&S.eco.final;
   return `${globo(r,S.dicho||(r.companero&&r.companero.fin))}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">${escena(r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
+/* lo que dice cada ficha de la guía: en los viajes, el rumbo («por mar, al sur…»), que es la memoria de la forma del viaje; en los ríos, el nombre de la ciudad */
+const rotuloGuia=(r,i)=>r.paradas[i].rumbo||r.paradas[i].nombre;
 function renderGuia(r){const g=S.guias[S.paso];if(!g||S.paso>=r.paradas.length)return '';
-  const chips=g.opciones.map(i=>{let cls='chip';if(g.resp!=null){if(i===g.objetivo)cls+=' bien';else if(i===g.resp)cls+=' mal'}return `<button class="${cls}" onclick="responderGuia(${i})"${g.resp!=null?' disabled':''}>${esc(r.paradas[i].nombre)}</button>`}).join('');
+  const chips=g.opciones.map(i=>{let cls='chip';if(g.resp!=null){if(i===g.objetivo)cls+=' bien';else if(i===g.resp)cls+=' mal'}return `<button class="${cls}" onclick="responderGuia(${i})"${g.resp!=null?' disabled':''}>${esc(rotuloGuia(r,i))}</button>`}).join('');
   return `<div class="guia"><div class="chips">${chips}</div></div>`}
 function renderEvento(r){const E=S.evento,d=E.def,q=E.q,n=r.paradas.length;
   const V=r.vocab,de=S.paso===0?V.entreInicio:r.paradas[S.paso-1].nombre,hacia=E.tramo<=n?r.paradas[E.tramo-1].nombre:V.entreFin;

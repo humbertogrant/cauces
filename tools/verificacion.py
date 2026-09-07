@@ -40,7 +40,7 @@ for r in I:
     if r.get('cruza'): out.append(f"- Cruza: {', '.join(r['cruza'])} ⚠")
     if r.get('tramos'): out.append(f"- Tramos: {' · '.join(t['nombre'] for t in r['tramos'])}")
     for cx in r['contexto']: add(cx['titulo'],cx['texto']);add(cx['titulo']+' · pista',cx['pista'])
-    for c in r['paradas']: out.append(f"- {c['nombre']} · fecha: {c['fecha']} ⚠");add(f"{c['nombre']} · imagen",c['imagen']);add(f"{c['nombre']} · dato",c['dato'])
+    for c in r['paradas']: out.append(f"- {c['nombre']} · fecha: {c['fecha']} · rumbo: {c.get('rumbo','')} ⚠");add(f"{c['nombre']} · imagen",c['imagen']);add(f"{c['nombre']} · dato",c['dato'])
     v=r['vehiculo'];add("Vehículo",v['desc']);add("Salida",v['zarpe']);add("Llegada",v['llegada'])
     for c,pu in zip(r['paradas'],v['puertos']): add(f"{c['nombre']} · en el camino (Historia)",pu[0])
     m=r['companero'];add(f"{m['nombre']} · hola",m['hola']);add(f"{m['nombre']} · regreso",m['fin'])
