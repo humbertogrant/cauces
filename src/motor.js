@@ -93,15 +93,15 @@ const VOCAB={
     dominas:'Reconocés todo el viaje: ahora recitalo de memoria.',conCalma:'Volvé a recorrer el viaje con calma; el repaso te lo va a recordar.',
     ordenBien:'Sin errores: el camino ya es tuyo.',ordenMal:e=>`${e} errores: volvé a recorrer el viaje con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} etapas en orden, de la partida al regreso.`,
     cabecera:r=>`${esc(r.region)} · de ${esc(r.inicio.nombre)} a ${esc(r.fin.en)}`,tarjeta:r=>esc(r.region),
-    kickerInicio:r=>`Partida${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Etapa ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
+    kickerInicio:r=>`Partida${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Etapa ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''} · ${escalaViaje(r,c)}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
     tramo:(r,c,prev)=>prev?`después de ${esc(prev.nombre)}`:`primera etapa desde ${esc(r.inicio.nombre)}`,
-    llegada:r=>`Después de ${r.paradas.length} etapas, ${r.nombre} vuelve a ${r.fin.en}.`,contame:cx=>'Contame más: '+cx.titulo[0].toLowerCase()+cx.titulo.slice(1),
+    llegada:r=>`Después de ${r.paradas.length} etapas, ${resumenViaje(r)}, ${r.nombre} vuelve a ${r.fin.en}.`,contame:cx=>'Contame más: '+cx.titulo[0].toLowerCase()+cx.titulo.slice(1),
     vozInicio:r=>`Partida: ${r.inicio.nombre}${r.inicio.fecha?', '+r.inicio.fecha:''}.`,vozParada:(p,n,c)=>`Etapa ${p} de ${n}: ${c.nombre}, ${c.pais}${c.fecha?', '+c.fecha:''}.`,vozFin:r=>`Regreso: ${r.fin.en}. Después de ${r.paradas.length} etapas, ${r.nombre} vuelve a ${r.fin.en}.`,
     preguntas:{ciudad:(r,c)=>`¿En qué viaje está la etapa ${c.nombre} (${c.pais})?`,cerca:r=>`¿Cuál de estas etapas está más cerca del final del viaje de ${r.nombre}?`,orden:r=>'De la partida al regreso: '+lista(r)+'.',
       contexto:(r,cx)=>`${cx.titulo}: «${cx.pista}» ¿De qué viaje se trata?`,fin:r=>`¿Dónde termina el viaje de ${r.nombre}?`,finNota:r=>`Sale de ${r.inicio.nombre}${r.inicio.fecha?' en '+r.inicio.fecha:''} y vuelve a ${r.fin.en}${r.fin.fecha?' en '+r.fin.fecha:''}. ${r.inicio.nota}`,
       siguiente:(r,c)=>`En el viaje de ${r.nombre}, ¿qué etapa sigue después de ${c.nombre}?`,relleno:'El regreso',imagen:(r,c)=>`¿De qué etapa del viaje de ${r.nombre} es esta imagen? «${sinNombre(c.imagen,c.nombre)}»`,
       altura:r=>`¿En cuál de estas etapas pasa más alto el viaje de ${r.nombre}?`,alturaNota:'La altura en cada etapa: ',frase:r=>`¿Qué frase guarda el orden de las etapas del viaje de ${r.nombre}?`,
-      fecha:(r,c)=>`¿En qué año llegó ${r.nombre} a ${c.nombre}?`,fechaNota:r=>'Etapa por etapa: '+r.paradas.map(c=>`${c.nombre} ${c.fecha||'?'}`).join(' · ')+'.',ordenPregunta:r=>`¿En qué orden pasó ${r.nombre} por estas etapas?`},
+      lejos:r=>`¿Cuál fue el punto más lejano del viaje de ${r.nombre}?`,lejosNota:(r,c)=>`${c.nombre}, a unos ${km(redondoKm(hav(r.curso[0],c.pos)))} km en línea recta de ${r.inicio.nombre}.`,cruza:r=>`¿Cuál de estos mares, desiertos o montañas cruzó ${r.nombre}?`,cruzaNota:r=>`${r.nombre} cruzó ${r.cruza.join(', ')}.`,duracion:r=>`¿Cuántos años duró el viaje de ${r.nombre}?`,duracionNota:r=>`De ${r.inicio.nombre} (${r.inicio.fecha}) a ${r.fin.en} (${r.fin.fecha}).`,primero:u=>u?'¿Cuál de estos viajes empezó de último?':'¿Cuál de estos viajes empezó primero?',primeroNota:rs=>'En orden: '+rs.map(x=>`${x.nombre} (${x.inicio.fecha})`).join(' · ')+'.',ordenTramos:r=>`¿En qué orden van estos tramos del viaje de ${r.nombre}?`,fecha:(r,c)=>`¿En qué año llegó ${r.nombre} a ${c.nombre}?`,fechaNota:r=>'Etapa por etapa: '+r.paradas.map(c=>`${c.nombre} ${c.fecha||'?'}`).join(' · ')+'.',ordenPregunta:r=>`¿En qué orden pasó ${r.nombre} por estas etapas?`},
     voces:{ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y me gano un puñado de dátiles.","Volvamos a recorrer el viaje juntos, con la frase en la mano."],
       quizBien:["¡Sí! ¡Te lo sabías!","¡Eso! Yo estaba segura.","¡Bravo! Otra más.","¡Claro que sí!","¡Ese es mi viaje!"],
       resultado:["¡Sos guía de este viaje!","¡Bien! Un par de vueltas más y sos guía.","Recorramos el viaje otra vez; yo te acompaño."],
@@ -135,15 +135,15 @@ const VOCAB={
     dominas:'Reconocés toda la travesía: ahora recitala de memoria.',conCalma:'Volvé a navegar la travesía con calma; el repaso te lo va a recordar.',
     ordenBien:'Sin errores: la ruta ya es tuya.',ordenMal:e=>`${e} errores: volvé a navegar con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} escalas en orden, del zarpe al regreso.`,
     cabecera:r=>`${esc(r.region)} · de ${esc(r.inicio.nombre)} a ${esc(r.fin.en)}`,tarjeta:r=>esc(r.region),
-    kickerInicio:r=>`Zarpe${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Escala ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
+    kickerInicio:r=>`Zarpe${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Escala ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''} · ${escalaViaje(r,c)}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
     tramo:(r,c,prev)=>prev?`después de ${esc(prev.nombre)}`:`primera escala desde ${esc(r.inicio.nombre)}`,
-    llegada:r=>`Después de ${r.paradas.length} escalas, la flota de ${r.nombre} vuelve a ${r.fin.en}.`,contame:cx=>'Contame más: '+cx.titulo[0].toLowerCase()+cx.titulo.slice(1),
+    llegada:r=>`Después de ${r.paradas.length} escalas, ${resumenViaje(r)}, la flota de ${r.nombre} vuelve a ${r.fin.en}.`,contame:cx=>'Contame más: '+cx.titulo[0].toLowerCase()+cx.titulo.slice(1),
     vozInicio:r=>`Zarpe: ${r.inicio.nombre}${r.inicio.fecha?', '+r.inicio.fecha:''}.`,vozParada:(p,n,c)=>`Escala ${p} de ${n}: ${c.nombre}, ${c.pais}${c.fecha?', '+c.fecha:''}.`,vozFin:r=>`Regreso: ${r.fin.en}. Después de ${r.paradas.length} escalas, la flota de ${r.nombre} vuelve a ${r.fin.en}.`,
     preguntas:{ciudad:(r,c)=>`¿En qué viaje está la escala ${c.nombre} (${c.pais})?`,cerca:r=>`¿Cuál de estas escalas está más cerca del final de la travesía de ${r.nombre}?`,orden:r=>'Del zarpe al regreso: '+lista(r)+'.',
       contexto:(r,cx)=>`${cx.titulo}: «${cx.pista}» ¿De qué viaje se trata?`,fin:r=>`¿Dónde termina la travesía de ${r.nombre}?`,finNota:r=>`Zarpa de ${r.inicio.nombre}${r.inicio.fecha?' en '+r.inicio.fecha:''} y vuelve a ${r.fin.en}${r.fin.fecha?' en '+r.fin.fecha:''}. ${r.inicio.nota}`,
       siguiente:(r,c)=>`En la travesía de ${r.nombre}, ¿qué escala sigue después de ${c.nombre}?`,relleno:'El regreso',imagen:(r,c)=>`¿De qué escala de la travesía de ${r.nombre} es esta imagen? «${sinNombre(c.imagen,c.nombre)}»`,
       altura:r=>`¿En cuál de estas escalas pasa más alto la travesía de ${r.nombre}?`,alturaNota:'La altura en cada escala: ',frase:r=>`¿Qué frase guarda el orden de las escalas de la travesía de ${r.nombre}?`,
-      fecha:(r,c)=>`¿En qué año llegó la flota de ${r.nombre} a ${c.nombre}?`,fechaNota:r=>'Escala por escala: '+r.paradas.map(c=>`${c.nombre} ${c.fecha||'?'}`).join(' · ')+'.',ordenPregunta:r=>`¿En qué orden pasó la flota de ${r.nombre} por estas escalas?`},
+      lejos:r=>`¿Cuál fue el punto más lejano de la travesía de ${r.nombre}?`,lejosNota:(r,c)=>`${c.nombre}, a unos ${km(redondoKm(hav(r.curso[0],c.pos)))} km en línea recta de ${r.inicio.nombre}.`,cruza:r=>`¿Cuál de estos mares, desiertos o montañas cruzó ${r.nombre}?`,cruzaNota:r=>`${r.nombre} cruzó ${r.cruza.join(', ')}.`,duracion:r=>`¿Cuántos años duró la travesía de ${r.nombre}?`,duracionNota:r=>`De ${r.inicio.nombre} (${r.inicio.fecha}) a ${r.fin.en} (${r.fin.fecha}).`,primero:u=>u?'¿Cuál de estos viajes empezó de último?':'¿Cuál de estos viajes empezó primero?',primeroNota:rs=>'En orden: '+rs.map(x=>`${x.nombre} (${x.inicio.fecha})`).join(' · ')+'.',ordenTramos:r=>`¿En qué orden van estos tramos de la travesía de ${r.nombre}?`,fecha:(r,c)=>`¿En qué año llegó la flota de ${r.nombre} a ${c.nombre}?`,fechaNota:r=>'Escala por escala: '+r.paradas.map(c=>`${c.nombre} ${c.fecha||'?'}`).join(' · ')+'.',ordenPregunta:r=>`¿En qué orden pasó la flota de ${r.nombre} por estas escalas?`},
     voces:{ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y me gano un pescado.","Volvamos a navegar la ruta juntos, con la frase en la mano."],
       quizBien:["¡Sí! ¡Te lo sabías!","¡Eso! Yo estaba segura.","¡Bravo! Otra más.","¡Claro que sí!","¡Ese es mi viaje!"],
       resultado:["¡Sos almirante de esta flota!","¡Bien! Un par de viajes más y sos almirante.","Naveguemos la ruta otra vez; yo te acompaño."],
@@ -329,7 +329,7 @@ function marcar(id,ok,via,nivel){const c=P.cards[id]||{box:0,due:0},t=Date.now()
   if(!ok){c.box=0;c.rec=0;c.due=t}
   else{if(via==='recordar')c.rec=Math.max(c.rec||0,nivel||1);const tope=c.rec?5:3;if(c.due<=t){if(c.box<tope)c.box++;c.due=t+INTERVALOS[c.box]*DIA}}
   P.cards[id]=c;guardar()}
-function idsDe(r){const ids=['orden',...r.contexto.map(c=>c.clave),r.tipo==='rio'?'mar':'fin'].map(k=>r.pref+k);r.paradas.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
+function idsDe(r){const ids=['orden',...r.contexto.map(c=>c.clave),r.tipo==='rio'?'mar':'fin',...(r.tipo!=='rio'?['escala']:[])].map(k=>r.pref+k);r.paradas.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
 function dominio(r){const ids=idsDe(r);let s=0;ids.forEach(id=>{const c=P.cards[id];if(c)s+=c.box});return s/(ids.length*5)}
 function sembrar(r){idsDe(r).forEach(id=>{if(!P.cards[id])P.cards[id]={box:0,due:Date.now(),nuevo:true}});guardar()}
 /* Hoy: las tarjetas vencidas ya repasadas entran todas; las nuevas (sembradas y nunca respondidas) entran de a NUEVAS_POR_DIA
@@ -349,7 +349,7 @@ function renderHoy(){const cola=colaHoy(),n=cola.length,min=Math.max(1,Math.roun
 function otrosRios(r,n){const z=zonaDe(r);return mezclar(RUTAS.filter(x=>x.id!==r.id&&zonaDe(x)===z)).concat(mezclar(RUTAS.filter(x=>x.id!==r.id&&zonaDe(x)!==z))).slice(0,n)}
 function armar(base,correcta,distractores){const ops=mezclar([correcta,...distractores]);base.opciones=ops;base.correcta=ops.indexOf(correcta);return base}
 function preguntaTipo(tipo,r,extra){const V=r.vocab;
-  const n=r.paradas.length;
+  const n=r.paradas.length;if(['lejos','cruza','duracion','primero'].includes(tipo)&&typeof preguntaViaje==='function')return preguntaViaje(tipo,r);
   if(tipo==='ciudad'){const i=extra==null?Math.floor(Math.random()*n):extra,c=r.paradas[i];
     return armar({tipo,rio:r.id,ciudad:i,texto:V.preguntas.ciudad(r,c),nota:c.imagen,cardId:'ciudad:'+r.id+':'+i},esc(r.nombre),otrosRios(r,3).map(x=>esc(x.nombre)))}
   if(tipo==='cerca'){const idx=mezclar(r.paradas.map((c,i)=>i)).slice(0,3),max=Math.max(...idx);
@@ -374,21 +374,51 @@ function preguntaTipo(tipo,r,extra){const V=r.vocab;
   if(tipo==='fecha'){const con=r.paradas.map((c,i)=>i).filter(i=>anio(r.paradas[i].fecha)!=null),porAnio={};con.forEach(i=>{const a=anio(r.paradas[i].fecha);if(!(a in porAnio))porAnio[a]=r.paradas[i].fecha});const anos=Object.values(porAnio);if(anos.length<4)return preguntaTipo('cerca',r);
     const i=extra!=null&&r.paradas[extra]&&anio(r.paradas[extra].fecha)!=null?extra:azar(con),c=r.paradas[i],otras=mezclar(anos.filter(a=>anio(a)!==anio(c.fecha))).slice(0,3);
     return armar({tipo,rio:r.id,ciudad:i,texto:V.preguntas.fecha(r,c),nota:V.preguntas.fechaNota(r),cardId:'ciudad:'+r.id+':'+i},esc(c.fecha),otras.map(esc))}
-  if(tipo==='orden'){if(n<4)return preguntaTipo('cerca',r);const a=Math.floor(Math.random()*(n-3)),grupo=[a,a+1,a+2,a+3],nombre=g=>g.map(i=>esc(r.paradas[i].nombre)).join(' → '),ok=nombre(grupo),vistos=new Set([ok]),otras=[];let tries=0;
+  if(tipo==='orden'){const U=unidades(r),N=U.length;if(N<4)return preguntaTipo(r.tipo==='rio'?'cerca':'imagen',r);const a=Math.floor(Math.random()*(N-3)),grupo=[a,a+1,a+2,a+3],nombre=g=>g.map(i=>esc(U[i].nombre)).join(' → '),ok=nombre(grupo),vistos=new Set([ok]),otras=[];let tries=0;
     while(otras.length<3&&tries++<40){const k=nombre(mezclar(grupo));if(!vistos.has(k)){vistos.add(k);otras.push(k)}}
-    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.ordenPregunta(r),nota:V.preguntas.orden(r),cardId:r.pref+'orden'},ok,otras)}
+    return armar({tipo,rio:r.id,ciudad:null,texto:r.tramos?V.preguntas.ordenTramos(r):V.preguntas.ordenPregunta(r),nota:V.preguntas.orden(r),cardId:r.pref+'orden'},ok,otras)}
   /* frase */
   return armar({tipo:'frase',rio:r.id,ciudad:null,texto:V.preguntas.frase(r),nota:lista(r)+'.',cardId:r.pref+'orden'},marcarFrase(r.frase),otrosRios(r,3).map(x=>marcarFrase(x.frase)))
 }
 function tiposDisponibles(r){/* tipos de pregunta que se pueden armar para esta ruta en este juego; con menos de cuatro rutas no hay distractores de otras rutas */
   if(RUTAS.length>=4&&r.tipo==='rio')return ['ciudad','imagen','cerca','siguiente','antigua','moderna','mar','frase','pais','altura'];
-  const t=['imagen','siguiente','cerca','pais','fin','orden'];if(RUTAS.length>=4)t.push('ciudad','frase',...r.contexto.map(c=>c.clave));if(r.paradas.some(c=>c.fecha))t.push('fecha');if(r.perfil)t.push('altura');return t}
+  /* viajes: sin «cerca» ni «siguiente» (secuencia fina, cosa de ríos); en su lugar la magnitud: punto más lejano, lo que cruzó, cuánto duró, cuál fue primero */
+  const t=['imagen','pais','fin','orden'];if(RUTAS.length>=4)t.push('ciudad','frase',...r.contexto.map(c=>c.clave));if(r.paradas.some(c=>anio(c.fecha)!=null))t.push('fecha');if(r.perfil)t.push('altura');if(typeof TIPOS_VIAJE==='function')t.push(...TIPOS_VIAJE(r));return t}
+/* unidades de una ruta para ordenar y preguntar el orden: las paradas, o los tramos con nombre si el viaje los trae */
+const unidades=r=>r.tramos?r.tramos.map((t,i)=>({nombre:t.nombre,desde:i?r.tramos[i-1].hasta+1:0,hasta:t.hasta})):r.paradas.map((c,i)=>({nombre:c.nombre,desde:i,hasta:i}));
+/*@vocab:itinerario*/
+/* ---------- viajes: escala y preguntas de magnitud (solo en juegos con itinerarios o travesías; build.js lo recorta del resto) ---------- */
+const redondoKm=k=>k>=10000?Math.round(k/1000)*1000:Math.round(k/100)*100;
+const aniosEntre=(a,b)=>{const x=anio(a),y=anio(b);return x!=null&&y!=null&&y>x?y-x:null};
+const txtAnios=y=>y+(y===1?' año':' años');
+/* escala acumulada hasta una etapa: kilómetros del dibujo desde la partida y años desde la fecha de partida */
+const escalaViaje=(r,c)=>{const y=aniosEntre(r.inicio.fecha,c.fecha);return `${num('≈'+km(redondoKm(c.km))+' km')}${y?` y ${num(txtAnios(y))}`:''} desde ${esc(r.inicio.nombre)}`};
+const resumenViaje=r=>{const y=aniosEntre(r.inicio.fecha,r.fin.fecha);return `unos ${km(redondoKm(r.kmPoly))} km de etapa en etapa${y?` y ${txtAnios(y)}`:''}`};
+const duracionViaje=r=>aniosEntre(r.inicio.fecha,r.fin.fecha);
+const masLejana=r=>{const d=r.paradas.map(c=>hav(r.curso[0],c.pos)),top=d.indexOf(Math.max(...d)),seg=Math.max(...d.filter((x,i)=>i!==top));return d[top]>=seg*1.15?top:null};
+function TIPOS_VIAJE(r){const t=[];if(masLejana(r)!=null)t.push('lejos');if(r.cruza&&r.cruza.length&&RUTAS.some(x=>x.id!==r.id&&x.cruza))t.push('cruza');if(duracionViaje(r))t.push('duracion');if(duracionViaje(r)&&RUTAS.filter(x=>duracionViaje(x)).length>=4)t.push('primero');return t}
+function preguntaViaje(tipo,r){const V=r.vocab,card=r.pref+'escala';
+  if(tipo==='lejos'){const top=masLejana(r),otras=mezclar(r.paradas.map((c,i)=>i).filter(i=>i!==top)).slice(0,3);
+    return armar({tipo,rio:r.id,ciudad:top,texto:V.preguntas.lejos(r),nota:V.preguntas.lejosNota(r,r.paradas[top]),cardId:card},esc(r.paradas[top].nombre),otras.map(i=>esc(r.paradas[i].nombre)))}
+  if(tipo==='cruza'){const ok=azar(r.cruza),dis=[...new Set(mezclar(RUTAS.filter(x=>x.id!==r.id&&x.cruza).flatMap(x=>x.cruza)).filter(x=>!r.cruza.includes(x)))].slice(0,3);
+    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.cruza(r),nota:V.preguntas.cruzaNota(r),cardId:card},esc(ok),dis.map(esc))}
+  if(tipo==='duracion'){const y=duracionViaje(r);let dis=[...new Set(RUTAS.filter(x=>x.id!==r.id).map(duracionViaje).filter(v=>v&&v!==y))];dis=mezclar(dis).slice(0,3);
+    for(const v of [Math.max(1,Math.round(y/2)),y*2,y+3,y+10])if(dis.length<3&&v!==y&&!dis.includes(v))dis.push(v);
+    return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.duracion(r),nota:V.preguntas.duracionNota(r),cardId:card},txtAnios(y),dis.map(txtAnios))}
+  /* primero: ¿cuál de estos viajes empezó primero (o de último)? */
+  const con=mezclar(RUTAS.filter(x=>x.id!==r.id&&duracionViaje(x))).slice(0,3).concat([r]),ultimo=Math.random()<0.5,a=x=>anio(x.inicio.fecha);
+  const ok=con.reduce((m,x)=>(ultimo?a(x)>a(m):a(x)<a(m))?x:m,con[0]);
+  return armar({tipo,rio:r.id,ciudad:null,texto:V.preguntas.primero(ultimo),nota:V.preguntas.primeroNota(con.slice().sort((x,y)=>a(x)-a(y))),cardId:card},esc(ok.nombre),con.filter(x=>x!==ok).map(x=>esc(x.nombre)))}
+/*@fin:itinerario*/
 function preguntaDeCard(id){const p=id.split(':'),r=rutaPor(p[1]);if(!r)return null;const T=tiposDisponibles(r);
   if(p[0]==='ciudad')return preguntaTipo(azar(['ciudad','imagen'].filter(t=>T.includes(t)).concat(T.includes('fecha')?['fecha']:[])),r,+p[2]);
-  if(p[2]==='orden')return preguntaTipo(azar(['cerca','frase','siguiente'].filter(t=>T.includes(t))),r);
+  if(p[2]==='orden')return preguntaTipo(azar(['cerca','frase','siguiente','orden'].filter(t=>T.includes(t))),r);
+  if(p[2]==='escala')return preguntaTipo(azar(['lejos','cruza','duracion','primero'].filter(t=>T.includes(t))),r);
   return preguntaTipo(p[2],r)}
 function iniciarQuiz(r){const n=r.paradas.length,a=Math.floor(Math.random()*n);let b=Math.floor(Math.random()*(n-1));if(b>=a)b++;
-  const qs=mezclar(RUTAS.length>=4?[preguntaTipo(azar(['ciudad','imagen']),r,a),preguntaTipo('siguiente',r,b),preguntaTipo(azar(['cerca',r.perfil?'altura':'fecha']),r),preguntaTipo(azar(r.contexto.map(c=>c.clave)),r),preguntaTipo(r.tipo==='rio'?'mar':'fin',r),r.tipo==='rio'?preguntaTipo('frase',r):preguntaTipo(azar(['frase','orden']),r)]
+  const T=tiposDisponibles(r),de=(...c)=>{const ok=mezclar(c).find(t=>T.includes(t));return ok||'imagen'};
+  const qs=mezclar(RUTAS.length>=4?(r.tipo==='rio'?[preguntaTipo(azar(['ciudad','imagen']),r,a),preguntaTipo('siguiente',r,b),preguntaTipo(azar(['cerca',r.perfil?'altura':'fecha']),r),preguntaTipo(azar(r.contexto.map(c=>c.clave)),r),preguntaTipo('mar',r),preguntaTipo('frase',r)]
+    :[preguntaTipo(azar(['ciudad','imagen']),r,a),preguntaTipo(de('lejos','cruza'),r),preguntaTipo(de('duracion','primero','fecha'),r),preguntaTipo(azar(r.contexto.map(c=>c.clave)),r),preguntaTipo('fin',r),preguntaTipo(azar(['frase','orden']),r)])
     :[preguntaTipo('imagen',r,a),preguntaTipo('siguiente',r,b),preguntaTipo(azar(['cerca','fecha']),r),preguntaTipo('orden',r),preguntaTipo('fin',r),preguntaTipo(azar(['pais','fecha']),r)]);/* con una sola ruta no hay distractores de otras rutas */
   S.quiz={qs,i:0,aciertos:0,resp:null,titulo:r.nombre,modo:'rio',dicho:azar(VZ().pregunta)}}
 function iniciarRepaso(){const ids=colaHoy().slice(0,10);

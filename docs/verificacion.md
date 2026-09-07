@@ -440,6 +440,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 
 - Partida: Salió de Tánger, en Marruecos, en 1325, a los 21 años, para peregrinar a La Meca.
 - Partida: Tardó 24 años en volver a casa y siguió viajando después: se calcula que recorrió unos 120 000 km, más que ningún otro viajero antes de la era de los barcos de vapor. ⚠
+- Cruza: el mar Rojo, el océano Índico, el Sáhara, el mar de China Meridional ⚠
+- Tramos: Egipto, Arabia e Irak · África oriental · Constantinopla y la India · Maldivas y China · El Sáhara, de regreso
 - El mundo que vio: De Marruecos a China, un viajero musulmán del siglo XIV encontraba en cada ciudad gente que hablaba árabe, hospedaje para peregrinos y sultanes que pagaban a un letrado por servir de juez. ⚠
 - Lo que queda: Su relato, la Rihla, dictado en Fez en 1355, es la mejor fuente que existe sobre muchas de esas ciudades en el siglo XIV. ⚠
 - Lo que queda · pista: Un relato dictado al volver a casa que hoy es la mejor fuente sobre medio mundo en aquel siglo.
@@ -469,6 +471,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 
 - Partida: Salió de Venecia en 1271, a los 17 años, con su padre Niccolò y su tío Maffeo, mercaderes que ya habían estado en la corte de Kublai Kan. ⚠
 - Partida: Tardó 24 años en volver; el libro de sus viajes, dictado en una cárcel de Génova en 1298, fue durante siglos la descripción de Asia más leída en Europa. ⚠
+- Cruza: el golfo Pérsico, el Pamir, el desierto de Gobi, el océano Índico ⚠
+- Tramos: Tierra Santa y Persia · La Ruta de la Seda · La China de Kublai · La vuelta por mar
 - Lo que queda: Las ruinas de Shangdu, la capital de verano de Kublai, son Patrimonio de la Humanidad desde 2012. ⚠
 - Lo que queda: Algunos historiadores dudan de que llegara a China, porque no menciona la muralla ni el té; la mayoría cree que sí estuvo.
 - Lo que queda · pista: Un libro tan famoso que un navegante lo llevó anotado siglos después, y una ciudad de verano en ruinas.
@@ -491,6 +495,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 ## Alejandro Magno (334-323 a. C., de Pela a Babilonia)
 
 - Partida: Salió de Pela, la capital de Macedonia, en la primavera del 334 a. C., a los 22 años, con unos 40 000 soldados, para conquistar el Imperio persa. ⚠
+- Cruza: el Helesponto, el Éufrates, el Tigris, el Hindu Kush, el Indo ⚠
+- Tramos: Asia Menor · Fenicia y Egipto · El corazón de Persia · Asia Central y la India
 - El mundo que vio: El Imperio persa era el más grande que había existido: de Egipto a la India, con caminos reales, sátrapas y tesoros enormes.
 - El mundo que vio · pista: El imperio más grande que había existido, con caminos reales y tesoros, cayó en tres batallas ante un ejército mucho más chico.
 - Lo que queda: Después de él, el griego se habló de Egipto a la India durante siglos, y las ciudades que fundó siguen ahí: Alejandría es la primera.
@@ -517,6 +523,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 
 - Partida: Salió de Cuba en febrero de 1519 con once naves, unos 500 soldados, 16 caballos y unos cañones, contra la orden del gobernador Velázquez, que a última hora quiso quitarle el mando.
 - Partida: Dos años y medio después, Tenochtitlan, la ciudad más grande de América, había caído.
+- Cruza: el golfo de México, la Sierra Madre Oriental, el lago de Texcoco ⚠
+- Tramos: La costa · Subida a la meseta · Tenochtitlan · La reconquista
 - El mundo que vio: Los mexicas gobernaban desde Tenochtitlan, una ciudad de más de 150 000 personas construida sobre un lago, y cobraban tributo a decenas de pueblos que no los querían. ⚠
 - El mundo que vio: Y la viruela, que llegó con los españoles en 1520, mató a más gente que las batallas.
 - Lo que queda: La Ciudad de México está sobre el lago seco y sobre las ruinas de Tenochtitlan: el Templo Mayor apareció junto a la catedral en 1978. ⚠
@@ -555,6 +563,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 
 - Partida: La flota del tesoro zarpó de Nankín, la capital de los Ming, en 1405, al mando de Zheng He, un eunuco musulmán de Yunnan que había sido capturado de niño.
 - Partida: En 28 años hizo siete viajes por el océano Índico; el emperador Yongle quería que todos los reinos del mar conocieran el poder de China.
+- Cruza: el mar de China Meridional, el estrecho de Malaca, la bahía de Bengala, el mar Arábigo ⚠
+- Tramos: Los mares de China y Java · La India · Arabia · África oriental
 - El mundo que vio: Fue la armada más grande del mundo hasta el siglo XX.
 - Lo que queda: En 1433, con el último viaje, la corte mandó parar: los barcos se pudrieron en los astilleros y China dejó el mar justo cuando Portugal empezaba a bajar por África.
 - Champa · fecha: 1405 ⚠
@@ -578,6 +588,26 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Salida: Zarpás de Nankín con la flota más grande que ha visto el mar.
 - Llegada: Siete viajes en 28 años.
 - Llegada: En 1433 la corte manda parar y los barcos del tesoro se quedan en el puerto, hasta pudrirse.
+
+## Odiseo (Mito · diez años de regreso, de Troya a Ítaca)
+
+- Partida: Las doce naves de Odiseo zarpan hacia Ítaca, que queda a menos de 600 km en línea recta.
+- Cruza: el mar Egeo, el mar Jónico, el mar Tirreno, el estrecho de Mesina ⚠
+- Tramos: Tracia y África · Sicilia y las Eolias · Las costas de Italia · Las islas del regreso
+- El poema: La Odisea es un poema de veinticuatro cantos, compuesto en griego hacia el siglo VIII a. C. y atribuido a Homero, que cuenta el regreso de Odiseo (Ulises para los romanos) desde Troya hasta Ítaca.
+- El mapa de la tradición · pista: Lugares que la gente lleva siglos buscando en un mar, sabiendo que el poema no los da.
+- Ísmaro · fecha: año 1 del regreso ⚠
+- Ísmaro · dato: Ciudad de los cícones en la costa de Tracia, la primera del regreso: los griegos la saquean y Marón, sacerdote de Apolo, regala a Odiseo doce ánforas de un vino tan fuerte que se bebe con veinte partes de agua; es el vino que después embriaga al cíclope.
+- Yerba · fecha: año 1 del regreso ⚠
+- Etna · fecha: año 1 del regreso ⚠
+- Etna · dato: Tucídides cuenta que los cíclopes fueron los primeros habitantes de Sicilia; la tradición los pone al pie del Etna, y las rocas que el gigante lanzó se muestran frente a Acitrezza.
+- Lípari · fecha: año 1 del regreso ⚠
+- Lípari · dato: Las islas Eolias, al norte de Sicilia, llevan su nombre desde la Antigüedad; Lípari es la mayor.
+- Circeo · fecha: año 2 del regreso ⚠
+- Sirenas · fecha: año 2 del regreso ⚠
+- Mesina · fecha: año 2 del regreso ⚠
+- Gozo · fecha: años 3 a 10 del regreso ⚠
+- Corfú · fecha: año 10 del regreso ⚠
 
 ## Relieve: alturas (m) que muestra el juego
 

@@ -26,17 +26,23 @@ for(const r of RUTAS){
   const n=r.paradas.length;for(let j=0;j<n-1;j++)if(!r.carga.some(g=>g.o===j))throw r.id+' etapa '+j+' sin nada que cambiar';
   for(const g of r.carga){if(g.o>=n-1)throw r.id+' bien ofrecido en la última etapa: '+g.n;if(g.m!=null&&g.m<=g.o)throw r.id+' bien que se paga mejor antes de comprarlo: '+g.n}
   for(const e of r.eventos){if(!(e.tramo>=1&&e.tramo<=n+1))throw 'tramo '+r.id;if(e.reto==='ruta'&&e.tramo>n-1)throw 'ruta tarde '+r.id;if(e.reto==='imagen'&&e.tramo<2)throw 'imagen temprano '+r.id}
-  const T=tiposDisponibles(r);for(const t of ['imagen','siguiente','cerca','pais','fin','orden','ciudad','frase',...r.contexto.map(c=>c.clave)])if(!T.includes(t))throw r.id+' sin el tipo '+t;
+  const T=tiposDisponibles(r);for(const t of ['imagen','pais','fin','orden','ciudad','frase','cruza',...r.contexto.map(c=>c.clave)])if(!T.includes(t))throw r.id+' sin el tipo '+t;if((masLejana(r)!=null)!==T.includes('lejos'))throw r.id+' lejos mal ofrecido';if(T.includes('cerca')||T.includes('siguiente'))throw r.id+' con preguntas de secuencia fina';
+  if(r.tramos){const U=unidades(r);if(U[U.length-1].hasta!==r.paradas.length-1||U.some((u,i)=>u.desde>u.hasta||(i&&u.desde!==U[i-1].hasta+1)))throw r.id+' tramos mal cortados';const qo=preguntaTipo('orden',r);if(!qo.opciones[qo.correcta].split(' → ').every(nm=>r.tramos.some(t=>esc(t.nombre)===nm)))throw r.id+' orden por tramos: '+qo.opciones[qo.correcta]}
   for(const t of T){const q=preguntaTipo(t,r);const esp=q.tipo==='cerca'?3:4;if(q.opciones.length!==esp||new Set(q.opciones).size!==esp||q.correcta<0)throw 'pregunta mala '+t+' en '+r.id+' '+JSON.stringify(q.opciones)}
   const qc=preguntaTipo('ciudad',r);if(qc.opciones[qc.correcta]!==esc(r.nombre)||!qc.opciones.every(o=>RUTAS.some(x=>esc(x.nombre)===o)))throw 'pregunta de viaje '+qc.texto;
   const qf=preguntaTipo('fin',r);if(qf.opciones[qf.correcta]!==esc(r.fin.nombre))throw 'pregunta de fin '+qf.texto;
   const qo=preguntaTipo('orden',r);if(!qo.opciones.every(o=>o.split(' → ').length===4))throw 'pregunta de orden '+JSON.stringify(qo.opciones);
+  {if(T.includes('lejos')){const ql=preguntaTipo('lejos',r);if(!r.paradas.some(c=>esc(c.nombre)===ql.opciones[ql.correcta]))throw 'lejos '+r.id}const qc=preguntaTipo('cruza',r);if(!r.cruza.includes(sinHtml(qc.opciones[qc.correcta]))||qc.opciones.filter(o=>r.cruza.includes(sinHtml(o))).length!==1)throw 'cruza '+r.id+' '+JSON.stringify(qc.opciones)}
   const qx=preguntaTipo(r.contexto[0].clave,r);if(qx.opciones[qx.correcta]!==esc(r.nombre)||qx.texto.indexOf(r.contexto[0].titulo)<0)throw 'pregunta de contexto '+qx.texto;
 }
 {const qd=preguntaTipo('fecha',rioPor('alejandro'));if(qd.tipo!=='fecha'||!/a\. C\./.test(qd.opciones[qd.correcta])||new Set(qd.opciones.map(anio)).size!==4)throw 'fecha antes de Cristo: '+JSON.stringify(qd.opciones);
  const qz=preguntaTipo('fecha',rioPor('zhenghe'));if(qz.tipo!=='fecha'||new Set(qz.opciones.map(anio)).size!==4)throw 'fechas repetidas por año: '+JSON.stringify(qz.opciones);
  if(preguntaTipo('fecha',rioPor('cortes')).tipo!=='cerca')throw 'Cortés tiene tres años: la pregunta de fecha debía caer a cerca';
  if(anio('334 a. C.')!==-334||anio('hacia 1332')!==1332||txtAnio(-323)!=='323 a. C.')throw 'años';
+ const qd2=preguntaTipo('duracion',rioPor('ibnbattuta'));if(qd2.opciones[qd2.correcta]!=='29 años'||new Set(qd2.opciones).size!==4)throw 'duración de Ibn Battuta: '+JSON.stringify(qd2.opciones);
+ const qp=preguntaTipo('primero',rioPor('marcopolo')),ini=nm=>anio(RUTAS.find(x=>esc(x.nombre)===nm).inicio.fecha),vals=qp.opciones.map(ini),esp=/último/.test(qp.texto)?Math.max(...vals):Math.min(...vals);if(ini(qp.opciones[qp.correcta])!==esp)throw 'primero: '+qp.texto+' '+JSON.stringify(qp.opciones);
+ if(tiposDisponibles(rioPor('odiseo')).includes('duracion')||tiposDisponibles(rioPor('odiseo')).includes('primero'))throw 'Odiseo no tiene años: sin duración ni primero';
+ if(!idsDe(rioPor('alejandro')).includes('ruta:alejandro:escala'))throw 'sin tarjeta de escala';
  if(!RUTAS.some(r=>r.conquista)||!RUTAS.some(r=>!r.conquista))throw 'grupos de viajeros y conquistadores'}
 console.log('rutas',RUTAS.length,'etapas',RUTAS.reduce((a,r)=>a+r.paradas.length,0),'preguntas OK');
 setTimeout(()=>{
@@ -46,7 +52,7 @@ for(const modo of ['mercader','historia']){crearPerfil('Prueba '+modo);setModo(m
   for(const r of RUTAS){const n=r.paradas.length,V=r.vocab,k=r.id+' '+modo;
     abrirRio(r.id);let ph=panel();if(ph.indexOf(V.inicio)<0||ph.indexOf(V.tuVehiculo)<0||ph.indexOf(esc(r.inicio.nombre))<0)throw k+': inicio sin vocabulario ('+V.inicio+', '+V.tuVehiculo+')';sinRio(r,'inicio '+k);
     if(audio.modo!==(V.sonidoTipo||'agua'))throw k+' sonido: '+audio.modo;
-    const pf=document.getElementById('perfil');if(pf.hidden||pf.innerHTML.indexOf('Línea de tiempo')<0)throw k+' sin línea de tiempo';if(r.id==='alejandro'&&pf.innerHTML.indexOf('334 a. C.')<0)throw 'línea de tiempo sin años antes de Cristo';
+    const pf=document.getElementById('perfil'),conAnios=r.paradas.some(c=>anio(c.fecha)!=null);if(conAnios&&(pf.hidden||pf.innerHTML.indexOf('Línea de tiempo')<0))throw k+' sin línea de tiempo';if(!conAnios&&!pf.hidden)throw k+' franja sin años';if(r.id==='alejandro'&&pf.innerHTML.indexOf('334 a. C.')<0)throw 'línea de tiempo sin años antes de Cristo';
     let cp=capa();const tierra=!!TERRESTRES[r.vehiculo.tipo];if(tierra&&(cp.indexOf('class="barca tierra"')<0||cp.indexOf('class="anda"')<0||cp.indexOf('estela huellas')<0))throw k+' sin vehículo terrestre en el mapa';if(!tierra&&(cp.indexOf('class="barca"')<0||cp.indexOf('huellas')>=0))throw k+' sin flota en el mapa';if(cp.indexOf('class="animal"')<0)throw k+' sin animal';
     if(r.camara==='tramo'){const vbTramo=vbPara(ventana(r),20,1.3),vbToda=vbPara(r.curso.concat(r.paradas.map(c=>c.pos)),20,1.3);if(!(vbTramo.w<vbToda.w*0.7))throw k+' la cámara por tramo no acerca: '+vbTramo.w+' vs '+vbToda.w}
     const g0=S.guias[0];if(!g0)throw k+' sin guía';if(panel().indexOf(V.proxima)<0)throw k+' guía sin vocabulario';responderGuia(g0.objetivo);if(panel().indexOf(V.avanzar+' ')<0)throw k+' sin botón '+V.avanzar;

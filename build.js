@@ -19,7 +19,7 @@ function usados(datos){/* claves que usan los datos del juego: glifos de animal,
   return{glifos:g,pictos:p,tipos:t,iconos:i}}
 function recortar(motor,j,u){
   let m=motor,quitado={vocab:0,animales:0,pictos:0,glifos:0,iconos:0};
-  for(const tipo of ['rio','itinerario','travesia']){if(j.vocab.includes(tipo))continue;const a=m.indexOf(`/*@vocab:${tipo}*/`),b=m.indexOf(`/*@fin:${tipo}*/`);if(a<0||b<0)throw 'sin marcas de VOCAB.'+tipo;m=m.slice(0,a)+m.slice(b+`/*@fin:${tipo}*/`.length);quitado.vocab++}
+  for(const tipo of ['rio','itinerario','travesia']){if(j.vocab.includes(tipo))continue;let hubo=false;for(;;){const a=m.indexOf(`/*@vocab:${tipo}*/`);if(a<0)break;const b=m.indexOf(`/*@fin:${tipo}*/`,a);if(b<0)throw 'sin cierre de VOCAB.'+tipo;m=m.slice(0,a)+m.slice(b+`/*@fin:${tipo}*/`.length);hubo=true}if(!hubo)throw 'sin marcas de VOCAB.'+tipo;quitado.vocab++}/* puede haber varios bloques por tipo: el vocabulario y las funciones propias de ese tipo de ruta */
   const bloque=(ini,fin,conservar,que)=>{const a=m.indexOf(ini),b=m.indexOf(fin,a);if(a<0||b<0)throw 'sin bloque '+ini;const lineas=m.slice(a,b).split('\n');
     const out=lineas.map(l=>{const k=l.match(/^([a-zñ]+):'/);if(!k||conservar.has(k[1]))return l;quitado[que]++;return l.endsWith('};')?'};':null}).filter(l=>l!==null);/* la última entrada cierra el objeto en su misma línea */m=m.slice(0,a)+out.join('\n')+m.slice(b)};
   const enMotor=new Set([...motor.matchAll(/picto\('([a-zñ]+)'\)/g)].map(x=>x[1]));/* pictogramas que el motor pide por nombre */

@@ -37,6 +37,8 @@ for r in I:
     def add(etq,t):
         for f in frases(t): out.append(f"- {etq}: {f}{' ⚠' if any(k in f for k in DUDAS) else ''}")
     add("Partida",r['inicio']['nota'])
+    if r.get('cruza'): out.append(f"- Cruza: {', '.join(r['cruza'])} ⚠")
+    if r.get('tramos'): out.append(f"- Tramos: {' · '.join(t['nombre'] for t in r['tramos'])}")
     for cx in r['contexto']: add(cx['titulo'],cx['texto']);add(cx['titulo']+' · pista',cx['pista'])
     for c in r['paradas']: out.append(f"- {c['nombre']} · fecha: {c['fecha']} ⚠");add(f"{c['nombre']} · imagen",c['imagen']);add(f"{c['nombre']} · dato",c['dato'])
     v=r['vehiculo'];add("Vehículo",v['desc']);add("Salida",v['zarpe']);add("Llegada",v['llegada'])
