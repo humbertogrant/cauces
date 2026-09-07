@@ -3,7 +3,7 @@
 // cuatro rutas o más (viaje, frase, contexto), línea de tiempo (con años antes de Cristo), cámara por tramo, vehículo
 // terrestre o flota en el mapa, grupos de viajeros y conquistadores, guardado con prefijo propio y relieve en la vista.
 const bajar=k=>{for(let i=0;i<k;i++){paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}}};
-const panel=()=>document.querySelector('#panel').innerHTML,capa=()=>document.querySelector('#capa').innerHTML;
+const sinNum=h=>h.replace(new RegExp('<span class="num">([^<]*)</span>','g'),'$1'),panel=()=>sinNum(document.querySelector('#panel').innerHTML+document.getElementById('pie').innerHTML),capa=()=>document.querySelector('#capa').innerHTML;
 if(JUEGO.id!=='exploradores')throw 'juego equivocado';
 if(RUTAS.length<4)throw 'con menos de cuatro rutas no vuelven las preguntas de viaje, frase y contexto';
 const nombresParada=new Map();
@@ -51,7 +51,7 @@ for(const modo of ['mercader','historia']){crearPerfil('Prueba '+modo);setModo(m
     if(r.camara==='tramo'){const vbTramo=vbPara(ventana(r),20,1.3),vbToda=vbPara(r.curso.concat(r.paradas.map(c=>c.pos)),20,1.3);if(!(vbTramo.w<vbToda.w*0.7))throw k+' la cámara por tramo no acerca: '+vbTramo.w+' vs '+vbToda.w}
     const g0=S.guias[0];if(!g0)throw k+' sin guía';if(panel().indexOf(V.proxima)<0)throw k+' guía sin vocabulario';responderGuia(g0.objetivo);if(panel().indexOf(V.avanzar+' ')<0)throw k+' sin botón '+V.avanzar;
     let eventos=0;for(let p=0;p<=n;p++){paso(1);if(S.evento){eventos++;responderEvento(S.evento.q.correcta);continuarEvento()}
-      ph=panel();if(S.paso<=n){const c=r.paradas[S.paso-1];if(ph.indexOf(`${V.Parada} ${S.paso} de ${n}`)<0||ph.indexOf(esc(c.fecha))<0)throw k+': kicker de la parada '+S.paso;sinRio(r,'parada '+S.paso+' '+k);
+      ph=panel();if(S.paso<=n){const c=r.paradas[S.paso-1];if(sinHtml(ph).indexOf(`${V.Parada} ${S.paso} de ${n}`)<0||ph.indexOf(esc(c.fecha))<0)throw k+': kicker de la parada '+S.paso;sinRio(r,'parada '+S.paso+' '+k);
         if(modo==='mercader'&&S.paso<n&&ph.indexOf(V.mercado)<0)throw k+' sin '+V.mercado+' en '+c.nombre;if(modo==='historia'&&ph.indexOf(V.llevaba)<0)throw k+' sin carga en Historia '+c.nombre;
         if(modo==='mercader'&&S.paso===1){const gi=r.carga.findIndex(g=>g.o===0);comprar(gi);if(S.eco.bodega.length!==1||panel().indexOf(`${V.carga} 1 de 3`)<0)throw k+' compra'}
         const g=S.guias[S.paso];if(g)responderGuia(g.objetivo)}

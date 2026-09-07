@@ -13,10 +13,10 @@ global.Date=class extends RealDate{constructor(...a){super(...(a.length?a:[FIJO]
 montar(CAUCES);
 const foto={},sha=s=>crypto.createHash('sha1').update(s).digest('hex').slice(0,16);
 const texto=h=>String(h).replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/\s+/g,' ').trim();
-function tomar(clave){const cab=document.querySelector('#cab').innerHTML,panel=document.querySelector('#panel').innerHTML,capa=document.querySelector('#capa').innerHTML,pf=document.getElementById('perfil'),perfil=pf.hidden?'':pf.innerHTML;
+function tomar(clave){const cab=document.querySelector('#cab').innerHTML,panel=document.querySelector('#panel').innerHTML,capa=document.querySelector('#capa').innerHTML,pf=document.getElementById('perfil'),perfil=pf.hidden?'':pf.innerHTML,pe=document.getElementById('pie'),pie=pe.hidden?'':pe.innerHTML;
   const voz=(S.pantalla==='inicio'||S.pantalla==='pasaporte')?[]:lectura();
   if(foto[clave])throw 'clave repetida '+clave;
-  foto[clave]={h:sha(cab+'\n'+panel+'\n'+capa+'\n'+perfil),t:texto(cab+' | '+panel+' | '+perfil),v:voz.map(x=>String(x))}}
+  foto[clave]={h:sha(cab+'\n'+panel+'\n'+capa+pie+'\n'+perfil),t:texto(cab+' | '+panel+' | '+pie+' | '+perfil),v:voz.map(x=>String(x))}}
 setTimeout(()=>{
   for(const modo of ['mercader','historia']){
     crearPerfil('Foto '+modo);setModo(modo);irInicio();tomar(modo+'/inicio');
