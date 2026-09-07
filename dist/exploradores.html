@@ -575,11 +575,11 @@ const VOCAB={
     soloVender:'Llegaste sin saber adónde ibas: aquí solo podés vender.',nadaQueComprar:'Aquí no hay nada que cambiar; vendé si te conviene.',
     sonido:'Sonido del camino',sonidoTipo:'viento',volver:'Volver a los viajes',toca:'Tocá un viaje en el mapa o en la lista.',retoSub:'Diez preguntas de todos los viajes',
     completo:'viaje completo',completos:'viajes completos',hechoNota:'Los viajes completos se pintan de dorado en el mapa.',
-    selloNota:'Cada sello se gana llegando a una etapa sabiendo adónde ibas; se vuelve dorado cuando además la recordás en el repaso.',
+    selloNota:'Cada sello se gana llegando a una etapa sabiendo adónde ibas; se vuelve dorado cuando la recitás de memoria y además la recordás días después.',
     recorre:'Recorré un viaje o jugá un reto: lo que hagás vuelve cuando toque.',recorreFin:'No hay nada pendiente todavía. Recorré un viaje hasta el regreso o jugá un reto: lo que hagás entra al repaso y vuelve cuando toque.',
     ajustesNino:'Mercader: diez monedas, tres espacios y precios que suben etapa a etapa. El animal acompaña, los textos largos quedan plegados en «Contame más» y la voz puede leer sola.',
     ajustesAdulto:'Historia: lo que el viajero llevaba, alto por alto, sin monedas. Todo el texto a la vista y el animal calladito, salvo para reaccionar.',
-    dominas:'Ya dominás este viaje.',conCalma:'Volvé a recorrer el viaje con calma; el repaso te lo va a recordar.',
+    dominas:'Reconocés todo el viaje: ahora recitalo de memoria.',conCalma:'Volvé a recorrer el viaje con calma; el repaso te lo va a recordar.',
     ordenBien:'Sin errores: el camino ya es tuyo.',ordenMal:e=>`${e} errores: volvé a recorrer el viaje con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} etapas en orden, de la partida al regreso.`,
     cabecera:r=>`${esc(r.region)} · de ${esc(r.inicio.nombre)} a ${esc(r.fin.en)}`,tarjeta:r=>esc(r.region),
     kickerInicio:r=>`Partida${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Etapa ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
@@ -617,11 +617,11 @@ const VOCAB={
     soloVender:'Llegaste sin saber adónde ibas: aquí solo podés vender.',nadaQueComprar:'Aquí no hay nada que comprar; vendé si te conviene.',
     sonido:'Sonido del mar',volver:'Volver a los viajes',toca:'Tocá un viaje en el mapa o en la lista.',retoSub:'Diez preguntas de todos los viajes',
     completo:'travesía completa',completos:'travesías completas',hechoNota:'Los viajes completos se pintan de dorado en el mapa.',
-    selloNota:'Cada sello se gana llegando a una escala sabiendo adónde ibas; se vuelve dorado cuando además la recordás en el repaso.',
+    selloNota:'Cada sello se gana llegando a una escala sabiendo adónde ibas; se vuelve dorado cuando la recitás de memoria y además la recordás días después.',
     recorre:'Recorré un viaje o jugá un reto: lo que hagás vuelve cuando toque.',recorreFin:'No hay nada pendiente todavía. Recorré un viaje hasta el regreso o jugá un reto: lo que hagás entra al repaso y vuelve cuando toque.',
     ajustesNino:'Mercader: diez monedas, tres espacios y precios que suben escala a escala. El animal acompaña, los textos largos quedan plegados en «Contame más» y la voz puede leer sola.',
     ajustesAdulto:'Historia: lo que la flota llevaba, puerto por puerto, sin monedas. Todo el texto a la vista y el animal calladito, salvo para reaccionar.',
-    dominas:'Ya dominás esta travesía.',conCalma:'Volvé a navegar la travesía con calma; el repaso te lo va a recordar.',
+    dominas:'Reconocés toda la travesía: ahora recitala de memoria.',conCalma:'Volvé a navegar la travesía con calma; el repaso te lo va a recordar.',
     ordenBien:'Sin errores: la ruta ya es tuya.',ordenMal:e=>`${e} errores: volvé a navegar con la frase en mano.`,tocaEnOrden:n=>`Tocá las ${n} escalas en orden, del zarpe al regreso.`,
     cabecera:r=>`${esc(r.region)} · de ${esc(r.inicio.nombre)} a ${esc(r.fin.en)}`,tarjeta:r=>esc(r.region),
     kickerInicio:r=>`Zarpe${r.inicio.fecha?` · ${r.inicio.fecha}`:''}`,kickerParada:(r,p,n,c)=>`Escala ${num(p+' de '+n)}${c.fecha?` · ${c.fecha}`:''}`,kickerFin:r=>`Regreso${r.fin.fecha?` · ${r.fin.fecha}`:''}`,
@@ -759,7 +759,7 @@ const claveSello=(r,i)=>r.id+':'+i;
 const sellosDe=r=>r.paradas.filter((c,i)=>sellos()[claveSello(r,i)]).length;
 const completo=r=>sellosDe(r)===r.paradas.length;
 const totalSellos=()=>RUTAS.reduce((a,r)=>a+sellosDe(r),0);
-const selloOro=(r,i)=>{const c=P.cards['ciudad:'+r.id+':'+i];return !!(c&&c.box>=3)};
+const selloOro=(r,i)=>{const c=P.cards['ciudad:'+r.id+':'+i];return !!(c&&c.box>=3&&c.rec)};/* caja ≥ 3 y recitada de memoria alguna vez */
 function sellar(r,i){const k=claveSello(r,i);if(sellos()[k])return false;sellos()[k]=Date.now();guardar();return true}
 const fechaSello=ts=>{try{return new Date(ts).toLocaleDateString('es-CR',{day:'numeric',month:'short'})}catch(e){return ''}};
 function verPasaporte(){S.pantalla='pasaporte';S.aviso=null;render()}
@@ -810,7 +810,14 @@ function renderProgreso(){return `<div class="progreso"><div class="fkicker">Pro
 const INTERVALOS=[0,1,3,7,14,30],DIA=86400000,NUEVAS_POR_DIA=10;
 let P=nuevoP();
 const guardar=()=>store.escribir(store.clave(PERFILES.activo),P);
-function marcar(id,ok){const c=P.cards[id]||{box:0,due:0};if(c.nuevo){delete c.nuevo;diaHoy().nuevas++}c.box=ok?Math.min(5,c.box+1):0;c.due=Date.now()+INTERVALOS[c.box]*DIA;P.cards[id]=c;guardar()}
+/* Leitner con dos clases de evidencia: reconocer (elegir entre opciones: guía, retos, repaso, eventos) sube una tarjeta solo
+   hasta la caja 3; recordar (Recitar: decir la parada de memoria) deja la marca `rec` (1 con pista, 2 sin pista) y abre las
+   cajas 4 y 5. Una tarjeta solo sube cuando está vencida: acertarla tres veces la misma tarde cuenta una sola vez; fallarla
+   la baja a 0 y borra `rec`. Así nada se muestra consolidado por haberlo reconocido recién. */
+function marcar(id,ok,via,nivel){const c=P.cards[id]||{box:0,due:0},t=Date.now();if(c.nuevo){delete c.nuevo;diaHoy().nuevas++}
+  if(!ok){c.box=0;c.rec=0;c.due=t}
+  else{if(via==='recordar')c.rec=Math.max(c.rec||0,nivel||1);const tope=c.rec?5:3;if(c.due<=t){if(c.box<tope)c.box++;c.due=t+INTERVALOS[c.box]*DIA}}
+  P.cards[id]=c;guardar()}
 function idsDe(r){const ids=['orden',...r.contexto.map(c=>c.clave),r.tipo==='rio'?'mar':'fin'].map(k=>r.pref+k);r.paradas.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
 function dominio(r){const ids=idsDe(r);let s=0;ids.forEach(id=>{const c=P.cards[id];if(c)s+=c.box});return s/(ids.length*5)}
 function sembrar(r){idsDe(r).forEach(id=>{if(!P.cards[id])P.cards[id]={box:0,due:Date.now(),nuevo:true}});guardar()}
@@ -962,7 +969,7 @@ function renderMercado(r,j){const V=r.vocab;const e=S.eco;if(!e||!r.carga.length
 function iniciarRecitar(r){const d=dominio(r);S.rec={i:0,revelada:false,pista:d<0.3?'frase':d<0.7?'iniciales':'nada',ok:[],dicho:azar(VZ().recitarInicio),premio:0}}
 function setPista(p){S.rec.pista=p;render(false)}
 function revelar(){S.rec.revelada=true;render(false)}
-function recordada(ok){const r=rioPor(S.rio),R=S.rec,n=r.paradas.length;if(R.i>=n||!R.revelada)return;marcar('ciudad:'+r.id+':'+R.i,ok);R.ok.push(ok);R.dicho=azar(ok?VZ().recitarBien:VZ().recitarMal);R.i++;R.revelada=false;
+function recordada(ok){const r=rioPor(S.rio),R=S.rec,n=r.paradas.length;if(R.i>=n||!R.revelada)return;marcar('ciudad:'+r.id+':'+R.i,ok,'recordar',R.pista==='nada'?2:1);R.ok.push(ok);R.dicho=azar(ok?VZ().recitarBien:VZ().recitarMal);R.i++;R.revelada=false;
   if(R.i>=n){const todas=R.ok.every(Boolean);if(R.ok.filter(Boolean).length>=n-1)hecha(r,'recitar');R.dicho=VZ().recitarFin[todas?0:R.ok.filter(Boolean).length>=n-1?1:2];if(S.eco&&todas){R.premio=R.pista==='nada'?5:R.pista==='iniciales'?3:1;P.tesoro=(P.tesoro||0)+R.premio;R.dicho+=` +${R.premio} monedas al tesoro.`;guardar()}}
   render(false)}
 function renderRecitar(r){const V=r.vocab,R=S.rec,n=r.paradas.length;

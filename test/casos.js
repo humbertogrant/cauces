@@ -1,4 +1,9 @@
 // datos
+// Leitner: reconocer no sube dos veces el mismo día ni pasa de la caja 3; recordar abre las cajas 4-5 y hace dorado el sello
+{const id='ciudad:rin:2';delete P.cards[id];marcar(id,true);marcar(id,true);marcar(id,true);if(P.cards[id].box!==1)throw 'subió sin estar vencida: '+P.cards[id].box;
+ for(let k=0;k<3;k++){P.cards[id].due=0;marcar(id,true)}if(P.cards[id].box!==3)throw 'reconocer debe parar en la caja 3: '+P.cards[id].box;
+ if(selloOro(rioPor('rin'),2))throw 'oro sin recordar';P.cards[id].due=0;marcar(id,true,'recordar',1);if(P.cards[id].box!==4||P.cards[id].rec!==1)throw 'recordar debe abrir la caja 4: '+JSON.stringify(P.cards[id]);
+ if(!selloOro(rioPor('rin'),2))throw 'oro con recordar';marcar(id,false);if(P.cards[id].box!==0||P.cards[id].rec!==0)throw 'fallar debe bajar a 0 y borrar rec';delete P.cards[id];console.log('Leitner: reconocer y recordar OK')}
 const sinNum=h=>h.replace(new RegExp('<span class="num">([^<]*)</span>','g'),'$1'); // los números van en Oswald dentro de .num; las pruebas miran el texto
 const todo=()=>sinNum(document.querySelector('#panel').innerHTML+document.getElementById('pie').innerHTML); // panel más barra fija al pie (guía, Zarpar, Revelar, Seguir…)
 const bajar=k=>{for(let i=0;i<k;i++){paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}}}; // avanza k tramos resolviendo eventos
@@ -248,7 +253,7 @@ console.log('perfiles OK');
  irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(!/Pasaporte \(\d+\)/.test(ph)||ph.indexOf('class="listo"')<0)throw 'inicio sin pasaporte';
  let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('class="rio hecho"')<0||(capa.match(/class="rio hecho"/g)||[]).length!==1)throw 'mapa sin el río dorado (o con más de uno)';
  verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(S.pantalla!=='pasaporte'||ph.indexOf('Rotterdam')<0||ph.indexOf(`${n} de ${n} sellos`)<0||ph.indexOf('class="sello vacio"')<0||ph.indexOf('Pasaporte de Capitán')<0)throw 'pantalla de pasaporte';
- for(let k=0;k<3;k++)marcar('ciudad:rin:0',true);verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="sello oro"')<0)throw 'sin sello dorado';
+ P.cards['ciudad:rin:0']={box:3,due:Date.now(),rec:1};guardar();verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="sello oro"')<0)throw 'sin sello dorado';
  const d=JSON.parse(progresoJSON());if(!d.progreso.sellos['rin:0'])throw 'sellos fuera del json';d.perfil='Zoe';importarTexto(JSON.stringify(d));if(!P.sellos['rin:0']||PERFILES.activo!=='Zoe')throw 'sellos no importados';quitarPerfil();
  irInicio();console.log('pasaporte OK')}
 // interruptor Niño/Adulto: el niño ve textos plegados, animal y lectura automática; el adulto, todo el texto, animal solo para reaccionar, sin lectura sola
@@ -330,7 +335,7 @@ console.log('perfiles OK');
  if(formas.size<3||rots.size<4)throw 'sellos demasiado iguales: formas '+formas.size+' giros '+rots.size;
  if(sello(r,0)!==sello(r,0))throw 'el sello no es estable';
  if(sello(rioPor('nilo'),0).indexOf('class="sello vacio"')<0||sello(rioPor('nilo'),0).indexOf('class="forma"')<0)throw 'vacío sin forma';
- for(let k=0;k<3;k++)marcar('ciudad:rin:1',true);if(sello(r,1).indexOf('class="sello oro"')<0||sello(r,1).indexOf('★')<0)throw 'oro sin estrellas';
+ P.cards['ciudad:rin:1']={box:3,due:Date.now(),rec:2};guardar();if(sello(r,1).indexOf('class="sello oro"')<0||sello(r,1).indexOf('★')<0)throw 'oro sin estrellas';
  sellos()['sanjuan:5']=Date.now();if(sello(rioPor('sanjuan'),5).indexOf('textLength="78"')<0||sello(rioPor('sanjuan'),5).indexOf('SAN JUAN · NICARAGUA')<0)throw 'nombre largo sin ajuste o aro sin país';delete sellos()['sanjuan:5'];
  quitarPerfil();console.log('sellos OK')}
 // auditoría permanente: el animal nunca desaparece durante la ruta, en ningún modo, ni del globo ni de la barca (cuando el mapa muestra el río)

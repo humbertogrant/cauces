@@ -188,7 +188,7 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
 - Pasaporte (`P.sellos[río:i] = fecha`): al llegar a una ciudad (`paso`), el sello se gana solo si la guía «¿cuál
   es la próxima parada?» se acertó al zarpar (`S.llaves[i] === true`, la misma llave del mercado); si no, la página
   lo dice sin regañar y se puede volver a bajar el río a ganarlo. Es dorado (`selloOro`) cuando la tarjeta
-  `ciudad:ID:i` está en caja ≥ 3. `completo(r)` = todos los sellos → el río va en dorado en el mapa mundial y en la
+  `ciudad:ID:i` está en caja ≥ 3 y además se recitó de memoria alguna vez (`rec`). `completo(r)` = todos los sellos → el río va en dorado en el mapa mundial y en la
   zona (clase `hecho`) y la fila del inicio dice «completo». Pantalla `pasaporte` (`verPasaporte`,
   `renderPasaporte`): resumen, y por río sus sellos y los huecos vacíos. Va en el JSON de exportación como el
   resto de `P`. Cada sello (`sello(r,i)`) es un SVG con carácter propio y estable: un hash de `río:parada` elige
@@ -196,7 +196,11 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
   del aro interior (`DESGASTES`) y la tinta (verde o verde medio; ocre con estrellas si es de oro); lleva el río y
   el país en el aro (`textPath`), el primer pictograma de la ciudad en tinta, el nombre y la fecha. El hueco vacío
   conserva la forma en punteado gris.
-- Leitner: cajas 0-5, intervalos [0,1,3,7,14,30] días. Tarjetas por río: `rio:ID:orden|antigua|moderna|mar`
+- Leitner: cajas 0-5, intervalos [0,1,3,7,14,30] días. Dos clases de evidencia (revisión externa del 2026-09-07):
+  reconocer entre opciones (guía, retos, repaso, eventos) sube una tarjeta solo hasta la caja 3; recordar de memoria en
+  Recitar (`marcar(id, ok, 'recordar', nivel)`, 1 con pista y 2 sin pista) deja la marca `rec` y abre las cajas 4 y 5. Una
+  tarjeta solo sube cuando está vencida: acertarla tres veces la misma tarde cuenta una vez; fallarla la baja a 0 y borra
+  `rec`. Así el dominio de un río sin recitar tope en 60 % y nada se muestra consolidado por reconocerlo recién. Tarjetas por río: `rio:ID:orden|antigua|moderna|mar`
   y `ciudad:ID:i`. Entran al repaso al terminar un descenso (`sembrar`, que las marca `nuevo`) o al jugar (`marcar`).
 - Hoy (`colaHoy`, bloque «Hoy» en el inicio con `renderHoy`): las vencidas ya repasadas entran todas; las nuevas
   (sembradas y nunca respondidas) entran de a `NUEVAS_POR_DIA` (10) por día: `P.dia = {fecha, nuevas}` cuenta las
