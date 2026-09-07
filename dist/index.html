@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F423A">
+<title>Cauces y Exploradores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--verde:#0F423A;--claro:#64C8AA;--oro:#E8B952;--mar:#0C3A33;--tierra:#215A4F}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--mar);color:#fff;font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px}
+h1{font-family:Oswald,"Arial Narrow",sans-serif;font-weight:700;font-size:40px;letter-spacing:.04em;margin:0;color:var(--oro);text-transform:uppercase;text-align:center}
+p.sub{margin:8px 0 28px;color:var(--claro);font-size:18px;text-align:center}
+.juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;width:100%;max-width:640px}
+a.juego{display:block;background:var(--tierra);border:2px solid var(--claro);border-radius:14px;padding:20px 22px;color:#fff;text-decoration:none}
+a.juego:hover,a.juego:focus-visible{border-color:var(--oro);outline:none}
+a.juego b{display:block;font-family:Oswald,"Arial Narrow",sans-serif;font-weight:500;font-size:26px;color:var(--oro);letter-spacing:.03em}
+a.juego span{display:block;margin-top:6px;font-size:16px;line-height:1.35}
+p.nota{margin:28px 0 0;max-width:640px;font-size:14px;color:var(--claro);text-align:center;line-height:1.45}
+</style>
+</head>
+<body>
+<h1>Cauces y Exploradores</h1>
+<p class="sub">Dos juegos de memoria para recordar el mundo, parada por parada.</p>
+<nav class="juegos" aria-label="Juegos">
+<a class="juego" href="cauces.html"><b>Cauces</b><span>Los grandes ríos, de la fuente al mar, ciudad por ciudad.</span></a>
+<a class="juego" href="exploradores.html"><b>Exploradores</b><span>Los grandes viajes, etapa por etapa: Ibn Battuta, Marco Polo, Zheng He, Alejandro Magno y Hernán Cortés.</span></a>
+</nav>
+<p class="nota">Cada juego es un solo archivo, no llama a ningún servicio y guarda el progreso en este navegador; si cambiás de aparato, llevalo con Exportar desde el inicio del juego. En el teléfono podés añadirlo a la pantalla de inicio desde el menú Compartir.</p>
+</body>
+</html>

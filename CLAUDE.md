@@ -319,12 +319,16 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
   Lo que queda por probar si hace falta: cauces del mundo con dos decimales y un minificador de desarrollo.
 - Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,
-  `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español.
+  `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español. El remoto es
+  github.com/humbertogrant/cauces (público) desde el 2026-09-06; `gh` en esta máquina está autenticado como humbertogrant.
+- Publicación: GitHub Pages sirve la carpeta `dist` en https://humbertogrant.github.io/cauces/ (`cauces.html`, `exploradores.html` y
+  una portada `index.html` que build.js no toca). La publica `.github/workflows/pages.yml` con cada push a `main`, solo si `npm test`
+  pasa y `node build.js` no cambia `dist`: reconstruir y versionar `dist` antes de subir.
 - Textos para niño: frases cortas, concretas, sin sarcasmo; el animal nunca regaña.
 - Accesibilidad mínima: botones reales, `aria-label` en iconos, `prefers-reduced-motion` respetado.
 - iPhone: un `.html` copiado al aparato se abre en la vista previa de Archivos (Quick Look), que no ejecuta JavaScript y
   muestra solo el fondo; no es un fallo del juego (WebKit lo corre sin errores por http y por file://, `tools/safari.js`).
-  Para iPhone hay que servirlo desde un hosting estático (GitHub Pages, Netlify) o desde una app que sirva HTML local.
+  En iPhone se abre la dirección de Pages (o cualquier hosting estático, o una app que sirva HTML local).
 - Móvil (revisado el 2026-09-04 a 375×812, 360×640 y 812×375): nada desborda a lo ancho, toques de 36 px o más, campo de
   texto de 17 px (sin zoom en iPhone). Reglas en cabeza.html: con ancho ≤ 480 px el mapa baja a 34vh (el bloque pegajoso
   queda en ~55 % del alto); con alto ≤ 520 px (teléfono en horizontal) `#arriba` deja de ser pegajoso. En el panel de vista

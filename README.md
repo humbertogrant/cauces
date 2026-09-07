@@ -7,11 +7,13 @@ un mercado, eventos entre puertos y repaso espaciado.
 - Dos juegos con el mismo motor: `dist/cauces.html` (los grandes ríos) y `dist/exploradores.html` (los grandes viajes,
   etapa por etapa: Ibn Battuta, Marco Polo, Zheng He, Alejandro Magno y Hernán Cortés, cada uno con su caravana, flota o
   ejército, un animal de guía, una carga de trueque y una línea de tiempo bajo el mapa). Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
+- En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
+  carpeta `dist`, publicada por GitHub Pages con cada cambio de `main`; desde ahí abre también en iPhone.
 - Jugar: abrir `dist/cauces.html` (o `dist/exploradores.html`) en cualquier navegador. Basta un doble clic: no necesita servidor, instalación
   ni red (solo baja las fuentes de Google la primera vez; sin red usa las del sistema) y no llama a ningún
   servicio. En Android basta copiar el archivo al aparato y abrirlo con el navegador. En iPhone, no: la app Archivos (y el
-  adjunto de correo o WhatsApp) solo muestra una vista previa sin JavaScript, y se ve el fondo vacío; hay que subir el archivo a
-  cualquier hosting estático (GitHub Pages, Netlify) y abrir esa dirección en Safari, o usar una app que sirva HTML local.
+  adjunto de correo o WhatsApp) solo muestra una vista previa sin JavaScript, y se ve el fondo vacío; en iPhone se abre la dirección
+  de arriba en Safari (o cualquier otro hosting estático, o una app que sirva HTML local).
 - Ríos: quince grandes ríos del mundo, con el Congo y el Huang He recién llegados, y un paquete de Costa Rica (Tempisque, Reventazón, Sarapiquí, San Juan,
   Tárcoles y Térraba) con su historia económica; en el mapa mundial, el punto dorado sobre Costa Rica abre esa zona.
 - Escenas: cada ciudad, cada fuente y cada desembocadura tienen su postal, compuesta con pictogramas de lo que
