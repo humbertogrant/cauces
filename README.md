@@ -10,6 +10,10 @@ un mercado, eventos entre puertos y repaso espaciado.
   la del viaje entero: cada etapa dice cuántos kilómetros y años lleva, la guía pregunta hacia dónde sigue, Ordenar va por
   tramos, Trazar reconstruye la forma del viaje tocando el mapa y las preguntas miden la magnitud: cuánto duró, hasta dónde
   llegó, qué mares y desiertos cruzó, cuál viaje fue primero. Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
+- Dos ediciones de cada juego, del mismo código: la económica (`cauces.html`, `exploradores.html`), de menos de medio
+  megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), sin tope de peso. Por
+  ahora traen lo mismo; el progreso se comparte entre ellas. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
+  Las versiones congeladas están en los Releases de GitHub (`economica-1`), con los dos HTML económicos para descargar.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
   carpeta `dist`, publicada por GitHub Pages con cada cambio de `main`; desde ahí abre también en iPhone.
 - Jugar: abrir `dist/cauces.html` (o `dist/exploradores.html`) en cualquier navegador. Basta un doble clic: no necesita servidor, instalación

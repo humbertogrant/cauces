@@ -59,13 +59,14 @@ src/juegos/cauces.js, src/juegos/exploradores.js  JUEGO: nombre, subtítulo, tip
 src/data/relieve.js  RELIEVE (franjas de altura por vista), NOMBRES_RELIEVE (cordilleras, mesetas, desiertos, volcanes) y ALTURAS
                      (perfil de altura de cada cauce); lo genera tools/relieve.py
 src/motor.js         todo el motor: estado, perfiles y guardado, Leitner, preguntas, render, mapa, audio, economía, eventos, voz
-build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores), cada uno con sus datos, su src/juegos/<id>.js y el motor;
-                     recorta del motor lo que el juego no usa: los VOCAB de otros tipos (marcas /*@vocab:tipo*/ … /*@fin:tipo*/),
-                     y los animales, pictogramas y glifos de vehículo que no aparecen en sus datos
+build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores) y por edición (EDICIONES: económica y amplia; ver
+                     «Ediciones»), cada uno con sus datos, su src/juegos/<id>.js y el motor; recorta del motor lo que el juego no usa:
+                     los VOCAB de otros tipos (marcas /*@vocab:tipo*/ … /*@fin:tipo*/), y los animales, pictogramas y glifos de
+                     vehículo que no aparecen en sus datos; exporta JUEGOS, EDICIONES, ensamblar y cortarEdicion para las pruebas
 test/arnes.js        DOM simulado y carga de los archivos de un juego; test/pruebas.js [juego] corre test/casos.js (Cauces) o
                      test/casos-exploradores.js; test/instantanea.js compara 200 pantallas de Cauces con test/instantanea.json.gz.
-                     test/dist.js [juego] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte).
-                     `npm test` corre todo: "TODO OK" dos veces, "INSTANTÁNEA OK" y "DIST OK" dos veces
+                     test/dist.js [juego] [edicion] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte y
+                     que cada edición diga lo que es). `npm test` corre todo: "TODO OK" dos veces, "INSTANTÁNEA OK" y "DIST OK" cuatro veces
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap
 tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js) desde Natural Earth (110/50 m; 10 m en las cuencas de zona; shapely)
 tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo;
@@ -82,6 +83,23 @@ a propósito), `npm run verificacion`, `npm run mapa`, `npm run cauces`, `npm ru
 descargan Natural Earth a `tools/ne/` la primera vez; en Windows no hay `python3`: correrlos como
 `python tools/….py`). Antes de dar por terminado un
 cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador (o `python3 -m http.server`).
+
+## Ediciones
+
+Desde el 2026-09-13 cada juego sale en dos ediciones del mismo código, y no son ramas ni forks: build.js ensambla las cuatro
+salidas de la misma fuente. La **económica** (`dist/cauces.html`, `dist/exploradores.html`) pesa 500 KB o menos, es la que se
+comparte y la que juega bien en cualquier teléfono; la **amplia** (`dist/cauces-amplia.html`, `dist/exploradores-amplia.html`)
+no tiene tope de peso. Lo que solo va en la amplia se envuelve en `/*@amplia*/ … /*@fin:amplia*/` (JS o CSS, en datos, juego,
+motor o cabeza; en un array la marca abarca el elemento con su coma): la económica recorta el bloque y la amplia solo quita las
+marcas. Cada archivo dice qué es: `<meta name="edicion">`, `JUEGO.edicion {nombre, kb}` (lo escribe build.js tras
+src/juegos/<id>.js; en src no existe, así que la instantánea no lo ve) y una línea al final de «¿Cómo se juega?»; el título de
+la amplia termina en « · edición amplia». Las pruebas cargan src entero, es decir la amplia; `test/dist.js [juego] [edicion]`
+juega cada HTML. El pasaporte es compartido: las dos ediciones guardan bajo la misma clave (`cauces:progreso:<perfil>`) y el motor
+ignora en Hoy las tarjetas de rutas que la edición abierta no trae (`colaHoy`, `nuevasEnEspera`), así que quien pasa de una a
+otra conserva sellos y cajas, y el JSON exportado lleva todo. Hoy las dos ediciones traen lo mismo; lo primero que iría solo en
+la amplia: los ríos de la lista de pendientes (Orinoco, Murray, San Lorenzo, Zambeze), costas y relieve más finos, más eventos.
+Un cambio que engorde la amplia dice su peso en el commit. Para congelar una versión, etiqueta de git y Release en GitHub con los
+dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
 
 ## Cómo está hecho el motor
 
@@ -357,8 +375,9 @@ Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente con
 el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 
 0. Más ríos del mundo, por lo que pagan en memoria y por los huecos del mapa: Orinoco (Humboldt, Angostura), Murray
-   (Oceanía, ornitorrinco), San Lorenzo (belugas, Cartier), Zambeze (cataratas Victoria). Cada río del mundo pesa 12-15 KB; con Cauces cerca del tope, un paquete aparte («Ríos de España»:
-   Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
+   (Oceanía, ornitorrinco), San Lorenzo (belugas, Cartier), Zambeze (cataratas Victoria). Cada río del mundo pesa 12-15 KB y la
+   edición económica de Cauces está al tope: los ríos nuevos entran marcados `/*@amplia*/`, solo en la edición amplia (ver
+   «Ediciones»). Un paquete aparte («Ríos de España»: Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
 
 1. Exploradores: más viajes (Elcano, Darwin) y de conquista (Gengis Kan), aprobados para niños y adultos. Cada viaje nuevo trae rumbo por etapa, tramos y cruza. Con cada viaje,
    revisar las líneas nuevas de docs/verificacion.md y que ninguna parada se repita entre rutas.
@@ -376,15 +395,16 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
-- Mantener cada `dist/*.html` por debajo de ~500 KB (tope subido de 400 a 500 el 2026-09-04 para el relieve; hoy Cauces ≈ 452 KB y
-  Exploradores ≈ 324 KB). Palancas de peso ya usadas: recorte del motor por juego en build.js; en mapa.py, fronteras a 0,5 y lagos
+- Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
+  2026-09-04 para el relieve; el 2026-09-13 Cauces ≈ 495 KB y Exploradores ≈ 454 KB). La edición amplia (`-amplia.html`) no tiene
+  tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js; en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
   Lo que queda por probar si hace falta: cauces del mundo con dos decimales y un minificador de desarrollo.
 - Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,
   `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español. El remoto es
   github.com/humbertogrant/cauces (público) desde el 2026-09-06; `gh` en esta máquina está autenticado como humbertogrant.
-- Publicación: GitHub Pages sirve la carpeta `dist` en https://humbertogrant.github.io/cauces/ (`cauces.html`, `exploradores.html` y
-  una portada `index.html` que build.js no toca). La publica `.github/workflows/pages.yml` con cada push a `main`, solo si `npm test`
+- Publicación: GitHub Pages sirve la carpeta `dist` en https://humbertogrant.github.io/cauces/ (`cauces.html`, `exploradores.html`,
+  las ediciones amplias `cauces-amplia.html` y `exploradores-amplia.html`, y una portada `index.html` que build.js no toca). La publica `.github/workflows/pages.yml` con cada push a `main`, solo si `npm test`
   pasa y `node build.js` no cambia `dist`: reconstruir y versionar `dist` antes de subir.
 - Textos para niño: frases cortas, concretas, sin sarcasmo; el animal nunca regaña.
 - Accesibilidad mínima: botones reales, `aria-label` en iconos, `prefers-reduced-motion` respetado.

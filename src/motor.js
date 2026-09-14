@@ -345,10 +345,10 @@ function sembrar(r){idsDe(r).forEach(id=>{if(!P.cards[id])P.cards[id]={box:0,due
    por día (P.dia cuenta las que estrenaron hoy); la cola intercala ríos, uno por ronda */
 const fechaHoy=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 function diaHoy(){const f=fechaHoy();if(!P.dia||P.dia.fecha!==f)P.dia={fecha:f,nuevas:0};return P.dia}
-function colaHoy(){const t=Date.now(),porRio={};Object.keys(P.cards).forEach(id=>{if(P.cards[id].due<=t){const k=id.split(':')[1];(porRio[k]=porRio[k]||[]).push(id)}});
+function colaHoy(){const t=Date.now(),porRio={};Object.keys(P.cards).forEach(id=>{const k=id.split(':')[1];if(!rutaPor(k)||P.cards[id].due>t)return;(porRio[k]=porRio[k]||[]).push(id)});/* el pasaporte se comparte entre ediciones: las tarjetas de rutas que esta edición no trae se conservan, pero no se repasan */
   const listas=mezclar(Object.keys(porRio)).map(k=>mezclar(porRio[k])),mezcla=[];for(let hay=true;hay;){hay=false;for(const l of listas)if(l.length){mezcla.push(l.shift());hay=true}}
   let cupo=NUEVAS_POR_DIA-diaHoy().nuevas;return mezcla.filter(id=>!P.cards[id].nuevo||cupo-->0)}
-function nuevasEnEspera(){const t=Date.now(),cola=colaHoy();return Object.keys(P.cards).filter(id=>P.cards[id].nuevo&&P.cards[id].due<=t&&!cola.includes(id)).length}
+function nuevasEnEspera(){const t=Date.now(),cola=colaHoy();return Object.keys(P.cards).filter(id=>rutaPor(id.split(':')[1])&&P.cards[id].nuevo&&P.cards[id].due<=t&&!cola.includes(id)).length}
 const pendientes=()=>colaHoy();
 function renderHoy(){const cola=colaHoy(),n=cola.length,min=Math.max(1,Math.round(n*15/60)),espera=nuevasEnEspera();
   const rios=[...new Set(cola.map(id=>id.split(':')[1]))].map(rioPor).filter(Boolean).map(r=>r.nombre),cuales=rios.slice(0,3).join(', ')+(rios.length>3?' y más':'');
@@ -514,7 +514,7 @@ ${S.aviso?`<div class="aviso">${esc(S.aviso)}</div>`:''}
 ${modo()==='mercader'?`<div class="tesoro">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div>`:''}
 ${grupos}
 ${typeof renderComparar==='function'?renderComparar():''}
-<details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}<p class="fnota">${VJ().toca}</p></details>
+<details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}<p class="fnota">${VJ().toca}</p>${JUEGO.edicion?`<p class="fnota edicion">Edición ${esc(JUEGO.edicion.nombre)} · ${num(JUEGO.edicion.kb+' KB')} · un solo archivo, sin internet.</p>`:''}</details>
 <details class="mas ajustes"><summary>Ajustes: modo, voz y progreso</summary><div class="fkicker">Modo de juego</div><div class="tabs modo"><button class="${esNino()?'on':''}" onclick="setModo('mercader')">Niño</button><button class="${esNino()?'':'on'}" onclick="setModo('historia')">Adulto</button></div><p class="fnota">${esNino()?VJ().ajustesNino:VJ().ajustesAdulto}</p>${esNino()&&voz.soporte()?`<div class="tabs modo"><button class="${P.voz!=='boton'?'on':''}" onclick="setVoz('auto')">🔊 Lee sola</button><button class="${P.voz==='boton'?'on':''}" onclick="setVoz('boton')">Solo con el botón</button></div><p class="fnota">Con «Lee sola», el animal lee cada pantalla al abrirla y lo que dice al responder.</p>`:''}${renderProgreso()}</details>`}
 function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;const n=r.paradas.length,p=S.paso;
   if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2><div class="ficha recuerdo">${escena(r.inicio.escena)}<div class="cuerpo"><p>${esc(r.inicio.nota)}</p></div></div>${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}${bloqueFrase(r,true)}`;

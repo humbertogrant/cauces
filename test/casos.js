@@ -282,6 +282,7 @@ console.log('perfiles OK');
  const espera=nuevasEnEspera();if(espera<5)throw 'nuevas en espera '+espera;
  irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Nada pendiente hoy')<0||!/mañana entran \d+ más/.test(ph))throw 'Hoy sin nada: '+(ph.match(/class="hoy".{0,300}/)||[''])[0];
  P.cards['rio:nilo:mar']={box:1,due:0};if(colaHoy().length!==1)throw 'la vencida repasada no entra';
+ {const e0=nuevasEnEspera();P.cards['ciudad:orinoco:1']={box:1,due:0};P.cards['ciudad:orinoco:2']={box:0,due:0,nuevo:true};if(colaHoy().length!==1||nuevasEnEspera()!==e0)throw 'las tarjetas de una ruta que esta edición no trae no se repasan';delete P.cards['ciudad:orinoco:1'];delete P.cards['ciudad:orinoco:2']}/* pasaporte compartido entre ediciones */
  const espera2=nuevasEnEspera();P.dia.fecha='2000-01-01';if(colaHoy().length!==1+Math.min(espera2,NUEVAS_POR_DIA))throw 'no reinicia el día '+colaHoy().length+' vs '+(1+Math.min(espera2,NUEVAS_POR_DIA));
  const d=JSON.parse(progresoJSON());if(!d.progreso.dia)throw 'día fuera del json';
  quitarPerfil();console.log('Hoy OK')}
