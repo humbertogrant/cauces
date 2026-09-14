@@ -234,7 +234,7 @@ def latlon(pt): return [round(90-pt.y*0.36,2),round(pt.x*0.36-180,2)]
 salida_nombres=[{'n':x['n'],'t':x['t'],'z':'mundo','v':{rid:latlon(pt)+([a] if a else []) for rid,(pt,area,a) in x['v'].items()}} for x in NOMBRES]
 # Nombres a mano para ríos del mundo donde Natural Earth 50 m casi no trae regiones con nombre (en Australia solo la Gran
 # Cordillera Divisoria y la Gran Cuenca Artesiana): rótulo, tipo, posición y giro, como CR_NOMBRES. Solo entran si el río está en la edición.
-MUNDO_NOMBRES={'murray':[('Alpes Australianos','cordillera',[-36.75,147.35],0),('Riverina','llano',[-35.1,145.6],0),('Mallee','llano',[-34.95,142.2],0)]}
+MUNDO_NOMBRES={'murray':[('Alpes Australianos','cordillera',[-37.05,146.9],0),('Riverina','llano',[-35.1,145.6],0),('Mallee','llano',[-34.95,142.2],0)]}
 for rid,lista in MUNDO_NOMBRES.items():
     if any(r['id']==rid for r in RIOS):
         for n,t,pos,g in lista: salida_nombres.append({'n':n,'t':t,'z':'mundo','v':{rid:pos+([g] if g else [])}})
