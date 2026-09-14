@@ -3,8 +3,9 @@
 // y la edición como __EDICION__ (una <meta name="edicion">). Hay dos ediciones del mismo código: la económica (dist/<id>.html,
 // 500 KB o menos, la que se comparte) y la amplia (dist/<id>-amplia.html, sin tope). Lo que solo va en la amplia se envuelve en src
 // con /*@amplia*/ … /*@fin:amplia*/ (JS o CSS: datos, juego, motor o cabeza); la económica recorta esos bloques y la amplia solo
-// quita las marcas. Cada HTML dice qué es: la <meta name="edicion">, JUEGO.edicion {nombre, kb} (escrito tras src/juegos/<id>.js;
-// en src no existe) y, en la amplia, el título con « · edición amplia».
+// quita las marcas. Los archivos generados (mapa, relieve) no llevan marcas: la amplia tiene los suyos, más finos, y `amplia`
+// en JUEGOS dice qué archivo reemplaza a cuál (archivosDe). Cada HTML dice qué es: la <meta name="edicion">, JUEGO.edicion
+// {nombre, kb} (escrito tras src/juegos/<id>.js; en src no existe) y, en la amplia, el título con « · edición amplia».
 // Para conservar peso, del motor se recorta lo que el juego no usa: los bloques de VOCAB de otros tipos de ruta (marcados
 // con /*@vocab:tipo*/ … /*@fin:tipo*/), los animales, los pictogramas y los glifos de vehículo que no aparecen en sus datos.
 // Las pruebas cargan src/ entero (es decir, la edición amplia); test/dist.js [juego] [edicion] comprueba que cada HTML recortado
@@ -12,10 +13,11 @@
 const fs=require('fs'),path=require('path');
 const src=p=>fs.readFileSync(path.join(__dirname,'src',p),'utf8');
 const JUEGOS={
-  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js']},
+  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'}},
   exploradores:{titulo:'Exploradores: los grandes viajes, etapa por etapa',vocab:['itinerario','travesia'],archivos:['data/mapa-exploradores.js','data/itinerarios.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js']}
 };
 const EDICIONES={economica:{nombre:'económica',sufijo:'',tope:500},amplia:{nombre:'amplia',sufijo:'-amplia',tope:0}};
+function archivosDe(id,edicion){const j=JUEGOS[id],rep=(edicion==='amplia'&&j.amplia)||{};return j.archivos.map(f=>rep[f]||f)}// archivos del juego en una edición
 const ABRE='/*@amplia*/',CIERRA='/*@fin:amplia*/';
 function cortarEdicion(texto,edicion){// la económica quita los bloques marcados; la amplia, solo las marcas
   if(edicion==='amplia')return texto.split(ABRE).join('').split(CIERRA).join('');
@@ -45,11 +47,11 @@ function recortar(motor,j,u){
     const out=lineas.filter(l=>{const k=l.match(/^\s*case '([a-z]+)':/);if(!k||u.tipos.has(k[1]))return true;quitado.glifos++;return false});m=m.slice(0,a)+out.join('\n')+m.slice(b)}
   return{motor:m,quitado}}
 function ensamblar(id,edicion){
-  const j=JUEGOS[id],e=EDICIONES[edicion],leer=f=>cortarEdicion(src(f),edicion);
-  const datos=j.archivos.filter(f=>f!=='motor.js').map(leer).join('\n'),u=usados(datos),{motor,quitado}=recortar(leer('motor.js'),j,u);
+  const j=JUEGOS[id],e=EDICIONES[edicion],archivos=archivosDe(id,edicion),leer=f=>cortarEdicion(src(f),edicion);
+  const datos=archivos.filter(f=>f!=='motor.js').map(leer).join('\n'),u=usados(datos),{motor,quitado}=recortar(leer('motor.js'),j,u);
   const titulo=j.titulo+(e.sufijo?' · edición '+e.nombre:'');
   const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?leer(f)+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:leer(f);
-  const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+j.archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
+  const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
   /* el archivo dice cuánto pesa; el número entra en el mismo archivo, así que se comprueba después de escribirlo */
   let kb=Math.round(base.length/1024),html=base.replace('__PESO__',kb);const kb2=Math.round(html.length/1024);if(kb2!==kb){kb=kb2;html=base.replace('__PESO__',kb)}
   return{archivo:id+e.sufijo+'.html',html,kb,quitado,tope:e.tope}}
@@ -59,5 +61,5 @@ function construir(){
     fs.writeFileSync(path.join(__dirname,'dist',archivo),html);
     console.log(`dist/${archivo}`,kb,'KB','· recortado del motor:',`${quitado.vocab} vocabularios, ${quitado.animales} animales, ${quitado.pictos} pictogramas, ${quitado.glifos} glifos, ${quitado.iconos} iconos`);
     if(tope&&html.length>tope*1024)console.warn(`AVISO: dist/${archivo} pasa de ${tope} KB`)}}
-module.exports={JUEGOS,EDICIONES,ensamblar,cortarEdicion};
+module.exports={JUEGOS,EDICIONES,archivosDe,ensamblar,cortarEdicion};
 if(require.main===module)construir();

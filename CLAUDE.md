@@ -46,7 +46,8 @@ vuelta al mundo y cruza el antimeridiano: `antimeridiano:true`).
 ```
 src/cabeza.html      DOCTYPE, <head>, CSS completo y esqueleto del body (cabecera + mapa SVG + panel)
 src/cola.html        cierre
-src/data/mapa.js     LAND, LAGOS, BORDES: paths SVG (Natural Earth 110 m fuera de las cuencas, 50 m dentro)
+src/data/mapa.js     LAND, LAGOS, BORDES: paths SVG (Natural Earth 110 m fuera de las cuencas, 50 m dentro); mapa-amplia.js, lo mismo
+                     con todas las rutas y tres veces más fino, para la edición amplia (python tools/mapa.py cauces amplia)
 src/data/rios.js     RIVERS: 21 ríos, 15 del mundo y 6 de Costa Rica (zona 'cr'); curso y brazos los genera tools/cauces.py
 src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por puerto (modo Historia)
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
@@ -57,28 +58,33 @@ src/data/itinerarios.js  ITINERARIOS: rutas de Exploradores ya en el esquema RUT
 src/data/mapa-exploradores.js, relieve-exploradores.js  mapa y relieve de Exploradores (mapa.py y relieve.py con el juego como argumento)
 src/juegos/cauces.js, src/juegos/exploradores.js  JUEGO: nombre, subtítulo, tipo de ruta, clave de guardado, zonas, grupos de la lista, portada, rangos
 src/data/relieve.js  RELIEVE (franjas de altura por vista), NOMBRES_RELIEVE (cordilleras, mesetas, desiertos, volcanes) y ALTURAS
-                     (perfil de altura de cada cauce); lo genera tools/relieve.py
+                     (perfil de altura de cada cauce); lo genera tools/relieve.py; relieve-amplia.js, con todas las rutas y franjas
+                     más finas, para la edición amplia (python tools/relieve.py cauces amplia)
 src/motor.js         todo el motor: estado, perfiles y guardado, Leitner, preguntas, render, mapa, audio, economía, eventos, voz
 build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores) y por edición (EDICIONES: económica y amplia; ver
                      «Ediciones»), cada uno con sus datos, su src/juegos/<id>.js y el motor; recorta del motor lo que el juego no usa:
                      los VOCAB de otros tipos (marcas /*@vocab:tipo*/ … /*@fin:tipo*/), y los animales, pictogramas y glifos de
                      vehículo que no aparecen en sus datos; exporta JUEGOS, EDICIONES, ensamblar y cortarEdicion para las pruebas
-test/arnes.js        DOM simulado y carga de los archivos de un juego; test/pruebas.js [juego] corre test/casos.js (Cauces) o
+test/arnes.js        DOM simulado y carga de los archivos de un juego en una edición (amplia por defecto; la económica recorta como
+                     build.js y carga sus generados; EDICION global); test/pruebas.js [juego] [edicion] corre test/casos.js (Cauces) o
                      test/casos-exploradores.js; test/instantanea.js compara 200 pantallas de Cauces con test/instantanea.json.gz.
                      test/dist.js [juego] [edicion] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte y
-                     que cada edición diga lo que es). `npm test` corre todo: "TODO OK" dos veces, "INSTANTÁNEA OK" y "DIST OK" cuatro veces
+                     que cada edición diga lo que es). `npm test` corre todo: "TODO OK" tres veces (Cauces amplia y económica, Exploradores), "INSTANTÁNEA OK" y "DIST OK" cuatro veces
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap
-tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js) desde Natural Earth (110/50 m; 10 m en las cuencas de zona; shapely)
+tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js; con «amplia» de segundo argumento, mapa-amplia.js) desde Natural Earth
+                     (110/50 m; 10 m en las cuencas de zona; shapely)
 tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo;
                      las vistas que cruzan el antimeridiano se parten en su lado oeste y su lado este)
 tools/safari.js      prueba en WebKit (motor de Safari) con Playwright, por http y file://; ver el encabezado del archivo
 tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de paso a mano (geodésicas cada 80 km, o el paso de PASO_RUTA)
-tools/relieve.py     regenera src/data/relieve.js: alturas de NOAA NCEI (ETOPO1 y mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
+tools/relieve.py     regenera src/data/relieve.js (o relieve-<juego>.js; con «amplia», relieve-amplia.js): alturas de NOAA NCEI (ETOPO1 y
+                     mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
 ```
 
 Comandos: `npm run build`, `npm test`, `npm run instantanea` (vuelve a tomar la instantánea; solo cuando un cambio de texto de Cauces es
-a propósito), `npm run verificacion`, `npm run mapa`, `npm run cauces`, `npm run relieve`, `npm run itinerarios`; para Exploradores,
+a propósito), `npm run verificacion`, `npm run mapa`, `npm run cauces`, `npm run relieve`, `npm run itinerarios`; para la edición amplia,
+`python tools/mapa.py cauces amplia` y `python tools/relieve.py cauces amplia`; para Exploradores,
 `python tools/mapa.py exploradores` y `python tools/relieve.py exploradores` (los de Python
 descargan Natural Earth a `tools/ne/` la primera vez; en Windows no hay `python3`: correrlos como
 `python tools/….py`). Antes de dar por terminado un
@@ -91,10 +97,14 @@ salidas de la misma fuente. La **económica** (`dist/cauces.html`, `dist/explora
 comparte y la que juega bien en cualquier teléfono; la **amplia** (`dist/cauces-amplia.html`, `dist/exploradores-amplia.html`)
 no tiene tope de peso. Lo que solo va en la amplia se envuelve en `/*@amplia*/ … /*@fin:amplia*/` (JS o CSS, en datos, juego,
 motor o cabeza; en un array la marca abarca el elemento con su coma): la económica recorta el bloque y la amplia solo quita las
-marcas. Cada archivo dice qué es: `<meta name="edicion">`, `JUEGO.edicion {nombre, kb}` (lo escribe build.js tras
+marcas. Los archivos generados no llevan marcas: la amplia tiene los suyos, `mapa-amplia.js` y `relieve-amplia.js` (todas las rutas;
+costas, lagos, fronteras y franjas del mundo unas tres veces más finas), y `JUEGOS.cauces.amplia` en build.js dice qué archivo
+reemplaza a cuál; `python tools/mapa.py cauces amplia` y `python tools/relieve.py cauces amplia` los regeneran, y las herramientas
+sin segundo argumento hacen la económica (tools/rutas.py recorta las marcas igual que build.js). Cada archivo dice qué es: `<meta name="edicion">`, `JUEGO.edicion {nombre, kb}` (lo escribe build.js tras
 src/juegos/<id>.js; en src no existe, así que la instantánea no lo ve) y una línea al final de «¿Cómo se juega?»; el título de
-la amplia termina en « · edición amplia». Las pruebas cargan src entero, es decir la amplia; `test/dist.js [juego] [edicion]`
-juega cada HTML. El pasaporte es compartido: las dos ediciones guardan bajo la misma clave (`cauces:progreso:<perfil>`) y el motor
+la amplia termina en « · edición amplia». Las pruebas cargan la amplia por defecto, y `node test/pruebas.js cauces economica`
+recorta la fuente como el build y carga los generados económicos (`EDICION` global para los casos que dependen de la edición);
+`test/dist.js [juego] [edicion]` juega cada HTML. El pasaporte es compartido: las dos ediciones guardan bajo la misma clave (`cauces:progreso:<perfil>`) y el motor
 ignora en Hoy las tarjetas de rutas que la edición abierta no trae (`colaHoy`, `nuevasEnEspera`), así que quien pasa de una a
 otra conserva sellos y cajas, y el JSON exportado lleva todo. Hoy las dos ediciones traen lo mismo; lo primero que iría solo en
 la amplia: los ríos de la lista de pendientes (Orinoco, Murray, San Lorenzo, Zambeze), costas y relieve más finos, más eventos.

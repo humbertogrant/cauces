@@ -1,7 +1,8 @@
 """Regenera src/data/relieve.js: franjas de altura del mapa, nombres de relieve y perfil de altura de cada recorrido.
 
-Uso: python tools/relieve.py [juego]   (juego: cauces, por defecto, o exploradores; requiere: pip install shapely numpy pillow matplotlib;
-descarga a tools/ne/ la primera vez). Para otro juego escribe src/data/relieve-<juego>.js; las rutas y sus vistas las da tools/rutas.py.
+Uso: python tools/relieve.py [juego] [edicion]   (juego: cauces, por defecto, o exploradores; edicion: economica, por defecto, o amplia;
+requiere: pip install shapely numpy pillow matplotlib; descarga a tools/ne/ la primera vez). Para otro juego escribe src/data/relieve-<juego>.js;
+la edición amplia escribe relieve-amplia.js con todas las rutas y franjas del mundo más finas; las rutas y sus vistas las da tools/rutas.py.
 
 Fuentes (todas públicas y citables):
 - Alturas del mundo: ETOPO1 (NOAA NCEI, 1 minuto de arco ≈ 1,8 km), servido por recortes desde el ImageServer de NCEI.
@@ -101,7 +102,9 @@ def muestra(a,bbox,lat,lon):
 
 # ---- ríos y rectángulos de vista (mismos que mapa.py / vbPara)
 JUEGO=sys.argv[1] if len(sys.argv)>1 else 'cauces'
-RIOS=RUTAS.cargar(JUEGO)
+EDICION=sys.argv[2] if len(sys.argv)>2 else 'economica'
+if EDICION=='amplia': SIMPL['mundo']=(0.3,1.5)   # franjas del mundo más finas (el mismo ETOPO1 a ~0,18°: NCEI no entrega rásteres mayores)
+RIOS=RUTAS.cargar(JUEGO,EDICION)
 for r in RIOS: r['ciudades']=[{'n':n,'pos':p} for n,p in zip(r['nombres'],r['paradas'])]
 def rect_vista(pts,minW,margen,asp,extra):
     xs=[px(*p)[0] for p in pts];ys=[px(*p)[1] for p in pts]
@@ -298,7 +301,7 @@ cab='// Generado por tools/relieve.py: no editar a mano. Alturas de ETOPO1 y del
 rel='const RELIEVE={'+','.join(f'{z}:['+','.join(f'[{u},"{d}"]' for u,d in RELIEVE[z])+']' for z in RELIEVE)+'};\n'
 nom='const NOMBRES_RELIEVE='+js(salida_nombres)+';\n'
 per='const ALTURAS={'+','.join(f'{k}:'+js(v) for k,v in ALTURAS.items())+'};\n'
-open(os.path.join(RAIZ,'src','data','relieve'+RUTAS.sufijo(JUEGO)+'.js'),'w',encoding='utf8',newline='\n').write(cab+rel+nom+per)
-print('relieve'+RUTAS.sufijo(JUEGO)+'.js: franjas %d KB (%s), nombres %d KB (%d etiquetas), perfiles %d KB'%(len(rel)//1024,', '.join('%s %d KB'%(z,sum(len(d) for u,d in RELIEVE[z])//1024) for z in RELIEVE),len(nom)//1024,len(salida_nombres),len(per)//1024))
+open(os.path.join(RAIZ,'src','data','relieve'+RUTAS.sufijo(JUEGO,EDICION)+'.js'),'w',encoding='utf8',newline='\n').write(cab+rel+nom+per)
+print('relieve'+RUTAS.sufijo(JUEGO,EDICION)+'.js: franjas %d KB (%s), nombres %d KB (%d etiquetas), perfiles %d KB'%(len(rel)//1024,', '.join('%s %d KB'%(z,sum(len(d) for u,d in RELIEVE[z])//1024) for z in RELIEVE),len(nom)//1024,len(salida_nombres),len(per)//1024))
 for r in RIOS:
     if not r['zona']: print('  %-10s %2d nombres: %s'%(r['id'],sum(1 for x in salida_nombres if x.get('v') and r['id'] in x['v']),', '.join(x['n'] for x in salida_nombres if x.get('v') and r['id'] in x['v'])))

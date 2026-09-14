@@ -1,7 +1,10 @@
-// Arnés compartido: simula un DOM mínimo y carga los archivos de un juego en este mismo contexto.
-// Uso: const {montar}=require('./arnes'); montar(['data/mapa.js', …, 'motor.js'])
+// Arnés compartido: simula un DOM mínimo y carga los archivos de un juego en este mismo contexto, en una edición:
+// la amplia (por defecto) es la fuente entera con sus archivos generados finos; la económica recorta los bloques
+// /*@amplia*/ … /*@fin:amplia*/ como build.js y carga los archivos generados económicos. La edición queda en EDICION.
+// Uso: const {montar,archivosDe}=require('./arnes'); montar(archivosDe('cauces','amplia'),'amplia')
 const fs=require('fs'),path=require('path'),vm=require('vm');
-function montar(archivos){
+const {EDICIONES,archivosDe,cortarEdicion}=require('../build.js');
+function montar(archivos,edicion='amplia'){
   global.nodo=()=>({innerHTML:'',textContent:'',clientWidth:380,clientHeight:300,style:{},setAttribute(k,v){this['_'+k]=v},classList:{toggle(){return true},contains(){return true}}});
   global.nodos={};
   global.document={querySelectorAll:()=>[],querySelector:s=>nodos[s]||(nodos[s]=nodo()),getElementById:s=>nodos['#'+s]||(nodos['#'+s]=nodo())};
@@ -11,8 +14,8 @@ function montar(archivos){
     speechSynthesis:{cola:[],cancel(){this.cola.length=0},speak(u){this.cola.push(u)},getVoices(){return[{lang:'en-US',name:'Zira'},{lang:'es-MX',name:'Sabina'},{lang:'es-CR',name:'María'}]}}};
   global.SpeechSynthesisUtterance=function(t){this.text=t};
   global.requestAnimationFrame=f=>0;global.cancelAnimationFrame=()=>{};
-  for(const f of archivos)vm.runInThisContext(fs.readFileSync(path.join(__dirname,'..','src',f),'utf8'),{filename:f});
+  global.EDICION=edicion;
+  for(const f of archivos)vm.runInThisContext(cortarEdicion(fs.readFileSync(path.join(__dirname,'..','src',f),'utf8'),edicion),{filename:f});
   return LS}
-const CAUCES=['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'];
-const EXPLORADORES=['data/mapa-exploradores.js','data/itinerarios.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js'];
-module.exports={montar,CAUCES,EXPLORADORES,JUEGOS:{cauces:CAUCES,exploradores:EXPLORADORES}};
+const CAUCES=archivosDe('cauces','amplia'),EXPLORADORES=archivosDe('exploradores','amplia');
+module.exports={montar,archivosDe,EDICIONES,CAUCES,EXPLORADORES,JUEGOS:{cauces:CAUCES,exploradores:EXPLORADORES}};

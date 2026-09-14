@@ -1,19 +1,24 @@
 """Rutas de un juego para las herramientas de Python (mapa.py, relieve.py, verificacion.py).
 
-cargar(juego) devuelve, por ruta: id, tipo, zona, camara, curso (trazo concatenado, [lat, lon]), paradas ([lat, lon]) e
+cargar(juego, edicion) devuelve, por ruta (la edición amplia, por defecto, es la fuente entera; la económica recorta lo
+envuelto en /*@amplia*/ … /*@fin:amplia*/ igual que build.js; sufijo(juego, edicion) nombra los archivos generados): id, tipo, zona, camara, curso (trazo concatenado, [lat, lon]), paradas ([lat, lon]) e
 idx (vértice de cada parada, como lo calcula motor.js: el más cercano sin retroceder). vistas(r) devuelve los conjuntos
 de puntos que el motor puede mostrar de esa ruta: la ruta entera, o, con camara 'tramo', una ventana por parada (del
 vértice de la parada anterior al de la siguiente), que es lo que vbPara encuadra en Descender.
 """
-import json,os,subprocess
+import json,os,re,subprocess
 RAIZ=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JUEGOS={'cauces':('rios.js',"RIVERS.map(r=>({id:r.id,nombre:r.nombre,tipo:'rio',zona:r.zona||null,camara:'toda',curso:r.curso,paradas:r.ciudades.map(c=>c.pos),nombres:r.ciudades.map(c=>c.nombre)}))"),
         'exploradores':('itinerarios.js',"ITINERARIOS.map(r=>({id:r.id,nombre:r.nombre,tipo:r.tipo,zona:r.zona||null,camara:r.camara||'toda',curso:[].concat(...r.trazo),paradas:r.paradas.map(c=>c.pos),nombres:r.paradas.map(c=>c.nombre)}))")}
 DATOS={'cauces':'rios.js','exploradores':'itinerarios.js'}
-def sufijo(juego): return '' if juego=='cauces' else '-'+juego
-def cargar(juego='cauces'):
+MARCA=re.compile(r'/\*@amplia\*/.*?/\*@fin:amplia\*/',re.S)
+def cortar(js,edicion='amplia'):
+    """Lo envuelto en /*@amplia*/ … /*@fin:amplia*/ solo va en la edición amplia (el mismo corte que hace build.js)."""
+    return js.replace('/*@amplia*/','').replace('/*@fin:amplia*/','') if edicion=='amplia' else MARCA.sub('',js)
+def sufijo(juego,edicion='economica'): return ('' if juego=='cauces' else '-'+juego)+('-amplia' if edicion=='amplia' else '')
+def cargar(juego='cauces',edicion='amplia'):
     archivo,expr=JUEGOS[juego]
-    js=open(os.path.join(RAIZ,'src','data',archivo),encoding='utf8').read()+';console.log(JSON.stringify('+expr+'))'
+    js=cortar(open(os.path.join(RAIZ,'src','data',archivo),encoding='utf8').read(),edicion)+';console.log(JSON.stringify('+expr+'))'
     rutas=json.loads(subprocess.run(['node'],input=js,capture_output=True,text=True,encoding='utf8').stdout)  # por stdin: en Windows el argumento sería demasiado largo
     for r in rutas:
         idx=[];ult=0

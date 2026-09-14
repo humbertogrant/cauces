@@ -1,7 +1,8 @@
 """Regenera src/data/mapa.js (costa, lagos y fronteras) a partir de Natural Earth.
 
-Uso: python3 tools/mapa.py [juego]    (juego: cauces, por defecto, o exploradores; requiere: pip install shapely; descarga los GeoJSON
-a tools/ne/ la primera vez). Para otro juego escribe src/data/mapa-<juego>.js; las rutas y sus vistas las da tools/rutas.py.
+Uso: python3 tools/mapa.py [juego] [edicion]    (juego: cauces, por defecto, o exploradores; edicion: economica, por defecto, o amplia;
+requiere: pip install shapely; descarga los GeoJSON a tools/ne/ la primera vez). Para otro juego escribe src/data/mapa-<juego>.js;
+la edición amplia escribe mapa-amplia.js con todas las rutas y costas, lagos y fronteras más finos; las rutas y sus vistas las da tools/rutas.py.
 Costa: 110 m fuera de las cuencas de los ríos, 50 m dentro, y 10 m en las cuencas de los ríos de una zona (Costa Rica),
 donde el mapa se acerca mucho más; lagos y fronteras 50 m dentro de las cuencas y 10 m en las zonas.
 Proyección equirectangular al viewBox 1000x500: x=(lon+180)/360*1000, y=(90-lat)/180*500.
@@ -25,9 +26,13 @@ def ne(nombre):
 def proj(g): return affinity.affine_transform(g,[1000/360,0,0,-500/180,500,250])
 
 JUEGO=sys.argv[1] if len(sys.argv)>1 else 'cauces'
-SIMPL_COSTA=0.3 if JUEGO=='cauces' else 0.45   # unidades del mapa; en Exploradores las vistas son enormes y la costa pesa el doble
+EDICION=sys.argv[2] if len(sys.argv)>2 else 'economica'
+# tolerancias de simplificación (unidades del mapa; 1 unidad ≈ 40 km) y áreas mínimas (unidades²) por edición: en Exploradores las vistas son
+# enormes y la costa pesa el doble; la amplia no tiene tope de peso y dibuja costas, lagos y fronteras al triple de detalle
+FINO={'economica':{'costa':0.3 if JUEGO=='cauces' else 0.45,'grueso':1.4,'lagos':0.3,'lagoMin':1.0,'bordes':0.5,'isla':2},
+      'amplia':{'costa':0.1,'grueso':0.7,'lagos':0.1,'lagoMin':0.25,'bordes':0.15,'isla':0.5}}[EDICION]
 rects={'fino':[],'zona':[]}
-for r in RUTAS.cargar(JUEGO):
+for r in RUTAS.cargar(JUEGO,EDICION):
   for pts in RUTAS.vistas(r):
     xs=[(p[1]+180)/360*1000 for p in pts]; ys=[(90-p[0])/180*500 for p in pts]
     x0,x1,y0,y1=min(xs),max(xs),min(ys),max(ys); cx,cy=(x0+x1)/2,(y0+y1)/2
@@ -52,17 +57,17 @@ def dentro(nombre):  # piezas de Natural Earth 10 m que tocan la zona, ya proyec
 land110=unary_union([proj(g) for g in ne('ne_110m_land')]).buffer(0)
 land50=unary_union([proj(g) for g in ne('ne_50m_land')]).buffer(0)
 mundo=box(0,0,1000,470)  # sin Antártida
-grueso=land110.intersection(mundo).difference(fino).difference(zona).simplify(1.4,preserve_topology=True)
-finoLand=land50.intersection(fino).difference(zona).simplify(SIMPL_COSTA,preserve_topology=True)
+grueso=land110.intersection(mundo).difference(fino).difference(zona).simplify(FINO['grueso'],preserve_topology=True)
+finoLand=land50.intersection(fino).difference(zona).simplify(FINO['costa'],preserve_topology=True)
 land=unary_union([grueso,finoLand]).buffer(0)
-land=MultiPolygon([p for p in polys(land) if p.area>=(2 if fino.intersects(p) else 12)])
+land=MultiPolygon([p for p in polys(land) if p.area>=(FINO['isla'] if fino.intersects(p) else 12)])
 land10=unary_union(dentro('ne_10m_land')).buffer(0).intersection(zona).simplify(0.015,preserve_topology=True)
 land10=MultiPolygon([p for p in polys(land10) if p.area>=0.002])
-lagos=unary_union([proj(g) for g in ne('ne_50m_lakes')]).intersection(fino).difference(zona).simplify(0.3,preserve_topology=True)
-lagos=MultiPolygon([p for p in polys(lagos) if p.area>=1.0])
+lagos=unary_union([proj(g) for g in ne('ne_50m_lakes')]).intersection(fino).difference(zona).simplify(FINO['lagos'],preserve_topology=True)
+lagos=MultiPolygon([p for p in polys(lagos) if p.area>=FINO['lagoMin']])
 lagos10=unary_union(dentro('ne_10m_lakes')).intersection(zona).simplify(0.015,preserve_topology=True)
 lagos10=MultiPolygon([p for p in polys(lagos10) if p.area>=0.001])
-bordes=unary_union([proj(g) for g in ne('ne_50m_admin_0_boundary_lines_land')]).intersection(fino).difference(zona).simplify(0.5,preserve_topology=True)
+bordes=unary_union([proj(g) for g in ne('ne_50m_admin_0_boundary_lines_land')]).intersection(fino).difference(zona).simplify(FINO['bordes'],preserve_topology=True)
 bordes10=unary_union(dentro('ne_10m_admin_0_boundary_lines_land')).intersection(zona).simplify(0.015,preserve_topology=True)
 
 def path_pol(g,dec=1):
@@ -74,5 +79,5 @@ def path_pol(g,dec=1):
 def path_lin(g,dec=1):
     return ''.join('M'+'L'.join(f'{x:.{dec}f} {y:.{dec}f}' for x,y in l.coords) for l in lineas(g))
 LAND=path_pol(land)+path_pol(land10,3); LAGOS=path_pol(lagos)+path_pol(lagos10,3); BORDES=path_lin(bordes)+path_lin(bordes10,3)
-open(os.path.join(RAIZ,'src','data','mapa'+RUTAS.sufijo(JUEGO)+'.js'),'w',encoding='utf8',newline='\n').write(f'const LAND="{LAND}";const LAGOS="{LAGOS}";const BORDES="{BORDES}";\n')
-print(f'mapa{RUTAS.sufijo(JUEGO)}.js: costa {len(LAND)//1024} KB (10 m: {len(path_pol(land10,3))//1024} KB), lagos {len(LAGOS)//1024} KB, fronteras {len(BORDES)//1024} KB')
+open(os.path.join(RAIZ,'src','data','mapa'+RUTAS.sufijo(JUEGO,EDICION)+'.js'),'w',encoding='utf8',newline='\n').write(f'const LAND="{LAND}";const LAGOS="{LAGOS}";const BORDES="{BORDES}";\n')
+print(f'mapa{RUTAS.sufijo(JUEGO,EDICION)}.js: costa {len(LAND)//1024} KB (10 m: {len(path_pol(land10,3))//1024} KB), lagos {len(LAGOS)//1024} KB, fronteras {len(BORDES)//1024} KB')

@@ -48,7 +48,7 @@ for r in I:
     for e in r.get('eventos',[]): add(f"Evento · {e['titulo']}",e['texto']);add(f"Evento · {e['titulo']} · bien",e['bien']);add(f"Evento · {e['titulo']} · mal",e['mal'])
     out.append("")
 # relieve: altura del cauce en cada parada y picos con su altura (src/data/relieve.js, de tools/relieve.py)
-js2=src('rios.js')+src('relieve.js')+"""
+js2=src('rios.js')+src('relieve-amplia.js')+"""
 const hav=(a,b)=>{const R=6371,toR=x=>x*Math.PI/180,dl=toR(b[0]-a[0]),dn=toR(b[1]-a[1]),q=Math.sin(dl/2)**2+Math.cos(toR(a[0]))*Math.cos(toR(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(q))};
 const alt=(P,f)=>{if(f<=P[0][0])return P[0][1];for(let i=1;i<P.length;i++)if(f<=P[i][0]){const [f0,a0]=P[i-1],[f1,a1]=P[i];return f1>f0?a0+(a1-a0)*(f-f0)/(f1-f0):a1}return P[P.length-1][1]};
 const out={};for(const r of RIVERS){const acum=[0];for(let i=1;i<r.curso.length;i++)acum[i]=acum[i-1]+hav(r.curso[i-1],r.curso[i]);const tot=acum[acum.length-1];let ult=0;const P=ALTURAS[r.id];if(!P)continue;
