@@ -19,9 +19,10 @@ const JUEGOS={
 const EDICIONES={economica:{nombre:'económica',sufijo:'',tope:500},amplia:{nombre:'amplia',sufijo:'-amplia',tope:0}};
 function archivosDe(id,edicion){const j=JUEGOS[id],rep=(edicion==='amplia'&&j.amplia)||{};return j.archivos.map(f=>rep[f]||f)}// archivos del juego en una edición
 const ABRE='/*@amplia*/',CIERRA='/*@fin:amplia*/';
-function cortarEdicion(texto,edicion){// la económica quita los bloques marcados; la amplia, solo las marcas
-  if(edicion==='amplia')return texto.split(ABRE).join('').split(CIERRA).join('');
-  let t=texto;for(;;){const a=t.indexOf(ABRE);if(a<0)break;const b=t.indexOf(CIERRA,a);if(b<0)throw 'marca '+ABRE+' sin cierre';t=t.slice(0,a)+t.slice(b+CIERRA.length)}
+function cortarEdicion(texto,edicion){// la económica quita los bloques marcados; la amplia, solo las marcas (y el salto de línea que las sigue)
+  const tras=(t,i)=>t[i]==='\n'?i+1:i;
+  if(edicion==='amplia'){let t=texto;for(const m of [ABRE,CIERRA])for(;;){const a=t.indexOf(m);if(a<0)break;t=t.slice(0,a)+t.slice(tras(t,a+m.length))}return t}
+  let t=texto;for(;;){const a=t.indexOf(ABRE);if(a<0)break;const b=t.indexOf(CIERRA,a);if(b<0)throw 'marca '+ABRE+' sin cierre';t=t.slice(0,a)+t.slice(tras(t,b+CIERRA.length))}
   if(t.includes(CIERRA))throw 'marca '+CIERRA+' sin apertura';return t}
 function usados(datos){/* claves que usan los datos del juego: glifos de animal, pictogramas de escena y tipos de vehículo */
   const g=new Set(),p=new Set(),t=new Set(['cuadrada']);

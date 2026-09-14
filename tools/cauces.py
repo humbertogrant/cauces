@@ -1,6 +1,6 @@
 """Genera los cauces reales de src/data/rios.js (curso y brazos) a partir de Natural Earth ne_50m_rivers_lake_centerlines.
 
-Uso: python tools/cauces.py            (requiere: pip install shapely; descarga el GeoJSON a tools/ne/ la primera vez)
+Uso: python tools/cauces.py [ids]      (sin ids, todos los ríos; requiere: pip install shapely; descarga el GeoJSON a tools/ne/ la primera vez)
 Por río, CAUCES dice de qué capa salen los tramos (capa: ne50 por defecto, ne10, ne10na u osm) y cuáles forman el cauce
 (nombres, se comparan con name, name_en y name_alt; en osm con el name del way; un nombre con prefijo, 'ne10:Tuotuo',
 sale de otra capa), con dec decimales, simpl grados de
@@ -14,7 +14,7 @@ Los brazos se empalman solos al cauce o a otro brazo si quedan a menos de 0,2° 
 los km de la polilínea, el salto máximo entre vértices, a cuántos grados queda cada brazo y la distancia de cada ciudad
 al vértice más cercano (en grados).
 """
-import json,os,math,heapq,subprocess,urllib.request,hashlib
+import json,os,sys,math,heapq,subprocess,urllib.request,hashlib
 from shapely.geometry import LineString,Point
 
 RAIZ=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -56,6 +56,15 @@ CAUCES={
    'brazos':[{'nombres':['ne10:Wei'],'desde':[34.99,104.06],'hasta':[34.62,110.29]},{'nombres':['ne10:Fen'],'desde':[38.86,112.08],'hasta':[35.46,110.55]}]},
  # Costa Rica (zona 'cr'): Natural Earth 50 m no los trae. Reventazón: NE 10 m Norteamérica; San Juan: NE 10 m global;
  # Tempisque y Sarapiquí (y los afluentes): OpenStreetMap. Tres decimales y simplificación de 0,003° porque el mapa se acerca mucho.
+ 'orinoco':{'nombres':['Orinoco'],'desde':[2.37,-63.44],'hasta':[8.94,-61.1],'cola':[[8.8,-60.75],[8.62,-60.45]],
+   'brazos':[{'nombres':['Meta'],'desde':[4.3,-73.6],'hasta':[6.19,-67.45]},{'nombres':['ne10:Caroní'],'desde':[5.08,-60.81],'hasta':[8.38,-62.7]}]},
+ 'murray':{'nombres':['Murray'],'desde':[-36.97,148.01],'hasta':[-35.4,139.3],'cola':[[-35.45,139.15],[-35.5,138.95],[-35.5,138.8],[-35.55,138.88]],
+   'brazos':[{'nombres':['Darling'],'desde':[-30.0,147.3],'hasta':[-34.12,141.92]}]},
+ 'sanlorenzo':{'nombres':['ne10:St. Lawrence'],'desde':[44.5,-75.79],'hasta':[45.0,-74.71],'cabeza':[[44.23,-76.48],[44.28,-76.25],[44.3,-76.13],[44.33,-76.02],[44.4,-75.9]],
+   'cola':[[45.08,-74.55],[45.18,-74.3],[45.28,-74.05],[45.38,-73.85],[45.45,-73.7],[45.5,-73.55],[45.6,-73.45],[45.75,-73.35],[45.9,-73.2],[45.98,-73.15],[46.05,-73.1],[46.18,-72.85],[46.3,-72.65],[46.35,-72.5],[46.45,-72.3],[46.55,-72.1],[46.65,-71.8],[46.72,-71.6],[46.75,-71.45],[46.82,-71.2],[46.9,-71.0],[46.97,-70.85],[47.05,-70.7],[47.25,-70.45],[47.5,-70.1],[47.62,-69.97],[47.75,-69.85],[48.0,-69.7],[48.12,-69.65],[48.3,-69.2],[48.5,-68.75],[48.62,-68.48],[48.75,-68.2],[49.0,-67.6],[49.1,-67.4],[49.2,-67.2]],
+   'brazos':[[[46.3,-77.0],[45.8,-76.5],[45.43,-75.7],[45.53,-75.0],[45.47,-74.4],[45.42,-74.05],[45.4,-73.85]],[[48.42,-71.06],[48.35,-70.8],[48.3,-70.4],[48.2,-70.0],[48.13,-69.75]]]},
+ 'zambeze':{'nombres':['Zambezi'],'desde':[-11.38,24.27],'hasta':[-18.58,36.5],'cabeza':[[-11.25,24.32]],
+   'brazos':[{'nombres':['Kafue'],'desde':[-11.63,26.5],'hasta':[-15.95,28.9]},{'nombres':['ne10:Luangwa'],'desde':[-9.75,33.17],'hasta':[-15.63,30.41]}]},
  'tempisque':{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Tempisque'],'desde':[10.73,-85.5],'hasta':[10.18,-85.24],'dec':3,'simpl':0.003,
    'brazos':[{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Liberia'],'desde':[10.78,-85.33],'hasta':[10.47,-85.55],'dec':3,'simpl':0.003},{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Bebedero'],'desde':[10.37,-85.19],'hasta':[10.25,-85.25],'dec':3,'simpl':0.003}]},
  'reventazon':{'capa':'ne10na','tol':0.002,'puente':0.1,'nombres':['Reventazón'],'desde':[9.68,-83.8],'hasta':[10.3,-83.33],'dec':3,'simpl':0.003,
@@ -234,6 +243,7 @@ dump=subprocess.run(['node'],input=texto+";console.log(JSON.stringify(RIVERS.map
 rios={r['id']:r for r in json.loads(dump)}
 total=0
 for rid,spec in CAUCES.items():
+    if len(sys.argv)>1 and rid not in sys.argv[1:]: continue   # con ids como argumentos, solo esos ríos
     r=rios[rid]; curso=linea(spec,r['ciudades']); brazos=empalmar([linea(b) for b in spec.get('brazos',[])],curso)
     km=largo([(p[1],p[0]) for p in curso]); salto=max(hav((a[1],a[0]),(b[1],b[0])) for a,b in zip(curso,curso[1:]))
     empalmes=', '.join(f'{suelto(b,curso,brazos):.3f}°' for b in brazos)

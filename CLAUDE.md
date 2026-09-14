@@ -48,7 +48,8 @@ src/cabeza.html      DOCTYPE, <head>, CSS completo y esqueleto del body (cabecer
 src/cola.html        cierre
 src/data/mapa.js     LAND, LAGOS, BORDES: paths SVG (Natural Earth 110 m fuera de las cuencas, 50 m dentro); mapa-amplia.js, lo mismo
                      con todas las rutas y tres veces más fino, para la edición amplia (python tools/mapa.py cauces amplia)
-src/data/rios.js     RIVERS: 21 ríos, 15 del mundo y 6 de Costa Rica (zona 'cr'); curso y brazos los genera tools/cauces.py
+src/data/rios.js     RIVERS: 25 ríos: 15 del mundo y 6 de Costa Rica (zona 'cr') en las dos ediciones, y 4 solo en la amplia (bloque
+                     /*@amplia*/: Orinoco, Murray, San Lorenzo, Zambeze); curso y brazos los genera tools/cauces.py [ids]
 src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por puerto (modo Historia)
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
@@ -70,7 +71,8 @@ test/arnes.js        DOM simulado y carga de los archivos de un juego en una edi
                      test/casos-exploradores.js; test/instantanea.js compara 200 pantallas de Cauces con test/instantanea.json.gz.
                      test/dist.js [juego] [edicion] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte y
                      que cada edición diga lo que es). `npm test` corre todo: "TODO OK" tres veces (Cauces amplia y económica, Exploradores), "INSTANTÁNEA OK" y "DIST OK" cuatro veces
-tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap
+tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap; con ids
+                     como argumentos, solo esos ríos
 tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js; con «amplia» de segundo argumento, mapa-amplia.js) desde Natural Earth
                      (110/50 m; 10 m en las cuencas de zona; shapely)
 tools/rutas.py       rutas y vistas de un juego para las herramientas (ruta entera o ventana por parada con cámara por tramo;
@@ -106,8 +108,13 @@ la amplia termina en « · edición amplia». Las pruebas cargan la amplia por d
 recorta la fuente como el build y carga los generados económicos (`EDICION` global para los casos que dependen de la edición);
 `test/dist.js [juego] [edicion]` juega cada HTML. El pasaporte es compartido: las dos ediciones guardan bajo la misma clave (`cauces:progreso:<perfil>`) y el motor
 ignora en Hoy las tarjetas de rutas que la edición abierta no trae (`colaHoy`, `nuevasEnEspera`), así que quien pasa de una a
-otra conserva sellos y cajas, y el JSON exportado lleva todo. Hoy las dos ediciones traen lo mismo; lo primero que iría solo en
-la amplia: los ríos de la lista de pendientes (Orinoco, Murray, San Lorenzo, Zambeze), costas y relieve más finos, más eventos.
+otra conserva sellos y cajas, y el JSON exportado lleva todo. Desde el 2026-09-13 la amplia trae, además de las
+costas y el relieve finos, cuatro ríos que no caben en la económica: Orinoco (caimán del Orinoco, curiara), Murray (ornitorrinco, vapor
+de ruedas; estrena Oceanía en la portada), San Lorenzo (beluga, canoa de corteza; Natural Earth solo trae un tramo corto, así que la
+cabeza y la cola van a mano en CAUCES) y Zambeze (elefante, mokoro). Cada uno va dentro del bloque `/*@amplia*/ … /*@fin:amplia*/`
+de rios.js, mascotas.js, naves.js, mercados.js y eventos.js; sus glifos (ornitorrinco, beluga, elefante) viven en ANIMALES y build.js
+los recorta de la económica. Las pruebas exigen que la económica siga con 21 ríos y que la amplia tenga el Orinoco; docs/verificacion.md
+marca «solo en la edición amplia» en su título.
 Un cambio que engorde la amplia dice su peso en el commit. Para congelar una versión, etiqueta de git y Release en GitHub con los
 dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
 
@@ -350,6 +357,12 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 4. `npm test` (valida conteos, acrósticos, preguntas), `npm run mapa` si el río cae fuera de las cuencas ya
    cubiertas por la costa fina, `npm run relieve` (franjas, nombres y perfil del río nuevo; revisar las alturas
    que imprime), `npm run verificacion` y revisar las líneas nuevas.
+5. Un río nuevo del mundo va solo en la edición amplia: su objeto y sus entradas entran dentro del bloque `/*@amplia*/ …
+   /*@fin:amplia*/` de cada archivo de datos, y las herramientas se corren para la amplia (`python tools/cauces.py <id>`,
+   `python tools/relieve.py cauces amplia`, `python tools/mapa.py cauces amplia`); la económica y sus generados no cambian.
+   Donde Natural Earth no trae regiones con nombre (Australia), `MUNDO_NOMBRES` en relieve.py lleva rótulos a mano, y
+   `PERMITIR` levanta para un río un nombre de `EXCLUIR` (el Escudo Canadiense en el San Lorenzo). La instantánea cambia
+   (lista y reto) y se retoma a propósito.
 
 ### Para agregar un itinerario (o una derrota)
 
@@ -384,10 +397,9 @@ Hecho el 2026-09-06: el rediseño estético en tres fases (identidad, navegació
 Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente contenido a la vista; si no, la salida es plegar
 el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 
-0. Más ríos del mundo, por lo que pagan en memoria y por los huecos del mapa: Orinoco (Humboldt, Angostura), Murray
-   (Oceanía, ornitorrinco), San Lorenzo (belugas, Cartier), Zambeze (cataratas Victoria). Cada río del mundo pesa 12-15 KB y la
-   edición económica de Cauces está al tope: los ríos nuevos entran marcados `/*@amplia*/`, solo en la edición amplia (ver
-   «Ediciones»). Un paquete aparte («Ríos de España»: Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
+0. Más ríos del mundo (hechos el 2026-09-13 en la edición amplia: Orinoco, Murray, San Lorenzo y Zambeze). Los que sigan pesan
+   12-15 KB cada uno y entran marcados `/*@amplia*/`, solo en la edición amplia (ver «Ediciones»), porque la económica de Cauces está
+   al tope. Un paquete aparte («Ríos de España»: Tajo, Ebro, Duero, Guadalquivir) iría mejor como cuaderno nuevo con el mismo motor.
 
 1. Exploradores: más viajes (Elcano, Darwin) y de conquista (Gengis Kan), aprobados para niños y adultos. Cada viaje nuevo trae rumbo por etapa, tramos y cruza. Con cada viaje,
    revisar las líneas nuevas de docs/verificacion.md y que ninguna parada se repita entre rutas.
@@ -406,8 +418,8 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-13 Cauces ≈ 495 KB y Exploradores ≈ 454 KB). La edición amplia (`-amplia.html`) no tiene
-  tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js; en mapa.py, fronteras a 0,5 y lagos
+  2026-09-04 para el relieve; el 2026-09-13 Cauces ≈ 495 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 680 KB). La edición amplia
+  (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js; en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
   Lo que queda por probar si hace falta: cauces del mundo con dos decimales y un minificador de desarrollo.
 - Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,

@@ -11,8 +11,9 @@ un mercado, eventos entre puertos y repaso espaciado.
   tramos, Trazar reconstruye la forma del viaje tocando el mapa y las preguntas miden la magnitud: cuánto duró, hasta dónde
   llegó, qué mares y desiertos cruzó, cuál viaje fue primero. Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
 - Dos ediciones de cada juego, del mismo código: la económica (`cauces.html`, `exploradores.html`), de menos de medio
-  megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), sin tope de peso. Por
-  ahora traen lo mismo; el progreso se comparte entre ellas. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
+  megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), sin tope de peso. La
+  amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze) y costas, lagos y relieve más finos; el
+  progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
   Las versiones congeladas están en los Releases de GitHub (`economica-1`), con los dos HTML económicos para descargar.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
   carpeta `dist`, publicada por GitHub Pages con cada cambio de `main`; desde ahí abre también en iPhone.
@@ -22,7 +23,8 @@ un mercado, eventos entre puertos y repaso espaciado.
   adjunto de correo o WhatsApp) solo muestra una vista previa sin JavaScript, y se ve el fondo vacío; en iPhone se abre la dirección
   de arriba en Safari (o cualquier otro hosting estático, o una app que sirva HTML local).
 - Ríos: quince grandes ríos del mundo, con el Congo y el Huang He recién llegados, y un paquete de Costa Rica (Tempisque, Reventazón, Sarapiquí, San Juan,
-  Tárcoles y Térraba) con su historia económica; en el mapa mundial, el punto dorado sobre Costa Rica abre esa zona.
+  Tárcoles y Térraba) con su historia económica; en el mapa mundial, el punto dorado sobre Costa Rica abre esa zona. La edición
+  amplia suma el Orinoco, el Murray, el San Lorenzo y el Zambeze, con el caimán del Orinoco, el ornitorrinco, la beluga y el elefante.
 - Escenas: cada ciudad, cada fuente y cada desembocadura tienen su postal, compuesta con pictogramas de lo que
   hay ahí (presa, templo, puente, manglar…); en el reto de imagen la postal sirve de pista.
 - Barcas, animales e iconos: dibujados en SVG propio (una barca por tipo, un animal por río y un juego de iconos de

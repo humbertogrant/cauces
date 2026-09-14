@@ -11,10 +11,10 @@ RAIZ=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JUEGOS={'cauces':('rios.js',"RIVERS.map(r=>({id:r.id,nombre:r.nombre,tipo:'rio',zona:r.zona||null,camara:'toda',curso:r.curso,paradas:r.ciudades.map(c=>c.pos),nombres:r.ciudades.map(c=>c.nombre)}))"),
         'exploradores':('itinerarios.js',"ITINERARIOS.map(r=>({id:r.id,nombre:r.nombre,tipo:r.tipo,zona:r.zona||null,camara:r.camara||'toda',curso:[].concat(...r.trazo),paradas:r.paradas.map(c=>c.pos),nombres:r.paradas.map(c=>c.nombre)}))")}
 DATOS={'cauces':'rios.js','exploradores':'itinerarios.js'}
-MARCA=re.compile(r'/\*@amplia\*/.*?/\*@fin:amplia\*/',re.S)
+MARCA=re.compile(r'/\*@amplia\*/.*?/\*@fin:amplia\*/\n?',re.S)
 def cortar(js,edicion='amplia'):
     """Lo envuelto en /*@amplia*/ … /*@fin:amplia*/ solo va en la edición amplia (el mismo corte que hace build.js)."""
-    return js.replace('/*@amplia*/','').replace('/*@fin:amplia*/','') if edicion=='amplia' else MARCA.sub('',js)
+    return re.sub(r'/\*@(?:fin:)?amplia\*/\n?','',js) if edicion=='amplia' else MARCA.sub('',js)
 def sufijo(juego,edicion='economica'): return ('' if juego=='cauces' else '-'+juego)+('-amplia' if edicion=='amplia' else '')
 def cargar(juego='cauces',edicion='amplia'):
     archivo,expr=JUEGOS[juego]

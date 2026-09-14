@@ -52,6 +52,7 @@ RANGO_MAX={'cordillera':4,'llano':2,'desierto':3}   # scalerank de Natural Earth
 BAJO_MAR={'volga':-28}                              # ríos que terminan bajo el nivel del océano (Caspio); los demás no bajan de 0
 EXCLUIR={'Punyab','península ibérica','SELVAS','LES LAURENTIDES','Meandro de Ordos','Superior Upland','Campos Sertão','Escudo Canadiense','TIERRAS BAJAS DE VYCHEGDA'}
 TOPE_POR_VISTA=14
+PERMITIR={'LES LAURENTIDES':('sanlorenzo',),'Escudo Canadiense':('sanlorenzo',)}   # nombres de EXCLUIR que sí entran en la vista de estos ríos
 ASPECTOS=(1.0,2.4,4.0)   # aspectos de pantalla cubiertos (teléfono vertical … monitor ancho); el núcleo es lo que se ve con todos
 # Etiquetas de Costa Rica (Natural Earth no las tiene): posición aproximada del rótulo y giro en grados (sentido horario)
 CR_NOMBRES=[('Cordillera de Guanacaste','cordillera',[10.84,-85.27],33),('Cordillera de Tilarán','cordillera',[10.38,-84.8],32),
@@ -201,15 +202,17 @@ regiones=[]
 for ft in ne('ne_50m_geography_regions_polys'):
     p=ft['properties'];t=CLASES.get(p['FEATURECLA'])
     if not t or not ft['geometry'] or p['SCALERANK']>RANGO_MAX[t]: continue
-    nombre=p.get('NAME_ES') or p['NAME']
-    if nombre in EXCLUIR or p['NAME'] in EXCLUIR: continue
-    regiones.append({'n':titulo(nombre),'t':t,'s':p['SCALERANK'],'g':proj(make_valid(shape(ft['geometry'])))})
+    nombre=p.get('NAME_ES') or p['NAME'];excluida=nombre in EXCLUIR or p['NAME'] in EXCLUIR
+    permitida=PERMITIR.get(nombre,())+PERMITIR.get(p['NAME'],())   # ríos en cuya vista sí entra un nombre excluido
+    if excluida and not permitida: continue
+    regiones.append({'n':titulo(nombre),'t':t,'s':p['SCALERANK'],'g':proj(make_valid(shape(ft['geometry']))),'solo':permitida if excluida else ()})
 NOMBRES=[]
 for reg in regiones:
     v={}
     for r in RIOS:
         if r['zona']: continue
         vista=VISTA[r['id']]
+        if reg['solo'] and r['id'] not in reg['solo']: continue
         if not reg['g'].intersects(vista): continue
         c=reg['g'].intersection(vista)
         if c.is_empty or c.area<1.5: continue
@@ -229,6 +232,12 @@ for r in RIOS:
 NOMBRES=[x for x in NOMBRES if x['v']]
 def latlon(pt): return [round(90-pt.y*0.36,2),round(pt.x*0.36-180,2)]
 salida_nombres=[{'n':x['n'],'t':x['t'],'z':'mundo','v':{rid:latlon(pt)+([a] if a else []) for rid,(pt,area,a) in x['v'].items()}} for x in NOMBRES]
+# Nombres a mano para ríos del mundo donde Natural Earth 50 m casi no trae regiones con nombre (en Australia solo la Gran
+# Cordillera Divisoria y la Gran Cuenca Artesiana): rótulo, tipo, posición y giro, como CR_NOMBRES. Solo entran si el río está en la edición.
+MUNDO_NOMBRES={'murray':[('Alpes Australianos','cordillera',[-36.75,147.35],0),('Riverina','llano',[-35.1,145.6],0),('Mallee','llano',[-34.95,142.2],0)]}
+for rid,lista in MUNDO_NOMBRES.items():
+    if any(r['id']==rid for r in RIOS):
+        for n,t,pos,g in lista: salida_nombres.append({'n':n,'t':t,'z':'mundo','v':{rid:pos+([g] if g else [])}})
 
 # ---- nombres y picos de Costa Rica
 def picos_osm():

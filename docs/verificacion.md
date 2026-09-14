@@ -27,7 +27,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 
 - Nacimiento: Por caudal es, de lejos, el mayor río del mundo: un quinto del agua dulce que llega a los océanos.
 - Ruta antigua: En 1542 Francisco de Orellana bajó desde los Andes hasta el Atlántico, el primer europeo en cruzar el continente por agua, y bautizó el río por las guerreras que creyó ver: las amazonas de la mitología griega.
-- Ruta moderna: El auge del caucho (1879-1912) construyó el Teatro Amazonas de Manaos y la Casa de Fierro de Iquitos, y se derrumbó cuando las semillas robadas florecieron en Malasia.
+- Ruta moderna: El auge del caucho (1879-1912) construyó el Teatro Amazonas de Manaos y la Casa de Fierro de Iquitos, y se derrumbó cuando las semillas robadas florecieron en Malasia. ⚠
 - Ruta moderna: Hoy el río es la Zona Franca de Manaos (1967), el corredor de soya que sale por Santarém y la disputa mundial por la deforestación; Belém fue sede de la COP30 en 2025. ⚠
 - Pista antigua: Un conquistador bajó todo el río en 1542 y lo bautizó por unas guerreras de la mitología griega.
 - Iquitos · dato: Puerto principal de la Amazonía peruana, a 3 700 km del Atlántico y todavía navegable para barcos de calado oceánico. ⚠
@@ -69,7 +69,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 
 - Nacimiento: Sale de un lago que se cruza a pie por unas piedras; con el Misuri, su afluente mayor, el sistema mide 6 275 km, el cuarto del mundo.
 - Ruta antigua: Cerca de San Luis, Cahokia fue hacia el año 1100 la ciudad más grande al norte de México, con un montículo de tierra más ancho que la Gran Pirámide.
-- Ruta antigua: De Soto cruzó el río en 1541 y La Salle lo bajó hasta el golfo en 1682 para reclamar «Luisiana» en nombre de Luis XIV: los franceses lo usaron como carretera de pieles desde Canadá.
+- Ruta antigua: De Soto cruzó el río en 1541 y La Salle lo bajó hasta el golfo en 1682 para reclamar «Luisiana» en nombre de Luis XIV: los franceses lo usaron como carretera de pieles desde Canadá. ⚠
 - Ruta moderna: La Compra de Luisiana (1803) le dio a Estados Unidos el río entero y duplicó el país.
 - Ruta moderna: Los vapores de Mark Twain dieron paso a las barcazas: por aquí sale cerca del 60 % del grano que exporta Estados Unidos, con esclusas desde Mineápolis y puertos hasta Nueva Orleans. ⚠
 - Pista antigua: Junto a este río, una ciudad de montículos de tierra fue hacia 1100 la mayor de su continente al norte de México.
@@ -206,21 +206,21 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 ## Mekong (4 350 km hasta el mar de China Meridional)
 
 - Ruta antigua: En el delta, el reino de Funan (siglos I-VI) comerciaba con Roma y la India desde el puerto de Óc Eo, donde aparecieron monedas romanas.
-- Ruta antigua: La expedición francesa de 1866-1868 buscó por aquí una ruta comercial a China y fracasó ante los rápidos de Khone.
+- Ruta antigua: La expedición francesa de 1866-1868 buscó por aquí una ruta comercial a China y fracasó ante los rápidos de Khone. ⚠
 - Ruta moderna: China construyó once presas en el Lancang y Laos, la «batería de Asia», exporta hidroelectricidad (Xayaburi, 2019); juntas alteran el pulso del que dependen millones de pescadores. ⚠
 - Ruta moderna: Seis países y una Comisión del Río Mekong (1995) en la que China no participa.
 - Vientián · dato: El Mekong es aquí la frontera; el Puente de la Amistad (1994) fue el primero entre Laos y Tailandia. ⚠
 - Phnom Penh · dato: Capital jemer desde 1434, con pausas.
 - Phnom Penh · dato: Vaciada por los jemeres rojos en 1975.
 - Buk · hola: Puedo pesar 300 kilos.
-- Evento · Los rápidos de Khone: Antes de Camboya el Mekong se despeña en las cataratas de Khone, las que frenaron a la expedición francesa de 1866.
+- Evento · Los rápidos de Khone: Antes de Camboya el Mekong se despeña en las cataratas de Khone, las que frenaron a la expedición francesa de 1866. ⚠
 
 ## Níger (4 200 km hasta el golfo de Guinea)
 
 - Nacimiento: Nace a solo 240 km del Atlántico, pero le da la espalda: corre hacia el Sáhara, gira en Gao y baja hasta el golfo de Guinea.
 - Nacimiento: Un bumerán de 4 200 km.
 - Ruta antigua: Mansa Musa cruzó a La Meca en 1324 con tanto oro que hundió su precio en El Cairo.
-- Ruta antigua: Europa no supo hacia dónde corría el río hasta que Mungo Park lo vio en 1796; los hermanos Lander encontraron la desembocadura en 1830.
+- Ruta antigua: Europa no supo hacia dónde corría el río hasta que Mungo Park lo vio en 1796; los hermanos Lander encontraron la desembocadura en 1830. ⚠
 - Ruta moderna: La presa de Kainji (1968) fue la primera grande; el delta interior, junto a Mopti, alimenta a millones con sus crecidas.
 - Pista antigua: Un emperador cruzó el desierto hacia La Meca en 1324 con tanto oro que hundió su precio en Egipto.
 - Mopti · dato: Confluencia con el Bani; cerca está Djenné y su Gran Mezquita de adobe, la mayor del mundo, reenlucida cada año por toda la ciudad.
@@ -249,11 +249,11 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Corrientes · dato: Fundada en 1588.
 - Rosario · imagen: La bandera argentina izada sobre silos de soya: Rosario, donde Belgrano creó la bandera (1812), es hoy el puerto de la soya.
 - Rosario · dato: Los puertos del Gran Rosario despachan cerca del 80 % de las exportaciones agroindustriales argentinas. ⚠
-- Buenos Aires · imagen: Un río color de león de 220 km de ancho: Buenos Aires mira al Río de la Plata, el estuario más ancho del mundo.
+- Buenos Aires · imagen: Un río color de león de 220 km de ancho: Buenos Aires mira al Río de la Plata, el estuario más ancho del mundo. ⚠
 - Buenos Aires · dato: Fundada dos veces (1536 y 1580); puerto de las carnes y de los inmigrantes.
 - Montevideo · dato: Fundada por los españoles en 1726 para frenar a los portugueses de Colonia del Sacramento.
 - Montevideo · dato: Su rambla de 22 km bordea el estuario.
-- Llegada: Del Río de la Plata al mar quedan 220 km de agua marrón; los hacen los cargueros.
+- Llegada: Del Río de la Plata al mar quedan 220 km de agua marrón; los hacen los cargueros. ⚠
 - Rosario · puerto (Historia): Sumás soya y harina de soya de las terminales del Gran Rosario, la mayor concentración de puertos agroexportadores del mundo. ⚠
 
 ## Indo (3 180 km hasta el mar Arábigo)
@@ -287,7 +287,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Pista antigua: Un navegante lo encontró desde el mar hace cinco siglos, un explorador lo bajó entero en tres años y un rey europeo convirtió su cuenca en finca privada.
 - Bukama · dato: Puerto del alto Lualaba, donde el río se vuelve navegable, y estación del tren que sube al cobre de Katanga: en el siglo XX la «vía nacional» del Congo alternaba tren y barco para sacar el cobre hasta el Atlántico.
 - Bukama · dato: Alrededor está la depresión de Upemba, con decenas de lagos y un parque nacional desde 1939. ⚠
-- Kindu · dato: Capital de la provincia de Maniema y puerto del tramo navegable que llega hasta Ubundu, unos 300 km río abajo; de ahí, desde 1906, un tren de 125 km rodea las siete cataratas Boyoma hasta Kisangani.
+- Kindu · dato: Capital de la provincia de Maniema y puerto del tramo navegable que llega hasta Ubundu, unos 300 km río abajo; de ahí, desde 1906, un tren de 125 km rodea las siete cataratas Boyoma hasta Kisangani. ⚠
 - Kisangani · imagen: Un pescador le tira un beso (Kis-angani) a la catarata mientras cuelga trampas de madera sobre el torrente: así pescan los wagenia desde hace siglos.
 - Kisangani · dato: Nació en 1883 como estación de Stanley junto a las cataratas Boyoma: siete saltos en cien kilómetros por los que pasa más agua que por ninguna otra catarata del mundo. ⚠
 - Kisangani · dato: Aquí el Lualaba pasa a llamarse Congo y empieza el tramo navegable de 1 700 km hasta Kinshasa. ⚠
@@ -299,7 +299,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Matadi · dato: Puerto de mar del Congo, a 150 km del Atlántico, hasta donde suben los barcos grandes; desde 1898 el tren a Kinshasa rodea las cataratas.
 - Matadi · dato: Su puente colgante (1983) es el más largo de África, con 722 m de vano. ⚠
 - Matadi · dato: Cerca, en la roca de Yelala, Diogo Cão grabó su nombre en 1485. ⚠
-- Boma · dato: Capital del Estado Libre del Congo y del Congo Belga entre 1886 y 1923, cuando la capital pasó a Léopoldville.
+- Boma · dato: Capital del Estado Libre del Congo y del Congo Belga entre 1886 y 1923, cuando la capital pasó a Léopoldville. ⚠
 - Boma · dato: Río abajo, en Banana, el Congo entra al Atlántico y sigue bajo el mar por un cañón de 800 km. ⚠
 - Evento · Las cataratas Boyoma: Desde 1906 un tren de 125 km las rodea, de Ubundu a Kisangani; hay que saber adónde sigue el río para no perder el tren.
 - Evento · Las cataratas Livingstone: Entre Kinshasa y Matadi el río baja 270 m en 350 km de rápidos, treinta y dos saltos donde Stanley perdió a varios compañeros en 1877.
@@ -331,12 +331,100 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Li en Zhengzhou: Debajo de la ciudad hay otra ciudad, de hace 3 500 años. ⚠
 - Evento · El río que se mudó: En 1855 el Huang He rompió los diques en Tongwaxiang y se fue al norte: dejó de salir al mar Amarillo y desde entonces sale al golfo de Bohai, cientos de kilómetros más arriba. ⚠
 
+## Orinoco (2 140 km hasta el Atlántico) · solo en la edición amplia
+
+- Nacimiento: Nace en el cerro Delgado Chalbaud, en la sierra Parima, en la frontera de Venezuela con Brasil, a unos 1 000 m; su fuente exacta la fijó una expedición franco-venezolana en 1951. ⚠
+- Nacimiento: Con unos 2 140 km tiene el segundo caudal de Sudamérica, y por el brazo Casiquiare, un canal natural, le presta agua al río Negro y al Amazonas: un caso único entre los grandes ríos. ⚠
+- Ruta antigua: Los waraos del delta, «la gente de la curiara», ya navegaban sus caños cuando Diego de Ordaz subió el río en 1531 buscando El Dorado; Walter Raleigh lo intentó en 1595 y escribió un libro sobre la Guayana.
+- Ruta antigua: En 1800 Humboldt y Bonpland remontaron el alto Orinoco y comprobaron que el Casiquiare lo une con el Amazonas.
+- Ruta antigua: En 1819 Bolívar reunió en Angostura el congreso que fundó la Gran Colombia.
+- Ruta moderna: Hoy el río es la carretera del oriente de Venezuela: barcos de mar suben unos 300 km hasta Ciudad Guayana, donde el hierro del cerro Bolívar se vuelve acero y la presa del Guri, en el Caroní, da buena parte de la electricidad del país. ⚠
+- Pista antigua: Un río que comparte agua con el más grande de todos, y una ciudad angosta donde nació un país.
+- San Fernando de Atabapo · dato: Fue la capital del Amazonas venezolano hasta 1928. ⚠
+- Puerto Ayacucho · dato: Capital del estado Amazonas, fundada en 1924 para construir la carretera que rodea los raudales de Atures y Maipures, donde el río salta entre rocas y ningún barco pasa: la carga cambia de barco por tierra, unos 60 km hasta Samariapo. ⚠
+- Caicara del Orinoco · dato: En el siglo XIX exportaba sarrapia, la semilla del árbol de tonka con que se perfumaba el tabaco; cerca hay petroglifos de los pueblos del río. ⚠
+- Ciudad Bolívar · dato: En 1819 Bolívar reunió el Congreso de Angostura, que fundó la Gran Colombia; el amargo de Angostura se inventó aquí en 1824; el puente de Angostura, de 1967, fue el primero sobre el Orinoco. ⚠
+- Ciudad Guayana · dato: Fundada en 1961 al unir Puerto Ordaz y San Félix, donde el Caroní, de aguas oscuras, entra al Orinoco pardo y los dos corren un rato sin mezclarse.
+- Ciudad Guayana · dato: Puerto del hierro y del acero: los barcos de mar cargan aquí, a unos 300 km del océano; río arriba, en el Caroní, está la presa del Guri. ⚠
+- Tami · hola: Aunque me digan caimán, soy un cocodrilo de verdad, de los más largos de América.
+- Evento · Los raudales de Atures: Antes de Puerto Ayacucho el río se aprieta entre rocas negras y salta: son los raudales de Atures y, más arriba, los de Maipures, que Humboldt describió en 1800 como las grandes cataratas del Orinoco.
+- Evento · Los raudales de Atures: Ningún barco los pasa: la carga va en camión unos 60 km.
+- Evento · El puente de Angostura: En 1967 se tendió aquí el primer puente sobre el Orinoco: un puente colgante de 1,7 km entre Ciudad Bolívar y Soledad, en el punto donde el río se estrecha. ⚠
+
+## Murray (2 508 km hasta el océano Austral) · solo en la edición amplia
+
+- Nacimiento: Nace en los Alpes Australianos, cerca del monte Kosciuszko, el más alto del continente (2 228 m), y durante la mayor parte de su recorrido es la frontera entre Nueva Gales del Sur y Victoria. ⚠
+- Nacimiento: Con unos 2 508 km es el río más largo de Australia; con el Darling, su afluente, forma la cuenca que produce cerca del 40 % de lo que el país cosecha. ⚠
+- Ruta antigua: Charles Sturt lo bajó en un bote de remos en 1830 y le puso el nombre de un ministro británico; luego vinieron las ovejas, los vapores de ruedas y, desde 1887, el riego. ⚠
+- Ruta moderna: El bacalao del Murray, el pez de agua dulce más grande de Australia, es hoy una especie protegida.
+- Albury · dato: La primera ciudad grande del río, en la orilla de Nueva Gales del Sur; enfrente, Wodonga, en Victoria.
+- Albury · dato: Río arriba, el embalse de Hume (1936) guarda el agua del deshielo para el riego.
+- Albury · dato: Por aquí cruzaron Hume y Hovell en 1824, los primeros europeos que vieron el río. ⚠
+- Echuca · imagen: Un eco (Echuca) repite el silbato de los vapores de ruedas contra un muelle de madera altísimo: en 1870 este era el puerto fluvial más grande de Australia. ⚠
+- Echuca · dato: En los años 1870 fue el mayor puerto interior de Australia: los vapores de ruedas subían la lana de las estancias y bajaban madera de eucalipto rojo, hasta que el tren se llevó la carga.
+- Echuca · dato: El muelle de madera de 1865 sigue en pie y el vapor Adelaide, de 1866, todavía navega. ⚠
+- Swan Hill · imagen: Una colina llena de cisnes negros (Swan Hill) que graznan toda la noche: así la bautizó el explorador Mitchell en 1836, porque no lo dejaron dormir. ⚠
+- Swan Hill · dato: Thomas Mitchell acampó aquí en 1836 y la llamó Swan Hill por los cisnes negros que graznaron toda la noche. ⚠
+- Mildura · dato: En 1887 los hermanos Chaffey, canadienses, abrieron aquí la primera colonia de riego de Australia: canales y bombas de vapor convirtieron el secano en cítricos, uvas y almendras. ⚠
+- Mildura · dato: Cerca entra el Darling, el afluente más largo, que viene desde Queensland.
+- Renmark · dato: La primera colonia de riego de Australia Meridional, también de los Chaffey (1887), y el corazón de la Riverland: uvas, naranjas y frutas secas. ⚠
+- Murray Bridge · imagen: Un puente (bridge) de hierro le hace cosquillas al río con los pies: fue el primer puente sobre el Murray, y el tren llegó poco después.
+- Murray Bridge · dato: El primer puente sobre el Murray (1879) unió Adelaida con el este; desde 1886 lo cruzó también el tren. ⚠
+- Murray Bridge · dato: La ciudad se llamaba Mobilong y tomó el nombre del puente en 1924. ⚠
+- Goolwa · dato: Las barreras de 1940 cierran el lago al agua salada, y desde 2002 hay que dragar la boca para que no se tape de arena. ⚠
+- Goolwa · dato: En 1854 tuvo el primer ferrocarril público de Australia, tirado por caballos, hasta la playa de Port Elliot. ⚠
+- Embarcación: Un vapor de ruedas laterales, de madera de eucalipto rojo, que quemaba leña y arrastraba barcazas de lana: entre 1860 y 1900 cientos de vapores unían las estancias del interior con los trenes de la costa.
+- Embarcación: El Adelaide, de 1866, todavía navega en Echuca. ⚠
+- Pico en Murray Bridge: Fue el primero sobre el río.
+- Evento · La carrera de los vapores: En 1853 dos vapores, el Mary Ann y el Lady Augusta, se lanzaron río arriba para ver cuál llegaba primero a Swan Hill; ganó el Mary Ann, y así empezó la época de los vapores del Murray. ⚠
+- Evento · Las esclusas: Desde 1922 el río bajo tiene esclusas y presas que lo mantienen navegable en la seca: la de Mildura es la número 11. ⚠
+- Evento · La boca que se cierra: Entre el lago Alexandrina y el mar el río pasa por una boca de arena que el viento y las olas del sur van cerrando; en las sequías se tapa del todo, y unas dragas la mantienen abierta desde 2002. ⚠
+
+## San Lorenzo (1 197 km hasta el golfo de San Lorenzo) · solo en la edición amplia
+
+- Nacimiento: Sale del lago Ontario, el último de los Grandes Lagos, en Kingston, a 74 m sobre el mar: por él desaguan los cinco lagos, que guardan cerca de una quinta parte del agua dulce superficial del mundo. ⚠
+- Nacimiento: Con unos 1 200 km hasta el golfo es corto para lo que lleva, pero contando los lagos el sistema pasa de 3 000 km. ⚠
+- Ruta antigua: Los iroqueses del río, los algonquinos y los innu pescaban y comerciaban en él mucho antes de que Jacques Cartier lo remontara en 1535 hasta la aldea de Hochelaga y le diera el nombre del santo del día en que entró al golfo.
+- Ruta antigua: Fue el camino de las pieles de castor y de la Nueva Francia: Tadoussac en 1600, Quebec en 1608, Montreal en 1642; en 1759 la batalla de las llanuras de Abraham, junto a Quebec, decidió que Canadá sería británico. ⚠
+- Ruta moderna: Desde 1959 la Vía Marítima lo vuelve una escalera de esclusas: barcos de mar de 225 m suben desde el Atlántico hasta los Grandes Lagos, unos 3 700 km tierra adentro, cargados de mineral de hierro y de trigo. ⚠
+- Kingston · dato: Fue la primera capital de la provincia de Canadá (1841-1844) y guarda el fuerte Henry, de 1832, levantado por miedo a una invasión desde Estados Unidos. ⚠
+- Cornwall · dato: Junto a la presa Moses-Saunders (1958), compartida con Estados Unidos, y a las esclusas de la Vía Marítima (1959) que dejan pasar barcos de mar hasta los Grandes Lagos. ⚠
+- Montreal · dato: Cartier llegó en 1535 a la aldea iroquesa de Hochelaga, y los rápidos de Lachine, río arriba, pararon a todos los barcos hasta el canal de 1825. ⚠
+- Montreal · dato: La ciudad nació en 1642 como Ville-Marie y hoy es la más grande de Quebec.
+- Trois-Rivières · dato: Fundada en 1634 donde el Saint-Maurice llega al San Lorenzo partido en tres brazos por dos islas. ⚠
+- Trois-Rivières · dato: En el siglo XX sus fábricas la hicieron la capital mundial del papel de periódico; río arriba se abre el lago Saint-Pierre, un ensanche del río lleno de islas y aves. ⚠
+- Quebec · dato: Champlain la fundó en 1608 sobre el cabo Diamant, donde el río se estrecha a cerca de un kilómetro: eso quiere decir kébec en algonquino. ⚠
+- Quebec · dato: Es la única ciudad amurallada al norte de México; en 1759 los británicos la tomaron en las llanuras de Abraham. ⚠
+- Tadoussac · dato: En la boca del fiordo del Saguenay, donde el agua dulce se vuelve salada y el río ya es un estuario de unos 20 km de ancho. ⚠
+- Tadoussac · dato: En 1600 se abrió aquí el primer puesto francés de comercio de pieles de América; hoy vienen las belugas y, en verano, las ballenas azules. ⚠
+- Evento · La escalera de agua: Entre Montreal y el lago Ontario la Vía Marítima sube los barcos 68 m con siete esclusas; dos de ellas, en Massena, son de Estados Unidos, y la frontera va por el medio del río. ⚠
+- Evento · Los rápidos de Lachine: Antes de Montreal el río cae por los rápidos de Lachine, que pararon a Cartier en 1535 y a todos los barcos hasta el canal de 1825. ⚠
+- Evento · El puente de hielo: En invierno el río se congela frente a Quebec, y hasta hace un siglo casi cada año se formaba un puente de hielo hasta Lévis, por donde cruzaban trineos y hasta caballos. ⚠
+
+## Zambeze (2 574 km hasta el Índico) · solo en la edición amplia
+
+- Nacimiento: Nace en un bosque de miombo del noroeste de Zambia, cerca de Kalene Hill, a unos 1 500 m, donde se tocan Zambia, Angola y el Congo; entra a Angola y vuelve a Zambia. ⚠
+- Nacimiento: Con unos 2 574 km es el cuarto río de África y el más largo de los que salen al Índico; en el camino cae por las cataratas Victoria y llena dos de los embalses más grandes del mundo. ⚠
+- Ruta antigua: Los lozi de la llanura del alto río y los reinos shona del Monomotapa vivían de él antes de que los portugueses subieran desde Sofala en el siglo XVI hasta Sena y Tete, tras el oro y el marfil. ⚠
+- Ruta antigua: En 1855 David Livingstone llegó a la catarata que los kololo llamaban Mosi-oa-Tunya, «el humo que truena», y la bautizó Victoria; en 1858 volvió a remontarlo en un vapor y los rápidos de Cahora Bassa lo pararon. ⚠
+- Ruta moderna: Hoy es el río de las presas: Kariba (1959) y Cahora Bassa (1974) dan electricidad a media África austral, y sus lagos artificiales están entre los mayores del mundo.
+- Livingstone · dato: A 10 km de las cataratas Victoria, Mosi-oa-Tunya, «el humo que truena»: 1,7 km de ancho y 108 m de caída, la cortina de agua más grande del mundo. ⚠
+- Livingstone · dato: David Livingstone las vio en 1855; el puente de 1905 sobre la garganta une Zambia con Zimbabue y hoy es un lugar de saltos en cuerda. ⚠
+- Kariba · dato: La presa de Kariba (1959), en una garganta del río, creó uno de los mayores embalses del mundo, de más de 220 km de largo, compartido por Zimbabue y Zambia. ⚠
+- Kariba · dato: Mientras el lago subía, la Operación Noé rescató en botes a unos 6 000 animales de las islas que iban quedando. ⚠
+- Tete · dato: Vieja plaza portuguesa del siglo XVI, de las más calurosas de Mozambique.
+- Tete · dato: El puente colgante de 1973 fue durante décadas el único sobre el bajo Zambeze; alrededor están las minas de carbón de Moatize, y río arriba la presa de Cahora Bassa (1974). ⚠
+- Chinde · dato: Entre 1891 y 1923 fue una concesión británica desde donde los vapores subían con carga hacia Nyasalandia, el actual Malaui; los ciclones se lo han llevado en parte. ⚠
+- Evento · La Operación Noé: Cuando la presa de Kariba cerró el río en 1958, el agua subió durante años y los animales quedaron atrapados en islas cada vez más chicas. ⚠
+- Evento · La Operación Noé: Guardaparques en botes rescataron a unos 6 000: antílopes, monos, serpientes y hasta rinocerontes atados a balsas. ⚠
+- Evento · El ciclón del delta: El delta del Zambeze mira al canal de Mozambique, por donde entran los ciclones del Índico entre enero y marzo: en 2019 el ciclón Idai inundó toda la región. ⚠
+
 ## Tempisque (144 km hasta el golfo de Nicoya)
 
 - Nacimiento: Es el río principal de la provincia; su longitud suele darse en unos 144 km. ⚠
-- Ruta antigua: En 1824 el Partido de Nicoya se sumó a Costa Rica «por su propia voluntad», y el río fue durante un siglo la carretera de Guanacaste: bongos de un solo tronco bajaban maíz, cueros, queso y madera desde Bolsón, Puerto Humo y Bebedero, cruzaban el golfo hasta Puntarenas y volvían con sal y mercadería.
+- Ruta antigua: En 1824 el Partido de Nicoya se sumó a Costa Rica «por su propia voluntad», y el río fue durante un siglo la carretera de Guanacaste: bongos de un solo tronco bajaban maíz, cueros, queso y madera desde Bolsón, Puerto Humo y Bebedero, cruzaban el golfo hasta Puntarenas y volvían con sal y mercadería. ⚠
 - Ruta moderna: Cerca de la boca, el puente de la Amistad de Taiwán (2003), de unos 780 m, une la península de Nicoya con el resto del país. ⚠
-- Pista antigua: Una provincia entera se sumó al país «por su propia voluntad» en 1824; por este río bajaban en canoas de un solo tronco el maíz y los cueros de sus haciendas.
+- Pista antigua: Una provincia entera se sumó al país «por su propia voluntad» en 1824; por este río bajaban en canoas de un solo tronco el maíz y los cueros de sus haciendas. ⚠
 - Pista moderna: Un puente de casi 800 m pagado por Taiwán lo cruza cerca de la boca, y el agua de un embalse al otro lado de la cordillera riega su caña y su arroz.
 - Liberia · dato: Capital de Guanacaste, fundada en 1769. ⚠
 - Bolsón · dato: Hasta mediados del siglo XX los bongos de remo y vela bajaban de aquí al golfo con maíz, cueros y madera, y subían con sal y mercadería de Puntarenas.
@@ -375,14 +463,14 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - La Virgen · dato: A la orilla está la reserva Tirimbina, con un puente colgante de más de 250 m sobre el río. ⚠
 - Puerto Viejo · dato: Cabecera del cantón de Sarapiquí y antiguo Muelle de Sarapiquí, el puerto por donde salió el comercio del Valle Central hacia el Caribe a mediados del siglo XIX. ⚠
 - Puerto Viejo · dato: Aquí se le une el río Puerto Viejo y, en la confluencia, está la estación biológica La Selva (1968).
-- Trinidad · dato: La frontera corre por la orilla derecha del San Juan desde 1858.
+- Trinidad · dato: La frontera corre por la orilla derecha del San Juan desde 1858. ⚠
 - Evento · El aguacero: En Sarapiquí caen más de 4 000 mm de lluvia al año y el río sube de golpe con un aguacero. ⚠
 - Evento · El aguacero · bien: Escampa y el río, más alto, te lleva más rápido.
 - Evento · Los vigías de 1856: En 1856 los filibusteros de William Walker rondaban el San Juan y las tropas de Costa Rica vigilaban el Sarapiquí.
 
 ## San Juan (192 km hasta el Caribe)
 
-- Nacimiento: Desagua el lago de Nicaragua (Cocibolca), el más grande de Centroamérica, y corre hacia el Caribe; en su tramo final la frontera con Costa Rica va por su orilla derecha, según el tratado Cañas-Jerez de 1858.
+- Nacimiento: Desagua el lago de Nicaragua (Cocibolca), el más grande de Centroamérica, y corre hacia el Caribe; en su tramo final la frontera con Costa Rica va por su orilla derecha, según el tratado Cañas-Jerez de 1858. ⚠
 - Nacimiento: Su longitud suele darse en unos 192 km. ⚠
 - Ruta antigua: Fue el camino de Granada al mar y por eso el de los piratas: Henry Morgan lo remontó en 1665 para saquear Granada.
 - Ruta antigua: España levantó el castillo de la Inmaculada Concepción (1675) sobre un raudal; en 1762 Rafaela Herrera, de 19 años, dirigió su defensa contra los ingleses, y en 1780 un joven Horatio Nelson lo tomó por unos meses.
@@ -390,7 +478,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Ruta moderna: El tratado Cañas-Jerez (1858) dejó el río a Nicaragua y a Costa Rica el derecho de navegarlo con fines de comercio; la Corte Internacional de Justicia volvió a leerlo en 2009 y falló sobre la frontera del delta en 2015 y 2018. ⚠
 - Ruta moderna: El sueño del canal interoceánico vuelve cada tanto: en los años 1890 se dragó en Greytown y en 2013 Nicaragua dio una concesión a una empresa china, cancelada en 2024. ⚠
 - Pista antigua: Un almirante inglés famoso tomó de joven el castillo de este río; años antes lo había defendido de otros ingleses una muchacha de 19 años.
-- Pista moderna: Un tratado de 1858 lo dejó a un país y le dio a su vecino el derecho de navegarlo; una corte internacional lo volvió a leer en 2009.
+- Pista moderna: Un tratado de 1858 lo dejó a un país y le dio a su vecino el derecho de navegarlo; una corte internacional lo volvió a leer en 2009. ⚠
 - Sábalos · dato: Boca de Sábalos, pueblo en la boca del río Sábalos, famoso por la pesca del sábalo real, un pez plateado que puede pesar más de 100 kilos y salta fuera del agua cuando lo enganchan. ⚠
 - El Castillo · imagen: Un castillo de piedra sobre un raudal y una muchacha de 19 años disparando el cañón: El Castillo, donde Rafaela Herrera defendió el río en 1762.
 - El Castillo · dato: La fortaleza de la Inmaculada Concepción (1675) vigila el raudal del Diablo.
@@ -634,7 +722,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Moscú · dato: Napoleón entró el 14 de septiembre en una ciudad casi vacía; esa noche empezaron los incendios, que duraron días y quemaron unos dos tercios de Moscú.
 - Moscú · dato: Esperó cinco semanas una paz que el zar Alejandro nunca ofreció y el 19 de octubre salió con unos 100 000 hombres.
 - Maloyaroslávets · fecha: octubre de 1812 · rumbo: De vuelta, hacia el suroeste, buscando un camino nuevo ⚠
-- Maloyaroslávets · dato: El 24 de octubre, a unos 120 km al suroeste de Moscú, la batalla por este pueblo cerró el camino del sur, donde había comida.
+- Maloyaroslávets · dato: El 24 de octubre, a unos 120 km al suroeste de Moscú, la batalla por este pueblo cerró el camino del sur, donde había comida. ⚠
 - Krasny · fecha: noviembre de 1812 · rumbo: Al oeste, por el mismo camino de la ida, con la nieve ⚠
 - Krasny · dato: Del 15 al 18 de noviembre, con nieve y cerca de veinte grados bajo cero, el ejército pasó en columnas separadas junto a Krasny bajo ataque ruso.
 - Krasny · dato: La retaguardia del mariscal Ney, dada por perdida, cruzó de noche el Dniéper helado y volvió con unos 800 hombres.
@@ -686,7 +774,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Partida: El 26 de agosto de 1768 el Endeavour salió de Plymouth al mando de James Cook, un teniente hijo de campesinos que había aprendido a hacer mapas en las costas de Canadá.
 - Cruza: el océano Atlántico, el cabo de Hornos, el océano Pacífico, la Gran Barrera de Coral, el estrecho de Torres, el océano Índico ⚠
 - Tramos: El Atlántico · El Pacífico · Australia · La vuelta por el Índico
-- El mar del Sur por dibujar: En 1768 medio Pacífico era una mancha en blanco.
+- El mar del Sur por dibujar: En 1768 medio Pacífico era una mancha en blanco. ⚠
 - Lo que quedó: Los mapas de Cook de Nueva Zelanda y de la costa este de Australia eran tan buenos que se usaron más de un siglo.
 - Lo que quedó: En 1770 tomó posesión de esa costa para el rey de Inglaterra; en 1788 llegaron los primeros colonos y, para los pueblos aborígenes y maoríes, empezó la pérdida de sus tierras.
 - Lo que quedó · pista: Mapas que sirvieron un siglo, una toma de posesión que cambió la vida de pueblos enteros y un barco hundido lejos de donde nació.
@@ -737,6 +825,10 @@ Altura del cauce en cada parada, muestreada del mosaico DEM global de NOAA NCEI 
 - Indo: fuente 5155 m → Leh 3208 m · Skardu 2191 m · Attock 276 m · Sukkur 59 m · Hyderabad 19 m · Karachi 0 m → mar 0 m ⚠
 - Congo: fuente 1410 m → Bukama 580 m · Kindu 451 m · Kisangani 387 m · Mbandaka 302 m · Kinshasa 268 m · Matadi 90 m · Boma 8 m → mar 0 m ⚠
 - Huang He: fuente 4467 m → Lanzhou 1567 m · Yinchuan 1108 m · Baotou 1004 m · Zhengzhou 91 m · Kaifeng 80 m · Jinan 25 m · Dongying 7 m → mar 0 m ⚠
+- Orinoco: fuente 750 m → San Fernando de Atabapo 82 m · Puerto Ayacucho 54 m · Puerto Carreño 43 m · Caicara del Orinoco 28 m · Ciudad Bolívar 14 m · Ciudad Guayana 4 m → mar 0 m ⚠
+- Murray: fuente 1247 m → Albury 153 m · Echuca 91 m · Swan Hill 67 m · Mildura 36 m · Renmark 16 m · Murray Bridge 3 m · Goolwa 0 m → mar 0 m ⚠
+- San Lorenzo: fuente 58 m → Kingston 58 m · Cornwall 53 m · Montreal 12 m · Trois-Rivières 2 m · Quebec 0 m · Tadoussac 0 m → mar 0 m ⚠
+- Zambeze: fuente 1388 m → Mongu 1013 m · Katima Mulilo 943 m · Livingstone 890 m · Kariba 484 m · Tete 125 m · Chinde 2 m → mar 0 m ⚠
 - Tempisque: fuente 69 m → Liberia 57 m · Guardia 30 m · Filadelfia 17 m · Bolsón 5 m · Puerto Humo 3 m → mar 0 m ⚠
 - Reventazón: fuente 2181 m → Orosi 1056 m · Cachí 990 m · Juan Viñas 863 m · Turrialba 555 m · Siquirres 91 m · Parismina 3 m → mar 0 m ⚠
 - Sarapiquí: fuente 1756 m → San Miguel 438 m · La Virgen 183 m · Chilamate 79 m · Puerto Viejo 38 m · Trinidad 0 m → mar 0 m ⚠
