@@ -10,7 +10,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Ruta moderna: Hoy la tensión está río arriba: la Gran Presa del Renacimiento etíope, inaugurada en 2025 sobre el Nilo Azul, decide cuánta agua baja a Sudán y Egipto, y el 95 % de los egipcios vive en el valle y el delta. ⚠
 - Pista moderna: Una presa inaugurada en 2025 río arriba tensa a tres países que comparten su agua. ⚠
 - Jinja · dato: Las cataratas Ripon, la «fuente» que Speke identificó en 1862, quedaron bajo la represa de Owen Falls (1954).
-- Juba · imagen: Un país recién nacido con chupón: Juba es la capital de Sudán del Sur, el Estado más joven del mundo (2011).
+- Juba · imagen: Un país recién nacido con chupón: Juba es la capital de Sudán del Sur, el Estado más joven del mundo (2011). ⚠
 - Asuán · imagen: Una aduana en el río: Asuán (a-duana) fue la frontera sur de Egipto en la primera catarata, y hoy la presa es la aduana del agua.
 - Asuán · dato: La Presa Alta (1970) creó el lago Nasser, de 500 km de largo.
 - Asuán · dato: Abu Simbel fue cortado en bloques y subido 65 m para salvarlo del agua.
@@ -22,6 +22,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Juba · puerto (Historia): Dejás el café y cargás colmillos de marfil, el comercio que hizo rica a Jartum en el siglo XIX. ⚠
 - Jartum · puerto (Historia): Cambiás el marfil por sacos de goma arábiga: la resina de las acacias sudanesas espesa refrescos y dulces en todo el mundo, y Sudán produce la mayor parte.
 - Evento · Cocodrilos del Sudd: En el pantano del Sudd viven cocodrilos del Nilo, los más grandes de África, y uno se cruzó delante de la falúa.
+- Evento · El nilómetro: En la isla de Roda, en El Cairo, un nilómetro del año 861 medía la crecida: de esa marca dependían la cosecha y los impuestos. ⚠
+- Evento · El nilómetro: Desde la presa de Asuán (1970) la crecida ya no llega.
 
 ## Amazonas (6 400 km hasta el Atlántico)
 
@@ -64,6 +66,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Evento · Las Tres Gargantas: Hasta hace un siglo, cientos de sirgadores subían los juncos a pulso por aquí. ⚠
 - Evento · El primer puente: Hasta 1957 ningún puente cruzaba el Yangtsé: los trenes pasaban en ferry. ⚠
 - Evento · El primer puente: El puente de Wuhan fue el primero, con dos pisos, uno para el tren y otro para los carros.
+- Evento · La isla que crece: El Yangtsé arrastra tanto limo que en su boca la isla de Chongming creció de un banco de arena, en el siglo VII, a más de 1 200 km², la tercera isla de China; sigue creciendo cada año hacia el mar. ⚠
 
 ## Misisipi (6 275 km hasta el golfo de México)
 
@@ -83,6 +86,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Memphis · puerto (Historia): Vendés las pieles y cargás algodón en pacas de más de 200 kilos: Memphis fue el mayor mercado de algodón al contado del mundo. ⚠
 - Croac en San Luis: Y aquí entra el Misuri, que es más largo que nosotros.
 - Evento · La gran crecida de 1927: En 1927 el río se salió de madre y cubrió unos 70 000 km²: pueblos enteros bajo el agua y cientos de miles de personas sin casa. ⚠
+- Evento · La escalera de esclusas: Desde los años 1930, 29 esclusas y presas convierten el alto Misisipi en una escalera de agua de Mineápolis a San Luis, para que las barcazas naveguen todo el año. ⚠
+- Evento · La escalera de esclusas: Justo antes de San Luis entra el Misuri, que es más largo que el propio Misisipi. ⚠
 
 ## Danubio (2 850 km hasta el mar Negro)
 
@@ -127,12 +132,13 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Duisburgo · imagen: Un garaje de grúas: Duisburgo es el mayor puerto interior de Europa, la puerta del Ruhr.
 - Rotterdam · imagen: El río se rinde al mar en un puerto de 40 km: Rotterdam, el mayor de Europa.
 - Rotterdam · dato: Arrasada por bombardeos en 1940 y reconstruida en vidrio y acero; gran parte de la ciudad está bajo el nivel del mar.
-- Embarcación: 110 m de casco de acero, la cabina de la familia a popa, la bicicleta en cubierta y el coche encima de la escotilla.
+- Embarcación: 110 m de casco de acero, la cabina de la familia a popa, la bicicleta en cubierta y el coche encima de la escotilla. ⚠
 - Embarcación: Lleva 3 000 toneladas, lo mismo que cien camiones. ⚠
 - Basilea · puerto (Historia): Cargás sal de las minas de Schweizerhalle y contenedores de la industria química: es el único puerto de Suiza.
 - Bíber en Duisburgo: Es el puerto de río más grande de Europa.
 - Bíber en Rotterdam: El puerto más grande del continente.
 - Evento · El río enderezado: Hasta 1817 el Rin daba mil vueltas por esta llanura; el ingeniero Tulla lo enderezó y lo acortó unos 80 km. ⚠
+- Evento · El puerto interior: En Duisburgo, donde entra el Ruhr, está el puerto interior más grande de Europa: por él pasan cada año millones de toneladas de carbón, acero y contenedores en barcazas que suben hasta Basilea. ⚠
 
 ## Ganges (2 525 km hasta la bahía de Bengala)
 
@@ -156,10 +162,11 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Gavi en Benarés: Es el lugar más antiguo del río.
 - Gavi en Patna: Hace mucho, esta fue una de las ciudades más grandes del mundo.
 - Evento · La Kumbh Mela: Cada doce años, en la Kumbh Mela de Prayagraj, millones de peregrinos se bañan en la confluencia del Ganges y el Yamuna: la reunión de gente más grande del planeta. ⚠
+- Evento · El delfín del Ganges: Entre Kanpur y Benarés todavía vive el delfín del Ganges, casi ciego, que caza con el sonido en el agua turbia; es el animal acuático nacional de la India desde 2009 y quedan unos pocos miles. ⚠
 
 ## Volga (3 530 km hasta el mar Caspio)
 
-- Nacimiento: Nace en un pantano a 228 m sobre el mar y termina en un mar cerrado, el Caspio, 28 m bajo el nivel del océano.
+- Nacimiento: Nace en un pantano a 228 m sobre el mar y termina en un mar cerrado, el Caspio, 28 m bajo el nivel del océano. ⚠
 - Nacimiento: Es el río más largo de Europa.
 - Ruta antigua: Entre los siglos VIII y XI la «ruta del Volga» llevó a los vikingos varegos con pieles y esclavos hasta los jázaros y el califato; las monedas de plata árabes que se desentierran en Suecia vinieron por aquí.
 - Ruta antigua: Iván el Terrible tomó Kazán (1552) y Astracán (1556), y Moscú se quedó con el río entero.
@@ -180,6 +187,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Belu en Nizhni Nóvgorod: ¡La feria más grande de Rusia!
 - Evento · Viene el hielo · bien: La lodia llega con el primer hielo crujiendo detrás.
 - Evento · Los sirgadores: Hasta hace poco más de un siglo, cuadrillas de sirgadores arrastraban las barcazas río arriba con sogas, cantando para llevar el paso; un pintor, Repin, los hizo famosos. ⚠
+- Evento · El delta de los lotos: El delta del Volga, el más grande de Europa, se abre en cientos de brazos entre campos de lotos, con pelícanos y flamencos; el mar al que sale está 28 m bajo el nivel del océano y no tiene salida. ⚠
 
 ## Tigris (1 900 km hasta el golfo Pérsico)
 
@@ -190,7 +198,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Ruta moderna: Basora exporta la mayor parte del petróleo iraquí por el Shatt al-Arab.
 - Pista antigua: Una ciudad redonda fundada en 762 en su orilla fue la mayor del mundo; siglos después una biblioteca entera terminó en sus aguas.
 - Diyarbakır · dato: El puente de los Diez Ojos (1065) cruza el Tigris a la salida de la ciudad.
-- Mosul · dato: Capital asiria bajo Senaquerib (siglo VII a. C.), con la biblioteca de Asurbanipal.
+- Mosul · dato: Capital asiria bajo Senaquerib (siglo VII a. C.), con la biblioteca de Asurbanipal. ⚠
 - Mosul · dato: La presa de Mosul, río arriba, retiene 11 km³ sobre cimientos de yeso.
 - Tikrit · imagen: Un tic-tac de 800 años: Saladino nació en Tikrit en 1137 y Saddam Hussein a unos kilómetros, en 1937.
 - Tikrit · dato: Ciudad natal del sultán que reconquistó Jerusalén (1187) y del dictador que gobernó Irak (1979-2003). ⚠
@@ -202,6 +210,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Diyarbakır · puerto (Historia): Cargás sandías gigantes, las que aquí crecen de hasta 50 kilos, y lingotes de cobre de las minas de Ergani. ⚠
 - Rafi en Diyarbakır: Murallas negras y sandías más grandes que yo.
 - Rafi en Bagdad: Una ciudad redonda con la biblioteca más grande del mundo.
+- Evento · Los pantanos de Mesopotamia: Se secaron casi del todo en los años 1990 y desde 2003 vuelven a llenarse. ⚠
 
 ## Mekong (4 350 km hasta el mar de China Meridional)
 
@@ -214,6 +223,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Phnom Penh · dato: Vaciada por los jemeres rojos en 1975.
 - Buk · hola: Puedo pesar 300 kilos.
 - Evento · Los rápidos de Khone: Antes de Camboya el Mekong se despeña en las cataratas de Khone, las que frenaron a la expedición francesa de 1866. ⚠
+- Evento · El reino del millón de elefantes: Luang Prabang fue la capital de Lan Xang, «el reino del millón de elefantes», fundado en el siglo XIV; hoy en Laos quedan apenas unos cientos, y cada amanecer los monjes recorren la ciudad recibiendo arroz. ⚠
 
 ## Níger (4 200 km hasta el golfo de Guinea)
 
@@ -250,11 +260,12 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Rosario · imagen: La bandera argentina izada sobre silos de soya: Rosario, donde Belgrano creó la bandera (1812), es hoy el puerto de la soya.
 - Rosario · dato: Los puertos del Gran Rosario despachan cerca del 80 % de las exportaciones agroindustriales argentinas. ⚠
 - Buenos Aires · imagen: Un río color de león de 220 km de ancho: Buenos Aires mira al Río de la Plata, el estuario más ancho del mundo. ⚠
-- Buenos Aires · dato: Fundada dos veces (1536 y 1580); puerto de las carnes y de los inmigrantes.
+- Buenos Aires · dato: Fundada dos veces (1536 y 1580); puerto de las carnes y de los inmigrantes. ⚠
 - Montevideo · dato: Fundada por los españoles en 1726 para frenar a los portugueses de Colonia del Sacramento.
 - Montevideo · dato: Su rambla de 22 km bordea el estuario.
 - Llegada: Del Río de la Plata al mar quedan 220 km de agua marrón; los hacen los cargueros. ⚠
 - Rosario · puerto (Historia): Sumás soya y harina de soya de las terminales del Gran Rosario, la mayor concentración de puertos agroexportadores del mundo. ⚠
+- Evento · La presa de Yacyretá: Entre Argentina y Paraguay la presa de Yacyretá cierra el río desde 1994; cuando el embalse llegó a su nivel, en 2011, el agua cubrió la parte baja de Encarnación y la ciudad se mudó más arriba, con una costanera nueva. ⚠
 
 ## Indo (3 180 km hasta el mar Arábigo)
 
@@ -275,6 +286,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Bulán en Sukkur: Una presa con 66 compuertas reparte el agua como una regadera. ⚠
 - Bulán en Sukkur: Cerca hay ruinas de hace 4 500 años.
 - Evento · El monzón de 2010: En 2010 las lluvias del monzón desbordaron el Indo y una quinta parte de Pakistán quedó bajo el agua. ⚠
+- Evento · El puente de barcas de Alejandro: En 326 a. C. ⚠
 
 ## Congo (4 700 km hasta el Atlántico)
 
@@ -291,7 +303,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Kisangani · imagen: Un pescador le tira un beso (Kis-angani) a la catarata mientras cuelga trampas de madera sobre el torrente: así pescan los wagenia desde hace siglos.
 - Kisangani · dato: Nació en 1883 como estación de Stanley junto a las cataratas Boyoma: siete saltos en cien kilómetros por los que pasa más agua que por ninguna otra catarata del mundo. ⚠
 - Kisangani · dato: Aquí el Lualaba pasa a llamarse Congo y empieza el tramo navegable de 1 700 km hasta Kinshasa. ⚠
-- Mbandaka · dato: Fundada por Stanley en 1883 como Équateur, porque la línea del ecuador pasa por aquí: el Congo es el único gran río que cruza el ecuador dos veces.
+- Mbandaka · dato: Fundada por Stanley en 1883 como Équateur, porque la línea del ecuador pasa por aquí: el Congo es el único gran río que cruza el ecuador dos veces. ⚠
 - Mbandaka · dato: Frente a la ciudad mide hasta quince kilómetros de ancho, lleno de islas, y recibe al Ruki; el jardín botánico de Eala, de 1900, está a la salida. ⚠
 - Kinshasa · dato: Kinshasa y Brazzaville son las capitales más cercanas del mundo: se ven a través del Pool Malebo, un ensanche del río de 35 km. ⚠
 - Kinshasa · dato: Kinshasa, la Léopoldville de 1881, pasa de 15 millones de habitantes y es la mayor ciudad de habla francesa; en 1974 recibió la pelea de Ali y Foreman.
@@ -304,6 +316,7 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Evento · Las cataratas Boyoma: Desde 1906 un tren de 125 km las rodea, de Ubundu a Kisangani; hay que saber adónde sigue el río para no perder el tren.
 - Evento · Las cataratas Livingstone: Entre Kinshasa y Matadi el río baja 270 m en 350 km de rápidos, treinta y dos saltos donde Stanley perdió a varios compañeros en 1877.
 - Evento · Las cataratas Livingstone: El tren de 1898 los rodea; la barcaza se queda en el Pool.
+- Evento · La línea del ecuador: Cerca de Mbandaka el río cruza la línea del ecuador: es el único gran río que la cruza dos veces, una hacia el norte y otra hacia el sur, y un monumento en la ciudad marca el punto. ⚠
 
 ## Huang He (5 464 km hasta el golfo de Bohai)
 
@@ -330,6 +343,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Dongying · dato: Ciudad joven (1983) del campo petrolero de Shengli, el segundo de China. ⚠
 - Li en Zhengzhou: Debajo de la ciudad hay otra ciudad, de hace 3 500 años. ⚠
 - Evento · El río que se mudó: En 1855 el Huang He rompió los diques en Tongwaxiang y se fue al norte: dejó de salir al mar Amarillo y desde entonces sale al golfo de Bohai, cientos de kilómetros más arriba. ⚠
+- Evento · El río colgado: En Kaifeng el Huang He corre por encima de la ciudad: el limo que deja levanta el lecho y los diques suben con él, hasta 10 m sobre las calles; por eso lo llaman «el río colgado». ⚠
+- Evento · El río colgado: Bajo la ciudad de hoy hay seis ciudades más antiguas, enterradas por sus crecidas. ⚠
 
 ## Orinoco (2 140 km hasta el Atlántico) · solo en la edición amplia
 
@@ -602,7 +617,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Persépolis · dato: Alejandro la ocupó en el 330 a. C. y, meses después, su palacio ardió tras un banquete; si fue venganza por Atenas o un accidente, todavía se discute.
 - Samarcanda · fecha: 329 a. C. · rumbo: Al noreste, cruzando el Hindu Kush hasta Asia Central ⚠
 - Hidaspes · fecha: 326 a. C. · rumbo: Al sureste, a la India, hasta el río de la batalla con Poros ⚠
-- Hidaspes · dato: A orillas del río Hidaspes, hoy Jhelum, venció al rey Poros y a sus elefantes en el 326 a. C., en plena lluvia del monzón.
+- Hidaspes · dato: A orillas del río Hidaspes, hoy Jhelum, venció al rey Poros y a sus elefantes en el 326 a. C., en plena lluvia del monzón. ⚠
 - Vehículo: Unos 40 000 soldados: la falange a pie, con sarisas de seis metros, y la caballería de los Compañeros, con Alejandro al frente.
 - Llegada: Once años y más de 30 000 km después, el camino termina en Babilonia, en junio del 323 a. C. ⚠
 - Evento · El dique de Tiro: Alejandro manda construir un dique de piedra desde la costa; los tirios lo queman con un barco en llamas y los macedonios lo vuelven a levantar, más ancho.
@@ -682,7 +697,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Partida: Las doce naves de Odiseo zarpan hacia Ítaca, que queda a menos de 600 km en línea recta.
 - Cruza: el mar Egeo, el mar Jónico, el mar Tirreno, el estrecho de Mesina ⚠
 - Tramos: Tracia y África · Sicilia y las Eolias · Las costas de Italia · Las islas del regreso
-- El poema: La Odisea es un poema de veinticuatro cantos, compuesto en griego hacia el siglo VIII a. C. y atribuido a Homero, que cuenta el regreso de Odiseo (Ulises para los romanos) desde Troya hasta Ítaca.
+- El poema: La Odisea es un poema de veinticuatro cantos, compuesto en griego hacia el siglo VIII a. C. y atribuido a Homero, que cuenta el regreso de Odiseo (Ulises para los romanos) desde Troya hasta Ítaca. ⚠
 - El mapa de la tradición · pista: Lugares que la gente lleva siglos buscando en un mar, sabiendo que el poema no los da.
 - Ísmaro · fecha: año 1 del regreso · rumbo: Por el Egeo, a la costa de Tracia ⚠
 - Ísmaro · dato: Ciudad de los cícones en la costa de Tracia, la primera del regreso: los griegos la saquean y Marón, sacerdote de Apolo, regala a Odiseo doce ánforas de un vino tan fuerte que se bebe con veinte partes de agua; es el vino que después embriaga al cíclope.

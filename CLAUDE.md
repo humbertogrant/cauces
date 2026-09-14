@@ -410,7 +410,9 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 4. Más ríos de Costa Rica: Pacuare y Sixaola están en Natural Earth 10 m Norteamérica (`capa:'ne10na'`) pero casi
    no tienen pueblos a la orilla (Tres Equis y la barra; Suretka, Bribri y Sixaola): habría que armar paradas con
    sitios (rápidos, reservas, puentes) y verificarlos. Los demás ríos saldrían de OpenStreetMap ampliando `OSM_Q`.
-5. Más eventos: hoy hay 40, dos por río salvo el Danubio y el Níger (tres). Cada uno con un hecho real detrás.
+5. Más eventos (hecho el 2026-09-13 en la edición amplia: un tercer evento, marcado `/*@amplia*/` al final del array del río en
+   eventos.js, para los trece ríos del mundo que tenían dos; la económica sigue con 44 y la amplia tiene 69, tres por río del mundo).
+   Los que sigan, con un hecho real detrás y un tramo que ningún otro evento del río use.
 
 
 ## Reglas de trabajo
