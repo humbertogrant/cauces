@@ -32,6 +32,9 @@ function usados(datos){/* claves que usan los datos del juego: glifos de animal,
   const i=new Set();for(const m of datos.matchAll(/\b(?:i|icono):["']([a-z]+)["']/g))i.add(m[1]);/* iconos de bienes y eventos */
   for(const m of datos.matchAll(/icono:["']animal:([a-z]+)["']/g))g.add(m[1]);for(const m of datos.matchAll(/icono:["']barca:([a-z]+)["']/g))t.add(m[1]);
   return{glifos:g,pictos:p,tipos:t,iconos:i}}
+/* sin comentarios ni sangría: src los conserva; en dist pesan unos 9 KB en el motor y 1,4 KB en los datos (bloques y líneas de
+   comentario, comentarios al final de línea y la sangría, que dentro de las plantillas HTML solo es espacio en blanco) */
+const limpiar=m=>m.replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*\n?/gm,'').replace(/^[ \t]*\/\/[^\n]*\n/gm,'').replace(/[ \t]*\/\*[^\n]*?\*\/[ \t]*$/gm,'').replace(/^[ \t]+/gm,'').replace(/\n{2,}/g,'\n');
 function recortar(motor,j,u){
   let m=motor,quitado={vocab:0,animales:0,pictos:0,glifos:0,iconos:0};
   for(const tipo of ['rio','itinerario','travesia']){if(j.vocab.includes(tipo))continue;let hubo=false;for(;;){const a=m.indexOf(`/*@vocab:${tipo}*/`);if(a<0)break;const b=m.indexOf(`/*@fin:${tipo}*/`,a);if(b<0)throw 'sin cierre de VOCAB.'+tipo;m=m.slice(0,a)+m.slice(b+`/*@fin:${tipo}*/`.length);hubo=true}if(!hubo)throw 'sin marcas de VOCAB.'+tipo;quitado.vocab++}/* puede haber varios bloques por tipo: el vocabulario y las funciones propias de ese tipo de ruta */
@@ -41,9 +44,7 @@ function recortar(motor,j,u){
   bloque('const ANIMALES={','function animal(',u.glifos,'animales');
   bloque('const PICTOS={','function picto(',new Set([...u.pictos,...enMotor]),'pictos');
   const icoMotor=new Set([...motor.matchAll(/ico\('([a-z]+)'\)/g)].map(x=>x[1]));bloque('const ICONOS={','function ico(',new Set([...u.iconos,...icoMotor]),'iconos');
-  /* sin comentarios ni sangría: el motor los conserva en src; en dist pesan unos 9 KB (bloques y líneas de comentario,
-     comentarios al final de línea y la sangría, que dentro de las plantillas HTML solo es espacio en blanco) */
-  m=m.replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*\n?/gm,'').replace(/^[ \t]*\/\/[^\n]*\n/gm,'').replace(/[ \t]*\/\*[^\n]*?\*\/[ \t]*$/gm,'').replace(/^[ \t]+/gm,'').replace(/\n{2,}/g,'\n');
+  m=limpiar(m);
   {const a=m.indexOf('function glifo('),b=m.indexOf('let animB',a);const lineas=m.slice(a,b).split('\n');
     const out=lineas.filter(l=>{const k=l.match(/^\s*case '([a-z]+)':/);if(!k||u.tipos.has(k[1]))return true;quitado.glifos++;return false});m=m.slice(0,a)+out.join('\n')+m.slice(b)}
   return{motor:m,quitado}}
@@ -51,7 +52,7 @@ function ensamblar(id,edicion){
   const j=JUEGOS[id],e=EDICIONES[edicion],archivos=archivosDe(id,edicion),leer=f=>cortarEdicion(src(f),edicion);
   const datos=archivos.filter(f=>f!=='motor.js').map(leer).join('\n'),u=usados(datos),{motor,quitado}=recortar(leer('motor.js'),j,u);
   const titulo=j.titulo+(e.sufijo?' · edición '+e.nombre:'');
-  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?leer(f)+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:leer(f);
+  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:limpiar(leer(f));
   const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
   /* el archivo dice cuánto pesa; el número entra en el mismo archivo, así que se comprueba después de escribirlo */
   let kb=Math.round(base.length/1024),html=base.replace('__PESO__',kb);const kb2=Math.round(html.length/1024);if(kb2!==kb){kb=kb2;html=base.replace('__PESO__',kb)}

@@ -196,7 +196,8 @@ dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
   dejar la pantalla sin globo. La barca es un glifo SVG propio
   por tipo (`glifo()`: latina, junco, vapor, balsa, canoa, barcaza, cuadrada; vista lateral, proa a la derecha,
   partes `casco` dorado, `vela` blanca, `linea` color mar solo sobre vela o casco, `palo` dorado para mástiles,
-  chimeneas y remos contra el agua, `fig` blanca, `humo`), envuelto en `.mece` (balanceo CSS); al avanzar, `animarBarca`
+  chimeneas y remos contra el agua, `fig` blanca, `humo`; lo alto va del centro a la proa y la popa queda baja porque el
+  animal se sienta ahí, en `#masc` con `translate(-9 -9) scale(.6)`), envuelto en `.mece` (balanceo CSS); al avanzar, `animarBarca`
   dibuja la estela `#estela` detrás y al llegar suelta un salpicón (`.salpicon`, se quita solo); si la guía salió
   mal, `S.bamboleo` añade la clase `duda` una vez. El mismo glifo va en el bloque «Tu embarcación» (`.barca.mini`).
   El animal (`ANIMALES[m.glifo]`) va en `#masc` sobre la barca, derecho y mirando hacia adelante
@@ -331,7 +332,11 @@ llegada, puertos [[texto, carga]] (uno por ciudad, en orden; la última carga es
 MASCOTAS[id]: `nombre, especie, emoji, glifo, hola, mar, paradas[]` (una frase por ciudad, tono para niño, ≤25 palabras).
 `glifo` es la clave en `ANIMALES` (motor.js): un SVG por especie (viewBox -14 -14 28 28, mirando a la derecha; partes
 `cuerpo` verde claro, `claro`, `oscuro`, `acento` dorado, `bigote`, `dientes`, `rabo`, `pata`); `animal(m)` lo
-dibuja en el globo, la lista, el pasaporte y la barca; el emoji queda de respaldo si no hay glifo.
+dibuja en el globo, la lista, el pasaporte y la barca; el emoji queda de respaldo si no hay glifo. Construcción del set
+(redibujado el 2026-09-14 para que lea a 26 px): cuerpo redondo y cabeza grande, suelo en y ≈ 8 para los de patas, patas
+rellenas con contorno (`cuerpo`, nunca trazos de palo), ojo `oscuro` de radio 1-1.2, boca con `bigote`, un solo detalle
+dorado por animal donde el animal lo pide (pico, manta, cresta, pinzas) y `claro` para vientre, cara o dientes. Cada glifo
+pesa hasta 800 caracteres (la prueba lo exige); la hoja de contacto scratchpad/webkit/hoja.js los dibuja a los tamaños reales.
 
 MERCADOS[id]: `[{n: nombre, i: icono (clave de ICONOS: grano, fruta, pez, cesta, bebida, frasco, hoja, tela, piel, madera, metal, gema, mineral, vasija, papel, moneda…), o: puerto de origen (índice), b: precio base, d?: puertos antes de
 pudrirse, m?: puerto donde se paga doble}]`. Cada puerto salvo el último debería ofrecer algo.
@@ -420,10 +425,12 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-13 Cauces ≈ 495 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 680 KB). La edición amplia
-  (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js; en mapa.py, fronteras a 0,5 y lagos
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 689 KB). La edición amplia
+  (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
+  comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
-  Lo que queda por probar si hace falta: cauces del mundo con dos decimales y un minificador de desarrollo.
+  Lo que queda por probar si hace falta: un minificador de desarrollo sobre el motor (terser como herramienta, no como dependencia
+  de ejecución; test/dist.js seguiría probando el HTML ensamblado), que es la palanca grande que queda: la económica de Cauces está a 2 KB del tope.
 - Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,
   `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español. El remoto es
   github.com/humbertogrant/cauces (público) desde el 2026-09-06; `gh` en esta máquina está autenticado como humbertogrant.

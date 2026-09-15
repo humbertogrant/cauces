@@ -311,7 +311,7 @@ console.log('perfiles OK');
  console.log('barcas OK')}
 // animales: un glifo SVG por especie, en el globo, la lista, el pasaporte y la barca; salto en el evento
 {if(Object.keys(ANIMALES).length<17)throw 'faltan glifos de animales';
- for(const r of RIVERS){const m=MASCOTAS[r.id];if(!m.glifo||!ANIMALES[m.glifo])throw 'mascota sin glifo '+r.id;const g=ANIMALES[m.glifo];if(g.length>560||(g.indexOf('class="cuerpo"')<0&&g.indexOf('class="claro"')<0))throw 'glifo raro '+m.glifo+' '+g.length}
+ for(const r of RIVERS){const m=MASCOTAS[r.id];if(!m.glifo||!ANIMALES[m.glifo])throw 'mascota sin glifo '+r.id;const g=ANIMALES[m.glifo];if(g.length>800||(g.indexOf('class="cuerpo"')<0&&g.indexOf('class="claro"')<0))throw 'glifo raro '+m.glifo+' '+g.length}
  if(animal({emoji:'x'})!=='x')throw 'sin glifo debe caer al emoji';
  setModo('mercader');abrirRio('nilo');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<div class="globo"><span class="emo" aria-hidden="true"><svg class="animal"')<0)throw 'globo sin animal';
  let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('<g id="masc"><g class="animal" transform="translate(-9 -9) scale(.6)">')<0)throw 'barca sin animal';
