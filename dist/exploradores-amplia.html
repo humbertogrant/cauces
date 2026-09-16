@@ -174,6 +174,10 @@ body.nino{font-size:19px}
 .escena.quiz{max-width:440px;margin:0 0 12px;border:1px solid var(--linea);border-radius:12px}
 .ficha{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 14px}
 .ficha.recuerdo{padding:0;overflow:hidden}
+.retrato .medio{fill:var(--verde-medio)}.retrato .oscuro{fill:var(--verde)}
+.globo .emo.papel{background:#fff;border:1px solid var(--linea);overflow:hidden}.globo .emo.papel svg{width:40px;height:40px}
+.ficha.conoce{padding:0;overflow:hidden}.conoce .lamina{background:#fff;padding:10px 14px 4px;text-align:center}.conoce .lamina svg{width:100%;max-width:340px;height:auto;max-height:230px;display:block;margin:0 auto}
+.conoce .cuerpo{padding:8px 16px 12px}.conoce .cuerpo p{margin:4px 0}
 .recuerdo .cuerpo{padding:12px 16px 4px}
 .recuerdo .cuerpo>p{margin-bottom:10px}
 .escena .cielo{fill:#E6F3EE}
@@ -590,6 +594,10 @@ eventos:[
 ];
 </script>
 <script>
+const RETRATOS={
+};
+</script>
+<script>
 const VOCES={
 ordenInicio:["Yo ya me la sé. ¿Y vos?","Tocá con calma; yo te miro.","Si te trabás, acordate de la frase."],
 ordenBien:["¡Esa es!","¡Sí! Seguí.","Yo también me la sabía.","¡Vamos bien!","Esa la vi pasar."],
@@ -625,7 +633,7 @@ grupos:[{titulo:'Viajeros',filtro:r=>!r.conquista,nota:'Los que fueron a ver: pe
 rangos:[[500,'Señor de los Caminos'],[250,'Gran Viajero'],[100,'Caravanero'],[30,'Peregrino'],[0,'Aprendiz']],
 comoSeJuega:'<p>Cada viaje es un recorrido fijo de la partida al regreso, y cada etapa una habitación con una imagen absurda que la amarra al lugar. Cada viaje se hace con su propia caravana, flota o ejército, con un animal de guía y una carga que se cambia en cada alto. Recorrés el viaje una vez, después lo ordenás de memoria y luego te pregunto. Lo que fallés vuelve pronto; lo que sepás se espacia.</p>'};
 
-JUEGO.edicion={nombre:'amplia',kb:455};</script>
+JUEGO.edicion={nombre:'amplia',kb:456};</script>
 <script>
 const $=s=>document.querySelector(s);
 const azar=a=>a[Math.floor(Math.random()*a.length)];
@@ -1053,7 +1061,11 @@ function siguiente(){const Q=S.quiz;Q.i++;Q.resp=null;Q.dicho=azar(VZ().pregunta
 function otraRonda(){if(S.quiz.modo==='rio'){iniciarQuiz(rioPor(S.rio));render()}else if(S.quiz.modo==='repaso')iniciarRepaso();else iniciarReto()}
 function cabecera(t,sub,volver){return `${volver?`<button class="volver" onclick="irInicio()" aria-label="${VJ().volver}">‹ ${VJ().Tipos}</button>`:''}<div><h1>${esc(t)}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div><button class="son${audio.on?' on':''}" onclick="audio.toggle()" aria-pressed="${audio.on}" title="${VJ().sonido}">≈</button>`}
 function globoNeutro(texto){GLOBO=true;return `<div class="globo neutro"><span class="emo" aria-hidden="true"><svg class="barca" viewBox="-15 -16 30 22">${glifo('cuadrada')}</svg></span><div class="dice"><b>Cauces:</b> ${esc(texto||azar(VZ().pregunta))} ${htmlVoz()}</div></div>`}
-function globo(r,texto,extra){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;return `<div class="globo${extra?' '+extra:''}"><span class="emo" aria-hidden="true">${animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
+function globo(r,texto,extra){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;const rt=!esNino()&&typeof retrato==='function'&&retrato(m);
+return `<div class="globo${extra?' '+extra:''}"><span class="emo${rt?' papel':''}" aria-hidden="true">${rt||animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
+function retrato(m,cls){const r=m&&typeof RETRATOS!=='undefined'&&RETRATOS[m.glifo];if(!r)return '';return `<svg class="retrato${cls?' '+cls:''}" viewBox="${r.v}" aria-hidden="true"><path class="medio" fill-rule="evenodd" d="${r.m}"/><path class="oscuro" fill-rule="evenodd" d="${r.o}"/></svg>`}
+function fichaAnimal(r){const m=r.companero,rt=m&&retrato(m,'lamina');if(!rt)return '';const cr=RETRATOS[m.glifo].f;
+return `<div class="ficha conoce"><div class="lamina">${rt}</div><div class="cuerpo"><div class="fkicker">Conocé a ${esc(m.nombre)}</div><p><b>${esc(m.nombre)}, ${esc(m.especie)}.</b>${m.ficha?' '+esc(m.ficha):''}</p><p class="fnota">Lámina: ${esc(cr)}.</p></div></div>`}
 function bloqueFrase(r,conLista){return `<div class="frase"><div class="fkicker">Frase para el orden</div><div class="ftexto">${marcarFrase(r.frase)}</div>${r.fraseNota?`<div class="fnota">${esc(r.fraseNota)}</div>`:''}${conLista?`<div class="flista">${esc(lista(r))}</div>`:''}</div>`}
 function renderInicio(){
 const tarjeta=r=>`<button class="tarjeta" onclick="abrirRio('${r.id}')"><span class="emo" aria-hidden="true">${r.companero?animal(r.companero):''}</span><span class="tn">${esc(r.nombre)}</span><span class="tm">${r.vocab.tarjeta(r)}${completo(r)?` <span class="listo" title="completo">${ico('ok')}</span>`:''}</span><span class="barra"><i style="width:${Math.round(dominio(r)*100)}%"></i></span></button>`;
@@ -1070,7 +1082,7 @@ ${typeof renderComparar==='function'?renderComparar():''}
 <details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}<p class="fnota">${VJ().toca}</p>${JUEGO.edicion?`<p class="fnota edicion">Edición ${esc(JUEGO.edicion.nombre)} · ${num(JUEGO.edicion.kb+' KB')} · un solo archivo, sin internet.</p>`:''}</details>
 <details class="mas ajustes"><summary>Ajustes: modo, voz y progreso</summary><div class="fkicker">Modo de juego</div><div class="tabs modo"><button class="${esNino()?'on':''}" onclick="setModo('mercader')">Niño</button><button class="${esNino()?'':'on'}" onclick="setModo('historia')">Adulto</button></div><p class="fnota">${esNino()?VJ().ajustesNino:VJ().ajustesAdulto}</p>${esNino()&&voz.soporte()?`<div class="tabs modo"><button class="${P.voz!=='boton'?'on':''}" onclick="setVoz('auto')">🔊 Lee sola</button><button class="${P.voz==='boton'?'on':''}" onclick="setVoz('boton')">Solo con el botón</button></div><p class="fnota">Con «Lee sola», el animal lee cada pantalla al abrirla y lo que dice al responder.</p>`:''}${renderProgreso()}</details>`}
 function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;const n=r.paradas.length,p=S.paso;
-if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2><div class="ficha recuerdo">${escena(r.inicio.escena)}<div class="cuerpo"><p>${esc(r.inicio.nota)}</p></div></div>${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}${bloqueFrase(r,true)}`;
+if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2><div class="ficha recuerdo">${escena(r.inicio.escena)}<div class="cuerpo"><p>${esc(r.inicio.nota)}</p></div></div>${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${typeof fichaAnimal==='function'?fichaAnimal(r):''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}${bloqueFrase(r,true)}`;
 if(p<=n){const c=r.paradas[p-1];
 const prev=p>1?r.paradas[p-2]:null;
 return `${globo(r,S.dicho||(r.companero&&r.companero.paradas[p-1]))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div><div class="ficha recuerdo">${escena(c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}

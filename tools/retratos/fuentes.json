@@ -1,0 +1,8 @@
+[
+ {"glifo":"hipo","archivo":"hipo.jpg","titulo":"SFR b+w - hippopotamus.jpg","url":"https://upload.wikimedia.org/wikipedia/commons/e/e9/SFR_b%2Bw_-_hippopotamus.jpg",
+  "pagina":"https://commons.wikimedia.org/wiki/File:SFR_b%2Bw_-_hippopotamus.jpg","autor":"Grabado en madera","anio":"siglo XIX","licencia":"dominio público",
+  "voltear":false,"recorte":[0,0,1,1],"ancho":260,"desenfoque":0.8,"medio":0.3,"oscuro":0.6,"tolerancia":0.7,"area_min":8,"halo":10},
+ {"glifo":"ornitorrinco","archivo":"ornitorrinco.jpg","titulo":"PSM V17 D789 Ornithorhynchus paradoxus.jpg","url":"https://upload.wikimedia.org/wikipedia/commons/1/16/PSM_V17_D789_Ornithorhynchus_paradoxus.jpg",
+  "pagina":"https://commons.wikimedia.org/wiki/File:PSM_V17_D789_Ornithorhynchus_paradoxus.jpg","autor":"Grabado de Popular Science Monthly","anio":"1880","licencia":"dominio público",
+  "voltear":true,"recorte":[0,0.18,1,1],"ancho":260,"desenfoque":0.9,"medio":0.3,"oscuro":0.6,"tolerancia":0.7,"area_min":8,"halo":6}
+]

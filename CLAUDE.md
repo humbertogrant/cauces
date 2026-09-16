@@ -52,6 +52,7 @@ src/data/rios.js     RIVERS: 25 ríos: 15 del mundo y 6 de Costa Rica (zona 'cr'
                      /*@amplia*/: Orinoco, Murray, San Lorenzo, Zambeze); curso y brazos los genera tools/cauces.py [ids]
 src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por puerto (modo Historia)
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
+src/data/retratos.js RETRATOS: retratos «grabado» de los animales (solo edición amplia; ver «Retratos»); lo genera tools/retratos.py
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
 src/data/eventos.js  EVENTOS: pruebas entre puertos por río (tramo, reto, textos)
 src/data/voces.js    VOCES (frases genéricas del compañero), RANGOS y voces de la economía: compartidos por los dos juegos
@@ -82,6 +83,8 @@ tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de 
 tools/relieve.py     regenera src/data/relieve.js (o relieve-<juego>.js; con «amplia», relieve-amplia.js): alturas de NOAA NCEI (ETOPO1 y
                      mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
+tools/retratos.py    traza láminas de dominio público (tools/retratos/fuentes.json; originales en tools/retratos/orig/, sin versionar)
+                     en retratos de dos tintas para src/data/retratos.js; con glifos como argumentos, solo esos
 ```
 
 Comandos: `npm run build`, `npm test`, `npm run instantanea` (vuelve a tomar la instantánea; solo cuando un cambio de texto de Cauces es
@@ -117,6 +120,30 @@ los recorta de la económica. Las pruebas exigen que la económica siga con 21 r
 marca «solo en la edición amplia» en su título.
 Un cambio que engorde la amplia dice su peso en el commit. Para congelar una versión, etiqueta de git y Release en GitHub con los
 dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
+
+## Retratos «grabado» (edición amplia)
+
+Desde el 2026-09-15 los animales pueden tener, además del glifo, un retrato fiel: una lámina de historia natural del siglo XIX
+(dominio público, Wikimedia Commons) trazada en dos tintas sobre papel, verde medio y verde tinta, que el niño ve en la ficha
+«Conocé a …» al empezar el río y el adulto también en el globo, en lugar del glifo. El glifo sigue en el mapa, la lista, los
+sellos y los iconos: un grabado no cabe a 26 px. Solo van en la amplia: `src/data/retratos.js` está entero dentro de
+`/*@amplia*/ … /*@fin:amplia*/` y build.js recorta las entradas de animales que el juego no usa (una por línea).
+- Fuentes: `tools/retratos/fuentes.json`, una entrada por glifo con `archivo`, `url` (original en Commons), `pagina`, `autor`,
+  `anio`, `licencia`, `voltear` (el animal mira a la derecha), `recorte` [x0,y0,x1,y1] en fracciones, `ancho` de trabajo (260 px),
+  `desenfoque`, umbrales `medio` y `oscuro` (oscuridad 0-1), `tolerancia`, `area_min` y `halo` (píxeles alrededor del cuerpo que se
+  conservan: lo demás del grabado, pasto y fondos, se va). Solo láminas de dominio público o CC0; el crédito (`f`) sale al pie de
+  la ficha. Los originales se bajan a `tools/retratos/orig/` si faltan y no se versionan. Elegir la lámina en Commons con la
+  API (`list=search` en el espacio 6 y las categorías «… (illustrations)»), mirar miniaturas y quedarse con una sola figura
+  entera, de perfil, con hatching claro.
+- Cómo se traza (`tools/retratos.py`): gris → recorte y volteo → reducción con desenfoque → contraste estirado (papel blanco) →
+  dos capas de «oscuridad ≥ umbral» con contornos rellenos (matplotlib, como el relieve) → se conserva solo lo cercano al cuerpo
+  (el polígono mayor con sus huecos rellenos, más los grandes, dilatado `halo`) → simplificación (shapely) → paths con
+  `fill-rule` evenodd. Entre 10 y 20 KB por animal.
+- Motor (bloque `/*@amplia*/`): `retrato(m, cls)` dibuja `RETRATOS[m.glifo]` (`v` viewBox, `m` capa media, `o` capa oscura, `f`
+  crédito); `globo()` lo usa en Adulto (`.emo.papel`, círculo de papel); `fichaAnimal(r)` arma la ficha «Conocé a …» que
+  `renderDescender` pone en la parada 0 tras «Tu embarcación»: nombre, especie, el texto `ficha` de la mascota (un hecho de la
+  especie, verificable; en mascotas.js, dentro de `/*@amplia*/` si el río es de la económica) y el crédito. CSS en cabeza.html,
+  también dentro de marcas. Prototipo del 2026-09-15: hipo (Nilo) y ornitorrinco (Murray).
 
 ## Cómo está hecho el motor
 

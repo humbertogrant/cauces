@@ -28,6 +28,7 @@ for r in R:
     m=M.get(r['id'])
     if m:
         add(f"{m['nombre']} · hola",m['hola']);add(f"{m['nombre']} · mar",m['mar'])
+        if m.get('ficha'): add(f"{m['nombre']} · ficha (edición amplia)",m['ficha'])
         for c,l in zip(r['ciudades'],m['paradas']):add(f"{m['nombre']} en {c['nombre']}",l)
     for e in E.get(r['id'],[]):
         add(f"Evento · {e['titulo']}",e['texto']);add(f"Evento · {e['titulo']} · bien",e['bien']);add(f"Evento · {e['titulo']} · mal",e['mal'])
