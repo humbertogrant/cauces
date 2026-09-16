@@ -500,17 +500,14 @@ function otraRonda(){if(S.quiz.modo==='rio'){iniciarQuiz(rioPor(S.rio));render()
 /* ---------- render ---------- */
 function cabecera(t,sub,volver){return `${volver?`<button class="volver" onclick="irInicio()" aria-label="${VJ().volver}">‹ ${VJ().Tipos}</button>`:''}<div><h1>${esc(t)}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div><button class="son${audio.on?' on':''}" onclick="audio.toggle()" aria-pressed="${audio.on}" title="${VJ().sonido}">≈</button>`}
 function globoNeutro(texto){GLOBO=true;return `<div class="globo neutro"><span class="emo" aria-hidden="true"><svg class="barca" viewBox="-15 -16 30 22">${glifo('cuadrada')}</svg></span><div class="dice"><b>Cauces:</b> ${esc(texto||azar(VZ().pregunta))} ${htmlVoz()}</div></div>`}
-function globo(r,texto,extra,animo){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;const pj=typeof personaje==='function'&&personaje(m,animo||S.animo||'normal','cabeza');/* el personaje con su ánimo, en primer plano, si la edición trae retratos */
+function globo(r,texto,extra,animo){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;const pj=typeof ilustracion==='function'&&ilustracion(m,animo||S.animo||'normal','cabeza');/* la ilustración con su ánimo, en primer plano, si la edición la trae */
   return `<div class="globo${extra?' '+extra:''}"><span class="emo" aria-hidden="true">${pj||animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
 /*@amplia*/
-/* retratos «grabado» (RETRATOS, de tools/retratos.py, trazados de una lámina de dominio público): v viewBox, m capa media, o capa
-   oscura, s silueta, c cara (ojo, boca, k) y f crédito. retrato(m) dibuja la lámina en dos tintas para la ficha «Conocé a …»;
-   personaje(m, animo) arma el personaje del globo: la silueta rellena plana como un glifo, la capa oscura encima como textura y
-   una cara dibujada con ánimo (normal parpadea; alegre, pensativo, sorpresa, dormido) */
-function retrato(m,cls){const r=m&&typeof RETRATOS!=='undefined'&&RETRATOS[m.glifo];if(!r)return '';return `<svg class="retrato${cls?' '+cls:''}" viewBox="${r.v}" aria-hidden="true"><path class="medio" fill-rule="evenodd" d="${r.m}"/><path class="oscuro" fill-rule="evenodd" d="${r.o}"/></svg>`}
-let PJ_N=0;
+/* ilustraciones (ILUSTRACIONES, src/data/ilustraciones.js): un dibujo vectorial elaborado por animal (v viewBox, d el SVG, c la cara:
+   ojo, boca, tamaño k y marco del primer plano) para la ficha «Conocé a …» y el globo. El dibujo no trae ojo ni boca: los pone
+   caraDe según el ánimo (normal parpadea; alegre, pensativo, sorpresa, dormido). El glifo chico sigue en el mapa, la lista y los sellos */
 function caraDe(c,a){const [ex,ey]=c.ojo,[mx,my]=c.boca,k=c.k||9,w=(k*0.22).toFixed(1),z=(x,y,s)=>`<text x="${x}" y="${y}" font-size="${s}" style="font-family:var(--tit)" fill="var(--mar)">z</text>`;
-  const ojo={normal:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.15}" cy="${ey}" r="${k*0.65}"/><circle class="cuerpo parpado" cx="${ex}" cy="${ey}" r="${k*1.25}"/>`,
+  const ojo={normal:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.15}" cy="${ey}" r="${k*0.65}"/><circle class="claro" cx="${ex+k*0.4}" cy="${ey-k*0.28}" r="${k*0.2}" style="stroke:none"/><circle class="cuerpo parpado" cx="${ex}" cy="${ey}" r="${k*1.25}"/>`,
     alegre:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey+k*0.2} q${k} -${k*1.4} ${2*k} 0"/>`,
     sorpresa:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.4}"/><circle class="oscuro" cx="${ex+k*0.1}" cy="${ey+k*0.1}" r="${k*0.55}"/>`,
     dormido:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey-k*0.2} q${k} ${k*1.2} ${2*k} 0"/>${z(ex+k*1.6,ey-k*1.8,k*2.2)}${z(ex+k*3.2,ey-k*3.6,k*1.6)}`,
@@ -521,10 +518,10 @@ function caraDe(c,a){const [ex,ey]=c.ojo,[mx,my]=c.boca,k=c.k||9,w=(k*0.22).toFi
     dormido:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*0.9} ${my+k*0.2} q${k*0.9} ${k*0.5} ${1.8*k} 0"/>`,
     pensativo:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.1} ${my+k*0.2} q${k*1.1} -${k*0.3} ${2.2*k} 0"/>`}[a]||'';
   return ojo+boca}
-function personaje(m,animo,vista){const r=m&&typeof RETRATOS!=='undefined'&&RETRATOS[m.glifo];if(!r||!r.s||!r.c)return '';const W=+r.v.split(' ')[2],id='pj'+(++PJ_N),vb=vista==='cabeza'&&r.c.marco?r.c.marco.join(' '):r.v;/* «cabeza»: primer plano de la cara, para el globo */
-  return `<svg class="animal personaje" viewBox="${vb}" data-animo="${animo}" aria-hidden="true"><defs><clipPath id="${id}"><path d="${r.s}"/></clipPath></defs><path class="cuerpo" style="stroke-width:${(W/28*0.6).toFixed(1)}" d="${r.s}"/><path class="sombra" clip-path="url(#${id})" fill-rule="evenodd" d="${r.o}"/>${caraDe(r.c,animo)}</svg>`}
-function fichaAnimal(r){const m=r.companero,rt=m&&retrato(m,'lamina');if(!rt)return '';const cr=RETRATOS[m.glifo].f;
-  return `<div class="ficha conoce"><div class="lamina">${rt}</div><div class="cuerpo"><div class="fkicker">Conocé a ${esc(m.nombre)}</div><p><b>${esc(m.nombre)}, ${esc(m.especie)}.</b>${m.ficha?' '+esc(m.ficha):''}</p><p class="fnota">Lámina: ${esc(cr)}.</p></div></div>`}
+function ilustracion(m,animo,vista){const r=m&&typeof ILUSTRACIONES!=='undefined'&&ILUSTRACIONES[m.glifo];if(!r)return '';const vb=vista==='cabeza'&&r.c&&r.c.marco?r.c.marco.join(' '):r.v;/* «cabeza»: primer plano de la cara, para el globo */
+  return `<svg class="animal ilus" viewBox="${vb}" data-animo="${animo||'normal'}" aria-hidden="true">${r.d}${r.c?caraDe(r.c,animo||'normal'):''}</svg>`}
+function fichaAnimal(r){const m=r.companero,il=m&&ilustracion(m,'normal');if(!il)return '';
+  return `<div class="ficha conoce"><div class="lamina">${il}</div><div class="cuerpo"><div class="fkicker">Conocé a ${esc(m.nombre)}</div><p><b>${esc(m.nombre)}, ${esc(m.especie)}.</b>${m.ficha?' '+esc(m.ficha):''}</p></div></div>`}
 /*@fin:amplia*/
 function bloqueFrase(r,conLista){return `<div class="frase"><div class="fkicker">Frase para el orden</div><div class="ftexto">${marcarFrase(r.frase)}</div>${r.fraseNota?`<div class="fnota">${esc(r.fraseNota)}</div>`:''}${conLista?`<div class="flista">${esc(lista(r))}</div>`:''}</div>`}
 function renderInicio(){

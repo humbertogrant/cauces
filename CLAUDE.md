@@ -52,7 +52,7 @@ src/data/rios.js     RIVERS: 25 ríos: 15 del mundo y 6 de Costa Rica (zona 'cr'
                      /*@amplia*/: Orinoco, Murray, San Lorenzo, Zambeze); curso y brazos los genera tools/cauces.py [ids]
 src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por puerto (modo Historia)
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
-src/data/retratos.js RETRATOS: retratos «grabado» de los animales (solo edición amplia; ver «Retratos»); lo genera tools/retratos.py
+src/data/ilustraciones.js ILUSTRACIONES: ilustraciones vectoriales elaboradas de los animales, para la ficha y el globo (solo edición amplia; ver «Ilustraciones»)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
 src/data/eventos.js  EVENTOS: pruebas entre puertos por río (tramo, reto, textos)
 src/data/voces.js    VOCES (frases genéricas del compañero), RANGOS y voces de la economía: compartidos por los dos juegos
@@ -83,8 +83,6 @@ tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de 
 tools/relieve.py     regenera src/data/relieve.js (o relieve-<juego>.js; con «amplia», relieve-amplia.js): alturas de NOAA NCEI (ETOPO1 y
                      mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
-tools/retratos.py    traza láminas de dominio público (tools/retratos/fuentes.json; originales en tools/retratos/orig/, sin versionar)
-                     en retratos de dos tintas para src/data/retratos.js; con glifos como argumentos, solo esos
 ```
 
 Comandos: `npm run build`, `npm test`, `npm run instantanea` (vuelve a tomar la instantánea; solo cuando un cambio de texto de Cauces es
@@ -121,39 +119,29 @@ marca «solo en la edición amplia» en su título.
 Un cambio que engorde la amplia dice su peso en el commit. Para congelar una versión, etiqueta de git y Release en GitHub con los
 dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
 
-## Retratos «grabado» (edición amplia)
+## Ilustraciones (edición amplia)
 
-Desde el 2026-09-15 los animales pueden tener, además del glifo, un retrato fiel: una lámina de historia natural del siglo XIX
-(dominio público, Wikimedia Commons) trazada en dos tintas sobre papel, verde medio y verde tinta, que se ve en la ficha
-«Conocé a …» al empezar el río; y de la misma lámina sale el **personaje** del globo, en los dos modos: la silueta del grabado
-rellena plana como un glifo, su textura encima y una cara dibujada con ánimos. El glifo sigue en el mapa, la lista, los
-sellos y los iconos: un grabado no cabe a 26 px. Solo van en la amplia: `src/data/retratos.js` está entero dentro de
-`/*@amplia*/ … /*@fin:amplia*/` y build.js recorta las entradas de animales que el juego no usa (una por línea).
-- Fuentes: `tools/retratos/fuentes.json`, una entrada por glifo con `archivo`, `url` (original en Commons), `pagina`, `autor`,
-  `anio`, `licencia`, `voltear` (el animal mira a la derecha), `recorte` [x0,y0,x1,y1] en fracciones, `ancho` de trabajo (260 px),
-  `desenfoque`, umbrales `medio` y `oscuro` (oscuridad 0-1), `tolerancia`, `area_min` y `halo` (píxeles alrededor del cuerpo que se
-  conservan: lo demás del grabado, pasto y fondos, se va). Solo láminas de dominio público o CC0; el crédito (`f`) sale al pie de
-  la ficha. Los originales se bajan a `tools/retratos/orig/` si faltan y no se versionan. Elegir la lámina en Commons con la
-  API (`list=search` en el espacio 6 y las categorías «… (illustrations)»), mirar miniaturas y quedarse con una sola figura
-  entera, de perfil, con hatching claro.
-- Cómo se traza (`tools/retratos.py`): gris → recorte y volteo → reducción con desenfoque → contraste estirado (papel blanco) →
-  dos capas de «oscuridad ≥ umbral» con contornos rellenos (matplotlib, como el relieve) → se conserva solo lo cercano al cuerpo
-  (el polígono mayor con sus huecos rellenos, más los grandes, dilatado `halo`) → simplificación (shapely) → paths con
-  `fill-rule` evenodd. Entre 10 y 20 KB por animal.
-- Personaje (`personaje(m, animo)`): la silueta del grabado (`s`: los polígonos grandes de la capa media con los huecos rellenos,
-  un cierre morfológico que une las partes y una apertura que quita pasto y briznas pegadas al lomo; `parte_silueta`, `cierre` y
-  `apertura` en fuentes.json) rellena plana (`cuerpo`), la capa oscura del grabado encima como textura (`sombra`, verde medio al
-  42 %, recortada a la silueta con un clipPath de id único) y una cara dibujada donde dice `cara` de fuentes.json (`ojo` [x,y],
-  `boca` [x,y], `k` tamaño en píxeles del retrato, ubicados a ojo con la cuadrícula de scratchpad/webkit/personaje-cap.js --grid):
-  ojo grande con blanco y boca con `bigote`. Ánimos: normal (parpadea cada 5,5 s con `.parpado`), alegre (acierto en la guía,
-  compra o venta, evento o Recitar), pensativo (fallo), sorpresa (evento sin responder) y dormido (al llegar al mar). Los
-  manejadores fijan `S.animo` (se limpia al zarpar y al abrir la ruta) y `globo(r, texto, extra, animo)` lo recibe o lo toma de
-  `S.animo`; sin retrato, el globo sigue con el glifo.
-- Motor (bloque `/*@amplia*/`): `retrato(m, cls)` dibuja `RETRATOS[m.glifo]` (`v` viewBox, `m` capa media, `o` capa oscura, `s`
-  silueta, `c` cara, `f` crédito) para la ficha; `fichaAnimal(r)` arma la ficha «Conocé a …» que
-  `renderDescender` pone en la parada 0 tras «Tu embarcación»: nombre, especie, el texto `ficha` de la mascota (un hecho de la
-  especie, verificable; en mascotas.js, dentro de `/*@amplia*/` si el río es de la económica) y el crédito. CSS en cabeza.html,
-  también dentro de marcas. Prototipo del 2026-09-15: hipo (Nilo) y ornitorrinco (Murray).
+Desde el 2026-09-15 cada animal puede tener, además del glifo chico, una **ilustración vectorial elaborada** (`src/data/ilustraciones.js`,
+`ILUSTRACIONES[glifo] = {v, d, c}`; caja 0 0 120 90, suelo en y ≈ 82, mirando a la derecha) para la ficha «Conocé a …» al empezar
+el río y para el globo, donde va en primer plano de la cabeza (`c.marco`) en los dos modos. El glifo sigue en el mapa, la lista, los
+sellos y los iconos. Solo van en la amplia: el archivo está entero dentro de `/*@amplia*/ … /*@fin:amplia*/` y build.js recorta las
+entradas de animales que el juego no usa (una por línea).
+- Dibujo (`d`): clases de `.animal` (cuerpo, claro, oscuro, acento, bigote, dientes, rabo, pata) más `sombra` (verde medio plano,
+  para vientre y sombra del suelo) y `lejos` (patas y partes lejanas, verde medio con contorno); `.animal.ilus` engrosa los trazos.
+  Cuerpo con volumen, cabeza grande, patas y dedos, textura propia (pliegues, pelaje, escamas, manchas), un solo detalle dorado y,
+  si cabe, un detalle real del animal (el picabueyes del hipopótamo, el espolón del ornitorrinco). Sin ojo ni boca: los pone
+  `caraDe(c, animo)` donde dice `c` (`ojo` [x,y], `boca` [x,y], `k` tamaño, `marco` [x,y,w,h] del primer plano), con ojo grande de
+  blanco y brillo y boca con `bigote`.
+- Ánimos: normal (parpadea cada 5,5 s, `.parpado`), alegre (acierto en la guía, compra o venta, evento o Recitar), pensativo
+  (fallo), sorpresa (evento sin responder) y dormido (al llegar al mar). Los manejadores fijan `S.animo` (se limpia al zarpar y al
+  abrir la ruta) y `globo(r, texto, extra, animo)` lo recibe o lo toma de `S.animo`; sin ilustración, el globo sigue con el glifo.
+- Motor (bloque `/*@amplia*/`): `ilustracion(m, animo, vista)` y `fichaAnimal(r)`, que `renderDescender` pone en la parada 0 tras
+  «Tu embarcación» con el nombre, la especie y el texto `ficha` de la mascota (un hecho de la especie, verificable; en mascotas.js,
+  dentro de `/*@amplia*/` si el río es de la económica). La hoja scratchpad/webkit/ilus-cap.js [--grid] dibuja cada ilustración a
+  los tamaños reales y con los cinco ánimos, para revisar antes de tocar el juego.
+- Descartado el 2026-09-15: retratos trazados de láminas de dominio público (grabados del siglo XIX pasados a dos tintas con la
+  técnica del relieve) y un «personaje» hecho con su silueta más una cara dibujada. Fieles en la ficha, pero irreconocibles en el
+  globo; Humberto pidió volver al vector y elaborarlo. Queda en la historia de git (commits b0715a6 y c69a359).
 
 ## Cómo está hecho el motor
 

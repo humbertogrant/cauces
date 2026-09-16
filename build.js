@@ -13,8 +13,8 @@
 const fs=require('fs'),path=require('path');
 const src=p=>fs.readFileSync(path.join(__dirname,'src',p),'utf8');
 const JUEGOS={
-  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/retratos.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'}},
-  exploradores:{titulo:'Exploradores: los grandes viajes, etapa por etapa',vocab:['itinerario','travesia'],archivos:['data/mapa-exploradores.js','data/itinerarios.js','data/retratos.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js']}
+  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/ilustraciones.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'}},
+  exploradores:{titulo:'Exploradores: los grandes viajes, etapa por etapa',vocab:['itinerario','travesia'],archivos:['data/mapa-exploradores.js','data/itinerarios.js','data/ilustraciones.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js']}
 };
 const EDICIONES={economica:{nombre:'económica',sufijo:'',tope:500},amplia:{nombre:'amplia',sufijo:'-amplia',tope:0}};
 function archivosDe(id,edicion){const j=JUEGOS[id],rep=(edicion==='amplia'&&j.amplia)||{};return j.archivos.map(f=>rep[f]||f)}// archivos del juego en una edición
@@ -52,8 +52,8 @@ function ensamblar(id,edicion){
   const j=JUEGOS[id],e=EDICIONES[edicion],archivos=archivosDe(id,edicion),leer=f=>cortarEdicion(src(f),edicion);
   const datos=archivos.filter(f=>f!=='motor.js').map(leer).join('\n'),u=usados(datos),{motor,quitado}=recortar(leer('motor.js'),j,u);
   const titulo=j.titulo+(e.sufijo?' · edición '+e.nombre:'');
-  const retratos=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-zñ]+):\{v:/);if(!k||u.glifos.has(k[1]))return true;quitado.retratos=(quitado.retratos||0)+1;return false}).join('\n');/* retratos «grabado» (data/retratos.js): solo los de los animales del juego */
-  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/retratos.js'?retratos(limpiar(leer(f))):limpiar(leer(f));
+  const ilustraciones=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-zñ]+):\{v:/);if(!k||u.glifos.has(k[1]))return true;quitado.ilustraciones=(quitado.ilustraciones||0)+1;return false}).join('\n');/* ilustraciones (data/ilustraciones.js): solo las de los animales del juego */
+  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):limpiar(leer(f));
   const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
   /* el archivo dice cuánto pesa; el número entra en el mismo archivo, así que se comprueba después de escribirlo */
   let kb=Math.round(base.length/1024),html=base.replace('__PESO__',kb);const kb2=Math.round(html.length/1024);if(kb2!==kb){kb=kb2;html=base.replace('__PESO__',kb)}

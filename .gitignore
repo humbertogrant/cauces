@@ -3,4 +3,3 @@ node_modules/
 .DS_Store
 *.tif
 __pycache__/
-tools/retratos/orig/

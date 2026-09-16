@@ -21,8 +21,8 @@ scripts.forEach((s,i)=>vm.runInThisContext(s,{filename:archivo+'-script-'+i}));
 setTimeout(()=>{
   if(JUEGO.id!==juego)throw 'juego '+JUEGO.id;
   if(juego==='cauces'&&(edicion==='amplia')!==!!rutaPor('orinoco'))throw 'ríos de la amplia en la edición '+edicion;
-  if((edicion==='amplia')!==(typeof RETRATOS!=='undefined'))throw 'RETRATOS en la edición '+edicion;if(edicion==='amplia'&&juego==='cauces'&&!(RETRATOS.hipo&&RETRATOS.hipo.o&&RETRATOS.hipo.s&&RETRATOS.hipo.c))throw 'sin retrato completo del hipopótamo';if((edicion==='amplia')!==(typeof personaje==='function'))throw 'personaje en la edición '+edicion;
-  if(edicion==='amplia')for(const k of Object.keys(RETRATOS))if(!RUTAS.some(r=>r.companero.glifo===k))throw 'retrato sin animal en este juego: '+k;
+  if((edicion==='amplia')!==(typeof ILUSTRACIONES!=='undefined'))throw 'ILUSTRACIONES en la edición '+edicion;if(edicion==='amplia'&&juego==='cauces'&&!(ILUSTRACIONES.hipo&&ILUSTRACIONES.hipo.d&&ILUSTRACIONES.hipo.c))throw 'sin ilustración del hipopótamo';if((edicion==='amplia')!==(typeof ilustracion==='function'))throw 'ilustracion en la edición '+edicion;
+  if(edicion==='amplia')for(const k of Object.keys(ILUSTRACIONES))if(!RUTAS.some(r=>r.companero.glifo===k))throw 'ilustración sin animal en este juego: '+k;
   const kb=Math.round(html.length/1024);if(!JUEGO.edicion||JUEGO.edicion.nombre!==E.nombre||JUEGO.edicion.kb!==kb)throw 'JUEGO.edicion '+JSON.stringify(JUEGO.edicion)+' en un archivo de '+kb+' KB';
   for(const t of Object.keys(VOCAB))if(!(t==='rio'?juego==='cauces':juego==='exploradores'))throw 'VOCAB.'+t+' sobra en '+juego;
   for(const r of RUTAS){if(!r.vocab||!r.vocab.inicio)throw 'ruta sin vocabulario '+r.id;if(!ANIMALES[r.companero.glifo])throw 'animal recortado de más: '+r.companero.glifo;
