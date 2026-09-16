@@ -174,7 +174,7 @@ body.nino{font-size:19px}
 .escena.quiz{max-width:440px;margin:0 0 12px;border:1px solid var(--linea);border-radius:12px}
 .ficha{background:var(--ficha);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin:0 0 14px}
 .ficha.recuerdo{padding:0;overflow:hidden}
-.animal.ilus .cuerpo,.animal.ilus .claro,.animal.ilus .acento{stroke-width:1.5}.animal.ilus .sombra{fill:var(--verde-medio);stroke:none}.animal.ilus .lejos{fill:var(--verde-medio);stroke:var(--mar);stroke-width:1.5;stroke-linejoin:round}
+.animal.ilus .cuerpo,.animal.ilus .claro,.animal.ilus .acento{stroke-width:1.5}.animal.ilus .sombra{fill:var(--verde-medio);stroke:none}.animal.ilus .lejos{fill:var(--verde-medio);stroke:none}
 .animal.ilus .bigote{stroke-width:1.4}.animal.ilus .rabo{stroke-width:3.2}.animal.ilus .pata{stroke-width:2.4}.globo .emo svg.ilus{width:40px;height:40px}
 .ilus .parpado{opacity:0;animation:parpadeo 5.5s ease-in-out infinite}@keyframes parpadeo{0%,92%,100%{opacity:0}94%,97%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.ilus .parpado{animation:none}}
@@ -635,7 +635,7 @@ grupos:[{titulo:'Viajeros',filtro:r=>!r.conquista,nota:'Los que fueron a ver: pe
 rangos:[[500,'Señor de los Caminos'],[250,'Gran Viajero'],[100,'Caravanero'],[30,'Peregrino'],[0,'Aprendiz']],
 comoSeJuega:'<p>Cada viaje es un recorrido fijo de la partida al regreso, y cada etapa una habitación con una imagen absurda que la amarra al lugar. Cada viaje se hace con su propia caravana, flota o ejército, con un animal de guía y una carga que se cambia en cada alto. Recorrés el viaje una vez, después lo ordenás de memoria y luego te pregunto. Lo que fallés vuelve pronto; lo que sepás se espacia.</p>'};
 
-JUEGO.edicion={nombre:'amplia',kb:458};</script>
+JUEGO.edicion={nombre:'amplia',kb:459};</script>
 <script>
 const $=s=>document.querySelector(s);
 const azar=a=>a[Math.floor(Math.random()*a.length)];
@@ -1065,18 +1065,19 @@ function cabecera(t,sub,volver){return `${volver?`<button class="volver" onclick
 function globoNeutro(texto){GLOBO=true;return `<div class="globo neutro"><span class="emo" aria-hidden="true"><svg class="barca" viewBox="-15 -16 30 22">${glifo('cuadrada')}</svg></span><div class="dice"><b>Cauces:</b> ${esc(texto||azar(VZ().pregunta))} ${htmlVoz()}</div></div>`}
 function globo(r,texto,extra,animo){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;const pj=typeof ilustracion==='function'&&ilustracion(m,animo||S.animo||'normal','cabeza');
 return `<div class="globo${extra?' '+extra:''}"><span class="emo" aria-hidden="true">${pj||animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
-function caraDe(c,a){const [ex,ey]=c.ojo,[mx,my]=c.boca,k=c.k||9,w=(k*0.22).toFixed(1),z=(x,y,s)=>`<text x="${x}" y="${y}" font-size="${s}" style="font-family:var(--tit)" fill="var(--mar)">z</text>`;
-const ojo={normal:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.15}" cy="${ey}" r="${k*0.65}"/><circle class="claro" cx="${ex+k*0.4}" cy="${ey-k*0.28}" r="${k*0.2}" style="stroke:none"/><circle class="cuerpo parpado" cx="${ex}" cy="${ey}" r="${k*1.25}"/>`,
+function caraDe(c,a){const k=c.k||9,kb=c.kb||k,w=(k*0.22).toFixed(1),z=(x,y,s)=>`<text x="${x}" y="${y}" font-size="${s}" style="font-family:var(--tit)" fill="var(--mar)">z</text>`;
+const ojo=(ex,ey,k)=>({normal:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.15}" cy="${ey}" r="${k*0.65}"/><circle class="claro" cx="${ex+k*0.4}" cy="${ey-k*0.28}" r="${k*0.2}" style="stroke:none"/><circle class="cuerpo parpado" cx="${ex}" cy="${ey}" r="${k*1.25}"/>`,
 alegre:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey+k*0.2} q${k} -${k*1.4} ${2*k} 0"/>`,
 sorpresa:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.4}"/><circle class="oscuro" cx="${ex+k*0.1}" cy="${ey+k*0.1}" r="${k*0.55}"/>`,
-dormido:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey-k*0.2} q${k} ${k*1.2} ${2*k} 0"/>${z(ex+k*1.6,ey-k*1.8,k*2.2)}${z(ex+k*3.2,ey-k*3.6,k*1.6)}`,
-pensativo:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.3}" cy="${ey-k*0.2}" r="${k*0.6}"/><path class="bigote" style="stroke-width:${w}" d="M${ex-k*1.2} ${ey-k*1.9} q${k*1.2} -${k*0.8} ${2.4*k} -${k*0.1}"/>`}[a]||'';
-const boca={normal:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.2} ${my} q${k*1.2} ${k*0.9} ${2.4*k} 0"/>`,
-alegre:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.6} ${my-k*0.3} q${k*1.6} ${k*1.8} ${3.2*k} 0"/>`,
-sorpresa:`<ellipse class="oscuro" cx="${mx}" cy="${my+k*0.3}" rx="${k*0.6}" ry="${k*0.85}"/>`,
-dormido:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*0.9} ${my+k*0.2} q${k*0.9} ${k*0.5} ${1.8*k} 0"/>`,
-pensativo:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.1} ${my+k*0.2} q${k*1.1} -${k*0.3} ${2.2*k} 0"/>`}[a]||'';
-return ojo+boca}
+dormido:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey-k*0.2} q${k} ${k*1.2} ${2*k} 0"/>`,
+pensativo:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.3}" cy="${ey-k*0.2}" r="${k*0.6}"/><circle class="claro" cx="${ex+k*0.5}" cy="${ey-k*0.45}" r="${k*0.18}" style="stroke:none"/><path class="bigote" style="stroke-width:${w}" d="M${ex-k*1.2} ${ey-k*1.9} q${k*1.2} -${k*0.8} ${2.4*k} -${k*0.1}"/>`}[a]||'');
+const [mx,my]=c.boca,[ex,ey]=c.ojo;
+const boca={normal:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*1.2} ${my} q${kb*1.2} ${kb*0.9} ${2.4*kb} 0"/>`,
+alegre:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*1.6} ${my-kb*0.3} q${kb*1.6} ${kb*1.8} ${3.2*kb} 0"/>`,
+sorpresa:`<ellipse class="oscuro" cx="${mx}" cy="${my+kb*0.3}" rx="${kb*0.6}" ry="${kb*0.85}"/>`,
+dormido:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*0.9} ${my+kb*0.2} q${kb*0.9} ${kb*0.5} ${1.8*kb} 0"/>`,
+pensativo:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*1.1} ${my+kb*0.2} q${kb*1.1} -${kb*0.3} ${2.2*kb} 0"/>`}[a]||'';
+return (c.ojo2?ojo(c.ojo2[0],c.ojo2[1],c.k2||k*0.85):'')+ojo(ex,ey,k)+(a==='dormido'?z(ex+k*1.6,ey-k*1.8,k*2.2)+z(ex+k*3.2,ey-k*3.6,k*1.6):'')+boca}
 function ilustracion(m,animo,vista){const r=m&&typeof ILUSTRACIONES!=='undefined'&&ILUSTRACIONES[m.glifo];if(!r)return '';const vb=vista==='cabeza'&&r.c&&r.c.marco?r.c.marco.join(' '):r.v;
 return `<svg class="animal ilus" viewBox="${vb}" data-animo="${animo||'normal'}" aria-hidden="true">${r.d}${r.c?caraDe(r.c,animo||'normal'):''}</svg>`}
 function fichaAnimal(r){const m=r.companero,il=m&&ilustracion(m,'normal');if(!il)return '';

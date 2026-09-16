@@ -506,18 +506,20 @@ function globo(r,texto,extra,animo){const m=r&&r.companero;if(!m||!texto)return 
 /* ilustraciones (ILUSTRACIONES, src/data/ilustraciones.js): un dibujo vectorial elaborado por animal (v viewBox, d el SVG, c la cara:
    ojo, boca, tamaño k y marco del primer plano) para la ficha «Conocé a …» y el globo. El dibujo no trae ojo ni boca: los pone
    caraDe según el ánimo (normal parpadea; alegre, pensativo, sorpresa, dormido). El glifo chico sigue en el mapa, la lista y los sellos */
-function caraDe(c,a){const [ex,ey]=c.ojo,[mx,my]=c.boca,k=c.k||9,w=(k*0.22).toFixed(1),z=(x,y,s)=>`<text x="${x}" y="${y}" font-size="${s}" style="font-family:var(--tit)" fill="var(--mar)">z</text>`;
-  const ojo={normal:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.15}" cy="${ey}" r="${k*0.65}"/><circle class="claro" cx="${ex+k*0.4}" cy="${ey-k*0.28}" r="${k*0.2}" style="stroke:none"/><circle class="cuerpo parpado" cx="${ex}" cy="${ey}" r="${k*1.25}"/>`,
+function caraDe(c,a){const k=c.k||9,kb=c.kb||k,w=(k*0.22).toFixed(1),z=(x,y,s)=>`<text x="${x}" y="${y}" font-size="${s}" style="font-family:var(--tit)" fill="var(--mar)">z</text>`;
+  const ojo=(ex,ey,k)=>({normal:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.15}" cy="${ey}" r="${k*0.65}"/><circle class="claro" cx="${ex+k*0.4}" cy="${ey-k*0.28}" r="${k*0.2}" style="stroke:none"/><circle class="cuerpo parpado" cx="${ex}" cy="${ey}" r="${k*1.25}"/>`,
     alegre:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey+k*0.2} q${k} -${k*1.4} ${2*k} 0"/>`,
     sorpresa:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.4}"/><circle class="oscuro" cx="${ex+k*0.1}" cy="${ey+k*0.1}" r="${k*0.55}"/>`,
-    dormido:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey-k*0.2} q${k} ${k*1.2} ${2*k} 0"/>${z(ex+k*1.6,ey-k*1.8,k*2.2)}${z(ex+k*3.2,ey-k*3.6,k*1.6)}`,
-    pensativo:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.3}" cy="${ey-k*0.2}" r="${k*0.6}"/><path class="bigote" style="stroke-width:${w}" d="M${ex-k*1.2} ${ey-k*1.9} q${k*1.2} -${k*0.8} ${2.4*k} -${k*0.1}"/>`}[a]||'';
-  const boca={normal:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.2} ${my} q${k*1.2} ${k*0.9} ${2.4*k} 0"/>`,
-    alegre:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.6} ${my-k*0.3} q${k*1.6} ${k*1.8} ${3.2*k} 0"/>`,
-    sorpresa:`<ellipse class="oscuro" cx="${mx}" cy="${my+k*0.3}" rx="${k*0.6}" ry="${k*0.85}"/>`,
-    dormido:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*0.9} ${my+k*0.2} q${k*0.9} ${k*0.5} ${1.8*k} 0"/>`,
-    pensativo:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.1} ${my+k*0.2} q${k*1.1} -${k*0.3} ${2.2*k} 0"/>`}[a]||'';
-  return ojo+boca}
+    dormido:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey-k*0.2} q${k} ${k*1.2} ${2*k} 0"/>`,
+    pensativo:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.3}" cy="${ey-k*0.2}" r="${k*0.6}"/><circle class="claro" cx="${ex+k*0.5}" cy="${ey-k*0.45}" r="${k*0.18}" style="stroke:none"/><path class="bigote" style="stroke-width:${w}" d="M${ex-k*1.2} ${ey-k*1.9} q${k*1.2} -${k*0.8} ${2.4*k} -${k*0.1}"/>`}[a]||'');
+  const [mx,my]=c.boca,[ex,ey]=c.ojo;
+  const boca={normal:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*1.2} ${my} q${kb*1.2} ${kb*0.9} ${2.4*kb} 0"/>`,
+    alegre:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*1.6} ${my-kb*0.3} q${kb*1.6} ${kb*1.8} ${3.2*kb} 0"/>`,
+    sorpresa:`<ellipse class="oscuro" cx="${mx}" cy="${my+kb*0.3}" rx="${kb*0.6}" ry="${kb*0.85}"/>`,
+    dormido:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*0.9} ${my+kb*0.2} q${kb*0.9} ${kb*0.5} ${1.8*kb} 0"/>`,
+    pensativo:`<path class="bigote" style="stroke-width:${w}" d="M${mx-kb*1.1} ${my+kb*0.2} q${kb*1.1} -${kb*0.3} ${2.2*kb} 0"/>`}[a]||'';
+  /* el ojo lejano (ojo2, cabeza a tres cuartos) va detrás y más chico; las zetas del dormido solo sobre el ojo cercano */
+  return (c.ojo2?ojo(c.ojo2[0],c.ojo2[1],c.k2||k*0.85):'')+ojo(ex,ey,k)+(a==='dormido'?z(ex+k*1.6,ey-k*1.8,k*2.2)+z(ex+k*3.2,ey-k*3.6,k*1.6):'')+boca}
 function ilustracion(m,animo,vista){const r=m&&typeof ILUSTRACIONES!=='undefined'&&ILUSTRACIONES[m.glifo];if(!r)return '';const vb=vista==='cabeza'&&r.c&&r.c.marco?r.c.marco.join(' '):r.v;/* «cabeza»: primer plano de la cara, para el globo */
   return `<svg class="animal ilus" viewBox="${vb}" data-animo="${animo||'normal'}" aria-hidden="true">${r.d}${r.c?caraDe(r.c,animo||'normal'):''}</svg>`}
 function fichaAnimal(r){const m=r.companero,il=m&&ilustracion(m,'normal');if(!il)return '';

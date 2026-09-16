@@ -126,12 +126,18 @@ Desde el 2026-09-15 cada animal puede tener, además del glifo chico, una **ilus
 el río y para el globo, donde va en primer plano de la cabeza (`c.marco`) en los dos modos. El glifo sigue en el mapa, la lista, los
 sellos y los iconos. Solo van en la amplia: el archivo está entero dentro de `/*@amplia*/ … /*@fin:amplia*/` y build.js recorta las
 entradas de animales que el juego no usa (una por línea).
-- Dibujo (`d`): clases de `.animal` (cuerpo, claro, oscuro, acento, bigote, dientes, rabo, pata) más `sombra` (verde medio plano,
-  para vientre y sombra del suelo) y `lejos` (patas y partes lejanas, verde medio con contorno); `.animal.ilus` engrosa los trazos.
-  Cuerpo con volumen, cabeza grande, patas y dedos, textura propia (pliegues, pelaje, escamas, manchas), un solo detalle dorado y,
-  si cabe, un detalle real del animal (el picabueyes del hipopótamo, el espolón del ornitorrinco). Sin ojo ni boca: los pone
-  `caraDe(c, animo)` donde dice `c` (`ojo` [x,y], `boca` [x,y], `k` tamaño, `marco` [x,y,w,h] del primer plano), con ojo grande de
-  blanco y brillo y boca con `bigote`.
+- Dibujo (`d`), reglas fijadas el 2026-09-15 tras evaluar los dos primeros: **una sola silueta cerrada** por animal (cuerpo,
+  cabeza y patas cercanas en un mismo path `cuerpo`), sin piezas superpuestas que dejen costuras; lo que va detrás (cola, patas
+  lejanas, pies, protuberancias de los ojos) se dibuja antes y queda tapado por la silueta. **Cuerpo de perfil y cabeza a tres
+  cuartos**, con los dos ojos visibles, para que el animal mire a quien juega. Clases de `.animal` (cuerpo, claro, oscuro,
+  acento, bigote, dientes, rabo, pata) más `sombra` (verde medio plano: banda del vientre que sigue la curva de la panza, sombra
+  bajo la cabeza, sombra del suelo) y `lejos` (patas y partes lejanas, verde medio sin contorno, para que se vayan atrás);
+  `.animal.ilus` fija los grosores (contorno 1,5, detalles 1). Un brillo `claro` al 22 % sobre el lomo y la frente. Textura propia
+  (pliegues del cuello, pelaje que sigue la curva del lomo, escamas, manchas), dedos y uñas, un solo detalle dorado y, si cabe,
+  un detalle real del animal (el picabueyes sobre el lomo del hipopótamo, el espolón de la pata trasera del ornitorrinco) y un
+  indicio de dónde vive (ondas de agua, orilla con juncos) en el tono de la sombra. Sin ojo ni boca: los pone `caraDe(c, animo)`
+  donde dice `c` (`ojo` [x,y] cercano, `ojo2` [x,y] lejano y más chico, `k` y `k2` tamaños, `boca` [x,y] con `kb` propio para
+  bocas largas, `marco` [x,y,w,h] del primer plano con la cabeza entera), con ojo grande de blanco y brillo y boca con `bigote`.
 - Ánimos: normal (parpadea cada 5,5 s, `.parpado`), alegre (acierto en la guía, compra o venta, evento o Recitar), pensativo
   (fallo), sorpresa (evento sin responder) y dormido (al llegar al mar). Los manejadores fijan `S.animo` (se limpia al zarpar y al
   abrir la ruta) y `globo(r, texto, extra, animo)` lo recibe o lo toma de `S.animo`; sin ilustración, el globo sigue con el glifo.
