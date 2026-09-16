@@ -124,8 +124,9 @@ dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
 ## Retratos «grabado» (edición amplia)
 
 Desde el 2026-09-15 los animales pueden tener, además del glifo, un retrato fiel: una lámina de historia natural del siglo XIX
-(dominio público, Wikimedia Commons) trazada en dos tintas sobre papel, verde medio y verde tinta, que el niño ve en la ficha
-«Conocé a …» al empezar el río y el adulto también en el globo, en lugar del glifo. El glifo sigue en el mapa, la lista, los
+(dominio público, Wikimedia Commons) trazada en dos tintas sobre papel, verde medio y verde tinta, que se ve en la ficha
+«Conocé a …» al empezar el río; y de la misma lámina sale el **personaje** del globo, en los dos modos: la silueta del grabado
+rellena plana como un glifo, su textura encima y una cara dibujada con ánimos. El glifo sigue en el mapa, la lista, los
 sellos y los iconos: un grabado no cabe a 26 px. Solo van en la amplia: `src/data/retratos.js` está entero dentro de
 `/*@amplia*/ … /*@fin:amplia*/` y build.js recorta las entradas de animales que el juego no usa (una por línea).
 - Fuentes: `tools/retratos/fuentes.json`, una entrada por glifo con `archivo`, `url` (original en Commons), `pagina`, `autor`,
@@ -139,8 +140,17 @@ sellos y los iconos: un grabado no cabe a 26 px. Solo van en la amplia: `src/dat
   dos capas de «oscuridad ≥ umbral» con contornos rellenos (matplotlib, como el relieve) → se conserva solo lo cercano al cuerpo
   (el polígono mayor con sus huecos rellenos, más los grandes, dilatado `halo`) → simplificación (shapely) → paths con
   `fill-rule` evenodd. Entre 10 y 20 KB por animal.
-- Motor (bloque `/*@amplia*/`): `retrato(m, cls)` dibuja `RETRATOS[m.glifo]` (`v` viewBox, `m` capa media, `o` capa oscura, `f`
-  crédito); `globo()` lo usa en Adulto (`.emo.papel`, círculo de papel); `fichaAnimal(r)` arma la ficha «Conocé a …» que
+- Personaje (`personaje(m, animo)`): la silueta del grabado (`s`: los polígonos grandes de la capa media con los huecos rellenos,
+  un cierre morfológico que une las partes y una apertura que quita pasto y briznas pegadas al lomo; `parte_silueta`, `cierre` y
+  `apertura` en fuentes.json) rellena plana (`cuerpo`), la capa oscura del grabado encima como textura (`sombra`, verde medio al
+  42 %, recortada a la silueta con un clipPath de id único) y una cara dibujada donde dice `cara` de fuentes.json (`ojo` [x,y],
+  `boca` [x,y], `k` tamaño en píxeles del retrato, ubicados a ojo con la cuadrícula de scratchpad/webkit/personaje-cap.js --grid):
+  ojo grande con blanco y boca con `bigote`. Ánimos: normal (parpadea cada 5,5 s con `.parpado`), alegre (acierto en la guía,
+  compra o venta, evento o Recitar), pensativo (fallo), sorpresa (evento sin responder) y dormido (al llegar al mar). Los
+  manejadores fijan `S.animo` (se limpia al zarpar y al abrir la ruta) y `globo(r, texto, extra, animo)` lo recibe o lo toma de
+  `S.animo`; sin retrato, el globo sigue con el glifo.
+- Motor (bloque `/*@amplia*/`): `retrato(m, cls)` dibuja `RETRATOS[m.glifo]` (`v` viewBox, `m` capa media, `o` capa oscura, `s`
+  silueta, `c` cara, `f` crédito) para la ficha; `fichaAnimal(r)` arma la ficha «Conocé a …» que
   `renderDescender` pone en la parada 0 tras «Tu embarcación»: nombre, especie, el texto `ficha` de la mascota (un hecho de la
   especie, verificable; en mascotas.js, dentro de `/*@amplia*/` si el río es de la económica) y el crédito. CSS en cabeza.html,
   también dentro de marcas. Prototipo del 2026-09-15: hipo (Nilo) y ornitorrinco (Murray).

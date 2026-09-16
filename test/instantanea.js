@@ -39,12 +39,12 @@ setTimeout(()=>{
     irInicio();verZona('cr');tomar(modo+'/zona');verZona(null)}
   if(GUARDAR){fs.writeFileSync(ARCHIVO,zlib.gzipSync(JSON.stringify(foto)));console.log('instantánea guardada:',Object.keys(foto).length,'pantallas,',(fs.statSync(ARCHIVO).size/1024).toFixed(0),'KB');return}
   if(!fs.existsSync(ARCHIVO))throw 'no hay instantánea: node test/instantanea.js --guardar';
-  const vieja=JSON.parse(zlib.gunzipSync(fs.readFileSync(ARCHIVO)));const claves=Object.keys(vieja);let marcado=0;
+  const vieja=JSON.parse(zlib.gunzipSync(fs.readFileSync(ARCHIVO)));const claves=Object.keys(vieja);let marcado=0;const cambiadas=[];
   if(claves.length!==Object.keys(foto).length)throw `la instantánea tenía ${claves.length} pantallas y ahora hay ${Object.keys(foto).length}`;
   for(const c of claves){const a=vieja[c],b=foto[c];if(!b)throw 'falta la pantalla '+c;
     if(a.t!==b.t){let i=0;while(i<a.t.length&&a.t[i]===b.t[i])i++;throw `texto distinto en ${c} cerca de «…${a.t.slice(Math.max(0,i-60),i+80)}» → «…${b.t.slice(Math.max(0,i-60),i+80)}»`}
     if(JSON.stringify(a.v)!==JSON.stringify(b.v))throw `lectura distinta en ${c}: ${JSON.stringify(a.v)} → ${JSON.stringify(b.v)}`;
-    if(a.h!==b.h)marcado++}
-  if(marcado)throw `el texto es igual pero el marcado cambió en ${marcado} pantalla(s); si es a propósito: node test/instantanea.js --guardar`;
+    if(a.h!==b.h){marcado++;cambiadas.push(c)}}
+  if(marcado)throw `el texto es igual pero el marcado cambió en ${marcado} pantalla(s) (${cambiadas.slice(0,6).join(', ')}); si es a propósito: node test/instantanea.js --guardar`;
   console.log('INSTANTÁNEA OK:',claves.length,'pantallas iguales')
 },50);

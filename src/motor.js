@@ -460,10 +460,10 @@ function iniciarReto(){const qs=[],claves=new Set();let tries=0;
 /* ---------- estado y navegación ---------- */
 const S={pantalla:'inicio',rio:null,tab:'descender',paso:0,orden:null,quiz:null,aviso:null,foco:null,viaje:null,guias:{},llaves:{},dicho:null,rec:null,evento:null,eventosVistos:{},viajeEv:false,perfilNuevo:false,zona:null,selloNuevo:null,dichoLeido:null,bamboleo:false};
 function verZona(z){S.zona=z;render(false)}
-function abrirRio(id){S.pantalla='rio';S.rio=id;S.tab='descender';S.paso=0;S.aviso=null;S.guias={};S.llaves={};S.dicho=null;S.evento=null;S.eventosVistos={};S.viajeEv=false;iniciarEco();audio.modo=rioPor(id).vocab.sonidoTipo||'agua';prepararGuia(rioPor(id));render()}
+function abrirRio(id){S.pantalla='rio';S.rio=id;S.tab='descender';S.paso=0;S.aviso=null;S.guias={};S.llaves={};S.dicho=null;S.animo=null;S.evento=null;S.eventosVistos={};S.viajeEv=false;iniciarEco();audio.modo=rioPor(id).vocab.sonidoTipo||'agua';prepararGuia(rioPor(id));render()}
 function prepararGuia(r){const n=r.paradas.length,p=S.paso;if(p>=n||S.guias[p])return;const otras=mezclar(r.paradas.map((c,i)=>i).filter(i=>i!==p)).slice(0,2);S.guias[p]={objetivo:p,opciones:mezclar([p,...otras]),resp:null,ok:null}}
 function responderGuia(i){const r=rioPor(S.rio),g=S.guias[S.paso];if(!g||g.resp!=null)return;g.resp=i;g.ok=i===g.objetivo;S.bamboleo=!g.ok;S.llaves[g.objetivo]=g.ok;marcar('ciudad:'+r.id+':'+g.objetivo,g.ok);
-  S.dicho=azar(g.ok?VZ().guiaBien:(S.eco?VZ().guiaMal:VZ().guiaMalH)).replace('{c}',r.paradas[g.objetivo].nombre);if(g.ok)audio.ping(1046);render(false)}
+  S.animo=g.ok?'alegre':'pensativo';S.dicho=azar(g.ok?VZ().guiaBien:(S.eco?VZ().guiaMal:VZ().guiaMalH)).replace('{c}',r.paradas[g.objetivo].nombre);if(g.ok)audio.ping(1046);render(false)}
 function lanzarEvento(r,def){const p=S.paso,q=def.reto==='imagen'?preguntaTipo('imagen',r,Math.floor(Math.random()*p)):def.reto==='pais'?preguntaTipo('pais',r,def.tramo-1):def.reto==='ruta'?preguntaTipo('siguiente',r,def.tramo-1):preguntaTipo(def.reto,r);
   S.eventosVistos[def.tramo]=true;S.dicho=null;S.viajeEv=true;
   S.evento={def,q,resp:null,ok:null,delta:0,tramo:def.tramo,medio:puntoMedio(r,idxParada(r,p),idxParada(r,def.tramo)),dicho:azar(VZ().eventoAviso)};audio.ping(392);render()}
@@ -476,10 +476,10 @@ function setModo(m){P.modo=m;guardar();render(false)}
 function iniciarEco(){S.eco=modo()==='mercader'?{monedas:10,bodega:[],dicho:null,cerrado:false,final:null}:null}
 function precio(r,g,j){if(j<g.o)return null;const k=j-g.o;if(g.d&&k>g.d)return 0;let p=g.b*(1+0.5*k);if(g.m===j)p*=2;else if(j===r.paradas.length-1&&k>0)p*=1.25;return Math.round(p)}
 function comprar(gi){const r=rioPor(S.rio),g=r.carga[gi],e=S.eco;if(!e||e.cerrado)return;
-  if(e.bodega.length>=3)S.dicho=azar(VZ().sinEspacio);else if(e.monedas<g.b)S.dicho=azar(VZ().sinMonedas);else{e.monedas-=g.b;e.bodega.push(gi);S.dicho=azar(VZ().compra).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));audio.ping(660)}
+  if(e.bodega.length>=3){S.dicho=azar(VZ().sinEspacio);S.animo='pensativo'}else if(e.monedas<g.b){S.dicho=azar(VZ().sinMonedas);S.animo='pensativo'}else{S.animo='alegre';e.monedas-=g.b;e.bodega.push(gi);S.dicho=azar(VZ().compra).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));audio.ping(660)}
   render(false)}
 function vender(bi){const r=rioPor(S.rio),e=S.eco;if(!e||e.cerrado)return;const g=r.carga[e.bodega[bi]],p=precio(r,g,S.paso-1);e.bodega.splice(bi,1);
-  if(p>0){e.monedas+=p;S.dicho=azar(VZ().venta).replace('{n}',p);audio.ping(1046)}else S.dicho=azar(VZ().podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));
+  if(p>0){e.monedas+=p;S.dicho=azar(VZ().venta).replace('{n}',p);S.animo='alegre';audio.ping(1046)}else{S.animo='pensativo';S.dicho=azar(VZ().podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1))}
   render(false)}
 function cerrarEco(r){const e=S.eco;if(!e||e.cerrado)return;const j=r.paradas.length-1,vend=[];e.bodega.forEach(gi=>{const g=r.carga[gi],p=precio(r,g,j)||0;e.monedas+=p;vend.push(g.n+' · '+p)});e.bodega=[];
   const gan=e.monedas-10;P.tesoro=(P.tesoro||0)+Math.max(0,gan);e.cerrado=true;e.final={fin:e.monedas,gan,vend};S.dicho=VZ().ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+(r.fantasma!=null?' '+(e.monedas>r.fantasma?VZ().fantasma[0]:e.monedas<r.fantasma?VZ().fantasma[1].replace('{n}',r.fantasma):VZ().fantasma[2]):'');guardar()}
@@ -487,7 +487,7 @@ function irInicio(){S.pantalla='inicio';S.aviso=null;render()}
 function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='trazar')iniciarTrazar(r);if(t==='preguntar')iniciarQuiz(r);render()}
 function paso(d,tras){const r=rioPor(S.rio),fin=r.paradas.length+1,antes=S.paso;
   if(d>0&&!tras&&!S.evento&&antes<fin){const def=r.eventos.find(e=>e.tramo===antes+1&&!S.eventosVistos[e.tramo]);if(def){lanzarEvento(r,def);return}}
-  S.paso=Math.max(0,Math.min(fin,antes+d));S.viaje={de:antes,a:S.paso};S.olas=d>0&&S.paso===fin;if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
+  S.paso=Math.max(0,Math.min(fin,antes+d));S.viaje={de:antes,a:S.paso};S.olas=d>0&&S.paso===fin;if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;S.animo=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
 function reiniciarOrden(r){S.orden={pool:mezclar(unidades(r).map((u,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VZ().ordenInicio)}}
 function tocarChip(i){const o=S.orden,r=rioPor(S.rio);if(o.listo)return;
   if(i===o.seq.length){o.seq.push(i);o.pool=o.pool.filter(x=>x!==i);o.fallo=null;o.dicho=azar(VZ().ordenBien);if(!o.pool.length){o.listo=true;o.dicho=VZ().ordenFin[o.errores===0?0:o.errores===1?1:2];if(S.eco&&o.errores<=1){o.premio=o.errores===0?5:2;P.tesoro=(P.tesoro||0)+o.premio;o.dicho+=` +${o.premio} monedas al tesoro.`}marcar(r.pref+'orden',o.errores<=1);if(o.errores<=1)hecha(r,'ordenar')}}
@@ -500,12 +500,29 @@ function otraRonda(){if(S.quiz.modo==='rio'){iniciarQuiz(rioPor(S.rio));render()
 /* ---------- render ---------- */
 function cabecera(t,sub,volver){return `${volver?`<button class="volver" onclick="irInicio()" aria-label="${VJ().volver}">‹ ${VJ().Tipos}</button>`:''}<div><h1>${esc(t)}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div><button class="son${audio.on?' on':''}" onclick="audio.toggle()" aria-pressed="${audio.on}" title="${VJ().sonido}">≈</button>`}
 function globoNeutro(texto){GLOBO=true;return `<div class="globo neutro"><span class="emo" aria-hidden="true"><svg class="barca" viewBox="-15 -16 30 22">${glifo('cuadrada')}</svg></span><div class="dice"><b>Cauces:</b> ${esc(texto||azar(VZ().pregunta))} ${htmlVoz()}</div></div>`}
-function globo(r,texto,extra){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;const rt=!esNino()&&typeof retrato==='function'&&retrato(m);/* en Adulto, el retrato «grabado» si la edición lo trae */
-  return `<div class="globo${extra?' '+extra:''}"><span class="emo${rt?' papel':''}" aria-hidden="true">${rt||animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
+function globo(r,texto,extra,animo){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;const pj=typeof personaje==='function'&&personaje(m,animo||S.animo||'normal','cabeza');/* el personaje con su ánimo, en primer plano, si la edición trae retratos */
+  return `<div class="globo${extra?' '+extra:''}"><span class="emo" aria-hidden="true">${pj||animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
 /*@amplia*/
-/* retratos «grabado» (RETRATOS, de tools/retratos.py: dos capas, medio y oscuro, trazadas de una lámina de dominio público): en el
-   globo de Adulto en lugar del glifo, y en la ficha «Conocé a …» al empezar la ruta, con la especie, un dato y el crédito de la lámina */
+/* retratos «grabado» (RETRATOS, de tools/retratos.py, trazados de una lámina de dominio público): v viewBox, m capa media, o capa
+   oscura, s silueta, c cara (ojo, boca, k) y f crédito. retrato(m) dibuja la lámina en dos tintas para la ficha «Conocé a …»;
+   personaje(m, animo) arma el personaje del globo: la silueta rellena plana como un glifo, la capa oscura encima como textura y
+   una cara dibujada con ánimo (normal parpadea; alegre, pensativo, sorpresa, dormido) */
 function retrato(m,cls){const r=m&&typeof RETRATOS!=='undefined'&&RETRATOS[m.glifo];if(!r)return '';return `<svg class="retrato${cls?' '+cls:''}" viewBox="${r.v}" aria-hidden="true"><path class="medio" fill-rule="evenodd" d="${r.m}"/><path class="oscuro" fill-rule="evenodd" d="${r.o}"/></svg>`}
+let PJ_N=0;
+function caraDe(c,a){const [ex,ey]=c.ojo,[mx,my]=c.boca,k=c.k||9,w=(k*0.22).toFixed(1),z=(x,y,s)=>`<text x="${x}" y="${y}" font-size="${s}" style="font-family:var(--tit)" fill="var(--mar)">z</text>`;
+  const ojo={normal:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.15}" cy="${ey}" r="${k*0.65}"/><circle class="cuerpo parpado" cx="${ex}" cy="${ey}" r="${k*1.25}"/>`,
+    alegre:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey+k*0.2} q${k} -${k*1.4} ${2*k} 0"/>`,
+    sorpresa:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.4}"/><circle class="oscuro" cx="${ex+k*0.1}" cy="${ey+k*0.1}" r="${k*0.55}"/>`,
+    dormido:`<path class="bigote" style="stroke-width:${w}" d="M${ex-k} ${ey-k*0.2} q${k} ${k*1.2} ${2*k} 0"/>${z(ex+k*1.6,ey-k*1.8,k*2.2)}${z(ex+k*3.2,ey-k*3.6,k*1.6)}`,
+    pensativo:`<circle class="claro" cx="${ex}" cy="${ey}" r="${k*1.1}"/><circle class="oscuro" cx="${ex+k*0.3}" cy="${ey-k*0.2}" r="${k*0.6}"/><path class="bigote" style="stroke-width:${w}" d="M${ex-k*1.2} ${ey-k*1.9} q${k*1.2} -${k*0.8} ${2.4*k} -${k*0.1}"/>`}[a]||'';
+  const boca={normal:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.2} ${my} q${k*1.2} ${k*0.9} ${2.4*k} 0"/>`,
+    alegre:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.6} ${my-k*0.3} q${k*1.6} ${k*1.8} ${3.2*k} 0"/>`,
+    sorpresa:`<ellipse class="oscuro" cx="${mx}" cy="${my+k*0.3}" rx="${k*0.6}" ry="${k*0.85}"/>`,
+    dormido:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*0.9} ${my+k*0.2} q${k*0.9} ${k*0.5} ${1.8*k} 0"/>`,
+    pensativo:`<path class="bigote" style="stroke-width:${w}" d="M${mx-k*1.1} ${my+k*0.2} q${k*1.1} -${k*0.3} ${2.2*k} 0"/>`}[a]||'';
+  return ojo+boca}
+function personaje(m,animo,vista){const r=m&&typeof RETRATOS!=='undefined'&&RETRATOS[m.glifo];if(!r||!r.s||!r.c)return '';const W=+r.v.split(' ')[2],id='pj'+(++PJ_N),vb=vista==='cabeza'&&r.c.marco?r.c.marco.join(' '):r.v;/* «cabeza»: primer plano de la cara, para el globo */
+  return `<svg class="animal personaje" viewBox="${vb}" data-animo="${animo}" aria-hidden="true"><defs><clipPath id="${id}"><path d="${r.s}"/></clipPath></defs><path class="cuerpo" style="stroke-width:${(W/28*0.6).toFixed(1)}" d="${r.s}"/><path class="sombra" clip-path="url(#${id})" fill-rule="evenodd" d="${r.o}"/>${caraDe(r.c,animo)}</svg>`}
 function fichaAnimal(r){const m=r.companero,rt=m&&retrato(m,'lamina');if(!rt)return '';const cr=RETRATOS[m.glifo].f;
   return `<div class="ficha conoce"><div class="lamina">${rt}</div><div class="cuerpo"><div class="fkicker">Conocé a ${esc(m.nombre)}</div><p><b>${esc(m.nombre)}, ${esc(m.especie)}.</b>${m.ficha?' '+esc(m.ficha):''}</p><p class="fnota">Lámina: ${esc(cr)}.</p></div></div>`}
 /*@fin:amplia*/
@@ -530,7 +547,7 @@ function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;c
     const prev=p>1?r.paradas[p-2]:null;
     return `${globo(r,S.dicho||(r.companero&&r.companero.paradas[p-1]))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div><div class="ficha recuerdo">${escena(c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}
   const f=S.eco&&S.eco.final;
-  return `${globo(r,S.dicho||(r.companero&&r.companero.fin))}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">${escena(r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
+  return `${globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido')}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">${escena(r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
 /* lo que dice cada ficha de la guía: en los viajes, el rumbo («por mar, al sur…»), que es la memoria de la forma del viaje; en los ríos, el nombre de la ciudad */
 const rotuloGuia=(r,i)=>r.paradas[i].rumbo||r.paradas[i].nombre;
 function renderGuia(r){const g=S.guias[S.paso];if(!g||S.paso>=r.paradas.length)return '';
@@ -540,7 +557,7 @@ function renderEvento(r){const E=S.evento,d=E.def,q=E.q,n=r.paradas.length;
   const V=r.vocab,de=S.paso===0?V.entreInicio:r.paradas[S.paso-1].nombre,hacia=E.tramo<=n?r.paradas[E.tramo-1].nombre:V.entreFin;
   const ops=q.opciones.map((o,i)=>{let cls='op';if(E.resp!=null){if(i===q.correcta)cls+=' bien';else if(i===E.resp)cls+=' mal';else cls+=' apagada'}return `<button class="${cls}" onclick="responderEvento(${i})">${o}</button>`}).join('');
   const fin=E.resp==null?'':`<div class="nota${E.ok?'':' no'}">${esc(E.ok?d.bien:d.mal)}${E.delta?` ${E.delta>0?'+':'−'}${Math.abs(E.delta)} monedas.`:''} ${esc(q.nota)}</div>`;
-  return `${globo(r,E.dicho,'salta')}<p class="kicker">${botonVoz()}Entre ${esc(de)} y ${esc(hacia)}</p><div class="evento"><span class="eicono" aria-hidden="true">${ico(d.icono)}</span><div><div class="etit">${esc(d.titulo)}</div><p>${esc(d.texto)}</p></div></div><p class="pregunta">${esc(q.texto)}</p><div class="opciones">${ops}</div>${fin}`}
+  return `${globo(r,E.dicho,'salta',E.resp==null?'sorpresa':(E.ok?'alegre':'pensativo'))}<p class="kicker">${botonVoz()}Entre ${esc(de)} y ${esc(hacia)}</p><div class="evento"><span class="eicono" aria-hidden="true">${ico(d.icono)}</span><div><div class="etit">${esc(d.titulo)}</div><p>${esc(d.texto)}</p></div></div><p class="pregunta">${esc(q.texto)}</p><div class="opciones">${ops}</div>${fin}`}
 function renderMercado(r,j){const V=r.vocab;const e=S.eco;if(!e||!r.carga.length)return '';const c=r.paradas[j];
   if(e.cerrado)return `<div class="mercado"><div class="fkicker">${V.mercado} ${esc(c.nombre)}</div><p>${V.cerrado}</p></div>`;
   const slots=e.bodega.map((gi,bi)=>{const g=r.carga[gi],p=precio(r,g,j);return `<button class="item" onclick="vender(${bi})"><span class="ie">${ico(g.i)}</span>${esc(g.n)}<span class="ip">${p>0?`vender · ${num(p)}`:'podrido · tirar'}</span></button>`}).join('')+Array(Math.max(0,3-e.bodega.length)).fill('<span class="item vacio">—</span>').join('');
@@ -561,7 +578,7 @@ function renderRecitar(r){const V=r.vocab,R=S.rec,n=r.paradas.length;
   if(R.i>=n){const ok=R.ok.filter(Boolean).length;cuerpo=`<div class="nota${ok===n?'':' no'}">${ok} de ${n} recordadas${R.premio?` · +${R.premio} monedas al tesoro`:''}.${ok===n&&R.pista!=='nada'?' Probá con menos pista.':''}</div>`}
   else if(!R.revelada)cuerpo=`<p class="pregunta">${V.Parada} ${R.i+1} de ${n}: decila en voz alta, o en tu cabeza, y después revelá.</p>`;
   else cuerpo=`<h2>${esc(r.paradas[R.i].nombre)}</h2><div class="pais">${esc(r.paradas[R.i].pais)}</div>`;
-  return `${globo(r,R.dicho)}<p class="kicker">${botonVoz()}Recitar · el palacio, habitación por habitación</p>${sel}${pista}${seq}${cuerpo}`}
+  return `${globo(r,R.dicho,'',R.ok&&R.ok.length?(R.ok[R.ok.length-1]?'alegre':'pensativo'):null)}<p class="kicker">${botonVoz()}Recitar · el palacio, habitación por habitación</p>${sel}${pista}${seq}${cuerpo}`}
 function renderOrden(r){const V=r.vocab,o=S.orden,U=unidades(r),n=U.length;
   const seq=`<div class="secuencia"><span class="extremo">${V.extremoInicio}</span>${o.seq.map(i=>`<span class="puesto">${esc(U[i].nombre)}</span>`).join('')}${o.pool.map(()=>'<span class="hueco">—</span>').join('')}<span class="extremo">${V.extremoFin}</span></div>`;
   const chips=`<div class="chips">${o.pool.map(i=>`<button class="chip${o.fallo===i?' mal':''}" onclick="tocarChip(${i})">${esc(U[i].nombre)}</button>`).join('')}</div>`;

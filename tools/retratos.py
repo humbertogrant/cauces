@@ -89,13 +89,27 @@ def recortar_al_cuerpo(medio,oscuro,halo,parte):
         return out
     return dentro(medio),dentro(oscuro)
 
+def silueta(medio,parte,cierre,apertura):
+    """La forma del animal: los polígonos grandes de la capa media con los huecos rellenos, unidos, con los huecos entre partes
+    cerrados (buffer de ida y vuelta) y sin las salientes delgadas, pasto y briznas pegadas al lomo (apertura: buffer de vuelta e
+    ida). Es la base del personaje: se rellena plano, como un glifo, y encima va la cara."""
+    if not medio: return []
+    grandes=sorted(medio,key=lambda p:-p.area);mayor=grandes[0].area
+    g=unary_union([Polygon(p.exterior) for p in grandes if p.area>=parte*mayor]).buffer(cierre).buffer(-cierre)
+    if apertura>0: g=g.buffer(-apertura).buffer(apertura)
+    g=g.simplify(0.9,preserve_topology=True)
+    return [p for p in (g.geoms if hasattr(g,'geoms') else [g]) if p.geom_type=='Polygon' and p.area>=20]
+
 def trazar(f):
     osc=preparar(f);H,W=osc.shape
     tol=f.get('tolerancia',0.6);am=f.get('area_min',6.0)
     medio=capa(osc,f.get('medio',0.32));oscuro=capa(osc,f.get('oscuro',0.62))
+    sil=silueta(medio,f.get('parte_silueta',0.5),f.get('cierre',3.0),f.get('apertura',4.0))
     if f.get('halo',8)>0: medio,oscuro=recortar_al_cuerpo(medio,oscuro,f.get('halo',8),f.get('parte',0.3))
     medio=simplificar(medio,tol,am);oscuro=simplificar(oscuro,tol,am)
-    return dict(v=f'0 0 {W} {H}',m=path(medio),o=path(oscuro))
+    r=dict(v=f'0 0 {W} {H}',m=path(medio),o=path(oscuro),s=path(sil))
+    if f.get('cara'): r['c']=f['cara']   # ojo [x,y], boca [x,y] y tamaño k en píxeles del retrato: dónde va la cara dibujada del personaje
+    return r
 
 def js(s): return json.dumps(s,ensure_ascii=False)
 if __name__=='__main__':
@@ -104,8 +118,9 @@ if __name__=='__main__':
     for f in FUENTES:
         if quiero and f['glifo'] not in quiero: continue
         r=trazar(f);cred=f.get('credito') or f"{f.get('autor','Grabado')}, {f.get('anio','siglo XIX')} · {f.get('licencia','dominio público')} · Wikimedia Commons"
-        lineas.append(f"{f['glifo']}:{{v:'{r['v']}',m:'{r['m']}',o:'{r['o']}',f:{js(cred)}}}")
-        print(f"  {f['glifo']:13} {r['v']:14} medio {len(r['m'])//1024} KB · oscuro {len(r['o'])//1024} KB")
+        cara=(',c:'+js(r['c'])) if r.get('c') else ''
+        lineas.append(f"{f['glifo']}:{{v:'{r['v']}',m:'{r['m']}',o:'{r['o']}',s:'{r['s']}'{cara},f:{js(cred)}}}")
+        print(f"  {f['glifo']:13} {r['v']:14} medio {len(r['m'])//1024} KB · oscuro {len(r['o'])//1024} KB · silueta {len(r['s'])//1024} KB")
     if quiero:   # con glifos como argumentos, se conservan los demás retratos ya generados
         viejo=open(SALIDA,encoding='utf8').read() if os.path.exists(SALIDA) else ''
         for l in viejo.split('\n'):
