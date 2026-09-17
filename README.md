@@ -13,8 +13,9 @@ un mercado, eventos entre puertos y repaso espaciado.
 - Dos ediciones de cada juego, del mismo código: la económica (`cauces.html`, `exploradores.html`), de menos de medio
   megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), sin tope de peso. La
   amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze), costas, lagos y relieve más finos y, para
-  algunos animales, una ilustración vectorial elaborada, con cara y ánimos, en la ficha «Conocé a …» al empezar el río y en el
-  globo; el progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
+  algunos animales, una ilustración con cara y ánimos en la ficha «Conocé a …» al empezar el río y en el globo, hecha sobre un
+  contorno real de la especie (siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0: el hipopótamo es de
+  Steven Traver y el ornitorrinco de Margot Michaud; ver `tools/ilustraciones/fuentes.json`); el progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
   Las versiones congeladas están en los Releases de GitHub (`economica-1`), con los dos HTML económicos para descargar.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
   carpeta `dist`, publicada por GitHub Pages con cada cambio de `main`; desde ahí abre también en iPhone.

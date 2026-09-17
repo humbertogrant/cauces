@@ -52,7 +52,8 @@ src/data/rios.js     RIVERS: 25 ríos: 15 del mundo y 6 de Costa Rica (zona 'cr'
                      /*@amplia*/: Orinoco, Murray, San Lorenzo, Zambeze); curso y brazos los genera tools/cauces.py [ids]
 src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por puerto (modo Historia)
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
-src/data/ilustraciones.js ILUSTRACIONES: ilustraciones vectoriales elaboradas de los animales, para la ficha y el globo (solo edición amplia; ver «Ilustraciones»)
+src/data/ilustraciones.js ILUSTRACIONES: ilustraciones de los animales sobre contornos reales, para la ficha y el globo (solo edición amplia;
+                     GENERADO por tools/ilustraciones.py, no editar a mano; ver «Ilustraciones»)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
 src/data/eventos.js  EVENTOS: pruebas entre puertos por río (tramo, reto, textos)
 src/data/voces.js    VOCES (frases genéricas del compañero), RANGOS y voces de la economía: compartidos por los dos juegos
@@ -83,6 +84,8 @@ tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de 
 tools/relieve.py     regenera src/data/relieve.js (o relieve-<juego>.js; con «amplia», relieve-amplia.js): alturas de NOAA NCEI (ETOPO1 y
                      mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
+tools/ilustraciones.py genera src/data/ilustraciones.js desde las siluetas de tools/ilustraciones/ (SVG de PhyloPic, dominio público o CC0, con
+                     autor y licencia en fuentes.json) y lo que dice de cada animal tools/ilustraciones/ilustraciones_datos.py (shapely)
 ```
 
 Comandos: `npm run build`, `npm test`, `npm run instantanea` (vuelve a tomar la instantánea; solo cuando un cambio de texto de Cauces es
@@ -121,33 +124,41 @@ dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
 
 ## Ilustraciones (edición amplia)
 
-Desde el 2026-09-15 cada animal puede tener, además del glifo chico, una **ilustración vectorial elaborada** (`src/data/ilustraciones.js`,
-`ILUSTRACIONES[glifo] = {v, d, c}`; caja 0 0 120 90, suelo en y ≈ 82, mirando a la derecha) para la ficha «Conocé a …» al empezar
-el río y para el globo, donde va en primer plano de la cabeza (`c.marco`) en los dos modos. El glifo sigue en el mapa, la lista, los
+Desde el 2026-09-15 cada animal puede tener, además del glifo chico, una **ilustración** (`src/data/ilustraciones.js`,
+`ILUSTRACIONES[glifo] = {v, c, f, d}`; caja 0 0 120 90, mirando a la derecha) para la ficha «Conocé a …» al empezar el río y para
+el globo, donde va un retrato (primer plano de la cabeza, `c.marco`) en los dos modos. El glifo sigue en el mapa, la lista, los
 sellos y los iconos. Solo van en la amplia: el archivo está entero dentro de `/*@amplia*/ … /*@fin:amplia*/` y build.js recorta las
 entradas de animales que el juego no usa (una por línea).
-- Dibujo (`d`), reglas fijadas el 2026-09-15 tras evaluar los dos primeros: **una sola silueta cerrada** por animal (cuerpo,
-  cabeza y patas cercanas en un mismo path `cuerpo`), sin piezas superpuestas que dejen costuras; lo que va detrás (cola, patas
-  lejanas, pies, protuberancias de los ojos) se dibuja antes y queda tapado por la silueta. **Cuerpo de perfil y cabeza a tres
-  cuartos**, con los dos ojos visibles, para que el animal mire a quien juega. Clases de `.animal` (cuerpo, claro, oscuro,
-  acento, bigote, dientes, rabo, pata) más `sombra` (verde medio plano: banda del vientre que sigue la curva de la panza, sombra
-  bajo la cabeza, sombra del suelo) y `lejos` (patas y partes lejanas, verde medio sin contorno, para que se vayan atrás);
-  `.animal.ilus` fija los grosores (contorno 1,5, detalles 1). Un brillo `claro` al 22 % sobre el lomo y la frente. Textura propia
-  (pliegues del cuello, pelaje que sigue la curva del lomo, escamas, manchas), dedos y uñas, un solo detalle dorado y, si cabe,
-  un detalle real del animal (el picabueyes sobre el lomo del hipopótamo, el espolón de la pata trasera del ornitorrinco) y un
-  indicio de dónde vive (ondas de agua, orilla con juncos) en el tono de la sombra. Sin ojo ni boca: los pone `caraDe(c, animo)`
-  donde dice `c` (`ojo` [x,y] cercano, `ojo2` [x,y] lejano y más chico, `k` y `k2` tamaños, `boca` [x,y] con `kb` propio para
-  bocas largas, `marco` [x,y,w,h] del primer plano con la cabeza entera), con ojo grande de blanco y brillo y boca con `bigote`.
-- Ánimos: normal (parpadea cada 5,5 s, `.parpado`), alegre (acierto en la guía, compra o venta, evento o Recitar), pensativo
-  (fallo), sorpresa (evento sin responder) y dormido (al llegar al mar). Los manejadores fijan `S.animo` (se limpia al zarpar y al
-  abrir la ruta) y `globo(r, texto, extra, animo)` lo recibe o lo toma de `S.animo`; sin ilustración, el globo sigue con el glifo.
+- **El contorno no se dibuja a mano** (regla del 2026-09-17, después de tres rondas de dibujos por coordenadas que Humberto rechazó:
+  anatomía floja y, en la última, cuerpo de perfil con cabeza a tres cuartos, o sea dos ojos del mismo lado). El contorno de cada
+  animal es una silueta real de PhyloPic (phylopic.org), de su especie o de un pariente cercano si no hay (decirlo), **solo de dominio
+  público o CC0**, guardada en `tools/ilustraciones/` con autor, licencia y página en `fuentes.json` (la prueba lo exige). Antes de
+  bajar un archivo nuevo se le dice a Humberto cuál, de dónde y cuánto pesa. El archivo de datos es GENERADO: `python
+  tools/ilustraciones.py` (shapely) pasa la silueta a la caja (espejo si mira a la izquierda, `giro` para nivelar las patas, apoyada en
+  el suelo o centrada si nada) y calcula sobre el contorno lo que da volumen: la banda de sombra (lo que el contorno deja al correrse
+  hacia la luz, arriba y adelante), el filo de brillo del lomo y las zonas de color, que son polígonos toscos que el contorno recorta
+  (`lejos` para patas lejanas y cola, `acento` para el único detalle dorado: el pico del ornitorrinco) con su línea de borde.
+- **Perfil estricto: un solo ojo** (la prueba rechaza `ojo2`). A mano, en `tools/ilustraciones/ilustraciones_datos.py`, solo va lo que
+  el contorno no trae, ubicado sobre los bultos del contorno real con la cuadrícula (`--crudo` y las hojas del scratchpad): el ojo (en
+  la órbita), la boca si el perfil la deja ver (el hipopótamo sí; el ornitorrinco, visto algo desde arriba, no), pocas líneas tenues
+  (pliegues del cuello, hombro y muslo, dedos, membrana, pelaje), un detalle real del animal (el picabueyes dorado sobre el lomo del
+  hipopótamo) y el fondo `f`: un indicio de dónde vive (pasto y suelo; superficie, burbujas y lecho del río). La pose es la de la
+  silueta: Hipo pasta con la cabeza baja (calza con su ficha) y Pico nada.
+- Cara (`c`, la dibuja `caraDe(c, animo, inc)` en el motor): `ojo` [x,y] y `k`, `boca` [x,y] y `kb` (opcional), `giro` (grados que
+  acuestan ojo y boca sobre el eje de la cabeza; en el eje local +x va al hocico y +y a la mandíbula), `marco` [x,y,w,h] cuadrado del
+  retrato e `inclina` (grados que gira el retrato para enderezar una cabeza baja: el de Hipo gira −40 y queda el perfil clásico). El
+  retrato no lleva el fondo. Ánimos: normal (parpadea cada 5,5 s, `.parpado`), alegre (acierto en la guía, compra o venta, evento o
+  Recitar), pensativo (fallo), sorpresa (evento sin responder) y dormido (al llegar al mar, con zetas claras). Los manejadores fijan
+  `S.animo` (se limpia al zarpar y al abrir la ruta) y `globo(r, texto, extra, animo)` lo recibe o lo toma de `S.animo`; con
+  ilustración el círculo del globo crece a 56 px (`.emo.retrato`); sin ilustración, el globo sigue con el glifo a 44 px.
 - Motor (bloque `/*@amplia*/`): `ilustracion(m, animo, vista)` y `fichaAnimal(r)`, que `renderDescender` pone en la parada 0 tras
   «Tu embarcación» con el nombre, la especie y el texto `ficha` de la mascota (un hecho de la especie, verificable; en mascotas.js,
-  dentro de `/*@amplia*/` si el río es de la económica). La hoja scratchpad/webkit/ilus-cap.js [--grid] dibuja cada ilustración a
-  los tamaños reales y con los cinco ánimos, para revisar antes de tocar el juego.
-- Descartado el 2026-09-15: retratos trazados de láminas de dominio público (grabados del siglo XIX pasados a dos tintas con la
-  técnica del relieve) y un «personaje» hecho con su silueta más una cara dibujada. Fieles en la ficha, pero irreconocibles en el
-  globo; Humberto pidió volver al vector y elaborarlo. Queda en la historia de git (commits b0715a6 y c69a359).
+  dentro de `/*@amplia*/` si el río es de la económica). Hojas de revisión en scratchpad/webkit: `ilus-hoja.js [--grid] [claves]` (el
+  animal grande, a tamaño de ficha y los cinco retratos), `ilus-det.js clave x y w h` (detalle con cuadrícula fina para leer
+  coordenadas) e `ilus-globo.js` (retratos a varios tamaños y fondos). Cada ilustración pesa unos 8 KB.
+- Descartado: el 2026-09-15, retratos trazados de grabados del siglo XIX de dominio público y un «personaje» hecho con su silueta más
+  una cara dibujada (irreconocibles en el globo; commits b0715a6 y c69a359); el 2026-09-17, los dibujos vectoriales hechos a mano por
+  coordenadas (commits f10c428 y 7959341).
 
 ## Cómo está hecho el motor
 
@@ -456,7 +467,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 689 KB). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 710 KB el 2026-09-17). La edición amplia
   (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.

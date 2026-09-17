@@ -1,0 +1,17 @@
+{
+  "nota": "Siluetas de PhyloPic (https://www.phylopic.org) usadas como contorno por tools/ilustraciones.py. Solo dominio público o CC0. Bajadas el 2026-09-17.",
+  "hipo-traver.svg": {
+    "especie": "Hippopotamus amphibius",
+    "autor": "Steven Traver",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/bab03f09-73ba-45ea-8534-ea176c82a1a0",
+    "archivo": "https://images.phylopic.org/images/bab03f09-73ba-45ea-8534-ea176c82a1a0/vector.svg"
+  },
+  "ornitorrinco-michaud.svg": {
+    "especie": "Ornithorhynchus anatinus",
+    "autor": "Margot Michaud",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/3ca524e8-74c5-45ad-a267-9f599ab7d751",
+    "archivo": "https://images.phylopic.org/images/3ca524e8-74c5-45ad-a267-9f599ab7d751/vector.svg"
+  }
+}

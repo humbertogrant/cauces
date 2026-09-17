@@ -22,6 +22,8 @@ setTimeout(()=>{
   if(JUEGO.id!==juego)throw 'juego '+JUEGO.id;
   if(juego==='cauces'&&(edicion==='amplia')!==!!rutaPor('orinoco'))throw 'ríos de la amplia en la edición '+edicion;
   if((edicion==='amplia')!==(typeof ILUSTRACIONES!=='undefined'))throw 'ILUSTRACIONES en la edición '+edicion;if(edicion==='amplia'&&juego==='cauces'&&!(ILUSTRACIONES.hipo&&ILUSTRACIONES.hipo.d&&ILUSTRACIONES.hipo.c))throw 'sin ilustración del hipopótamo';if((edicion==='amplia')!==(typeof ilustracion==='function'))throw 'ilustracion en la edición '+edicion;
+  /* perfil estricto: un solo ojo por ilustración (nada de ojo2), con su marco para el retrato del globo */
+  if(edicion==='amplia')for(const [k,r] of Object.entries(ILUSTRACIONES)){if(!r.c||!r.c.ojo||r.c.ojo2||!r.c.marco||r.c.marco[2]!==r.c.marco[3])throw 'cara de la ilustración '+k;if(ilustracion({glifo:k},'normal','cabeza').indexOf(r.f||'<fondo>')>=0&&r.f)throw 'el retrato no lleva fondo: '+k}
   if(edicion==='amplia')for(const k of Object.keys(ILUSTRACIONES))if(!RUTAS.some(r=>r.companero.glifo===k))throw 'ilustración sin animal en este juego: '+k;
   const kb=Math.round(html.length/1024);if(!JUEGO.edicion||JUEGO.edicion.nombre!==E.nombre||JUEGO.edicion.kb!==kb)throw 'JUEGO.edicion '+JSON.stringify(JUEGO.edicion)+' en un archivo de '+kb+' KB';
   for(const t of Object.keys(VOCAB))if(!(t==='rio'?juego==='cauces':juego==='exploradores'))throw 'VOCAB.'+t+' sobra en '+juego;
