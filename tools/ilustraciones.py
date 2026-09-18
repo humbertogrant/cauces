@@ -8,8 +8,11 @@ el filo de brillo del lomo y las zonas de color (patas lejanas, pico, cola), que
 A mano solo va lo que el contorno no trae: dónde está el ojo y la boca (los dibuja caraDe en motor.js según el ánimo), unas
 pocas líneas y el indicio del lugar donde vive. Perfil estricto: un solo ojo.
 
-Uso: python tools/ilustraciones.py            escribe src/data/ilustraciones.js
-     python tools/ilustraciones.py --crudo    lo mismo pero sin cara ni detalles (para ubicar coordenadas sobre la cuadrícula)
+Uso: python tools/ilustraciones.py
+Escribe dos archivos. src/data/ilustraciones.js, el del juego, recibe SOLO los animales terminados (los que ya tienen `cara` en
+ilustraciones_datos.py). tools/ilustraciones/revision.js (fuera de git) los recibe todos, y los que están en borrador salen en
+crudo, solo contorno con sombra y brillo, para leer coordenadas sobre la cuadrícula de las hojas. Así un borrador nunca llega al
+juego: el 2026-09-18 un modo «--crudo» que escribía sobre el archivo del juego dejó a Hipo y a Pico sin cara en la copia de trabajo.
 """
 import io, json, os, re, sys
 from shapely.geometry import Polygon, MultiPolygon, box
@@ -20,6 +23,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
 DIR = os.path.join(AQUI, 'ilustraciones')
 SALIDA = os.path.join(RAIZ, 'src', 'data', 'ilustraciones.js')
+REVISION = os.path.join(DIR, 'revision.js')
 CAJA = (120, 90)
 LUZ = (2.2, -5.5)      # hacia dónde está la luz (arriba y adelante): la sombra queda abajo y atrás
 NUM = r'[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?'
@@ -137,6 +141,17 @@ def encajar(g, espejo, zona, apoyo):
     return translate(g, dx, dy)
 
 
+def limpiar(g, liso=0.15, hueco=1.5, mota=1.0):
+    """Alisa el contorno (cierre y apertura morfológicos de radio `liso`) y quita los huecos y las motas chicas que deja el trazado
+    automático de una lámina con textura (la piel del elefante trae medio centenar)."""
+    if liso:
+        g = g.buffer(liso).buffer(-2 * liso).buffer(liso)
+    ps = []
+    for p in partes(g, mota):
+        ps.append(Polygon(p.exterior, [h for h in p.interiors if Polygon(h).area >= hueco]))
+    return unary_union(ps)
+
+
 def partes(g, minimo=0.0):
     ps = [g] if isinstance(g, Polygon) else [p for p in getattr(g, 'geoms', []) if isinstance(p, Polygon)]
     return [p for p in ps if not p.is_empty and p.area > minimo]
@@ -176,26 +191,35 @@ def poligono(pts):
     return Polygon(pts).buffer(0)
 
 
-def ilustrar(clave, e, crudo=False):
+def ilustrar(clave, e):
+    crudo = 'cara' not in e      # en borrador: solo el contorno
     g = forma(io.open(os.path.join(DIR, e['fuente']), encoding='utf8').read())
     g = encajar(g, e.get('espejo', False), e.get('zona', (8, 14, 112, 82)), e.get('apoyo', 'suelo'))
+    g = limpiar(g, e.get('liso', 0))
     if e.get('giro'):
         g = rotate(g, e['giro'], origin='centroid')
         g = encajar(g, False, e.get('zona', (8, 14, 112, 82)), e.get('apoyo', 'suelo'))
     x0, y0, x1, y1 = g.bounds
     # sombra: lo que el contorno no tapa al correrse hacia la luz; se alisa para que no queden hilos
-    sombra = g.difference(translate(g, LUZ[0], LUZ[1])).buffer(-0.3).buffer(0.3)
+    luz = e.get('luz', 1.0)      # cuánto se corre el contorno: 1 para un cuerpo alto; menos para uno chato (el cocodrilo)
+    sombra = g.difference(translate(g, LUZ[0] * luz, LUZ[1] * luz)).buffer(-0.3).buffer(0.3)
     # brillo: un filo por dentro del contorno, del lado de la luz, solo en la mitad de arriba
     dentro = g.buffer(-1.1)
-    brillo = dentro.difference(translate(dentro, -LUZ[0] * 0.8, -LUZ[1] * 0.55)).buffer(-0.25).buffer(0.25)
+    brillo = dentro.difference(translate(dentro, -LUZ[0] * 0.8 * luz, -LUZ[1] * 0.55 * luz)).buffer(-0.25).buffer(0.25)
     brillo = brillo.intersection(box(x0, y0, x1, y0 + (y1 - y0) * e.get('brillo', 0.5)))
     d = ''
     zonas = {} if crudo else e.get('zonas', {})
     d += '<path class="cuerpo" d="%s"/>' % trazo(g)
-    bordes = ''
+    bordes = encima = ''
     for clase, pols in zonas.items():
+        clase, _, opaco = clase.partition('@')      # «lejos@.55»: la misma tinta, más suave (la oreja sobre el hombro)
         z = unary_union([poligono(p).buffer(-1.5).buffer(1.5) for p in pols]).intersection(g)     # esquinas redondeadas
-        d += '<path class="%s" d="%s" style="stroke:none"/>' % (clase, trazo(z, 0.3))
+        pieza = '<path class="%s" d="%s" style="stroke:none%s"/>' % (clase, trazo(z, 0.3), (';opacity:' + opaco) if opaco else '')
+        if clase == 'oscuro':      # lo oscuro (la protuberancia del cisne) va encima de la sombra y del brillo, que lo agrisaban
+            encima += pieza
+            brillo = brillo.difference(z)
+        else:
+            d += pieza
         # la línea donde la zona se separa del resto del cuerpo (por dentro del contorno)
         bordes += hilo(z.boundary.intersection(g.buffer(-0.62)))
         if clase == 'acento':      # sobre el dorado, la sombra es oro tinta y no verde
@@ -204,6 +228,7 @@ def ilustrar(clave, e, crudo=False):
             sombra = sombra.difference(z)
     d += '<path class="sombra" d="%s" style="opacity:.8"/>' % trazo(sombra, 0.8)
     d += '<path class="claro" d="%s" style="opacity:.3;stroke:none"/>' % trazo(brillo, 0.8)
+    d += encima
     if bordes:
         d += '<path class="bigote" d="%s" style="stroke-width:.7;opacity:.7"/>' % bordes
     # el contorno otra vez, solo trazo, para que las zonas y la sombra no lo pisen
@@ -229,15 +254,21 @@ const ILUSTRACIONES={
 
 
 def main():
-    crudo = '--crudo' in sys.argv
     from ilustraciones_datos import ANIMALES
-    lineas = []
+    juego, revision = [], []
     for clave, e in ANIMALES.items():
-        g, d, c, f = ilustrar(clave, e, crudo)
-        lineas.append("%s:{v:'0 0 %d %d',%s%sd:'%s'}," % (clave, CAJA[0], CAJA[1], ('c:' + js(c) + ',') if c else '', ("f:'%s'," % f) if f else '', d))
-        print('%-14s %5.1f KB  caja %s' % (clave, len(d) / 1024.0, ' '.join(n(v) for v in g.bounds)))
-    io.open(SALIDA, 'w', encoding='utf8', newline='\n').write(ENCABEZADO + '\n'.join(lineas) + '\n};\n/*@fin:amplia*/\n')
-    print('escrito', os.path.relpath(SALIDA, RAIZ))
+        g, d, c, f = ilustrar(clave, e)
+        vista = ' '.join(n(v) for v in e.get('vista', (0, 0) + CAJA))      # el encuadre de la lámina: la caja entera o la franja que ocupa
+        linea = "%s:{v:'%s',%s%sd:'%s'}," % (clave, vista, ('c:' + js(c) + ',') if c else '', ("f:'%s'," % f) if f else '', d)
+        revision.append(linea)
+        if c:
+            juego.append(linea)
+        print('%-14s %-9s %5.1f KB  caja %s' % (clave, 'terminado' if c else 'BORRADOR', (len(d) + len(f)) / 1024.0, ' '.join(n(v) for v in g.bounds)))
+    io.open(SALIDA, 'w', encoding='utf8', newline='\n').write(ENCABEZADO + '\n'.join(juego) + '\n};\n/*@fin:amplia*/\n')
+    io.open(REVISION, 'w', encoding='utf8', newline='\n').write(
+        '// Revisión: todos los animales, los borradores en crudo. No es del juego ni va a git.\nconst ILUSTRACIONES={\n'
+        + '\n'.join(revision) + '\n};\n')
+    print('juego: %d terminados en %s · revisión: %d en %s' % (len(juego), os.path.relpath(SALIDA, RAIZ), len(revision), os.path.relpath(REVISION, RAIZ)))
 
 
 if __name__ == '__main__':

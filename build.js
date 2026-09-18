@@ -31,7 +31,8 @@ function usados(datos){/* claves que usan los datos del juego: glifos de animal,
   for(const m of datos.matchAll(/tipo:["']([a-z]+)["']/g))t.add(m[1]);
   const i=new Set();for(const m of datos.matchAll(/\b(?:i|icono):["']([a-z]+)["']/g))i.add(m[1]);/* iconos de bienes y eventos */
   for(const m of datos.matchAll(/icono:["']animal:([a-z]+)["']/g))g.add(m[1]);for(const m of datos.matchAll(/icono:["']barca:([a-z]+)["']/g))t.add(m[1]);
-  return{glifos:g,pictos:p,tipos:t,iconos:i}}
+  const il=new Set();for(const m of datos.matchAll(/(?:glifo|ilus):["']([a-zñ]+)["']/g))il.add(m[1]);/* ilustraciones: las de los compañeros (su glifo o su `ilus`), no las de animales de escena */
+  return{glifos:g,pictos:p,tipos:t,iconos:i,ilus:il}}
 /* sin comentarios ni sangría: src los conserva; en dist pesan unos 9 KB en el motor y 1,4 KB en los datos (bloques y líneas de
    comentario, comentarios al final de línea y la sangría, que dentro de las plantillas HTML solo es espacio en blanco) */
 const limpiar=m=>m.replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*\n?/gm,'').replace(/^[ \t]*\/\/[^\n]*\n/gm,'').replace(/[ \t]*\/\*[^\n]*?\*\/[ \t]*$/gm,'').replace(/^[ \t]+/gm,'').replace(/\n{2,}/g,'\n');
@@ -52,7 +53,7 @@ function ensamblar(id,edicion){
   const j=JUEGOS[id],e=EDICIONES[edicion],archivos=archivosDe(id,edicion),leer=f=>cortarEdicion(src(f),edicion);
   const datos=archivos.filter(f=>f!=='motor.js').map(leer).join('\n'),u=usados(datos),{motor,quitado}=recortar(leer('motor.js'),j,u);
   const titulo=j.titulo+(e.sufijo?' · edición '+e.nombre:'');
-  const ilustraciones=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-zñ]+):\{v:/);if(!k||u.glifos.has(k[1]))return true;quitado.ilustraciones=(quitado.ilustraciones||0)+1;return false}).join('\n');/* ilustraciones (data/ilustraciones.js): solo las de los animales del juego */
+  const ilustraciones=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-zñ]+):\{v:/);if(!k||u.ilus.has(k[1]))return true;quitado.ilustraciones=(quitado.ilustraciones||0)+1;return false}).join('\n');/* ilustraciones (data/ilustraciones.js): solo las de los animales del juego */
   const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):limpiar(leer(f));
   const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
   /* el archivo dice cuánto pesa; el número entra en el mismo archivo, así que se comprueba después de escribirlo */

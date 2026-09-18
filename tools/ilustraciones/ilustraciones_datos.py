@@ -46,4 +46,61 @@ ANIMALES = {
                '<path class="sombra" d="M0 84Q30 79 60 83T120 81V90H0Z" style="opacity:.22"/>'
                '<ellipse class="sombra" cx="24" cy="85.6" rx="4" ry="1.6" style="opacity:.3"/><ellipse class="sombra" cx="92" cy="86" rx="5" ry="1.8" style="opacity:.3"/>'),
     ),
+    # --- lote del 2026-09-18
+    # Boto, el delfín rosado (Inia geoffrensis). La clave es «inia» y no el glifo «delfin», que comparte con Bulán (delfín del Indo,
+    # sin silueta libre) y con la delfín de Odiseo: mascotas.js le pone ilus:"inia" y los otros dos siguen con el glifo.
+    'inia': dict(
+        fuente='delfin-inia.svg', espejo=True, apoyo='centro', liso=0.5, vista=(0, 4, 120, 70),
+        cara=dict(ojo=[92.6, 36.9], k=1.4, boca=[103.6, 37.8], kb=6.8, giro=-6, pb=0.25, wb=0.7, marco=[78, 18, 38, 38]),
+        zonas={'lejos@.5': [[(56.5, 53.2), (60, 51.2), (65.5, 50.8), (66, 62), (56, 62)]]},                      # la aleta
+        lineas='<ellipse class="oscuro" cx="87.8" cy="33.1" rx=".9" ry=".35"/>',                                 # el espiráculo
+        fondo=('<path d="M4 12q4.5-2.4 9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0M30 16.5q4.5-2.2 9 0t9 0t9 0"' + AGUA + '/>'
+               '<circle cx="90" cy="25.5" r="1.1"' + AGUA + '/><circle cx="92.4" cy="21.2" r=".75"' + AGUA + '/>'),
+    ),
+    # Tami (caimán del Orinoco, Crocodylus intermedius) y Lalo (cocodrilo americano, C. acutus): la silueta es de C. acutus, la especie
+    # exacta del Tempisque y un congénere del del Orinoco. Toma el sol en el banco de arena con la cola en el agua.
+    'cocodrilo': dict(
+        fuente='cocodrilo-reinke.svg', espejo=True, luz=0.5, vista=(0, 40, 120, 50),
+        cara=dict(ojo=[95.4, 61.5], k=1.3, boca=[101.8, 65.2], kb=8, giro=-6, pb=0.3, wb=0.7, marco=[84, 45, 34, 34]),
+        lineas='<circle class="oscuro" cx="110.2" cy="62.7" r=".5"/>',                                           # la nariz
+        fondo=('<ellipse class="sombra" cx="72" cy="77.5" rx="43" ry="5.5" style="opacity:.28"/>'
+               '<path d="M2 85.5q4.5-2.4 9 0t9 0t9 0t9 0t9 0t9 0t9 0M16 88.8q4.5-2.2 9 0t9 0t9 0t9 0"' + AGUA + '/>'),
+    ),
+    # Tembo, el elefante africano de sabana (Loxodonta africana). La silueta no trae colmillo a la vista: no se inventa.
+    'elefante': dict(
+        fuente='elefante-traver.svg', espejo=True, liso=0.35,
+        cara=dict(ojo=[90.5, 33], k=1.7, marco=[66, 8, 48, 48]),
+        zonas={
+            'lejos': [[(6, 66), (11, 62), (16, 60), (21, 60.5), (23.5, 63), (22, 83), (6, 83)],              # pata trasera lejana
+                      [(61.5, 68.8), (70.2, 68.8), (70.6, 74.5), (68.8, 79.5), (61.5, 80)]],                 # pata delantera lejana
+            'lejos@.5': [[(86, 20), (77, 21), (70.5, 27), (68.5, 35), (71.5, 43.5), (75.5, 47), (81.5, 42), (85, 34), (86.8, 27)]],   # la oreja
+        },
+        lineas=('<path class="bigote" d="M97.6 52q2 .9 4.2.4M98.4 58q2 .9 4.2.5M99.6 64q2 .9 4 .7M101.6 69.6q1.8 1 3.8 1"' + TENUE + '/>'
+                '<path class="bigote" d="M72 82v-1.6M75 82.2v-1.6M78 82v-1.6M42.5 80.6v-1.6M45.5 80.8v-1.6M48.5 80.4v-1.6" style="stroke-width:.7;opacity:.75"/>'),
+        fondo=('<ellipse class="sombra" cx="58" cy="81.5" rx="54" ry="6" style="opacity:.28"/>'
+               '<path d="M2.5 85q.3-2.8-1-4.6M5 85.4q.2-3 1.4-4.6M29 86.6q.3-3-1-5M31.4 87q.2-3.2 1.4-5M116 84q-.3-3 1.2-5"' + AGUA + '/>'),
+    ),
+    # Valsa, el cisne vulgar (Cygnus olor): nada, así que el contorno termina en la línea del agua.
+    'cisne': dict(
+        fuente='cisne-wilson.svg', apoyo='centro', vista=(0, 8, 120, 82),
+        cara=dict(ojo=[101.2, 24.4], k=1.4, marco=[82, 8, 36, 36]),
+        zonas={
+            'acento': [[(105.6, 25.4), (104.2, 29.8), (116, 37), (116, 24)]],                                   # el pico
+            'oscuro': [[(102.8, 21), (108.8, 21), (108.9, 25.6), (105.6, 25.4), (104.2, 29.6), (102.6, 28.4)]],   # la protuberancia y el antifaz
+        },
+        lineas='<path class="bigote" d="M34 63.5Q54 73.5 80 65.5"' + TENUE + '/>',                              # el borde del ala plegada
+        fondo=('<path d="M0 80.5q4.5-2.4 9 0t9 0M104 81q4.5-2.4 9 0t9 0M10 85q4.5-2.2 9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0"' + AGUA + '/>'),
+    ),
+    # Lobi (lobito de río) y Nuria (nutria de río): las dos son la nutria neotropical, Lontra longicaudis, la especie de la silueta.
+    'nutria': dict(
+        fuente='nutria-michaud.svg', vista=(0, 30, 120, 60),
+        cara=dict(ojo=[105, 59.5], k=1.5, boca=[107.8, 66.2], kb=2.6, giro=-13, pb=0.8, wb=0.7, marco=[82, 40, 36, 36]),
+        lineas=('<ellipse class="oscuro" cx="110.2" cy="62.3" rx="1.1" ry=".9"/>'
+                '<path class="bigote" d="M108.6 63.6l5.4-1.4M108.8 64.5l5.6.5M108.6 65.3l4.8 2.2" style="stroke-width:.45;opacity:.7"/>'
+                '<path class="bigote" d="M98 57.8q1-1.9 2.5-.6"' + TENUE + '/>'),
+        fondo=('<ellipse class="sombra" cx="68" cy="81.5" rx="46" ry="5" style="opacity:.28"/>'
+               '<path d="M4 86.5q4.5-2.4 9 0t9 0t9 0M3.5 84q.3-2.8-1-4.6M6 84.4q.2-3 1.4-4.6"' + AGUA + '/>'),
+    ),
+    # Bíber, el castor: en borrador. La silueta de Castor fiber (Traver) muestra la cola de canto; pendiente de decidir con Humberto.
+    'castor': dict(fuente='castor-traver.svg', espejo=True),
 }

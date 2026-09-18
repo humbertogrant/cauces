@@ -28,7 +28,8 @@ for r in R:
     m=M.get(r['id'])
     if m:
         add(f"{m['nombre']} · hola",m['hola']);add(f"{m['nombre']} · mar",m['mar'])
-        if m.get('ficha'): add(f"{m['nombre']} · ficha (edición amplia)",m['ficha'])
+        if m.get('ficha'):  # la ficha «Conocé a …» es toda ella un hecho de la especie: cada frase se lista y se marca, tenga cifra o no
+            for f in SPLIT.split(m['ficha']): out.append(f"- {m['nombre']} · ficha (edición amplia): {f.strip()} ⚠")
         for c,l in zip(r['ciudades'],m['paradas']):add(f"{m['nombre']} en {c['nombre']}",l)
     for e in E.get(r['id'],[]):
         add(f"Evento · {e['titulo']}",e['texto']);add(f"Evento · {e['titulo']} · bien",e['bien']);add(f"Evento · {e['titulo']} · mal",e['mal'])

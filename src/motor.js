@@ -506,10 +506,10 @@ function globo(r,texto,extra,animo){const m=r&&r.companero;if(!m||!texto)return 
 /* ilustraciones (ILUSTRACIONES, src/data/ilustraciones.js, generado por tools/ilustraciones.py): un dibujo por animal sobre un contorno
    real, de perfil estricto (v viewBox, d el SVG, c la cara) para la ficha «Conocé a …» y el globo. El dibujo no trae ojo ni boca: los
    pone caraDe según el ánimo (normal parpadea; alegre, pensativo, sorpresa, dormido). Un solo ojo, porque el animal está de lado.
-   c = {ojo [x,y], k tamaño del ojo, boca [x,y] y kb (solo si el contorno deja ver la línea de la boca), giro en grados para acostar
+   c = {ojo [x,y], k tamaño del ojo, boca [x,y] y kb (solo si el contorno deja ver la línea de la boca), pb la hondura de la boca (1 por defecto; menos en hocicos finos), giro en grados para acostar
    ojo y boca sobre el eje de la cabeza (el hipopótamo pasta con la cabeza baja), marco del primer plano e inclina, los grados que gira ese primer plano para enderezar una cabeza baja}. `f` es el fondo (el lugar donde vive), que el primer plano no lleva. En el eje local, +x va hacia
    el hocico y +y hacia la mandíbula. El glifo chico sigue en el mapa, la lista y los sellos */
-function caraDe(c,a,inc){const k=c.k||2,kb=c.kb||k*2,g=c.giro||0,[ex,ey]=c.ojo,f=v=>+v.toFixed(2),w=f(k*0.3),
+function caraDe(c,a,inc){const k=c.k||2,kb=c.kb||k*2,g=c.giro||0,pb=c.pb||1,[ex,ey]=c.ojo,f=v=>+v.toFixed(2),w=f(k*0.3),
     linea=(d,w)=>`<path class="bigote" style="stroke-width:${f(w)}" d="${d}"/>`,en=(x,y,s)=>s?`<g transform="translate(${x} ${y}) rotate(${g})">${s}</g>`:'',
     z=(x,y,s)=>`<text x="${f(x)}" y="${f(y)}" font-size="${s}"${inc?` transform="rotate(${-inc} ${f(x)} ${f(y)})"`:''} style="font-family:var(--tit)" fill="#fff" fill-opacity=".85">z</text>`;
   const blanco=r=>`<circle class="claro" style="stroke-width:${w}" r="${f(r)}"/>`,pupila=(x,y,r)=>`<circle class="oscuro" cx="${f(x)}" cy="${f(y)}" r="${f(r)}"/><circle class="claro" cx="${f(x+k*0.3)}" cy="${f(y-k*0.3)}" r="${f(k*0.22)}" style="stroke:none"/>`;
@@ -518,11 +518,11 @@ function caraDe(c,a,inc){const k=c.k||2,kb=c.kb||k*2,g=c.giro||0,[ex,ey]=c.ojo,f
     sorpresa:blanco(k*1.45)+pupila(k*0.15,0,k*0.6),
     dormido:linea(`M${f(-k*1.1)} ${f(-k*0.2)}Q0 ${f(k*1.1)} ${f(k*1.1)} ${f(-k*0.2)}`,k*0.42),
     pensativo:blanco(k*1.15)+pupila(k*0.35,-k*0.25,k*0.62)+linea(`M${f(-k*1.2)} ${f(-k*1.9)}q${f(k*1.2)} ${f(-k*0.8)} ${f(k*2.4)} ${f(-k*0.1)}`,k*0.38)}[a]||'';
-  const curva=(x0,y1,x2,y3,x3)=>linea(`M${f(x0*kb)} 0C${f(x0*kb/3)} ${f(y1*kb)} ${f(x2*kb)} ${f(y1*kb)} ${f(x3*kb)} ${f(y3*kb)}`,c.wb||0.9);
+  const curva=(x0,y1,x2,y3,x3)=>linea(`M${f(x0*kb)} 0C${f(x0*kb/3)} ${f(y1*kb*pb)} ${f(x2*kb)} ${f(y1*kb*pb)} ${f(x3*kb)} ${f(y3*kb*pb)}`,c.wb||0.9),qb=Math.min(1,pb*1.6);/* pb: hondura de la boca (un hocico fino pide una curva casi plana) */
   const boca=c.boca?{normal:curva(1.2,0.45,-0.6,-0.35,-1.2),alegre:curva(1.2,0.62,-0.7,-0.55,-1.3),pensativo:curva(1.2,0.15,-0.6,0.25,-1.2),dormido:curva(0.9,0.3,-0.4,0,-0.9),
-    sorpresa:curva(0.5,0.3,-0.6,0,-1.1)+`<ellipse class="oscuro" cx="${f(kb*0.7)}" cy="${f(kb*0.1)}" rx="${f(kb*0.36)}" ry="${f(kb*0.24)}"/>`}[a]:'';
+    sorpresa:curva(0.5,0.3,-0.6,0,-1.1)+`<ellipse class="oscuro" cx="${f(kb*0.7)}" cy="${f(kb*0.1*pb)}" rx="${f(kb*0.36*qb)}" ry="${f(kb*0.24*qb)}"/>`}[a]:'';
   return en(ex,ey,ojo)+(a==='dormido'?z(ex+3,ey-5,7)+z(ex+7.5,ey-10,5):'')+(c.boca?en(c.boca[0],c.boca[1],boca):'')}
-function ilustracion(m,animo,vista){const r=m&&typeof ILUSTRACIONES!=='undefined'&&ILUSTRACIONES[m.glifo];if(!r)return '';
+function ilustracion(m,animo,vista){const r=m&&typeof ILUSTRACIONES!=='undefined'&&ILUSTRACIONES[m.ilus||m.glifo];if(!r)return '';/* `ilus`: la ilustración propia de un animal cuyo glifo comparte con otro distinto (Boto, el delfín rosado, y Bulán, el del Indo) */
   const c=r.c||{},a=animo||'normal',cab=vista==='cabeza'&&c.marco,vb=cab?c.marco.join(' '):r.v,inc=cab&&c.inclina||0,animal=r.d+(r.c?caraDe(c,a,inc):'');/* «cabeza»: primer plano, para el globo */
   return `<svg class="animal ilus" viewBox="${vb}" data-animo="${a}" aria-hidden="true">${cab?(inc?`<g transform="rotate(${inc} ${c.marco[0]+c.marco[2]/2} ${c.marco[1]+c.marco[3]/2})">${animal}</g>`:animal):(r.f||'')+animal}</svg>`}
 function fichaAnimal(r){const m=r.companero,il=m&&ilustracion(m,'normal');if(!il)return '';

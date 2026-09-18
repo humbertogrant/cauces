@@ -21,6 +21,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Jinja · puerto (Historia): Cargás sacos de café robusta de las laderas del lago: Uganda es uno de los dos mayores exportadores de café de África. ⚠
 - Juba · puerto (Historia): Dejás el café y cargás colmillos de marfil, el comercio que hizo rica a Jartum en el siglo XIX. ⚠
 - Jartum · puerto (Historia): Cambiás el marfil por sacos de goma arábiga: la resina de las acacias sudanesas espesa refrescos y dulces en todo el mundo, y Sudán produce la mayor parte.
+- Hipo · ficha (edición amplia): Pasa el día metido en el agua y sale de noche a pastar. ⚠
+- Hipo · ficha (edición amplia): Parece manso, pero es uno de los animales más peligrosos de África. ⚠
 - Evento · Cocodrilos del Sudd: En el pantano del Sudd viven cocodrilos del Nilo, los más grandes de África, y uno se cruzó delante de la falúa.
 - Evento · El nilómetro: En la isla de Roda, en El Cairo, un nilómetro del año 861 medía la crecida: de esa marca dependían la cosecha y los impuestos. ⚠
 - Evento · El nilómetro: Desde la presa de Asuán (1970) la crecida ya no llega.
@@ -41,6 +43,9 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Manaos · puerto (Historia): Vendés el caucho en el puerto flotante, que sube y baja hasta 14 m con el río, y cargás castañas de Pará. ⚠
 - Santarém · puerto (Historia): Sumás sacos de soya de la terminal de Cargill; el grano llegó en camión desde Mato Grosso por la BR-163.
 - Belém · puerto (Historia): Todo se descarga en el mercado Ver-o-Peso, el más grande de la Amazonía, entre montañas de açaí recién bajado de las barcas. ⚠
+- Boto · ficha (edición amplia): Es el delfín de río más grande. ⚠
+- Boto · ficha (edición amplia): De adulto se pone rosado. ⚠
+- Boto · ficha (edición amplia): Puede doblar el cuello, cosa que los delfines de mar no pueden, y así nada entre los árboles cuando la selva se inunda. ⚠
 
 ## Yangtsé (6 300 km hasta el mar de China Oriental)
 
@@ -111,6 +116,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Llegada: Quedan 1 600 km hasta el mar Negro; los hacen las barcazas modernas por las Puertas de Hierro.
 - Ulm · puerto (Historia): Cargás familias de colonos suabos con todo lo que tienen: en el siglo XVIII bajaron así decenas de miles hacia el Banato, y de ahí salieron los «suabos del Danubio».
 - Budapest · puerto (Historia): Sumás pimentón de Szeged y harina: los molinos de Budapest fueron los mayores de Europa en el siglo XIX. ⚠
+- Valsa · ficha (edición amplia): Es un cisne vulgar, una de las aves voladoras más pesadas. ⚠
+- Valsa · ficha (edición amplia): Tiene una protuberancia negra sobre el pico anaranjado, y la pareja suele seguir junta muchos años. ⚠
 - Valsa en Ratisbona: Un puente de piedra viejísimo; durante siglos fue el único.
 - Valsa en Bratislava: Y Viena está a solo 60 km: dos capitales casi vecinas.
 
@@ -265,6 +272,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Montevideo · dato: Su rambla de 22 km bordea el estuario.
 - Llegada: Del Río de la Plata al mar quedan 220 km de agua marrón; los hacen los cargueros. ⚠
 - Rosario · puerto (Historia): Sumás soya y harina de soya de las terminales del Gran Rosario, la mayor concentración de puertos agroexportadores del mundo. ⚠
+- Lobi · ficha (edición amplia): Es una nutria. ⚠
+- Lobi · ficha (edición amplia): Cierra la nariz y las orejas para bucear, y con los bigotes siente a los peces que se mueven en el agua turbia. ⚠
 - Evento · La presa de Yacyretá: Entre Argentina y Paraguay la presa de Yacyretá cierra el río desde 1994; cuando el embalse llegó a su nivel, en 2011, el agua cubrió la parte baja de Encarnación y la ciudad se mudó más arriba, con una costanera nueva. ⚠
 
 ## Indo (3 180 km hasta el mar Arábigo)
@@ -362,6 +371,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Ciudad Guayana · dato: Fundada en 1961 al unir Puerto Ordaz y San Félix, donde el Caroní, de aguas oscuras, entra al Orinoco pardo y los dos corren un rato sin mezclarse.
 - Ciudad Guayana · dato: Puerto del hierro y del acero: los barcos de mar cargan aquí, a unos 300 km del océano; río arriba, en el Caroní, está la presa del Guri. ⚠
 - Tami · hola: Aunque me digan caimán, soy un cocodrilo de verdad, de los más largos de América.
+- Tami · ficha (edición amplia): Es uno de los cocodrilos más grandes de América y vive solo en la cuenca del Orinoco. ⚠
+- Tami · ficha (edición amplia): Quedan muy pocos: durante décadas lo cazaron por su piel. ⚠
 - Evento · Los raudales de Atures: Antes de Puerto Ayacucho el río se aprieta entre rocas negras y salta: son los raudales de Atures y, más arriba, los de Maipures, que Humboldt describió en 1800 como las grandes cataratas del Orinoco.
 - Evento · Los raudales de Atures: Ningún barco los pasa: la carga va en camión unos 60 km.
 - Evento · El puente de Angostura: En 1967 se tendió aquí el primer puente sobre el Orinoco: un puente colgante de 1,7 km entre Ciudad Bolívar y Soledad, en el punto donde el río se estrecha. ⚠
@@ -390,6 +401,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Goolwa · dato: En 1854 tuvo el primer ferrocarril público de Australia, tirado por caballos, hasta la playa de Port Elliot. ⚠
 - Embarcación: Un vapor de ruedas laterales, de madera de eucalipto rojo, que quemaba leña y arrastraba barcazas de lana: entre 1860 y 1900 cientos de vapores unían las estancias del interior con los trenes de la costa.
 - Embarcación: El Adelaide, de 1866, todavía navega en Echuca. ⚠
+- Pico · ficha (edición amplia): Pone huevos y amamanta a sus crías. ⚠
+- Pico · ficha (edición amplia): Bajo el agua cierra los ojos y los oídos, y encuentra a sus presas por la electricidad que producen. ⚠
 - Pico en Murray Bridge: Fue el primero sobre el río.
 - Evento · La carrera de los vapores: En 1853 dos vapores, el Mary Ann y el Lady Augusta, se lanzaron río arriba para ver cuál llegaba primero a Swan Hill; ganó el Mary Ann, y así empezó la época de los vapores del Murray. ⚠
 - Evento · Las esclusas: Desde 1922 el río bajo tiene esclusas y presas que lo mantienen navegable en la seca: la de Mildura es la número 11. ⚠
@@ -430,6 +443,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Tete · dato: Vieja plaza portuguesa del siglo XVI, de las más calurosas de Mozambique.
 - Tete · dato: El puente colgante de 1973 fue durante décadas el único sobre el bajo Zambeze; alrededor están las minas de carbón de Moatize, y río arriba la presa de Cahora Bassa (1974). ⚠
 - Chinde · dato: Entre 1891 y 1923 fue una concesión británica desde donde los vapores subían con carga hacia Nyasalandia, el actual Malaui; los ciclones se lo han llevado en parte. ⚠
+- Tembo · ficha (edición amplia): Es el animal terrestre más grande. ⚠
+- Tembo · ficha (edición amplia): La trompa tiene miles de músculos y ningún hueso, y le sirve de nariz, de mano y de esnórquel cuando cruza un río. ⚠
 - Evento · La Operación Noé: Cuando la presa de Kariba cerró el río en 1958, el agua subió durante años y los animales quedaron atrapados en islas cada vez más chicas. ⚠
 - Evento · La Operación Noé: Guardaparques en botes rescataron a unos 6 000: antílopes, monos, serpientes y hasta rinocerontes atados a balsas. ⚠
 - Evento · El ciclón del delta: El delta del Zambeze mira al canal de Mozambique, por donde entran los ciclones del Índico entre enero y marzo: en 2019 el ciclón Idai inundó toda la región. ⚠
@@ -443,6 +458,9 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Pista moderna: Un puente de casi 800 m pagado por Taiwán lo cruza cerca de la boca, y el agua de un embalse al otro lado de la cordillera riega su caña y su arroz.
 - Liberia · dato: Capital de Guanacaste, fundada en 1769. ⚠
 - Bolsón · dato: Hasta mediados del siglo XX los bongos de remo y vela bajaban de aquí al golfo con maíz, cueros y madera, y subían con sal y mercadería de Puntarenas.
+- Lalo · ficha (edición amplia): Es un cocodrilo americano. ⚠
+- Lalo · ficha (edición amplia): Aguanta el agua salada, y por eso vive en ríos, manglares y esteros. ⚠
+- Lalo · ficha (edición amplia): Toma el sol con la boca abierta para refrescarse. ⚠
 
 ## Reventazón (145 km hasta el Caribe)
 
@@ -462,6 +480,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Siquirres · dato: La planta Reventazón (2016), de 305,5 MW, es la mayor central hidroeléctrica de Centroamérica.
 - Embarcación: Una balsa inflable de goma, con remos, casco y chaleco: el Reventazón es uno de los ríos de rafting más famosos de América y fue sede del mundial de 1998. ⚠
 - Nuria · mar: Las olas son más grandes que yo; me quedo en la barra.
+- Nuria · ficha (edición amplia): Come peces y cangrejos. ⚠
+- Nuria · ficha (edición amplia): Tiene una membrana entre los dedos para nadar, y deja sus excrementos en las piedras de la orilla para avisar que ese tramo es suyo. ⚠
 - Nuria en Siquirres: Otra pared gigante, la más grande.
 
 ## Sarapiquí (84 km hasta el río San Juan)

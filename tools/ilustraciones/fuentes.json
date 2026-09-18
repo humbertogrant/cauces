@@ -13,5 +13,55 @@
     "licencia": "CC0 1.0",
     "pagina": "https://www.phylopic.org/images/3ca524e8-74c5-45ad-a267-9f599ab7d751",
     "archivo": "https://images.phylopic.org/images/3ca524e8-74c5-45ad-a267-9f599ab7d751/vector.svg"
+  },
+  "delfin-inia.svg": {
+    "especie": "Inia geoffrensis",
+    "autor": "sin autor anotado en PhyloPic",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/4b39bbf1-f37f-4d62-a2ad-1504772ba851",
+    "archivo": "https://images.phylopic.org/images/4b39bbf1-f37f-4d62-a2ad-1504772ba851/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "cocodrilo-reinke.svg": {
+    "especie": "Crocodylus acutus",
+    "autor": "Beth Reinke",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/8d283cfb-e10e-4263-883c-06a9e289df2f",
+    "archivo": "https://images.phylopic.org/images/8d283cfb-e10e-4263-883c-06a9e289df2f/vector.svg",
+    "bajado": "2026-09-18",
+    "uso": "Lalo (cocodrilo americano, la especie de la silueta) y Tami (caimán del Orinoco, Crocodylus intermedius: congénere)"
+  },
+  "elefante-traver.svg": {
+    "especie": "Loxodonta africana africana",
+    "autor": "Steven Traver",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/62398ac0-f0c3-48f8-8455-53512a05fbc4",
+    "archivo": "https://images.phylopic.org/images/62398ac0-f0c3-48f8-8455-53512a05fbc4/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "cisne-wilson.svg": {
+    "especie": "Cygnus olor",
+    "autor": "Andy Wilson",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/5fa31c76-161d-4f37-91d4-57c389dee1ae",
+    "archivo": "https://images.phylopic.org/images/5fa31c76-161d-4f37-91d4-57c389dee1ae/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "castor-traver.svg": {
+    "especie": "Castor fiber",
+    "autor": "Steven Traver",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/0b9b783b-b537-4fa6-b387-a9ca2d3f7a12",
+    "archivo": "https://images.phylopic.org/images/0b9b783b-b537-4fa6-b387-a9ca2d3f7a12/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "nutria-michaud.svg": {
+    "especie": "Lontra longicaudis",
+    "autor": "Margot Michaud",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/85b7c8b0-7c52-4109-9787-9911eee729a4",
+    "archivo": "https://images.phylopic.org/images/85b7c8b0-7c52-4109-9787-9911eee729a4/vector.svg",
+    "bajado": "2026-09-18",
+    "uso": "Lobi y Nuria: las dos son la nutria neotropical, la especie de la silueta"
   }
 }
