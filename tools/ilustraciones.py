@@ -14,7 +14,7 @@ ilustraciones_datos.py). tools/ilustraciones/revision.js (fuera de git) los reci
 crudo, solo contorno con sombra y brillo, para leer coordenadas sobre la cuadrícula de las hojas. Así un borrador nunca llega al
 juego: el 2026-09-18 un modo «--crudo» que escribía sobre el archivo del juego dejó a Hipo y a Pico sin cara en la copia de trabajo.
 """
-import io, json, os, re, sys
+import io, json, math, os, re, sys
 from shapely.geometry import Polygon, MultiPolygon, box
 from shapely.affinity import translate, scale, rotate
 from shapely.ops import unary_union
@@ -191,6 +191,31 @@ def poligono(pts):
     return Polygon(pts).buffer(0)
 
 
+def redondear(p):
+    """Esquinas redondeadas, con un radio a la medida de la pieza (1,5 como mucho; una pieza chica, como un diente, casi nada)."""
+    x0, y0, x1, y1 = p.bounds
+    r = min(1.5, 0.22 * min(x1 - x0, y1 - y0))
+    return p.buffer(-r).buffer(r)
+
+
+def trama(pol, g, paso, angulos):
+    """Rayado dentro de un polígono tosco que el contorno recorta: la cola escamosa del castor."""
+    from shapely.geometry import LineString
+    zona = poligono(pol).intersection(g.buffer(-0.8))
+    if zona.is_empty:
+        return ''
+    x0, y0, x1, y1 = zona.bounds
+    cx, cy, r, d = (x0 + x1) / 2, (y0 + y1) / 2, max(x1 - x0, y1 - y0), ''
+    for ang in angulos:
+        a = math.radians(ang)
+        ux, uy = math.cos(a), math.sin(a)
+        k = -r
+        while k <= r:
+            d += hilo(LineString([(cx - uy * k - ux * r, cy + ux * k - uy * r), (cx - uy * k + ux * r, cy + ux * k + uy * r)]).intersection(zona), 0.8)
+            k += paso
+    return d
+
+
 def ilustrar(clave, e):
     crudo = 'cara' not in e      # en borrador: solo el contorno
     g = forma(io.open(os.path.join(DIR, e['fuente']), encoding='utf8').read())
@@ -209,11 +234,16 @@ def ilustrar(clave, e):
     brillo = brillo.intersection(box(x0, y0, x1, y0 + (y1 - y0) * e.get('brillo', 0.5)))
     d = ''
     zonas = {} if crudo else e.get('zonas', {})
-    d += '<path class="cuerpo" d="%s"/>' % trazo(g)
+    borde = (';stroke-width:%s' % n(e['borde'])) if e.get('borde') else ''      # contorno más fino para un animal muy delgado (el gavial)
+    d += '<path class="cuerpo" d="%s"%s/>' % (trazo(g), (' style="%s"' % borde[1:]) if borde else '')
     bordes = encima = ''
     for clase, pols in zonas.items():
-        clase, _, opaco = clase.partition('@')      # «lejos@.55»: la misma tinta, más suave (la oreja sobre el hombro)
-        z = unary_union([poligono(p).buffer(-1.5).buffer(1.5) for p in pols]).intersection(g)     # esquinas redondeadas
+        sin_linea = clase.endswith('~')             # «lejos@.6~»: sin la línea de borde (la cara sin pelo del bonobo)
+        clase, _, opaco = clase.rstrip('~').partition('@')      # «lejos@.55»: la misma tinta, más suave (la oreja sobre el hombro)
+        z = unary_union([redondear(poligono(p)) for p in pols]).intersection(g)
+        if z.is_empty:
+            print('  aviso: la zona %s de %s no toca el contorno' % (clase, clave))
+            continue
         pieza = '<path class="%s" d="%s" style="stroke:none%s"/>' % (clase, trazo(z, 0.3), (';opacity:' + opaco) if opaco else '')
         if clase == 'oscuro':      # lo oscuro (la protuberancia del cisne) va encima de la sombra y del brillo, que lo agrisaban
             encima += pieza
@@ -221,18 +251,22 @@ def ilustrar(clave, e):
         else:
             d += pieza
         # la línea donde la zona se separa del resto del cuerpo (por dentro del contorno)
-        bordes += hilo(z.boundary.intersection(g.buffer(-0.62)))
+        if not sin_linea:
+            bordes += hilo(z.boundary.intersection(g.buffer(-0.62)))
         if clase == 'acento':      # sobre el dorado, la sombra es oro tinta y no verde
             d += '<path d="%s" style="fill:var(--oro-tinta);opacity:.4"/>' % trazo(sombra.intersection(z), 0.5)
         if clase in ('acento', 'oscuro'):
             sombra = sombra.difference(z)
     d += '<path class="sombra" d="%s" style="opacity:.8"/>' % trazo(sombra, 0.8)
     d += '<path class="claro" d="%s" style="opacity:.3;stroke:none"/>' % trazo(brillo, 0.8)
+    rayas = ''.join(trama(t['pol'], g, t.get('paso', 2.4), t.get('angulos', (30, -30))) for t in ([] if crudo else e.get('tramas', [])))
+    if rayas:
+        d += '<path class="bigote" d="%s" style="stroke-width:.5;opacity:.45"/>' % rayas
     d += encima
     if bordes:
         d += '<path class="bigote" d="%s" style="stroke-width:.7;opacity:.7"/>' % bordes
     # el contorno otra vez, solo trazo, para que las zonas y la sombra no lo pisen
-    d += '<path class="cuerpo" d="%s" style="fill:none"/>' % trazo(g)
+    d += '<path class="cuerpo" d="%s" style="fill:none%s"/>' % (trazo(g), borde)
     if not crudo:
         d += e.get('lineas', '')
     c = None if crudo else e.get('cara')

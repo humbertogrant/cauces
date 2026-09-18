@@ -53,7 +53,8 @@
     "licencia": "CC0 1.0",
     "pagina": "https://www.phylopic.org/images/0b9b783b-b537-4fa6-b387-a9ca2d3f7a12",
     "archivo": "https://images.phylopic.org/images/0b9b783b-b537-4fa6-b387-a9ca2d3f7a12/vector.svg",
-    "bajado": "2026-09-18"
+    "bajado": "2026-09-18",
+    "uso": "sin usar: muestra la cola de canto y no se lee como castor; se reemplazó por castor-canadensis.svg"
   },
   "nutria-michaud.svg": {
     "especie": "Lontra longicaudis",
@@ -63,5 +64,62 @@
     "archivo": "https://images.phylopic.org/images/85b7c8b0-7c52-4109-9787-9911eee729a4/vector.svg",
     "bajado": "2026-09-18",
     "uso": "Lobi y Nuria: las dos son la nutria neotropical, la especie de la silueta"
+  },
+  "castor-canadensis.svg": {
+    "especie": "Castor canadensis",
+    "autor": "sin autor anotado en PhyloPic",
+    "licencia": "Dominio público (Public Domain Mark 1.0)",
+    "pagina": "https://www.phylopic.org/images/b3dd721e-6084-4413-8300-44e10d8fd3ca",
+    "archivo": "https://images.phylopic.org/images/b3dd721e-6084-4413-8300-44e10d8fd3ca/vector.svg",
+    "bajado": "2026-09-18",
+    "uso": "Bíber, el castor del Rin, es Castor fiber: esta silueta es de su congénere americano, casi idéntico por fuera, en la pose encorvada que sí se lee como castor"
+  },
+  "marsopa-neophocaena.svg": {
+    "especie": "Neophocaena asiaeorientalis",
+    "autor": "sin autor anotado en PhyloPic",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/38a3d150-6afb-4c2d-9941-7089fb434ab7",
+    "archivo": "https://images.phylopic.org/images/38a3d150-6afb-4c2d-9941-7089fb434ab7/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "gavial-jfd.svg": {
+    "especie": "Gavialis gangeticus",
+    "autor": "Jagged Fang Designs",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/f963f388-8297-4ceb-91f6-493b38dccba5",
+    "archivo": "https://images.phylopic.org/images/f963f388-8297-4ceb-91f6-493b38dccba5/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "esturion-cada.svg": {
+    "especie": "Huso huso (Acipenser huso en PhyloPic)",
+    "autor": "Robbie Cada",
+    "licencia": "Dominio público (Public Domain Mark 1.0)",
+    "pagina": "https://www.phylopic.org/images/cd7e54b4-aff4-48c8-9159-c8977ff07717",
+    "archivo": "https://images.phylopic.org/images/cd7e54b4-aff4-48c8-9159-c8977ff07717/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "manati-traver.svg": {
+    "especie": "Trichechus senegalensis",
+    "autor": "Steven Traver",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/d88fc903-0deb-4b78-b2fd-7c15d206d3f9",
+    "archivo": "https://images.phylopic.org/images/d88fc903-0deb-4b78-b2fd-7c15d206d3f9/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "bonobo-keesey.svg": {
+    "especie": "Pan paniscus",
+    "autor": "T. Michael Keesey",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/f06b4dd0-094e-4f37-9105-25fdb4eb1b02",
+    "archivo": "https://images.phylopic.org/images/f06b4dd0-094e-4f37-9105-25fdb4eb1b02/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "beluga-traver.svg": {
+    "especie": "Delphinapterus leucas",
+    "autor": "Steven Traver",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/87aa96fa-43c7-42ea-b9ef-92d8ba432cc3",
+    "archivo": "https://images.phylopic.org/images/87aa96fa-43c7-42ea-b9ef-92d8ba432cc3/vector.svg",
+    "bajado": "2026-09-18"
   }
 }

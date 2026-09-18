@@ -67,6 +67,9 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Shanghái · dato: Puerto de contenedores más grande del mundo; el Bund colonial mira a los rascacielos de Pudong al otro lado del agua.
 - Chongqing · puerto (Historia): Cargás sal de los pozos de Zigong y pimienta de Sichuan; la sal de pozo fue durante siglos el monopolio que financiaba al imperio.
 - Yichang · puerto (Historia): Bajás por las esclusas de las Tres Gargantas; hasta hace un siglo aquí se contrataban los sirgadores que subían los juncos a pulso. ⚠
+- Tun · ficha (edición amplia): No tiene aleta en el lomo, y de ahí su nombre. ⚠
+- Tun · ficha (edición amplia): La boca curvada hace que parezca que sonríe. ⚠
+- Tun · ficha (edición amplia): Es la única marsopa de agua dulce, y quedan poco más de mil. ⚠
 - Tun en Wuhan: Un puente enorme, el primero que cruzó este río.
 - Evento · Las Tres Gargantas: Hasta hace un siglo, cientos de sirgadores subían los juncos a pulso por aquí. ⚠
 - Evento · El primer puente: Hasta 1957 ningún puente cruzaba el Yangtsé: los trenes pasaban en ferry. ⚠
@@ -142,6 +145,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Embarcación: 110 m de casco de acero, la cabina de la familia a popa, la bicicleta en cubierta y el coche encima de la escotilla. ⚠
 - Embarcación: Lleva 3 000 toneladas, lo mismo que cien camiones. ⚠
 - Basilea · puerto (Historia): Cargás sal de las minas de Schweizerhalle y contenedores de la industria química: es el único puerto de Suiza.
+- Bíber · ficha (edición amplia): Tiene los dientes anaranjados porque el esmalte lleva hierro, y nunca le dejan de crecer. ⚠
+- Bíber · ficha (edición amplia): Con ellos corta árboles para hacer presas y madrigueras. ⚠
 - Bíber en Duisburgo: Es el puerto de río más grande de Europa.
 - Bíber en Rotterdam: El puerto más grande del continente.
 - Evento · El río enderezado: Hasta 1817 el Rin daba mil vueltas por esta llanura; el ingeniero Tulla lo enderezó y lo acortó unos 80 km. ⚠
@@ -166,6 +171,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Patna · dato: Pataliputra fue una de las mayores ciudades del mundo; el griego Megástenes la describió como embajador. ⚠
 - Calcuta · imagen: La última puerta antes del mar: Calcuta, capital del Raj británico hasta 1911, sobre el Hooghly, brazo del delta.
 - Calcuta · dato: Kolkata creció desde una factoría de la Compañía de las Indias (1690).
+- Gavi · ficha (edición amplia): Tiene el hocico más fino de todos los cocodrilos, lleno de dientes afilados para atrapar peces. ⚠
+- Gavi · ficha (edición amplia): El macho adulto lleva en la punta un bulto que se llama ghara, como una vasija de la India. ⚠
 - Gavi en Benarés: Es el lugar más antiguo del río.
 - Gavi en Patna: Hace mucho, esta fue una de las ciudades más grandes del mundo.
 - Evento · La Kumbh Mela: Cada doce años, en la Kumbh Mela de Prayagraj, millones de peregrinos se bañan en la confluencia del Ganges y el Yamuna: la reunión de gente más grande del planeta. ⚠
@@ -191,6 +198,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Tver · puerto (Historia): Cargás pieles de marta cibelina y ardilla que bajaron de los bosques del norte: la moneda de Rusia durante siglos.
 - Yaroslavl · puerto (Historia): Sumás lino de Yaroslavl, tejido en la primera gran manufactura de Rusia (1722). ⚠
 - Samara · puerto (Historia): Cargás trigo de la estepa: en el siglo XIX Samara fue el granero que alimentaba a San Petersburgo. ⚠
+- Belu · ficha (edición amplia): El esturión beluga es uno de los peces más grandes que viven en ríos. ⚠
+- Belu · ficha (edición amplia): En vez de escamas tiene cinco filas de placas de hueso, y no tiene dientes: aspira a sus presas. ⚠
 - Belu en Nizhni Nóvgorod: ¡La feria más grande de Rusia!
 - Evento · Viene el hielo · bien: La lodia llega con el primer hielo crujiendo detrás.
 - Evento · Los sirgadores: Hasta hace poco más de un siglo, cuadrillas de sirgadores arrastraban las barcazas río arriba con sogas, cantando para llevar el paso; un pintor, Repin, los hizo famosos. ⚠
@@ -251,6 +260,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Tombuctú · puerto (Historia): Cambiás el oro por barras de sal de Taoudeni, que las caravanas trajeron 700 km por el desierto, y por un manuscrito. ⚠
 - Port Harcourt · puerto (Historia): Todo se descarga entre las torres de las petroleras: hoy el único cargamento que cuenta es el crudo.
 - Mana · mar: El río nació a 240 km de aquí y dio la vuelta entera.
+- Mana · ficha (edición amplia): Es pariente lejano del elefante. ⚠
+- Mana · ficha (edición amplia): Come sobre todo plantas del agua, y las muelas que se le gastan se le caen adelante mientras otras nuevas avanzan desde atrás. ⚠
 
 ## Paraná (4 880 km hasta el Río de la Plata)
 
@@ -322,6 +333,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Matadi · dato: Cerca, en la roca de Yelala, Diogo Cão grabó su nombre en 1485. ⚠
 - Boma · dato: Capital del Estado Libre del Congo y del Congo Belga entre 1886 y 1923, cuando la capital pasó a Léopoldville. ⚠
 - Boma · dato: Río abajo, en Banana, el Congo entra al Atlántico y sigue bajo el mar por un cañón de 800 km. ⚠
+- Lola · ficha (edición amplia): Los bonobos y los chimpancés son los parientes vivos más cercanos de las personas. ⚠
+- Lola · ficha (edición amplia): Los bonobos viven solo al sur del río Congo, y en sus grupos mandan las hembras. ⚠
 - Evento · Las cataratas Boyoma: Desde 1906 un tren de 125 km las rodea, de Ubundu a Kisangani; hay que saber adónde sigue el río para no perder el tren.
 - Evento · Las cataratas Livingstone: Entre Kinshasa y Matadi el río baja 270 m en 350 km de rápidos, treinta y dos saltos donde Stanley perdió a varios compañeros en 1877.
 - Evento · Las cataratas Livingstone: El tren de 1898 los rodea; la barcaza se queda en el Pool.
@@ -425,6 +438,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Quebec · dato: Es la única ciudad amurallada al norte de México; en 1759 los británicos la tomaron en las llanuras de Abraham. ⚠
 - Tadoussac · dato: En la boca del fiordo del Saguenay, donde el agua dulce se vuelve salada y el río ya es un estuario de unos 20 km de ancho. ⚠
 - Tadoussac · dato: En 1600 se abrió aquí el primer puesto francés de comercio de pieles de América; hoy vienen las belugas y, en verano, las ballenas azules. ⚠
+- Bela · ficha (edición amplia): Es blanca de adulta; las crías nacen grises. ⚠
+- Bela · ficha (edición amplia): Puede girar el cuello y cambiar la forma de su frente abombada, que le sirve para orientarse con sonidos. ⚠
 - Evento · La escalera de agua: Entre Montreal y el lago Ontario la Vía Marítima sube los barcos 68 m con siete esclusas; dos de ellas, en Massena, son de Estados Unidos, y la frontera va por el medio del río. ⚠
 - Evento · Los rápidos de Lachine: Antes de Montreal el río cae por los rápidos de Lachine, que pararon a Cartier en 1535 y a todos los barcos hasta el canal de 1825. ⚠
 - Evento · El puente de hielo: En invierno el río se congela frente a Quebec, y hasta hace un siglo casi cada año se formaba un puente de hielo hasta Lévis, por donde cruzaban trineos y hasta caballos. ⚠

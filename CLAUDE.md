@@ -147,7 +147,12 @@ no tiene silueta libre, sigue con su glifo (`ilustracion()` busca `m.ilus||m.gli
   (`lejos` para patas lejanas y cola, `acento` para el único detalle dorado: el pico del ornitorrinco, `oscuro` para lo negro de verdad:
   la protuberancia del cisne, que va encima de sombra y brillo; `clase@.5` suaviza la tinta: la oreja del elefante, la aleta del delfín)
   con su línea de borde. Por animal: `liso` (alisa un trazado con textura y quita huecos y motas: el elefante traía 51 trazos), `luz`
-  (acorta la sombra en cuerpos chatos: cocodrilo 0,5) y `vista` (el encuadre de la lámina: el cocodrilo es una franja).
+  (acorta la sombra en cuerpos chatos: cocodrilo 0,5; gavial 0,3), `vista` (el encuadre de la lámina: el cocodrilo es una franja), `borde`
+  (contorno más fino para un animal muy delgado: el hocico del gavial mide 2,4 de alto y el trazo de 1,1 lo tapaba), `brillo` (qué
+  fracción de la altura recibe el filo de luz: 0,3 en el bonobo, para que no brillen brazos y piernas) y `tramas` (rayado dentro de un
+  polígono recortado por el contorno: la cola escamosa del castor). Una zona `clase@.5~` va sin línea de borde (la cara sin pelo del
+  bonobo) y una zona `claro` que cubre toda la caja deja el cuerpo blanco: la beluga es blanca de verdad. El redondeo de esquinas de
+  una zona se adapta a su tamaño.
 - **Perfil estricto: un solo ojo** (la prueba rechaza `ojo2`). A mano, en `tools/ilustraciones/ilustraciones_datos.py`, solo va lo que
   el contorno no trae, ubicado sobre los bultos del contorno real con la cuadrícula (`--crudo` y las hojas del scratchpad): el ojo (en
   la órbita), la boca si el perfil la deja ver (el hipopótamo sí; el ornitorrinco, visto algo desde arriba, no), pocas líneas tenues
@@ -169,10 +174,15 @@ no tiene silueta libre, sigue con su glifo (`ilustracion()` busca `m.ilus||m.gli
   animal grande, a tamaño de ficha y los cinco retratos), `ilus-det.js clave x y w h` (detalle con cuadrícula fina para leer
   coordenadas), `ilus-globo.js` (retratos a varios tamaños y fondos) y `ficha-lote.js río…` (ficha y globo dentro del juego, y dice si
   cada globo lleva retrato o glifo). Cada ilustración pesa de 4 a 13 KB. `tools/verificacion.py` lista y marca ⚠ cada frase de cada `ficha`.
-- Hechos (2026-09-18): hipo, ornitorrinco, inia (Boto), cocodrilo (Lalo, su especie exacta, y Tami, congénere), elefante, cisne y nutria
-  (Lobi y Nuria, la misma especie). En borrador: castor (la silueta de Castor fiber muestra la cola de canto; hay dos de C. canadensis,
-  congénere, en pose encorvada: decisión de Humberto). Sin silueta libre en PhyloPic: delfín del Indo, delfín común (Odiseo) y bagre
-  gigante; con pariente: rana toro (Lithobates), mono congo (Alouatta) y tortuga de caparazón blando (Trionychidae).
+- Hechos (2026-09-18, catorce): hipo, ornitorrinco, inia (Boto), cocodrilo (Lalo, su especie exacta, y Tami, congénere), elefante, cisne,
+  nutria (Lobi y Nuria, la misma especie), castor (la silueta es de Castor canadensis, congénere del castor del Rin: la única libre de
+  C. fiber muestra la cola de canto y no se lee; quedó en tools/ilustraciones/ sin usar), marsopa sin aleta, gavial (la silueta trae
+  las fauces entreabiertas con dientes y la ghara), esturión beluga, manatí africano, bonobo (mira al suelo: `giro` 55 e `inclina` −50;
+  es la más floja del set) y beluga. Faltan en Cauces: rana toro (Lithobates, pariente), tortuga de caparazón blando (Trionychidae,
+  pariente; necesita `ilus` porque comparte glifo con la tortuga verde de Cook), bagre gigante (sin silueta libre), carpa, mono congo
+  (Alouatta), tiburón toro, lapa roja y cangrejo (Gecarcinus quadratus de Margot Michaud calza con el Térraba); y en Exploradores:
+  dromedario, camello, caballo, jirafa, tortuga verde, lapa y la delfín de Odiseo (sin silueta libre de Delphinus; buscar otro
+  delfínido). Sin silueta libre en PhyloPic: delfín del Indo (Bulán sigue con su glifo) y bagre gigante.
 - Descartado: el 2026-09-15, retratos trazados de grabados del siglo XIX de dominio público y un «personaje» hecho con su silueta más
   una cara dibujada (irreconocibles en el globo; commits b0715a6 y c69a359); el 2026-09-17, los dibujos vectoriales hechos a mano por
   coordenadas (commits f10c428 y 7959341).
@@ -484,7 +494,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 746 KB el 2026-09-18, con siete ilustraciones). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 797 KB el 2026-09-18, con catorce ilustraciones). La edición amplia
   (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
