@@ -152,14 +152,17 @@ ANIMALES = {
         fondo=('<path d="M4 6q4.5-2.4 9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0"' + AGUA + '/>'
                '<path d="M100 89q-2-12 2-22M104.5 89q1-10-1.5-17M109 89q-1-13 3-25M113.5 89q1.5-9 0-15" style="fill:none;stroke:var(--verde-medio);stroke-width:1.6;stroke-linecap:round;opacity:.5"/>'),
     ),
-    # Lola, la bonobo (Pan paniscus): camina sobre los nudillos y mira al suelo; el retrato gira para enderezarle la cara.
+    # Lola, la bonobo (Pan paniscus): sentada con las piernas estiradas y las manos en un pie. La silueta de PhyloPic viene girada (el
+    # tronco horizontal y las extremidades hacia abajo) y primero la leí como un bonobo caminando sobre los nudillos; Humberto vio que
+    # las piernas rectas que se juntan con los brazos son las de uno sentado. `giro` −73 acuesta las piernas sobre el suelo.
     'bonobo': dict(
-        fuente='bonobo-keesey.svg', espejo=True, liso=0.2, brillo=0.3,      # brillo solo en el lomo, no en brazos ni piernas
-        cara=dict(ojo=[89.3, 28.4], k=1.3, boca=[83.6, 36.9], kb=1.8, giro=55, pb=0.8, wb=0.7, marco=[68, 8, 40, 40], inclina=-50),
-        zonas={'lejos': [[(45.5, 38), (53.5, 37), (58, 50), (61, 62), (62.5, 68), (60.5, 72.5), (52, 72.5), (47, 60)]],   # la pierna lejana
-               'lejos@.55~': [[(89.5, 20.5), (86.8, 23.5), (85.4, 27), (85.2, 30.2), (83, 32.2), (81, 34.5), (80.2, 38), (84, 41), (90, 38), (94, 32), (94.5, 24), (92, 20)]]},   # la cara sin pelo
-        lineas='<path class="bigote" d="M83.2 26.6q-1.6-2.2.4-3.8q1.8.8 1.4 3.4"' + TENUE + '/>',                  # la oreja
-        fondo=('<ellipse class="sombra" cx="58" cy="81.5" rx="44" ry="5.5" style="opacity:.28"/>'
+        fuente='bonobo-keesey.svg', espejo=True, liso=0.2, giro=-73, brillo=0.3,
+        cara=dict(ojo=[52.4, 21.8], k=1.2, boca=[55.9, 26.9], kb=1.5, giro=8, pb=0.8, wb=0.6, marco=[30, 8, 38, 38]),
+        zonas={'lejos': [[(50.5, 60), (58, 59.2), (72, 59), (77, 60), (81.5, 57), (84.5, 60.5), (82.5, 65), (78.5, 68.6), (66, 69), (56, 67.6), (52, 65.5)]],   # la pierna lejana
+               'lejos@.5~^': [[(51.8, 16), (50.2, 20), (50, 24), (51, 27.5), (52.6, 30.4), (60, 30.5), (60, 16)]]},                                  # la cara sin pelo
+        lineas=('<path class="bigote" d="M47.6 20.8q-2.4.6-2 3q1.6 1.4 2.6-.6"' + TENUE + '/>'                                                       # la oreja
+                '<circle class="oscuro" cx="57.5" cy="25.3" r=".4"/>'),
+        fondo=('<ellipse class="sombra" cx="58" cy="81.6" rx="44" ry="5" style="opacity:.28"/>'
                '<path d="M6 85q.3-2.8-1-4.6M8.5 85.4q.2-3 1.4-4.6M108 86q-.3-3 1.2-5M110.4 86.4q0-2.8 1.6-4.4"' + AGUA + '/>'),
     ),
     # Bela, la beluga (Delphinapterus leucas): blanca de verdad (todo el cuerpo en `claro`), sin aleta en el lomo y con la frente abombada.

@@ -238,6 +238,8 @@ def ilustrar(clave, e):
     d += '<path class="cuerpo" d="%s"%s/>' % (trazo(g), (' style="%s"' % borde[1:]) if borde else '')
     bordes = encima = ''
     for clase, pols in zonas.items():
+        arriba = clase.endswith('^')                # «…^»: encima de la sombra y del brillo, como lo oscuro (la cara del bonobo)
+        clase = clase.rstrip('^')
         sin_linea = clase.endswith('~')             # «lejos@.6~»: sin la línea de borde (la cara sin pelo del bonobo)
         clase, _, opaco = clase.rstrip('~').partition('@')      # «lejos@.55»: la misma tinta, más suave (la oreja sobre el hombro)
         z = unary_union([redondear(poligono(p)) for p in pols]).intersection(g)
@@ -245,7 +247,7 @@ def ilustrar(clave, e):
             print('  aviso: la zona %s de %s no toca el contorno' % (clase, clave))
             continue
         pieza = '<path class="%s" d="%s" style="stroke:none%s"/>' % (clase, trazo(z, 0.3), (';opacity:' + opaco) if opaco else '')
-        if clase == 'oscuro':      # lo oscuro (la protuberancia del cisne) va encima de la sombra y del brillo, que lo agrisaban
+        if clase == 'oscuro' or arriba:      # lo oscuro (la protuberancia del cisne) va encima de la sombra y del brillo, que lo agrisaban
             encima += pieza
             brillo = brillo.difference(z)
         else:

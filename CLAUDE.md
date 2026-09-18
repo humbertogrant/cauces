@@ -150,8 +150,8 @@ no tiene silueta libre, sigue con su glifo (`ilustracion()` busca `m.ilus||m.gli
   (acorta la sombra en cuerpos chatos: cocodrilo 0,5; gavial 0,3), `vista` (el encuadre de la lámina: el cocodrilo es una franja), `borde`
   (contorno más fino para un animal muy delgado: el hocico del gavial mide 2,4 de alto y el trazo de 1,1 lo tapaba), `brillo` (qué
   fracción de la altura recibe el filo de luz: 0,3 en el bonobo, para que no brillen brazos y piernas) y `tramas` (rayado dentro de un
-  polígono recortado por el contorno: la cola escamosa del castor). Una zona `clase@.5~` va sin línea de borde (la cara sin pelo del
-  bonobo) y una zona `claro` que cubre toda la caja deja el cuerpo blanco: la beluga es blanca de verdad. El redondeo de esquinas de
+  polígono recortado por el contorno: la cola escamosa del castor). Una zona `clase@.5~` va sin línea de borde y con `^` al final se dibuja encima de la sombra y del brillo (la cara sin
+  pelo del bonobo: `lejos@.5~^`) y una zona `claro` que cubre toda la caja deja el cuerpo blanco: la beluga es blanca de verdad. El redondeo de esquinas de
   una zona se adapta a su tamaño.
 - **Perfil estricto: un solo ojo** (la prueba rechaza `ojo2`). A mano, en `tools/ilustraciones/ilustraciones_datos.py`, solo va lo que
   el contorno no trae, ubicado sobre los bultos del contorno real con la cuadrícula (`--crudo` y las hojas del scratchpad): el ojo (en
@@ -177,8 +177,11 @@ no tiene silueta libre, sigue con su glifo (`ilustracion()` busca `m.ilus||m.gli
 - Hechos (2026-09-18, catorce): hipo, ornitorrinco, inia (Boto), cocodrilo (Lalo, su especie exacta, y Tami, congénere), elefante, cisne,
   nutria (Lobi y Nuria, la misma especie), castor (la silueta es de Castor canadensis, congénere del castor del Rin: la única libre de
   C. fiber muestra la cola de canto y no se lee; quedó en tools/ilustraciones/ sin usar), marsopa sin aleta, gavial (la silueta trae
-  las fauces entreabiertas con dientes y la ghara), esturión beluga, manatí africano, bonobo (mira al suelo: `giro` 55 e `inclina` −50;
-  es la más floja del set) y beluga. Faltan en Cauces: rana toro (Lithobates, pariente), tortuga de caparazón blando (Trionychidae,
+  las fauces entreabiertas con dientes y la ghara), esturión beluga, manatí africano, bonobo (sentada con las piernas estiradas y las
+  manos en un pie: la silueta de PhyloPic viene girada, con el tronco horizontal y las extremidades hacia abajo, y primero la leí como
+  un bonobo caminando; Humberto vio que eran las piernas rectas de uno sentado, y `giro` −73 las acuesta sobre el suelo) y beluga.
+  Lección: antes de ubicar la cara, preguntarse en qué postura está el animal de verdad; una silueta puede venir girada, y dos pares
+  de extremidades rectas que se juntan en un punto son de un animal sentado, no de uno que camina. Faltan en Cauces: rana toro (Lithobates, pariente), tortuga de caparazón blando (Trionychidae,
   pariente; necesita `ilus` porque comparte glifo con la tortuga verde de Cook), bagre gigante (sin silueta libre), carpa, mono congo
   (Alouatta), tiburón toro, lapa roja y cangrejo (Gecarcinus quadratus de Margot Michaud calza con el Térraba); y en Exploradores:
   dromedario, camello, caballo, jirafa, tortuga verde, lapa y la delfín de Odiseo (sin silueta libre de Delphinus; buscar otro
