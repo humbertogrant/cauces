@@ -121,5 +121,73 @@
     "pagina": "https://www.phylopic.org/images/87aa96fa-43c7-42ea-b9ef-92d8ba432cc3",
     "archivo": "https://images.phylopic.org/images/87aa96fa-43c7-42ea-b9ef-92d8ba432cc3/vector.svg",
     "bajado": "2026-09-18"
+  },
+  "rana-yu.svg": {
+    "especie": "Rana catesbeiana (rana toro; Lithobates catesbeianus)",
+    "autor": "Chuanixn Yu",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/77f50b2e-9679-4ded-9faf-ff77d490c40a",
+    "archivo": "https://images.phylopic.org/images/77f50b2e-9679-4ded-9faf-ff77d490c40a/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "carpa-cano.svg": {
+    "especie": "Cyprinus carpio",
+    "autor": "Carlos Cano-Barbacil",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/25a76141-cca2-4b56-bd9f-9f5fdcd8efa1",
+    "archivo": "https://images.phylopic.org/images/25a76141-cca2-4b56-bd9f-9f5fdcd8efa1/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "mono-damasio.svg": {
+    "especie": "Alouatta",
+    "autor": "Lucas Damásio",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/42e0559e-5470-44a8-89da-b34641d6c6e5",
+    "archivo": "https://images.phylopic.org/images/42e0559e-5470-44a8-89da-b34641d6c6e5/vector.svg",
+    "bajado": "2026-09-18",
+    "uso": "sin usar: el mono camina por una rama con la cabeza entre los hombros y no se distingue la cara; se reemplazó por mono-caraya.svg"
+  },
+  "tiburon-toro.svg": {
+    "especie": "Carcharhinus leucas",
+    "autor": "sin autor anotado en PhyloPic",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/bd364451-6971-445d-88df-85162baf3f9c",
+    "archivo": "https://images.phylopic.org/images/bd364451-6971-445d-88df-85162baf3f9c/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "lapa-ramirez.svg": {
+    "especie": "Ara macao",
+    "autor": "Myriam Ramírez (Myriam_Ramirez en PhyloPic)",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/0d19238f-25ca-42a5-a1e2-d108defb75f1",
+    "archivo": "https://images.phylopic.org/images/0d19238f-25ca-42a5-a1e2-d108defb75f1/vector.svg",
+    "bajado": "2026-09-18"
+  },
+  "tortuga-blanda-gordon.svg": {
+    "especie": "Apalone ferox",
+    "autor": "Caleb M. Gordon",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/8607343e-6718-4050-8ac7-26c27412db2f",
+    "archivo": "https://images.phylopic.org/images/8607343e-6718-4050-8ac7-26c27412db2f/vector.svg",
+    "bajado": "2026-09-18",
+    "uso": "Rafi es la tortuga de caparazón blando del Éufrates (Rafetus euphraticus): la silueta es de otra especie de su familia (Trionychidae), vista desde arriba"
+  },
+  "cangrejo-michaud.svg": {
+    "especie": "Gecarcinus quadratus",
+    "autor": "Margot Michaud",
+    "licencia": "CC0 1.0",
+    "pagina": "https://www.phylopic.org/images/77ec34f1-baff-4db1-8537-d075861a0079",
+    "archivo": "https://images.phylopic.org/images/77ec34f1-baff-4db1-8537-d075861a0079/vector.svg",
+    "bajado": "2026-09-18",
+    "uso": "Pinzas es «el cangrejo del manglar» del Térraba, sin especie en el juego: esta es un cangrejo de tierra del Pacífico centroamericano, visto de frente"
+  },
+  "mono-caraya.svg": {
+    "especie": "Alouatta caraya",
+    "autor": "sin autor anotado en PhyloPic (la subió Diego Balbuena)",
+    "licencia": "Dominio público (Public Domain Mark 1.0)",
+    "pagina": "https://www.phylopic.org/images/564c9708-bedb-4c1c-afc7-307f416901f0",
+    "archivo": "https://images.phylopic.org/images/564c9708-bedb-4c1c-afc7-307f416901f0/vector.svg",
+    "bajado": "2026-09-18",
+    "uso": "Bruno es un mono congo (Alouatta palliata): la silueta es de un congénere, el aullador negro, colgado de la cola"
   }
 }

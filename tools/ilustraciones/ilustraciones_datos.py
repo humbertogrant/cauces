@@ -15,6 +15,13 @@ PICABUEYES = ('<g transform="translate(-7 3.7)"><path class="acento" d="M45.5 17
               '<circle class="acento" cx="54.6" cy="14.8" r="2"/><path class="oscuro" d="M56.4 14.8l2.8.7l-2.8.9Z"/><circle class="oscuro" cx="55" cy="14.3" r=".45"/>'
               '<path class="bigote" d="M48.6 19.8v1.6M51.4 19.8v1.6" style="stroke-width:.8"/></g>')
 
+import math
+
+
+def circulo(cx, cy, r, n=20):
+    return [(cx + r * math.cos(2 * math.pi * i / n), cy + r * math.sin(2 * math.pi * i / n)) for i in range(n)]
+
+
 ANIMALES = {
     'hipo': dict(
         fuente='hipo-traver.svg', espejo=True, giro=-5,
@@ -174,5 +181,83 @@ ANIMALES = {
         lineas='<ellipse class="oscuro" cx="101" cy="28.8" rx=".9" ry=".35"/>',
         fondo=('<path d="M4 12q4.5-2.4 9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0M14 16.5q4.5-2.2 9 0t9 0"' + AGUA + '/>'
                '<circle cx="106" cy="22" r="1.1"' + AGUA + '/><circle cx="108.4" cy="17.6" r=".75"' + AGUA + '/>'),
+    ),
+    # --- lote 4 del 2026-09-18
+    # Croac, la rana toro (Rana catesbeiana). La silueta trae calados el ojo y el tímpano: se rellenan (huecos=False) y se dibujan, el
+    # ojo con caraDe y el tímpano, ese oído redondo y grande detrás del ojo que distingue a la rana toro, como zona.
+    'rana': dict(
+        fuente='rana-yu.svg', espejo=True, huecos=False,
+        cara=dict(ojo=[85, 31], k=3.1, boca=[93, 38.4], kb=7.6, giro=-18, pb=0.35, wb=0.8, marco=[64, 8, 46, 46]),
+        zonas={'lejos@.5': [circulo(74.6, 36, 4.3)]},
+        lineas=('<circle class="oscuro" cx="99.6" cy="29.8" r=".5"/>'
+                '<ellipse class="sombra" cx="40" cy="31" rx="2.4" ry="1.8" style="opacity:.45"/><ellipse class="sombra" cx="52" cy="26.5" rx="2" ry="1.5" style="opacity:.45"/>'
+                '<ellipse class="sombra" cx="61" cy="35" rx="2.2" ry="1.7" style="opacity:.45"/><ellipse class="sombra" cx="34" cy="43" rx="1.9" ry="1.5" style="opacity:.45"/>'
+                '<ellipse class="sombra" cx="48" cy="45" rx="2.4" ry="1.8" style="opacity:.45"/>'),
+        fondo=('<ellipse class="sombra" cx="60" cy="81.5" rx="50" ry="5.5" style="opacity:.28"/>'
+               '<path d="M2 87q4.5-2.4 9 0t9 0t9 0M108 84q-.3-3.4 1.2-6M110.6 84.4q0-3 1.7-5"' + AGUA + '/>'),
+    ),
+    # Li, la carpa (Cyprinus carpio): cuerpo alto, barbillas junto a la boca (vienen en el contorno) y la aleta del lomo en dorado.
+    'carpa': dict(
+        fuente='carpa-cano.svg', apoyo='centro', vista=(0, 8, 120, 76),
+        cara=dict(ojo=[103, 52.5], k=1.6, boca=[109.4, 59.4], kb=1.5, giro=25, pb=0.7, wb=0.7, marco=[84, 36, 34, 34]),
+        zonas={'acento': [[(63.5, 33), (70.5, 17), (73.5, 17), (81, 36), (72, 38.5)]]},                              # la aleta del lomo
+        tramas=[dict(pol=[(38, 42), (60, 38), (78, 40), (92, 46), (92, 61), (78, 63), (60, 59), (42, 55)], paso=4.4, angulos=(40, -40), opaco=0.25)],   # escamas
+        lineas='<path class="bigote" d="M97.5 45.5q-4 8-.5 17"' + TENUE + '/>',                                       # el opérculo
+        fondo=('<path d="M4 14q4.5-2.4 9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0M58 18.5q4.5-2.2 9 0t9 0"' + AGUA + '/>'
+               '<circle cx="114" cy="50" r="1.1"' + AGUA + '/><circle cx="116" cy="45.5" r=".75"' + AGUA + '/>'),
+    ),
+    # Bruno, el mono congo (Alouatta palliata). La silueta es de un congénere, el aullador negro (A. caraya), colgado de la cola prensil:
+    # la rama se dibuja encima de la punta de la cola, que en la silueta termina cortada.
+    'mono': dict(
+        fuente='mono-caraya.svg', espejo=True, apoyo='centro', brillo=0.35,
+        cara=dict(ojo=[96.2, 44.8], k=1.3, boca=[97.6, 51.8], kb=1.5, giro=40, pb=0.8, wb=0.6, marco=[74, 28, 38, 38], inclina=-28),
+        zonas={'lejos': [[(82.5, 50.5), (91, 55), (92.2, 59.5), (97.8, 61), (97.8, 70), (92, 69.5), (86, 62.5)]],     # el brazo lejano
+               'lejos@.5~^': [[(95.5, 39.5), (93.8, 43), (94.2, 47.5), (95.4, 51), (94.5, 55.5), (97, 58), (101.5, 54), (101.5, 40)]]},   # la cara sin pelo
+        lineas=('<path d="M4 27Q22 14 46 8" style="fill:none;stroke:var(--mar);stroke-width:4.6;stroke-linecap:round"/>'
+                '<path d="M4 27Q22 14 46 8" style="fill:none;stroke:var(--verde-medio);stroke-width:3.2;stroke-linecap:round"/>'
+                '<path class="cuerpo" d="M33 11q3-7 9-6q-1 6-9 6Z" style="stroke-width:.8"/><path class="cuerpo" d="M12 22q-2-7 3-10q3 5-3 10Z" style="stroke-width:.8"/>'),
+        fondo='',
+    ),
+    # Tiburcio, el tiburón toro (Carcharhinus leucas): hocico corto y romo, cinco hendiduras branquiales y el vientre claro.
+    'tiburon': dict(
+        fuente='tiburon-toro.svg', apoyo='centro', luz=0.6, vista=(0, 16, 120, 62),
+        cara=dict(ojo=[101.5, 44.2], k=1.2, boca=[102.6, 49.9], kb=3.2, giro=8, pb=0.5, wb=0.7, marco=[84, 28, 34, 34]),
+        zonas={'claro@.5~': [[(113, 48.3), (98, 49.4), (80, 52), (60, 52.4), (45, 50), (36, 51), (36, 62), (113, 62)]]},   # el vientre
+        lineas='<path class="bigote" d="M88.6 44.2q-.8 3 .2 6M90.8 44.6q-.8 3 .2 5.8M93 45q-.8 2.8.2 5.4M95.2 45.4q-.7 2.6.2 5M97.2 45.8q-.6 2.2.2 4.4"' + TENUE + '/>',
+        fondo=('<path d="M4 22q4.5-2.4 9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0t9 0M20 26.5q4.5-2.2 9 0t9 0t9 0"' + AGUA + '/>'),
+    ),
+    # Ara, la lapa roja (Ara macao), posada: cara blanca sin plumas, pico claro arriba, la franja amarilla del ala en dorado y las plumas
+    # de vuelo más oscuras. También es la lapa de Exploradores (mismo glifo, misma especie).
+    'lapa': dict(
+        fuente='lapa-ramirez.svg', espejo=True, vista=(20, 6, 80, 82),
+        cara=dict(ojo=[69.4, 18.3], k=1.2, marco=[55, 6, 30, 30]),
+        zonas={'lejos@.5': [[(65, 25.5), (61.5, 28), (50.5, 52), (51.5, 54.5), (57.5, 47), (63.5, 38), (66.5, 30)]],   # el ala plegada
+               'acento': [[(64.8, 26), (61.2, 29), (57.6, 36.8), (61.2, 40.6), (64.6, 34), (66.4, 29.5)]],            # la franja amarilla del ala
+               'claro': [[(66.5, 15.2), (72.4, 13.8), (72.2, 20.5), (70.5, 23), (67, 21.5), (65.8, 18)],             # la cara sin plumas
+                         [(72.4, 13.5), (78, 13.5), (78, 22.5), (74, 22.8), (72.2, 20.5)]]},                          # el pico
+        lineas='',
+        fondo=('<path d="M22 53.5Q52 48 98 51.5" style="fill:none;stroke:var(--verde-medio);stroke-width:3;stroke-linecap:round;opacity:.6"/>'
+               '<path class="sombra" d="M84 50q4-7 11-6q-2 6-11 6Z" style="opacity:.5"/><path class="sombra" d="M30 52.4q-1-7 5-10q3 6-5 10Z" style="opacity:.5"/>'),
+    ),
+    # Rafi, la tortuga de caparazón blando del Éufrates (Rafetus euphraticus). La silueta es de otra especie de su familia (Apalone ferox)
+    # y está vista desde arriba: por eso lleva los dos ojos (vista 'arriba'). La clave no es el glifo «tortuga», que comparte con la
+    # tortuga verde de Cook: mascotas.js le pone ilus:"tortugablanda". El caparazón sale solo, como el núcleo del contorno.
+    'tortugablanda': dict(
+        fuente='tortuga-blanda-gordon.svg', espejo=True, apoyo='centro', luz=0.6,
+        cara=dict(ojo=[104.2, 57.6], ojo2=[104.2, 61.4], k=1, vista='arriba', marco=[66, 36, 46, 46]),
+        nucleo=dict(radio=9, margen=2.4, clase='lejos@.35'),
+        lineas='',
+        fondo=('<path d="M4 16q4.5-2.4 9 0t9 0t9 0M84 84q4.5-2.4 9 0t9 0t9 0M6 78q4.5-2.2 9 0t9 0"' + AGUA + '/>'),
+    ),
+    # Pinzas, el cangrejo del manglar del Térraba. La silueta es de Gecarcinus quadratus, un cangrejo de tierra del Pacífico
+    # centroamericano, visto de frente: los dos ojos van en la punta de sus pedúnculos (vista 'frente'). La pinza, en dorado.
+    'cangrejo': dict(
+        fuente='cangrejo-michaud.svg',
+        cara=dict(ojo=[60, 32.4], ojo2=[73, 30.4], k=0.9, vista='frente', marco=[44, 20, 46, 46]),
+        nucleo=dict(radio=7, margen=1.8, clase='lejos@.35'),
+        zonas={'acento': [[(75, 56.5), (88, 55.5), (88.5, 62.5), (84.5, 67.5), (81.5, 73.5), (77, 73.5), (73, 64.5)]]},   # la pinza
+        lineas='',
+        fondo=('<ellipse class="sombra" cx="60" cy="81.5" rx="54" ry="5" style="opacity:.28"/>'
+               '<path d="M104 86q-2-16 8-28M112 86q0-11 6-18M2 87q4.5-2.4 9 0t9 0"' + AGUA + '/>'),
     ),
 }

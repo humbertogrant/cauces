@@ -152,8 +152,13 @@ no tiene silueta libre, sigue con su glifo (`ilustracion()` busca `m.ilus||m.gli
   fracción de la altura recibe el filo de luz: 0,3 en el bonobo, para que no brillen brazos y piernas) y `tramas` (rayado dentro de un
   polígono recortado por el contorno: la cola escamosa del castor). Una zona `clase@.5~` va sin línea de borde y con `^` al final se dibuja encima de la sombra y del brillo (la cara sin
   pelo del bonobo: `lejos@.5~^`) y una zona `claro` que cubre toda la caja deja el cuerpo blanco: la beluga es blanca de verdad. El redondeo de esquinas de
-  una zona se adapta a su tamaño.
-- **Perfil estricto: un solo ojo** (la prueba rechaza `ojo2`). A mano, en `tools/ilustraciones/ilustraciones_datos.py`, solo va lo que
+  una zona se adapta a su tamaño. `huecos=False` rellena los huecos del trazado (la rana trae calados el ojo y el tímpano, que luego se
+  dibujan), `nucleo` saca solo el caparazón: la masa del contorno sin patas ni cuello, por apertura morfológica (tortuga y cangrejo), y
+  cada `trama` admite su `opaco` (las escamas de la carpa van a 0,25).
+- **La cara corresponde a la vista del contorno.** De perfil, un solo ojo: lo que Humberto rechazó fueron animales de lado con los dos
+  ojos del mismo lado. Si la silueta está vista de frente (el cangrejo) o desde arriba (la tortuga de caparazón blando), lo correcto
+  son los dos, y la ilustración lo declara: `vista:'frente'|'arriba'` con `ojo` y `ojo2`, iguales y con la pupila al centro (la prueba
+  rechaza `ojo2` sin `vista`, y `vista` sin `ojo2`). Aprobado por Humberto el 2026-09-18. A mano, en `tools/ilustraciones/ilustraciones_datos.py`, solo va lo que
   el contorno no trae, ubicado sobre los bultos del contorno real con la cuadrícula (`--crudo` y las hojas del scratchpad): el ojo (en
   la órbita), la boca si el perfil la deja ver (el hipopótamo sí; el ornitorrinco, visto algo desde arriba, no), pocas líneas tenues
   (pliegues del cuello, hombro y muslo, dedos, membrana, pelaje), un detalle real del animal (el picabueyes dorado sobre el lomo del
@@ -174,18 +179,21 @@ no tiene silueta libre, sigue con su glifo (`ilustracion()` busca `m.ilus||m.gli
   animal grande, a tamaño de ficha y los cinco retratos), `ilus-det.js clave x y w h` (detalle con cuadrícula fina para leer
   coordenadas), `ilus-globo.js` (retratos a varios tamaños y fondos) y `ficha-lote.js río…` (ficha y globo dentro del juego, y dice si
   cada globo lleva retrato o glifo). Cada ilustración pesa de 4 a 13 KB. `tools/verificacion.py` lista y marca ⚠ cada frase de cada `ficha`.
-- Hechos (2026-09-18, catorce): hipo, ornitorrinco, inia (Boto), cocodrilo (Lalo, su especie exacta, y Tami, congénere), elefante, cisne,
-  nutria (Lobi y Nuria, la misma especie), castor (la silueta es de Castor canadensis, congénere del castor del Rin: la única libre de
-  C. fiber muestra la cola de canto y no se lee; quedó en tools/ilustraciones/ sin usar), marsopa sin aleta, gavial (la silueta trae
-  las fauces entreabiertas con dientes y la ghara), esturión beluga, manatí africano, bonobo (sentada con las piernas estiradas y las
-  manos en un pie: la silueta de PhyloPic viene girada, con el tronco horizontal y las extremidades hacia abajo, y primero la leí como
-  un bonobo caminando; Humberto vio que eran las piernas rectas de uno sentado, y `giro` −73 las acuesta sobre el suelo) y beluga.
-  Lección: antes de ubicar la cara, preguntarse en qué postura está el animal de verdad; una silueta puede venir girada, y dos pares
-  de extremidades rectas que se juntan en un punto son de un animal sentado, no de uno que camina. Faltan en Cauces: rana toro (Lithobates, pariente), tortuga de caparazón blando (Trionychidae,
-  pariente; necesita `ilus` porque comparte glifo con la tortuga verde de Cook), bagre gigante (sin silueta libre), carpa, mono congo
-  (Alouatta), tiburón toro, lapa roja y cangrejo (Gecarcinus quadratus de Margot Michaud calza con el Térraba); y en Exploradores:
-  dromedario, camello, caballo, jirafa, tortuga verde, lapa y la delfín de Odiseo (sin silueta libre de Delphinus; buscar otro
-  delfínido). Sin silueta libre en PhyloPic: delfín del Indo (Bulán sigue con su glifo) y bagre gigante.
+- Hechos (2026-09-18, veintiuno): hipo, ornitorrinco, inia (Boto), cocodrilo (Lalo, su especie exacta, y Tami, congénere), elefante,
+  cisne, nutria (Lobi y Nuria, la misma especie), castor (silueta de Castor canadensis, congénere: la única libre de C. fiber muestra
+  la cola de canto; quedó sin usar), marsopa sin aleta, gavial (el contorno trae las fauces con dientes y la ghara), esturión beluga,
+  manatí africano, bonobo (sentada: la silueta venía girada y primero la leí como un bonobo caminando; Humberto vio que eran las
+  piernas rectas de uno sentado, y `giro` −73 las acuesta sobre el suelo), beluga (blanca), rana toro (su especie: en PhyloPic está
+  como Rana catesbeiana), carpa, mono congo (congénere, Alouatta caraya, colgado de la cola; la rama se dibuja sobre la punta cortada
+  de la cola; la primera silueta, del género, caminando por una rama, quedó sin usar porque no se le distingue la cara), tiburón
+  toro, lapa roja (también sale en Exploradores: Aturia usa el mismo glifo y es la misma ave), tortuga de caparazón blando (otra
+  especie de su familia, desde arriba; clave `tortugablanda` con `ilus`, porque el glifo «tortuga» lo comparte con la tortuga verde
+  de Cook) y cangrejo (Gecarcinus quadratus, de frente). Lección del bonobo: antes de ubicar la cara, preguntarse en qué postura está
+  el animal de verdad; una silueta puede venir girada, y dos pares de extremidades rectas que se juntan en un punto son de un animal
+  sentado. Lección del mono: si en la silueta no se distingue la cabeza, no se adivina: se busca otra. Faltan: en Cauces, el bagre
+  gigante y el delfín del Indo (sin silueta libre ni pariente cercano: siguen con su glifo); en Exploradores, dromedario, camello,
+  caballo, jirafa, tortuga verde y la delfín de Odiseo (hay delfínidos libres: el listado, Stenella coeruleoalba, es el más común
+  del Mediterráneo), y falta una `ficha` para Aturia.
 - Descartado: el 2026-09-15, retratos trazados de grabados del siglo XIX de dominio público y un «personaje» hecho con su silueta más
   una cara dibujada (irreconocibles en el globo; commits b0715a6 y c69a359); el 2026-09-17, los dibujos vectoriales hechos a mano por
   coordenadas (commits f10c428 y 7959341).
@@ -497,7 +505,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 797 KB el 2026-09-18, con catorce ilustraciones). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 855 KB el 2026-09-18, con veintiuna ilustraciones, y la de Exploradores ≈ 464 KB). La edición amplia
   (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.

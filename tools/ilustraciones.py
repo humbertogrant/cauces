@@ -141,14 +141,14 @@ def encajar(g, espejo, zona, apoyo):
     return translate(g, dx, dy)
 
 
-def limpiar(g, liso=0.15, hueco=1.5, mota=1.0):
+def limpiar(g, liso=0.15, hueco=1.5, mota=1.0, huecos=True):
     """Alisa el contorno (cierre y apertura morfológicos de radio `liso`) y quita los huecos y las motas chicas que deja el trazado
     automático de una lámina con textura (la piel del elefante trae medio centenar)."""
     if liso:
         g = g.buffer(liso).buffer(-2 * liso).buffer(liso)
     ps = []
     for p in partes(g, mota):
-        ps.append(Polygon(p.exterior, [h for h in p.interiors if Polygon(h).area >= hueco]))
+        ps.append(Polygon(p.exterior, [h for h in p.interiors if huecos and Polygon(h).area >= hueco]))
     return unary_union(ps)
 
 
@@ -220,7 +220,7 @@ def ilustrar(clave, e):
     crudo = 'cara' not in e      # en borrador: solo el contorno
     g = forma(io.open(os.path.join(DIR, e['fuente']), encoding='utf8').read())
     g = encajar(g, e.get('espejo', False), e.get('zona', (8, 14, 112, 82)), e.get('apoyo', 'suelo'))
-    g = limpiar(g, e.get('liso', 0))
+    g = limpiar(g, e.get('liso', 0), huecos=e.get('huecos', True))      # huecos=False los rellena (la rana trae calados el ojo y el tímpano)
     if e.get('giro'):
         g = rotate(g, e['giro'], origin='centroid')
         g = encajar(g, False, e.get('zona', (8, 14, 112, 82)), e.get('apoyo', 'suelo'))
@@ -237,12 +237,17 @@ def ilustrar(clave, e):
     borde = (';stroke-width:%s' % n(e['borde'])) if e.get('borde') else ''      # contorno más fino para un animal muy delgado (el gavial)
     d += '<path class="cuerpo" d="%s"%s/>' % (trazo(g), (' style="%s"' % borde[1:]) if borde else '')
     bordes = encima = ''
-    for clase, pols in zonas.items():
+    piezas = [(k, unary_union([redondear(poligono(q)) for q in pols])) for k, pols in zonas.items()]
+    if not crudo and e.get('nucleo'):      # la masa del cuerpo sin patas ni cuello, por apertura morfológica: el caparazón de la tortuga o del cangrejo
+        nu = e['nucleo']
+        r = nu.get('radio', 8)
+        piezas.insert(0, (nu.get('clase', 'lejos@.35'), g.buffer(-r).buffer(r).buffer(-nu.get('margen', 2))))
+    for clase, forma_zona in piezas:
         arriba = clase.endswith('^')                # «…^»: encima de la sombra y del brillo, como lo oscuro (la cara del bonobo)
         clase = clase.rstrip('^')
         sin_linea = clase.endswith('~')             # «lejos@.6~»: sin la línea de borde (la cara sin pelo del bonobo)
         clase, _, opaco = clase.rstrip('~').partition('@')      # «lejos@.55»: la misma tinta, más suave (la oreja sobre el hombro)
-        z = unary_union([redondear(poligono(p)) for p in pols]).intersection(g)
+        z = forma_zona.intersection(g)
         if z.is_empty:
             print('  aviso: la zona %s de %s no toca el contorno' % (clase, clave))
             continue
@@ -261,9 +266,10 @@ def ilustrar(clave, e):
             sombra = sombra.difference(z)
     d += '<path class="sombra" d="%s" style="opacity:.8"/>' % trazo(sombra, 0.8)
     d += '<path class="claro" d="%s" style="opacity:.3;stroke:none"/>' % trazo(brillo, 0.8)
-    rayas = ''.join(trama(t['pol'], g, t.get('paso', 2.4), t.get('angulos', (30, -30))) for t in ([] if crudo else e.get('tramas', [])))
-    if rayas:
-        d += '<path class="bigote" d="%s" style="stroke-width:.5;opacity:.45"/>' % rayas
+    for t in ([] if crudo else e.get('tramas', [])):
+        rayas = trama(t['pol'], g, t.get('paso', 2.4), t.get('angulos', (30, -30)))
+        if rayas:
+            d += '<path class="bigote" d="%s" style="stroke-width:.5;opacity:%s"/>' % (rayas, ('%g' % t.get('opaco', 0.45)).lstrip('0'))
     d += encima
     if bordes:
         d += '<path class="bigote" d="%s" style="stroke-width:.7;opacity:.7"/>' % bordes
@@ -276,7 +282,14 @@ def ilustrar(clave, e):
 
 
 def js(v):
-    return json.dumps(v, separators=(',', ':')).replace('"', '')
+    """Un valor de Python como literal de JavaScript compacto: claves sin comillas, cadenas entre comillas simples."""
+    if isinstance(v, dict):
+        return '{' + ','.join('%s:%s' % (k, js(x)) for k, x in v.items()) + '}'
+    if isinstance(v, (list, tuple)):
+        return '[' + ','.join(js(x) for x in v) + ']'
+    if isinstance(v, str):
+        return "'" + v.replace("'", '') + "'"
+    return json.dumps(v)
 
 
 ENCABEZADO = """// Ilustraciones de los animales, solo en la edición amplia: la ficha «Conocé a …» y el globo (primer plano de la cabeza).

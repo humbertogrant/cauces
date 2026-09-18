@@ -92,6 +92,9 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Nueva Orleans · dato: Katrina (2005) rompió los diques; el delta se hunde y pierde tierra cada año.
 - Mineápolis · puerto (Historia): Cargás sacos de harina de los molinos de las cataratas de San Antonio: hacia 1880 Mineápolis molía más trigo que ninguna otra ciudad del mundo. ⚠
 - Memphis · puerto (Historia): Vendés las pieles y cargás algodón en pacas de más de 200 kilos: Memphis fue el mayor mercado de algodón al contado del mundo. ⚠
+- Croac · ficha (edición amplia): Es la rana más grande de Norteamérica. ⚠
+- Croac · ficha (edición amplia): Detrás de cada ojo tiene un tímpano redondo y grande, que es su oído. ⚠
+- Croac · ficha (edición amplia): El macho canta tan grave que parece un toro, y de ahí su nombre. ⚠
 - Croac en San Luis: Y aquí entra el Misuri, que es más largo que nosotros.
 - Evento · La gran crecida de 1927: En 1927 el río se salió de madre y cubrió unos 70 000 km²: pueblos enteros bajo el agua y cientos de miles de personas sin casa. ⚠
 - Evento · La escalera de esclusas: Desde los años 1930, 29 esclusas y presas convierten el alto Misisipi en una escalera de agua de Mineápolis a San Luis, para que las barcazas naveguen todo el año. ⚠
@@ -224,6 +227,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Bagdad · dato: A 35 km, el arco de Ctesifonte, capital sasánida, sigue en pie.
 - Basora · dato: Fundada en 636 como campamento del ejército árabe.
 - Diyarbakır · puerto (Historia): Cargás sandías gigantes, las que aquí crecen de hasta 50 kilos, y lingotes de cobre de las minas de Ergani. ⚠
+- Rafi · ficha (edición amplia): Su caparazón no tiene escudos duros: es plano y está cubierto de piel, como cuero. ⚠
+- Rafi · ficha (edición amplia): Tiene la nariz en forma de tubo y la saca del agua para respirar, como un esnórquel. ⚠
 - Rafi en Diyarbakır: Murallas negras y sandías más grandes que yo.
 - Rafi en Bagdad: Una ciudad redonda con la biblioteca más grande del mundo.
 - Evento · Los pantanos de Mesopotamia: Se secaron casi del todo en los años 1990 y desde 2003 vuelven a llenarse. ⚠
@@ -363,6 +368,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Jinan · dato: El río llegó aquí recién en 1855, cuando cambió de curso y dejó de salir al mar Amarillo para salir al golfo de Bohai. ⚠
 - Jinan · dato: Confucio nació a 130 km, en Qufu.
 - Dongying · dato: Ciudad joven (1983) del campo petrolero de Shengli, el segundo de China. ⚠
+- Li · ficha (edición amplia): Tiene dos pares de barbillas junto a la boca, con las que busca comida en el fondo. ⚠
+- Li · ficha (edición amplia): En China se cría desde hace más de dos mil años, y de ella vienen las carpas de colores. ⚠
 - Li en Zhengzhou: Debajo de la ciudad hay otra ciudad, de hace 3 500 años. ⚠
 - Evento · El río que se mudó: En 1855 el Huang He rompió los diques en Tongwaxiang y se fue al norte: dejó de salir al mar Amarillo y desde entonces sale al golfo de Bohai, cientos de kilómetros más arriba. ⚠
 - Evento · El río colgado: En Kaifeng el Huang He corre por encima de la ciudad: el limo que deja levanta el lecho y los diques suben con él, hasta 10 m sobre las calles; por eso lo llaman «el río colgado». ⚠
@@ -514,6 +521,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Puerto Viejo · dato: Cabecera del cantón de Sarapiquí y antiguo Muelle de Sarapiquí, el puerto por donde salió el comercio del Valle Central hacia el Caribe a mediados del siglo XIX. ⚠
 - Puerto Viejo · dato: Aquí se le une el río Puerto Viejo y, en la confluencia, está la estación biológica La Selva (1968).
 - Trinidad · dato: La frontera corre por la orilla derecha del San Juan desde 1858. ⚠
+- Bruno · ficha (edición amplia): Es un mono aullador: su grito se oye a varios kilómetros. ⚠
+- Bruno · ficha (edición amplia): Tiene la cola prensil, que le sirve de quinta mano para colgarse mientras come hojas. ⚠
 - Evento · El aguacero: En Sarapiquí caen más de 4 000 mm de lluvia al año y el río sube de golpe con un aguacero. ⚠
 - Evento · El aguacero · bien: Escampa y el río, más alto, te lleva más rápido.
 - Evento · Los vigías de 1856: En 1856 los filibusteros de William Walker rondaban el San Juan y las tropas de Costa Rica vigilaban el Sarapiquí.
@@ -537,6 +546,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Delta · dato: La disputa por la Isla Portillos, en este delta, la decidió la Corte de La Haya en 2015. ⚠
 - San Juan de Nicaragua · dato: En el siglo XIX, como Greytown, fue el puerto de la ruta del Tránsito; un buque de Estados Unidos lo bombardeó en 1854, y en los años 1890 se dragó aquí el inicio de un canal que nunca se terminó. ⚠
 - Embarcación: Un vapor de rueda y poco calado, como los de la compañía de Vanderbilt que subían el río con pasajeros rumbo a California entre 1851 y 1857.
+- Tiburcio · ficha (edición amplia): Es de los pocos tiburones que pueden vivir en agua dulce. ⚠
+- Tiburcio · ficha (edición amplia): Sube por el río San Juan hasta el lago de Nicaragua, y por eso durante mucho tiempo se creyó que los del lago eran otra especie. ⚠
 
 ## Tárcoles (111 km hasta el golfo de Nicoya)
 
@@ -551,6 +562,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Belén · dato: El puente de Mulas, de piedra, cruzaba el río en el camino a Puntarenas; en 1997 llegó la fábrica de Intel y los chips fueron por años la primera exportación del país. ⚠
 - Balsa · dato: Río arriba, en La Garita, el ICE estrenó en 1958 su primera planta hidroeléctrica. ⚠
 - Orotina · dato: El ferrocarril al Pacífico (1910) paraba aquí entre San José y Puntarenas. ⚠
+- Ara · ficha (edición amplia): Las lapas rojas viven en pareja y vuelan juntas. ⚠
+- Ara · ficha (edición amplia): En el Pacífico de Costa Rica comen almendro de playa, y con el pico rompen semillas durísimas. ⚠
 
 ## Térraba (160 km hasta el Pacífico)
 
@@ -569,6 +582,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Palmar · dato: Palmar Norte y Palmar Sur, a los dos lados del río, nacieron con las fincas bananeras de 1938. ⚠
 - Palmar · dato: En Finca 6 se ven esferas de piedra en el lugar donde las dejaron sus creadores, Patrimonio de la Humanidad desde 2014. ⚠
 - Ciudad Cortés · dato: Cabecera del cantón de Osa; río abajo se abre el manglar de Térraba-Sierpe, el más grande del país. ⚠
+- Pinzas · ficha (edición amplia): Respira aire con unas branquias que mantiene húmedas, y por eso puede pasar mucho tiempo fuera del agua. ⚠
+- Pinzas · ficha (edición amplia): Camina de lado porque así se le doblan las patas. ⚠
 
 # Exploradores
 

@@ -15,7 +15,8 @@ un mercado, eventos entre puertos y repaso espaciado.
   amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze), costas, lagos y relieve más finos y, para
   algunos animales, una ilustración con cara y ánimos en la ficha «Conocé a …» al empezar el río y en el globo, hecha sobre un
   contorno real de la especie (siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0, de Steven Traver,
-  Margot Michaud, Beth Reinke, Andy Wilson, Jagged Fang Designs, Robbie Cada, T. Michael Keesey y autores sin anotar; el detalle,
+  Margot Michaud, Beth Reinke, Andy Wilson, Jagged Fang Designs, Robbie Cada, T. Michael Keesey, Chuanixn Yu, Carlos Cano-Barbacil,
+  Myriam Ramírez, Caleb M. Gordon y autores sin anotar; el detalle,
   por animal, en `tools/ilustraciones/fuentes.json`); el progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
   Las versiones congeladas están en los Releases de GitHub (`economica-1`), con los dos HTML económicos para descargar.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
