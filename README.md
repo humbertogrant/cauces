@@ -13,7 +13,8 @@ un mercado, eventos entre puertos y repaso espaciado.
 - Dos ediciones de cada juego, del mismo código: la económica (`cauces.html`, `exploradores.html`), de menos de medio
   megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), sin tope de peso. La
   amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze), costas, lagos y relieve más finos y, para
-  algunos animales, una ilustración con cara y ánimos en la ficha «Conocé a …» al empezar el río y en el globo, hecha sobre un
+  casi todos los animales guía (veintiuno; el bagre gigante y el delfín del Indo siguen con su glifo, porque no hay silueta libre de
+  su especie ni de un pariente cercano), una ilustración con cara y ánimos en la ficha «Conocé a …» al empezar el río y en el globo, hecha sobre un
   contorno real de la especie (siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0, de Steven Traver,
   Margot Michaud, Beth Reinke, Andy Wilson, Jagged Fang Designs, Robbie Cada, T. Michael Keesey, Chuanixn Yu, Carlos Cano-Barbacil,
   Myriam Ramírez, Caleb M. Gordon y autores sin anotar; el detalle,
