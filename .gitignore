@@ -4,3 +4,4 @@ node_modules/
 *.tif
 __pycache__/
 tools/ilustraciones/revision.js
+tools/dibujos/salida/

@@ -293,19 +293,43 @@ def js(v):
 
 
 ENCABEZADO = """// Ilustraciones de los animales, solo en la edición amplia: la ficha «Conocé a …» y el globo (primer plano de la cabeza).
-// GENERADO por tools/ilustraciones.py: no editar a mano. El contorno de cada animal es una silueta real de PhyloPic (dominio
-// público o CC0; autor y licencia en tools/ilustraciones/fuentes.json), de perfil estricto y mirando a la derecha, en la caja
-// 0 0 120 90. La sombra, el brillo y las zonas de color se calculan sobre el contorno. Sin ojo ni boca: los dibuja caraDe
-// (motor.js) en `c` (ojo, boca, k, kb, giro, marco e inclinación del primer plano) según el ánimo. `f` es el fondo: el lugar donde vive.
+// GENERADO por tools/ilustraciones.py: no editar a mano. De perfil estricto y mirando a la derecha, en la caja 0 0 120 90.
+// `i`: el animal dibujado de memoria y pintado pixel por pixel (tools/pintor.py y tools/dibujos/), un WebP que cubre el encuadre
+// `v`. `d`: el de vectores, sobre una silueta de PhyloPic (dominio público o CC0; autor y licencia en tools/ilustraciones/fuentes.json).
+// Sin ojo ni boca: los dibuja caraDe (motor.js) en `c` (ojo, boca, k, kb, giro, marco e inclinación del primer plano) según el
+// ánimo. `f` es el fondo: el lugar donde vive.
 /*@amplia*/
 const ILUSTRACIONES={
 """
 
 
+def pintados():
+    """Los animales dibujados de memoria (tools/dibujos/<clave>.py, pintados por tools/pintor.py): su línea del archivo de datos
+    y si ya están terminados (`LISTO`). Si el dibujo o el pintor cambiaron después de la última pintada, se vuelve a pintar."""
+    import base64
+    import pintor
+    out = {}
+    for clave in pintor.claves():
+        j, w = os.path.join(pintor.SALIDA, clave + '.json'), os.path.join(pintor.SALIDA, clave + '.webp')
+        fuentes = [os.path.join(pintor.DIBUJOS, clave + '.py'), os.path.abspath(pintor.__file__)]
+        if not (os.path.exists(j) and os.path.exists(w)) or max(os.path.getmtime(f) for f in fuentes) > min(os.path.getmtime(j), os.path.getmtime(w)):
+            print('%-14s se pinta de nuevo' % clave)
+            pintor.pintar_clave(clave, previa=False)
+        datos = json.load(io.open(j, encoding='utf8'))
+        img = base64.b64encode(io.open(w, 'rb').read()).decode('ascii')
+        out[clave] = ("%s:{v:'%s',c:%s,%si:'data:image/webp;base64,%s'}," % (clave, datos['v'], js(datos['c']), ("f:'%s'," % datos['f']) if datos['f'] else '', img),
+                      datos['listo'], len(img))
+    return out
+
+
 def main():
     from ilustraciones_datos import ANIMALES
+    sys.path.insert(0, AQUI)
+    pintura = pintados()
     juego, revision = [], []
     for clave, e in ANIMALES.items():
+        if pintura.get(clave, (0, False))[1]:
+            continue      # ya está pintado: la ilustración pintada reemplaza a la de vectores
         g, d, c, f = ilustrar(clave, e)
         vista = ' '.join(n(v) for v in e.get('vista', (0, 0) + CAJA))      # el encuadre de la lámina: la caja entera o la franja que ocupa
         linea = "%s:{v:'%s',%s%sd:'%s'}," % (clave, vista, ('c:' + js(c) + ',') if c else '', ("f:'%s'," % f) if f else '', d)
@@ -313,6 +337,11 @@ def main():
         if c:
             juego.append(linea)
         print('%-14s %-9s %5.1f KB  caja %s' % (clave, 'terminado' if c else 'BORRADOR', (len(d) + len(f)) / 1024.0, ' '.join(n(v) for v in g.bounds)))
+    for clave, (linea, listo, peso) in pintura.items():
+        revision.append(linea)
+        if listo:
+            juego.append(linea)
+        print('%-14s %-9s %5.1f KB  pintado' % (clave, 'terminado' if listo else 'BORRADOR', peso / 1024.0))
     io.open(SALIDA, 'w', encoding='utf8', newline='\n').write(ENCABEZADO + '\n'.join(juego) + '\n};\n/*@fin:amplia*/\n')
     io.open(REVISION, 'w', encoding='utf8', newline='\n').write(
         '// Revisión: todos los animales, los borradores en crudo. No es del juego ni va a git.\nconst ILUSTRACIONES={\n'
