@@ -12,13 +12,11 @@ un mercado, eventos entre puertos y repaso espaciado.
   llegó, qué mares y desiertos cruzó, cuál viaje fue primero. Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
 - Dos ediciones de cada juego, del mismo código: la económica (`cauces.html`, `exploradores.html`), de menos de medio
   megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), sin tope de peso. La
-  amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze), costas, lagos y relieve más finos y, para
-  casi todos los animales guía (veintiuno; el bagre gigante y el delfín del Indo siguen con su glifo, porque no hay silueta libre de
-  su especie ni de un pariente cercano), una ilustración con cara y ánimos en la ficha «Conocé a …» al empezar el río y en el globo, hecha sobre un
-  contorno real de la especie (siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0, de Steven Traver,
-  Margot Michaud, Beth Reinke, Andy Wilson, Jagged Fang Designs, Robbie Cada, T. Michael Keesey, Chuanixn Yu, Carlos Cano-Barbacil,
-  Myriam Ramírez, Caleb M. Gordon y autores sin anotar; el detalle,
-  por animal, en `tools/ilustraciones/fuentes.json`); el progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
+  amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze) y costas, lagos y relieve más finos; las
+  amplias de los dos juegos traen una ilustración de cada animal guía, dibujada de memoria y pintada pixel por pixel en los colores del
+  juego (`tools/pintor.py` y un dibujo por animal en `tools/dibujos/`), con cara y ánimos en la ficha «Conocé a …» al empezar la ruta y en
+  el globo. Antes, del 2026-09-17 al 23, fueron vectores sobre siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0
+  (el detalle, en `tools/ilustraciones/fuentes.json`). El progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
   Las versiones congeladas están en los Releases de GitHub (`economica-1`), con los dos HTML económicos para descargar.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
   carpeta `dist`, publicada por GitHub Pages con cada cambio de `main`; desde ahí abre también en iPhone.

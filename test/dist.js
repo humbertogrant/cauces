@@ -21,8 +21,10 @@ scripts.forEach((s,i)=>vm.runInThisContext(s,{filename:archivo+'-script-'+i}));
 setTimeout(()=>{
   if(JUEGO.id!==juego)throw 'juego '+JUEGO.id;
   if(juego==='cauces'&&(edicion==='amplia')!==!!rutaPor('orinoco'))throw 'ríos de la amplia en la edición '+edicion;
-  if((edicion==='amplia')!==(typeof ILUSTRACIONES!=='undefined'))throw 'ILUSTRACIONES en la edición '+edicion;if(edicion==='amplia'&&juego==='cauces'&&!(ILUSTRACIONES.hipo&&ILUSTRACIONES.hipo.d&&ILUSTRACIONES.hipo.c))throw 'sin ilustración del hipopótamo';if((edicion==='amplia')!==(typeof ilustracion==='function'))throw 'ilustracion en la edición '+edicion;
+  if((edicion==='amplia')!==(typeof ILUSTRACIONES!=='undefined'))throw 'ILUSTRACIONES en la edición '+edicion;if(edicion==='amplia'&&juego==='cauces'&&!(ILUSTRACIONES.hipo&&(ILUSTRACIONES.hipo.d||ILUSTRACIONES.hipo.i)&&ILUSTRACIONES.hipo.c))throw 'sin ilustración del hipopótamo';if((edicion==='amplia')!==(typeof ilustracion==='function'))throw 'ilustracion en la edición '+edicion;
   /* la cara corresponde a la vista: de perfil, un solo ojo; ojo2 solo si la ilustración declara que se ve de frente o desde arriba; y su marco cuadrado para el retrato */
+  /* cada ilustración es de vectores (`d`) o pintada (`i`: un WebP en base64, que el retrato envuelve con el filtro #aro) */
+  if(edicion==='amplia')for(const [k,r] of Object.entries(ILUSTRACIONES)){if(!r.d===!r.i||(r.i&&!/^data:image\/webp;base64,[A-Za-z0-9+/]+=*$/.test(r.i)))throw 'ilustración sin cuerpo o con dos: '+k;if(r.i&&!/filter="url\(#aro\)"/.test(ilustracion({glifo:k},'normal','cabeza')))throw 'retrato pintado sin filo: '+k;}
   if(edicion==='amplia')for(const [k,r] of Object.entries(ILUSTRACIONES)){if(!r.c||!r.c.ojo||(r.c.ojo2&&!['frente','arriba'].includes(r.c.vista))||(r.c.vista&&!r.c.ojo2)||!r.c.marco||r.c.marco[2]!==r.c.marco[3])throw 'cara de la ilustración '+k;if(ilustracion({glifo:k},'normal','cabeza').indexOf(r.f||'<fondo>')>=0&&r.f)throw 'el retrato no lleva fondo: '+k}
   if(edicion==='amplia')for(const k of Object.keys(ILUSTRACIONES))if(!RUTAS.some(r=>(r.companero.ilus||r.companero.glifo)===k))throw 'ilustración sin animal en este juego: '+k;
   const kb=Math.round(html.length/1024);if(!JUEGO.edicion||JUEGO.edicion.nombre!==E.nombre||JUEGO.edicion.kb!==kb)throw 'JUEGO.edicion '+JSON.stringify(JUEGO.edicion)+' en un archivo de '+kb+' KB';

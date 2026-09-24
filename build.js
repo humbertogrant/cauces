@@ -31,7 +31,7 @@ function usados(datos){/* claves que usan los datos del juego: glifos de animal,
   for(const m of datos.matchAll(/tipo:["']([a-z]+)["']/g))t.add(m[1]);
   const i=new Set();for(const m of datos.matchAll(/\b(?:i|icono):["']([a-z]+)["']/g))i.add(m[1]);/* iconos de bienes y eventos */
   for(const m of datos.matchAll(/icono:["']animal:([a-z]+)["']/g))g.add(m[1]);for(const m of datos.matchAll(/icono:["']barca:([a-z]+)["']/g))t.add(m[1]);
-  const il=new Set();for(const m of datos.matchAll(/(?:glifo|ilus):["']([a-zñ]+)["']/g))il.add(m[1]);/* ilustraciones: las de los compañeros (su glifo o su `ilus`), no las de animales de escena */
+  const il=new Set();for(const m of datos.matchAll(/glifo:["']([a-zñ]+)["'][^\n]*?(?:ilus:["']([a-zñ]+)["']|$)/gm))il.add(m[2]||m[1]);/* ilustraciones: la de cada compañero, su `ilus` si lo trae (en la misma línea) y si no su glifo; no las de animales de escena. Boto y Bulán tienen el glifo «delfin» pero su propia ilustración: la «delfin» es la de Nerea, en Exploradores */
   return{glifos:g,pictos:p,tipos:t,iconos:i,ilus:il}}
 /* sin comentarios ni sangría: src los conserva; en dist pesan unos 9 KB en el motor y 1,4 KB en los datos (bloques y líneas de
    comentario, comentarios al final de línea y la sangría, que dentro de las plantillas HTML solo es espacio en blanco) */

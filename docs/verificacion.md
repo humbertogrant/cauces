@@ -243,6 +243,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Phnom Penh · dato: Capital jemer desde 1434, con pausas.
 - Phnom Penh · dato: Vaciada por los jemeres rojos en 1975.
 - Buk · hola: Puedo pesar 300 kilos.
+- Buk · ficha (edición amplia): Es uno de los peces de río más grandes del mundo: se pescó uno de casi 300 kilos. ⚠
+- Buk · ficha (edición amplia): De adulto no tiene dientes ni barbas, y come sobre todo algas. ⚠
 - Evento · Los rápidos de Khone: Antes de Camboya el Mekong se despeña en las cataratas de Khone, las que frenaron a la expedición francesa de 1866. ⚠
 - Evento · El reino del millón de elefantes: Luang Prabang fue la capital de Lan Xang, «el reino del millón de elefantes», fundado en el siglo XIV; hoy en Laos quedan apenas unos cientos, y cada amanecer los monjes recorren la ciudad recibiendo arroz. ⚠
 
@@ -307,6 +309,8 @@ Cada línea es una afirmación con cifra, fecha o superlativo tal como aparece e
 - Sukkur · imagen: Sesenta y seis compuertas reparten el río como una regadera: la presa de Sukkur (1932) riega todo Sind.
 - Sukkur · dato: Cerca está Mohenjo-daro, «el montículo de los muertos», la gran ciudad del valle del Indo, descubierta en 1922.
 - Hyderabad · dato: Capital de los emires talpur de Sind hasta la conquista británica (1843).
+- Bulán · ficha (edición amplia): Casi no ve: sus ojos no tienen cristalino, y encuentra la comida con ecos, como un sonar. ⚠
+- Bulán · ficha (edición amplia): Muchas veces nada de lado, con una aleta rozando el fondo. ⚠
 - Bulán en Skardu: Desde aquí salen las expediciones al K2, la segunda montaña más alta del mundo.
 - Bulán en Sukkur: Una presa con 66 compuertas reparte el agua como una regadera. ⚠
 - Bulán en Sukkur: Cerca hay ruinas de hace 4 500 años.
@@ -617,6 +621,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Tombuctú · dato: Volvió a Fez en 1354 y en 1355 dictó su relato, la Rihla. ⚠
 - Llegada: Veintinueve años y unos 120 000 km después, la caravana entra en Fez. ⚠
 - Llegada: Ahí, en 1355, dicta la Rihla. ⚠
+- Zahra · ficha (edición amplia): Su joroba no guarda agua sino grasa, una reserva para cuando no hay comida. ⚠
+- Zahra · ficha (edición amplia): Puede cerrar las narinas contra la arena y tiene dos filas de pestañas. ⚠
 - Evento · El naufragio: Cerca de Calicut, en 1341, los barcos que llevaban los regalos del sultán de Delhi para el emperador de China se hunden en una tormenta. ⚠
 - Evento · La peste negra: De regreso, en 1348, la peste negra recorre Siria y Egipto. ⚠
 
@@ -644,6 +650,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Ceilán · fecha: 1293 · rumbo: Por mar, cruzando el golfo de Bengala ⚠
 - Trebisonda · fecha: 1295 · rumbo: Por mar y por tierra, de vuelta hacia el mar Negro ⚠
 - Trebisonda · dato: De aquí siguieron a Constantinopla y a Venecia, adonde llegaron en 1295 y, cuenta la leyenda, nadie los reconoció. ⚠
+- Tarim · ficha (edición amplia): Tiene dos jorobas y, en invierno, un pelo largo que lo abriga del frío de Asia central y que muda en primavera. ⚠
+- Tarim · ficha (edición amplia): Si no hay agua, puede comer nieve. ⚠
 
 ## Alejandro Magno (334-323 a. C., de Pela a Babilonia)
 
@@ -670,6 +678,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Hidaspes · dato: A orillas del río Hidaspes, hoy Jhelum, venció al rey Poros y a sus elefantes en el 326 a. C., en plena lluvia del monzón. ⚠
 - Vehículo: Unos 40 000 soldados: la falange a pie, con sarisas de seis metros, y la caballería de los Compañeros, con Alejandro al frente.
 - Llegada: Once años y más de 30 000 km después, el camino termina en Babilonia, en junio del 323 a. C. ⚠
+- Bucéfalo · ficha (edición amplia): El caballo puede dormir de pie: un sistema de tendones le traba las patas y lo sostiene sin esfuerzo. ⚠
 - Evento · El dique de Tiro: Alejandro manda construir un dique de piedra desde la costa; los tirios lo queman con un barco en llamas y los macedonios lo vuelven a levantar, más ancho.
 
 ## Hernán Cortés (1519-1521, de Santiago de Cuba a Tenochtitlan)
@@ -710,6 +719,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Texcoco · fecha: 1521 · rumbo: De vuelta a la orilla del lago, para el asedio ⚠
 - Texcoco · dato: Cortés instaló aquí su base en 1521, en la orilla del lago.
 - Texcoco · dato: Tenochtitlan cayó el 13 de agosto de 1521, cuando Cuauhtémoc, el último tlatoani, fue capturado.
+- Rabona · ficha (edición amplia): Hubo caballos en América hace miles de años, pero se extinguieron; volvieron en los barcos de los europeos. ⚠
 - Rabona en Tabasco: Mi primera batalla.
 
 ## Zheng He (1405-1433, de Nankín a Nankín)
@@ -741,6 +751,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Salida: Zarpás de Nankín con la flota más grande que ha visto el mar.
 - Llegada: Siete viajes en 28 años.
 - Llegada: En 1433 la corte manda parar y los barcos del tesoro se quedan en el puerto, hasta pudrirse.
+- Qilin · ficha (edición amplia): Es el animal más alto del mundo. ⚠
+- Qilin · ficha (edición amplia): En el cuello tiene siete vértebras, las mismas que nosotros, pero cada una es larguísima. ⚠
 
 ## Odiseo (Mito · diez años de regreso, de Troya a Ítaca)
 
@@ -761,6 +773,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Mesina · fecha: año 2 del regreso · rumbo: Al estrecho entre Sicilia y Calabria ⚠
 - Gozo · fecha: años 3 a 10 del regreso · rumbo: Al sur, a una isla pequeña, náufrago en un madero ⚠
 - Corfú · fecha: año 10 del regreso · rumbo: Al este, en balsa, hasta las islas griegas ⚠
+- Nerea · ficha (edición amplia): Es un delfín listado, el más común del Mediterráneo: lo reconocés por la franja oscura que va del ojo hacia la cola. ⚠
+- Nerea · ficha (edición amplia): Duerme con la mitad del cerebro por vez, para seguir subiendo a respirar. ⚠
 
 ## Napoleón (1812, de Kaunas a Vilna)
 
@@ -796,6 +810,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Vehículo: Más de medio millón de hombres de Francia, Polonia, Italia, Alemania y otros países, con unos 200 000 caballos y más de mil cañones, en columnas que se extendían por cientos de kilómetros.
 - Salida: Cruzás el Niemen con el ejército más grande de Europa.
 - Krasny · en el camino (Historia): En Krasny la retaguardia de Ney volvió con 800 hombres.
+- Ceniza · ficha (edición amplia): Por los dientes se sabe la edad de un caballo: con los años se le gastan y cambian de forma. ⚠
 - Evento · El incendio de Moscú: La noche de la entrada, el 14 de septiembre, empezaron incendios en varios barrios; con el viento, el fuego duró cuatro días y quemó unos dos tercios de una ciudad casi toda de madera.
 - Evento · El general Invierno: A principios de noviembre cayó la primera nevada y el frío bajó hasta cerca de veinte grados bajo cero.
 
@@ -831,6 +846,7 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Filadelfia · fecha: mayo de 1804 · rumbo: Por mar, al norte, hasta el país recién independizado ⚠
 - Filadelfia · dato: En mayo de 1804 llegaron a Filadelfia y de allí fueron a Washington, donde el presidente Jefferson, curioso de ciencia, los recibió durante varios días para preguntarles por México y por sus mapas.
 - Vehículo: La corbeta Pizarro para cruzar el Atlántico, canoas en el Orinoco y el Magdalena, mulas en los Andes y barcos de cabotaje por el Pacífico; con ellos, unos cuarenta instrumentos y baúles que se fueron llenando de plantas secas: al final, unas 60 000.
+- Aturia · ficha (edición amplia): Las lapas lamen barro en los barrancos de los ríos; se cree que así consiguen sal o se protegen de las semillas tóxicas que comen. ⚠
 - Evento · Las anguilas eléctricas: En los llanos, cerca de Calabozo, en marzo de 1800, Humboldt quiso estudiar las anguilas eléctricas del río.
 - Evento · La grieta del Chimborazo: El 23 de junio de 1802, con los pies sangrando y mareados por la altura, Humboldt, Bonpland y Montúfar subieron por la nieve hasta que una grieta de unos veinte metros de ancho les cerró el paso, a unos 5 900 m.
 
@@ -868,6 +884,8 @@ Mismo criterio: cada línea es una afirmación con cifra, fecha o superlativo. E
 - Vehículo: Llevaba 94 personas entre marineros, científicos y sirvientes, y una cabra que ya había dado la vuelta al mundo en otro barco.
 - Llegada: El 13 de julio de 1771 el Endeavour fondea en Inglaterra: casi tres años, una vuelta al mundo y mapas que se usarían un siglo.
 - Marea · regreso: De los 94 que salieron, faltan muchos.
+- Marea · ficha (edición amplia): Se llama verde por el color de su grasa, no del caparazón. ⚠
+- Marea · ficha (edición amplia): De adulta come pastos marinos, y vuelve a poner huevos en la playa donde nació. ⚠
 - Evento · El paso de Venus: El 3 de junio de 1769, con cielo despejado, Cook, Green y Solander miraron con telescopios el puntito negro de Venus cruzar el Sol durante seis horas. ⚠
 - Evento · El arrecife: La noche del 11 de junio de 1770 el Endeavour encalló en un coral de la Gran Barrera, a más de 30 km de la costa.
 

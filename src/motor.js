@@ -524,8 +524,10 @@ function caraDe(c,a,inc){const k=c.k||2,kb=c.kb||k*2,g=c.giro||0,pb=c.pb||1,av=c
     sorpresa:curva(0.5,0.3,-0.6,0,-1.1)+`<ellipse class="oscuro" cx="${f(kb*0.7)}" cy="${f(kb*0.1*pb)}" rx="${f(kb*0.36*qb)}" ry="${f(kb*0.24*qb)}"/>`}[a]:'';
   return en(ex,ey,ojo)+(c.vista&&c.ojo2?en(c.ojo2[0],c.ojo2[1],ojo):'')+(a==='dormido'?z(ex+3,ey-5,7)+z(ex+7.5,ey-10,5):'')+(c.boca?en(c.boca[0],c.boca[1],boca):'')}
 function ilustracion(m,animo,vista){const r=m&&typeof ILUSTRACIONES!=='undefined'&&ILUSTRACIONES[m.ilus||m.glifo];if(!r)return '';/* `ilus`: la ilustración propia de un animal cuyo glifo comparte con otro distinto (Boto, el delfín rosado, y Bulán, el del Indo) */
-  const c=r.c||{},a=animo||'normal',cab=vista==='cabeza'&&c.marco,vb=cab?c.marco.join(' '):r.v,inc=cab&&c.inclina||0,animal=r.d+(r.c?caraDe(c,a,inc):'');/* «cabeza»: primer plano, para el globo */
-  return `<svg class="animal ilus" viewBox="${vb}" data-animo="${a}" aria-hidden="true">${cab?(inc?`<g transform="rotate(${inc} ${c.marco[0]+c.marco[2]/2} ${c.marco[1]+c.marco[3]/2})">${animal}</g>`:animal):(r.f||'')+animal}</svg>`}
+  const c=r.c||{},a=animo||'normal',cab=vista==='cabeza'&&c.marco,vb=cab?c.marco.join(' '):r.v,inc=cab&&c.inclina||0,[x,y,w,h]=r.v.split(' '),/* «cabeza»: primer plano, para el globo */
+    cuerpo=r.i?`<image href="${r.i}" x="${x}" y="${y}" width="${w}" height="${h}"${cab?' filter="url(#aro)"':''}/>`:r.d,animal=cuerpo+(r.c?caraDe(c,a,inc):''),/* `i`: el animal pintado (sin ojo ni boca: la cara va encima según el ánimo); `d`: el de vectores */
+    aro=cab&&r.i?'<filter id="aro"><feMorphology in="SourceAlpha" operator="dilate" radius="1.2" result="d"/><feFlood flood-color="#64C8AA"/><feComposite in2="d" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>':'';/* en el globo, un filo verde claro alrededor del pintado para que se despegue del círculo oscuro */
+  return `<svg class="animal ilus" viewBox="${vb}" data-animo="${a}" aria-hidden="true">${aro}${cab?(inc?`<g transform="rotate(${inc} ${c.marco[0]+c.marco[2]/2} ${c.marco[1]+c.marco[3]/2})">${animal}</g>`:animal):(r.f||'')+animal}</svg>`}
 function fichaAnimal(r){const m=r.companero,il=m&&ilustracion(m,'normal');if(!il)return '';
   return `<div class="ficha conoce"><div class="lamina">${il}</div><div class="cuerpo"><div class="fkicker">Conocé a ${esc(m.nombre)}</div><p><b>${esc(m.nombre)}, ${esc(m.especie)}.</b>${m.ficha?' '+esc(m.ficha):''}</p></div></div>`}
 /*@fin:amplia*/

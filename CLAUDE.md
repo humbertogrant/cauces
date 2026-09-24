@@ -52,8 +52,8 @@ src/data/rios.js     RIVERS: 25 ríos: 15 del mundo y 6 de Costa Rica (zona 'cr'
                      /*@amplia*/: Orinoco, Murray, San Lorenzo, Zambeze); curso y brazos los genera tools/cauces.py [ids]
 src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por puerto (modo Historia)
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
-src/data/ilustraciones.js ILUSTRACIONES: ilustraciones de los animales sobre contornos reales, para la ficha y el globo (solo edición amplia;
-                     GENERADO por tools/ilustraciones.py, no editar a mano; ver «Ilustraciones»)
+src/data/ilustraciones.js ILUSTRACIONES: los animales dibujados de memoria y pintados (WebP en base64), para la ficha y el globo (solo
+                     edición amplia; GENERADO por tools/ilustraciones.py, no editar a mano; ver «Ilustraciones»)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
 src/data/eventos.js  EVENTOS: pruebas entre puertos por río (tramo, reto, textos)
 src/data/voces.js    VOCES (frases genéricas del compañero), RANGOS y voces de la economía: compartidos por los dos juegos
@@ -84,8 +84,9 @@ tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de 
 tools/relieve.py     regenera src/data/relieve.js (o relieve-<juego>.js; con «amplia», relieve-amplia.js): alturas de NOAA NCEI (ETOPO1 y
                      mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
-tools/ilustraciones.py genera src/data/ilustraciones.js desde las siluetas de tools/ilustraciones/ (SVG de PhyloPic, dominio público o CC0, con
-                     autor y licencia en fuentes.json) y lo que dice de cada animal tools/ilustraciones/ilustraciones_datos.py (shapely)
+tools/pintor.py      pinta cada dibujo de tools/dibujos/<clave>.py (numpy, scipy, shapely, Pillow) en un WebP de tools/dibujos/salida/
+tools/ilustraciones.py genera src/data/ilustraciones.js con los dibujos pintados; todavía sabe armar las de vectores de antes, desde las
+                     siluetas de PhyloPic de tools/ilustraciones/ (dominio público o CC0, con autor y licencia en fuentes.json)
 ```
 
 Comandos: `npm run build`, `npm test`, `npm run instantanea` (vuelve a tomar la instantánea; solo cuando un cambio de texto de Cauces es
@@ -124,79 +125,73 @@ dos HTML económicos adjuntos: `economica-1` (2026-09-13) es la primera.
 
 ## Ilustraciones (edición amplia)
 
-Desde el 2026-09-15 cada animal puede tener, además del glifo chico, una **ilustración** (`src/data/ilustraciones.js`,
-`ILUSTRACIONES[clave] = {v, c, f, d}`; caja 0 0 120 90, mirando a la derecha; `v` es el encuadre de la lámina) para la ficha «Conocé a …» al empezar el río y para
-el globo, donde va un retrato (primer plano de la cabeza, `c.marco`) en los dos modos. El glifo sigue en el mapa, la lista, los
-sellos y los iconos. Solo van en la amplia: el archivo está entero dentro de `/*@amplia*/ … /*@fin:amplia*/` y build.js recorta las
-entradas de animales que el juego no usa (una por línea). La clave es el `glifo` del compañero o, si lo trae, su `ilus`: dos animales
-distintos pueden compartir glifo (Boto, el delfín rosado, y Bulán, el del Indo, usan «delfin»; la tortuga de caparazón blando y la
-tortuga verde, «tortuga») y con un contorno real ya no pueden compartir ilustración, así que Boto lleva `ilus:"inia"` y Bulán, que
-no tiene silueta libre, sigue con su glifo (`ilustracion()` busca `m.ilus||m.glifo`; build.js recorta por esas mismas claves).
-- **El contorno no se dibuja a mano** (regla del 2026-09-17, después de tres rondas de dibujos por coordenadas que Humberto rechazó:
-  anatomía floja y, en la última, cuerpo de perfil con cabeza a tres cuartos, o sea dos ojos del mismo lado). El contorno de cada
-  animal es una silueta real de PhyloPic (phylopic.org), de su especie o de un pariente cercano si no hay (decirlo), **solo de dominio
-  público o CC0**, guardada en `tools/ilustraciones/` con autor, licencia y página en `fuentes.json` (la prueba lo exige). Antes de
-  bajar archivos nuevos se le pide permiso a Humberto con la lista: archivo, especie, autor, licencia y peso (el 2026-09-18 eligió que
-  se le pregunte por cada lote, no un permiso permanente). El archivo de datos es GENERADO: `python tools/ilustraciones.py` (shapely)
-  escribe dos archivos: `src/data/ilustraciones.js`, el del juego, SOLO con los animales terminados (los que ya tienen `cara`), y
-  `tools/ilustraciones/revision.js` (fuera de git), con todos, los borradores en crudo, para las hojas (`REV=1`). Así un borrador nunca
-  llega al juego: el 2026-09-18 un modo «--crudo» que escribía sobre el archivo del juego dejó a Hipo y a Pico sin cara en la copia de
-  trabajo (no llegó a ensamblarse). La herramienta pasa la silueta a la caja (espejo si mira a la izquierda, `giro` para nivelar las patas, apoyada en
-  el suelo o centrada si nada) y calcula sobre el contorno lo que da volumen: la banda de sombra (lo que el contorno deja al correrse
-  hacia la luz, arriba y adelante), el filo de brillo del lomo y las zonas de color, que son polígonos toscos que el contorno recorta
-  (`lejos` para patas lejanas y cola, `acento` para el único detalle dorado: el pico del ornitorrinco, `oscuro` para lo negro de verdad:
-  la protuberancia del cisne, que va encima de sombra y brillo; `clase@.5` suaviza la tinta: la oreja del elefante, la aleta del delfín)
-  con su línea de borde. Por animal: `liso` (alisa un trazado con textura y quita huecos y motas: el elefante traía 51 trazos), `luz`
-  (acorta la sombra en cuerpos chatos: cocodrilo 0,5; gavial 0,3), `vista` (el encuadre de la lámina: el cocodrilo es una franja), `borde`
-  (contorno más fino para un animal muy delgado: el hocico del gavial mide 2,4 de alto y el trazo de 1,1 lo tapaba), `brillo` (qué
-  fracción de la altura recibe el filo de luz: 0,3 en el bonobo, para que no brillen brazos y piernas) y `tramas` (rayado dentro de un
-  polígono recortado por el contorno: la cola escamosa del castor). Una zona `clase@.5~` va sin línea de borde y con `^` al final se dibuja encima de la sombra y del brillo (la cara sin
-  pelo del bonobo: `lejos@.5~^`) y una zona `claro` que cubre toda la caja deja el cuerpo blanco: la beluga es blanca de verdad. El redondeo de esquinas de
-  una zona se adapta a su tamaño. `huecos=False` rellena los huecos del trazado (la rana trae calados el ojo y el tímpano, que luego se
-  dibujan), `nucleo` saca solo el caparazón: la masa del contorno sin patas ni cuello, por apertura morfológica (tortuga y cangrejo), y
-  cada `trama` admite su `opaco` (las escamas de la carpa van a 0,25).
-- **La cara corresponde a la vista del contorno.** De perfil, un solo ojo: lo que Humberto rechazó fueron animales de lado con los dos
-  ojos del mismo lado. Si la silueta está vista de frente (el cangrejo) o desde arriba (la tortuga de caparazón blando), lo correcto
-  son los dos, y la ilustración lo declara: `vista:'frente'|'arriba'` con `ojo` y `ojo2`, iguales y con la pupila al centro (la prueba
-  rechaza `ojo2` sin `vista`, y `vista` sin `ojo2`). Aprobado por Humberto el 2026-09-18. A mano, en `tools/ilustraciones/ilustraciones_datos.py`, solo va lo que
-  el contorno no trae, ubicado sobre los bultos del contorno real con la cuadrícula (`--crudo` y las hojas del scratchpad): el ojo (en
-  la órbita), la boca si el perfil la deja ver (el hipopótamo sí; el ornitorrinco, visto algo desde arriba, no), pocas líneas tenues
-  (pliegues del cuello, hombro y muslo, dedos, membrana, pelaje), un detalle real del animal (el picabueyes dorado sobre el lomo del
-  hipopótamo) y el fondo `f`: un indicio de dónde vive (pasto y suelo; superficie, burbujas y lecho del río). La pose es la de la
-  silueta: Hipo pasta con la cabeza baja (calza con su ficha) y Pico nada.
-- Cara (`c`, la dibuja `caraDe(c, animo, inc)` en el motor): `ojo` [x,y] y `k`, `boca` [x,y] y `kb` (opcional), `pb` (hondura de la boca: 1 por defecto, 0,25-0,3 en hocicos finos como el del delfín
-  y el cocodrilo), `giro` (grados que
-  acuestan ojo y boca sobre el eje de la cabeza; en el eje local +x va al hocico y +y a la mandíbula), `marco` [x,y,w,h] cuadrado del
-  retrato e `inclina` (grados que gira el retrato para enderezar una cabeza baja: el de Hipo gira −40 y queda el perfil clásico). El
-  retrato no lleva el fondo. Ánimos: normal (parpadea cada 5,5 s, `.parpado`), alegre (acierto en la guía, compra o venta, evento o
-  Recitar), pensativo (fallo), sorpresa (evento sin responder) y dormido (al llegar al mar, con zetas claras). Los manejadores fijan
-  `S.animo` (se limpia al zarpar y al abrir la ruta) y `globo(r, texto, extra, animo)` lo recibe o lo toma de `S.animo`; con
-  ilustración el círculo del globo crece a 56 px (`.emo.retrato`) y el contorno lleva por debajo un filo verde claro, para que la cabeza
-  (y lo oscuro, como la protuberancia del cisne) se despegue del círculo verde oscuro; sin ilustración, el globo sigue con el glifo a 44 px.
-- Motor (bloque `/*@amplia*/`): `ilustracion(m, animo, vista)` y `fichaAnimal(r)`, que `renderDescender` pone en la parada 0 tras
-  «Tu embarcación» con el nombre, la especie y el texto `ficha` de la mascota (un hecho de la especie, verificable; en mascotas.js,
-  dentro de `/*@amplia*/` si el río es de la económica). Hojas de revisión en scratchpad/webkit: `ilus-hoja.js [--grid] [claves]` (el
-  animal grande, a tamaño de ficha y los cinco retratos), `ilus-det.js clave x y w h` (detalle con cuadrícula fina para leer
-  coordenadas), `ilus-globo.js` (retratos a varios tamaños y fondos) y `ficha-lote.js río…` (ficha y globo dentro del juego, y dice si
-  cada globo lleva retrato o glifo). Cada ilustración pesa de 4 a 13 KB. `tools/verificacion.py` lista y marca ⚠ cada frase de cada `ficha`.
-- Hechos (2026-09-18, veintiuno): hipo, ornitorrinco, inia (Boto), cocodrilo (Lalo, su especie exacta, y Tami, congénere), elefante,
-  cisne, nutria (Lobi y Nuria, la misma especie), castor (silueta de Castor canadensis, congénere: la única libre de C. fiber muestra
-  la cola de canto; quedó sin usar), marsopa sin aleta, gavial (el contorno trae las fauces con dientes y la ghara), esturión beluga,
-  manatí africano, bonobo (sentada: la silueta venía girada y primero la leí como un bonobo caminando; Humberto vio que eran las
-  piernas rectas de uno sentado, y `giro` −73 las acuesta sobre el suelo), beluga (blanca), rana toro (su especie: en PhyloPic está
-  como Rana catesbeiana), carpa, mono congo (congénere, Alouatta caraya, colgado de la cola; la rama se dibuja sobre la punta cortada
-  de la cola; la primera silueta, del género, caminando por una rama, quedó sin usar porque no se le distingue la cara), tiburón
-  toro, lapa roja (también sale en Exploradores: Aturia usa el mismo glifo y es la misma ave), tortuga de caparazón blando (otra
-  especie de su familia, desde arriba; clave `tortugablanda` con `ilus`, porque el glifo «tortuga» lo comparte con la tortuga verde
-  de Cook) y cangrejo (Gecarcinus quadratus, de frente). Lección del bonobo: antes de ubicar la cara, preguntarse en qué postura está
-  el animal de verdad; una silueta puede venir girada, y dos pares de extremidades rectas que se juntan en un punto son de un animal
-  sentado. Lección del mono: si en la silueta no se distingue la cabeza, no se adivina: se busca otra. Faltan: en Cauces, el bagre
-  gigante y el delfín del Indo (sin silueta libre ni pariente cercano: siguen con su glifo); en Exploradores, dromedario, camello,
-  caballo, jirafa, tortuga verde y la delfín de Odiseo (hay delfínidos libres: el listado, Stenella coeruleoalba, es el más común
-  del Mediterráneo), y falta una `ficha` para Aturia.
-- Descartado: el 2026-09-15, retratos trazados de grabados del siglo XIX de dominio público y un «personaje» hecho con su silueta más
-  una cara dibujada (irreconocibles en el globo; commits b0715a6 y c69a359); el 2026-09-17, los dibujos vectoriales hechos a mano por
-  coordenadas (commits f10c428 y 7959341).
+Desde el 2026-09-15 cada animal guía tiene, además del glifo chico, una **ilustración** (`src/data/ilustraciones.js`,
+`ILUSTRACIONES[clave] = {v, c, f, i}`; caja 0 0 120 90, mirando a la derecha; `v` es el encuadre de la lámina) para la ficha «Conocé a …»
+al empezar la ruta y para el globo, donde va un retrato (primer plano de la cabeza, `c.marco`) en los dos modos. El glifo sigue en el
+mapa, la lista, los sellos y los iconos. Solo van en la amplia, en los dos juegos: el archivo está entero dentro de `/*@amplia*/ …
+/*@fin:amplia*/` y build.js recorta las entradas de animales que el juego no usa (una por línea). La clave es el `ilus` del compañero o,
+si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` y Rafi `ilus:"tortugablanda"`, porque «delfin» y
+«tortuga» son las de Nerea y Marea en Exploradores (`usados()` en build.js toma, línea por línea, el `ilus` si está y si no el glifo).
+- **Dibujadas de memoria y pintadas pixel por pixel** (desde el 2026-09-23: Humberto vio a Bulán pintado así y pidió «dibujá de
+  memoria todo el set»). Reemplazan a las de vectores sobre siluetas de PhyloPic, que quedan en `tools/ilustraciones/` sin uso (la
+  herramienta todavía sabe armarlas). Son 29 dibujos: los 23 de Cauces (Buk y Bulán estrenan ilustración) y 6 de Exploradores
+  (dromedario, camello, caballo, jirafa, delfín listado y tortuga verde; la lapa es la misma de Cauces). Cada animal es un archivo de
+  `tools/dibujos/<clave>.py` que arma el cuerpo con piezas en la caja del juego (formas de puntos, `tubo` con radio a lo largo de un
+  eje, `ovalo`) y `tools/pintor.py` lo pinta: cada masa se infla como un globo (ecuación de Poisson sobre su contorno; los `bultos`
+  suben suave, para esculpir frente, mejillas o músculos), la luz sale de sus normales (arriba, adelante y de frente, como la sombra de
+  antes) llevada a una rampa por material de la paleta (`cuerpo` verde claro, `vientre` más pálido, `lejos` más oscuro para lo del otro
+  lado, `claro` blanco, `oscuro` tinta, `acento` dorado: un solo detalle dorado por animal), las masas de adelante echan sombra sobre
+  las de atrás y cada una lleva su línea de tinta, más gruesa del lado de la sombra, que se desvanece en `raices` (donde nace una pata o
+  una aleta; en las piezas delgadas también se funde el color, `funde`) y se quita con `sin_tinta` (el corte del pedúnculo sobre la cola
+  de un pez). Desde la segunda pasada (2026-09-24) la luz es más de pintura: las rampas corren la sombra hacia el azul y la luz hacia el
+  amarillo, un `escalon` suave separa sombra, medio tono y luz, y un filo de `contraluz` aclara los bordes de arriba; `pelaje` pinta el
+  pelo con pinceladas finas que siguen su flujo (en mechones de dos o tres pelos para el pelo largo) y oscurecen o aclaran el color que
+  ya está pintado; `grietas`, la red fina de la piel gruesa del elefante; y cada ojo de `CARA` lleva una `cuenca` suave. Ayudantes:
+  `_perfil.py` (cuerpos largos de perfil con dos tablas, lo que sube el lomo y lo que baja la panza a lo largo de
+  un eje curvo; la cola horizontal de un cetáceo, proyectada un poco desde arriba, y las aletas en paleta) y `_patas.py` (miembros,
+  dedos en abanico, garras, patas de ungulado con casco o almohadilla y `peludo`: mechones en el contorno, que se acuestan hacia donde
+  cae el pelo). Salida: un WebP de 680 px de ancho (la ficha mide 340) con
+  transparencia en `tools/dibujos/salida/` (fuera de git) y dos vistas previas, grande y con rejilla (el ojo y la boca de caraDe y el
+  marco); `python tools/pintor.py [clave…]`. `python tools/ilustraciones.py` arma el archivo de datos con las pintadas que tienen
+  `LISTO = True` (las repinta si el dibujo o el pintor cambiaron) y, si faltara alguna, con la de vectores.
+- **La cara no se pinta**: el ojo y la boca los dibuja caraDe (motor.js) encima de la imagen, según el ánimo, con el `CARA` del dibujo
+  (ojo, k, boca, kb, giro, pb, wb, marco, inclina). De perfil, un solo ojo (lo que Humberto rechazó el 2026-09-17 fueron animales de lado
+  con los dos ojos del mismo lado); de frente (el cangrejo) o desde arriba (la tortuga de caparazón blando y el ornitorrinco), dos, y la ilustración lo
+  declara con `vista:'frente'|'arriba'` y `ojo2` (la prueba rechaza uno sin el otro). En el retrato, la imagen lleva el filtro SVG
+  `#aro` (que viene en la misma ilustración: dilata la silueta y la pinta de verde claro por debajo) para despegarse del círculo oscuro.
+  Ánimos: normal (parpadea cada 5,5 s, `.parpado`), alegre, pensativo, sorpresa y dormido, como antes (ver «Cómo está hecho el motor»).
+- Cada dibujo dice en su encabezado qué rasgos de la especie dibuja, para revisarlos contra una foto. Las poses siguen las de antes
+  donde calzaban con la ficha y el fondo, o cuentan lo que dice la ficha: Hipo pasta con la cabeza baja y el picabueyes en el lomo,
+  Bruno come hojas sentado en su rama con la cola prensil enrollada dos vueltas en ella, Bíber roe la corteza de una rama, la lapa
+  está en su rama, Valsa arquea las alas como velas, Rafi y Pico se ven desde arriba (de perfil, el pico y la cola del ornitorrinco,
+  que son anchos y chatos, se veían finos y parecía un lagarto) y el cangrejo de frente. Nerea salta fuera del agua.
+- Lecciones (2026-09-23): un animal macizo (hipopótamo, elefante, caballo, camélidos, jirafa) lleva las patas de este lado dentro del
+  mismo volumen que el cuerpo; separadas parecen salchichas pegadas. El cuello tiene que salir del cuerpo (la bonobo tuvo la cabeza
+  flotando). Un bulto que sube de golpe dibuja un disco. La cola de un cetáceo es horizontal: se dibuja su planta proyectada, no una
+  cola de pez. Las patas de un cangrejo de frente se abren en abanico; paralelas parecen un peine. Una cola prensil se enrolla en la
+  rama: el tramo de atrás se pinta antes que la rama y la vuelta de adelante, después.
+- Lecciones de la segunda pasada (2026-09-24): el pelo pintado con un color fijo deja rayas blancas en la sombra; las pinceladas tienen
+  que tomar el color de abajo. Una pieza aparte con su propio volumen y su línea se lee como un objeto pegado: la oreja de la bonobo
+  parecía un segundo ojo y la «manga» del camello, una almohada; el pelo largo (barba, manga, joroba) va en el mismo volumen que el
+  cuerpo, con un tono más oscuro y mechones en el contorno. Donde una aleta se funde con el cuerpo, su sombra también tiene que
+  desvanecerse (si no, queda una mancha en la raíz); una pata gruesa no se funde: el muslo va en el volumen del cuerpo y de la
+  rodilla para abajo, una pieza aparte (el cocodrilo). Las patas de un ungulado van por articulaciones (codo, rodilla, caña,
+  menudillo, cuartilla; atrás, el muslo en cuña hasta el corvejón): rectas parecen palos. Una cara oscura (bonobo, mono congo) no
+  lleva línea donde se junta con el pelo, solo donde es el borde del dibujo (`sin_tinta` con la cabeza achicada). La cola ancha del
+  castor y la paleta del manatí se ven un poco desde arriba; la del manatí va en el mismo volumen que el cuerpo, más chata.
+- Fichas: la `ficha` de cada compañero (un hecho de la especie, verificable) va dentro de `/*@amplia*/` en mascotas.js y en
+  itinerarios.js; tools/verificacion.py lista y marca ⚠ cada frase, en Cauces y en Exploradores.
+- Pesos (2026-09-24, tras la segunda pasada): cada WebP pesa de 10 a 36 KB (el pelo y las texturas suman: el cangrejo, el mono y el
+  elefante son los más pesados); Cauces amplia ≈ 1 297 KB y Exploradores amplia ≈ 658 KB (antes de la pasada, 1 246 y 642). Se probó
+  bajar la calidad de 84 a 80: ahorraba 44 KB entre los 29, poco para lo que se pierde. Para comparar una pasada con la anterior:
+  guardar los WebP de `tools/dibujos/salida/` antes de repintar y ponerlos lado a lado (scratchpad `antes-despues.py`).
+- Hojas de revisión en scratchpad/webkit: `pintados.js [--grid] [--x2] [claves]` (cada animal grande con su fondo y su cara, a tamaño
+  de ficha y los cinco retratos) y `pintados-contacto.js [--x2] [claves]` (todos a 280 px con su globo), con el motor y el CSS del
+  juego; `ficha-lote.js río…` y `ficha-lote-exp.js ruta…` (ficha y globo dentro del juego armado, y dicen si cada globo lleva retrato).
+- Descartado: el 2026-09-15, retratos trazados de grabados del siglo XIX y un «personaje» hecho con su silueta más una cara dibujada
+  (commits b0715a6 y c69a359); el 2026-09-17, dibujos vectoriales a mano por coordenadas, con cabeza a tres cuartos sobre un cuerpo de
+  perfil (commits f10c428 y 7959341); del 2026-09-17 al 2026-09-23, las ilustraciones de vectores sobre siluetas de PhyloPic (sombra por
+  corrimiento del contorno, filo de brillo y zonas de color; `tools/ilustraciones.py` y `tools/ilustraciones/`).
 
 ## Cómo está hecho el motor
 
@@ -505,7 +500,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 855 KB el 2026-09-18, con veintiuna ilustraciones, y la de Exploradores ≈ 464 KB). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 1 297 KB y la de Exploradores ≈ 658 KB el 2026-09-24, con las ilustraciones pintadas). La edición amplia
   (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.

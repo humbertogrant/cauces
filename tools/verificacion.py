@@ -50,6 +50,8 @@ for r in I:
     v=r['vehiculo'];add("Vehículo",v['desc']);add("Salida",v['zarpe']);add("Llegada",v['llegada'])
     for c,pu in zip(r['paradas'],v['puertos']): add(f"{c['nombre']} · en el camino (Historia)",pu[0])
     m=r['companero'];add(f"{m['nombre']} · hola",m['hola']);add(f"{m['nombre']} · regreso",m['fin'])
+    if m.get('ficha'):  # la ficha «Conocé a …» (edición amplia): cada frase se lista y se marca
+        for f in SPLIT.split(m['ficha']): out.append(f"- {m['nombre']} · ficha (edición amplia): {f.strip()} ⚠")
     for c,l in zip(r['paradas'],m['paradas']): add(f"{m['nombre']} en {c['nombre']}",l)
     for e in r.get('eventos',[]): add(f"Evento · {e['titulo']}",e['texto']);add(f"Evento · {e['titulo']} · bien",e['bien']);add(f"Evento · {e['titulo']} · mal",e['mal'])
     out.append("")

@@ -4,9 +4,12 @@ const fs=require('fs'),path=require('path'),vm=require('vm');
 const {montar,archivosDe,EDICIONES,JUEGOS}=require('./arnes');
 const juego=process.argv[2]||'cauces',edicion=process.argv[3]||'amplia';if(!JUEGOS[juego]||!EDICIONES[edicion])throw 'uso: node test/pruebas.js [cauces|exploradores] [amplia|economica]';
 global.LS=montar(archivosDe(juego,edicion),edicion);
-// procedencia de las ilustraciones (edición amplia): cada contorno es un archivo de tools/ilustraciones/ anotado en fuentes.json, de dominio público o CC0
-if(edicion==='amplia'){const dir=path.join(__dirname,'..','tools','ilustraciones'),fu=JSON.parse(fs.readFileSync(path.join(dir,'fuentes.json'),'utf8')),usados=[...fs.readFileSync(path.join(dir,'ilustraciones_datos.py'),'utf8').matchAll(/fuente='([^']+)'/g)].map(m=>m[1]);
-  if(!usados.length)throw 'ilustraciones sin contornos';for(const f of usados){const x=fu[f];if(!fs.existsSync(path.join(dir,f))||!x||!/^(CC0|Dominio público)/.test(x.licencia)||!x.autor||!x.pagina)throw 'contorno sin procedencia libre: '+f}
-  console.log('ilustraciones: '+usados.length+' contornos con procedencia')}
+// procedencia de las ilustraciones (edición amplia): una pintada (`i`) tiene su dibujo de memoria en tools/dibujos/<clave>.py; una de
+// vectores (`d`), su contorno en tools/ilustraciones/, anotado en fuentes.json, de dominio público o CC0
+if(edicion==='amplia'){const raiz=path.join(__dirname,'..'),dir=path.join(raiz,'tools','ilustraciones'),fu=JSON.parse(fs.readFileSync(path.join(dir,'fuentes.json'),'utf8')),datos=fs.readFileSync(path.join(dir,'ilustraciones_datos.py'),'utf8');
+  let pintadas=0,contornos=0;for(const l of fs.readFileSync(path.join(raiz,'src','data','ilustraciones.js'),'utf8').split('\n')){const k=(l.match(/^([a-zñ]+):\{v:/)||[])[1];if(!k)continue;
+    if(/i:'data:image\/webp;base64,/.test(l)){if(!fs.existsSync(path.join(raiz,'tools','dibujos',k+'.py')))throw 'ilustración pintada sin su dibujo: '+k;pintadas++;continue}
+    const f=(datos.match(new RegExp("'"+k+"': dict\\(\\s*fuente='([^']+)'"))||[])[1],x=f&&fu[f];if(!x||!fs.existsSync(path.join(dir,f))||!/^(CC0|Dominio público)/.test(x.licencia)||!x.autor||!x.pagina)throw 'contorno sin procedencia libre: '+k;contornos++}
+  if(!pintadas&&!contornos)throw 'ilustraciones vacías';console.log('ilustraciones: '+pintadas+' dibujadas de memoria (tools/dibujos), '+contornos+' sobre contornos de PhyloPic')}
 const casos=juego==='cauces'?'casos.js':'casos-'+juego+'.js';
 vm.runInThisContext(fs.readFileSync(path.join(__dirname,casos),'utf8'),{filename:casos});
