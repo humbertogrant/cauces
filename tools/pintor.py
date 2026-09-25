@@ -17,6 +17,8 @@ La cara no se pinta: el ojo y la boca los dibuja caraDe en el motor, encima de l
 sorpresa, dormido, pensativo), con los datos de `CARA`. El fondo (`FONDO`, el lugar donde vive) es de vectores, como antes.
 
 python tools/pintor.py [clave …]   pinta y guarda tools/dibujos/salida/<clave>.webp, .json y dos vistas previas (todas sin claves)
+python tools/pintor.py barcas [ruta …]   las embarcaciones de tools/dibujos/barcas/, en tools/dibujos/salida/barcas/
+python tools/pintor.py bienes [ruta …]   las mercancías de tools/dibujos/bienes/, en tools/dibujos/salida/bienes/<ruta>-<i>
 """
 import importlib
 import io
@@ -508,6 +510,36 @@ def _rejilla(img, vista, cara):
     return fondo
 
 
+def _pintar(vista, dibujar, cara=None):
+    """Arma el lienzo, deja que el dibujo ponga sus piezas y lo pinta; con `cara`, una cuenca suave donde irá cada ojo."""
+    l = Lienzo(vista)
+    dibujar(l)
+    if cara:
+        k = cara.get('k', 2)
+        for o in [cara['ojo']] + ([cara['ojo2']] if cara.get('ojo2') else []):
+            l.cuenca(o[0], o[1], k)
+    l.pintar()
+    return l.imagen()
+
+
+def _guardar(img, base, ancho, datos, vista, cara=None, previa=True):
+    """Guarda <base>.webp (de `ancho` pixeles), <base>.json con `datos` y, con `previa`, las vistas grande y con rejilla."""
+    os.makedirs(os.path.dirname(base), exist_ok=True)
+    chica = img.resize((ancho, int(round(ancho * img.size[1] / img.size[0]))), Image.LANCZOS)
+    b = io.BytesIO()
+    chica.save(b, 'WEBP', quality=CALIDAD, method=6)
+    io.open(base + '.webp', 'wb').write(b.getvalue())
+    io.open(base + '.json', 'w', encoding='utf8', newline='\n').write(json.dumps(datos, ensure_ascii=False, indent=1))
+    if previa:
+        img.save(base + '-grande.png')
+        _rejilla(img, vista, cara).save(base + '-rejilla.png')
+    return len(b.getvalue())
+
+
+def _vista(v):
+    return ' '.join('%g' % x for x in v)
+
+
 def pintar_clave(clave, previa=True):
     """Pinta tools/dibujos/<clave>.py y guarda su WebP, su JSON (vista, cara, fondo) y dos vistas previas."""
     if DIBUJOS not in sys.path:
@@ -515,30 +547,69 @@ def pintar_clave(clave, previa=True):
     if AQUI not in sys.path:
         sys.path.insert(0, AQUI)
     mod = importlib.reload(importlib.import_module(clave)) if clave in sys.modules else importlib.import_module(clave)
-    l = Lienzo(mod.VISTA)
-    mod.dibujar(l)
-    k = mod.CARA.get('k', 2)
-    for o in [mod.CARA['ojo']] + ([mod.CARA['ojo2']] if mod.CARA.get('ojo2') else []):
-        l.cuenca(o[0], o[1], k)
-    l.pintar()
-    img = l.imagen()
-    os.makedirs(SALIDA, exist_ok=True)
-    chica = img.resize((ANCHO_WEBP, int(round(ANCHO_WEBP * img.size[1] / img.size[0]))), Image.LANCZOS)
-    b = io.BytesIO()
-    chica.save(b, 'WEBP', quality=CALIDAD, method=6)
-    io.open(os.path.join(SALIDA, clave + '.webp'), 'wb').write(b.getvalue())
-    datos = dict(v=' '.join('%g' % v for v in mod.VISTA), c=mod.CARA, f=getattr(mod, 'FONDO', ''), listo=bool(getattr(mod, 'LISTO', False)))
-    io.open(os.path.join(SALIDA, clave + '.json'), 'w', encoding='utf8', newline='\n').write(json.dumps(datos, ensure_ascii=False, indent=1))
-    if previa:
-        img.save(os.path.join(SALIDA, clave + '-grande.png'))
-        _rejilla(img, mod.VISTA, mod.CARA).save(os.path.join(SALIDA, clave + '-rejilla.png'))
-    return len(b.getvalue())
+    img = _pintar(mod.VISTA, mod.dibujar, mod.CARA)
+    datos = dict(v=_vista(mod.VISTA), c=mod.CARA, f=getattr(mod, 'FONDO', ''), listo=bool(getattr(mod, 'LISTO', False)))
+    return _guardar(img, os.path.join(SALIDA, clave), ANCHO_WEBP, datos, mod.VISTA, mod.CARA, previa)
 
 
 def claves():
     return sorted(f[:-3] for f in os.listdir(DIBUJOS) if f.endswith('.py') and not f.startswith('_'))
 
 
+# ------------------------------------------------------------------------------------------------ barcas y mercancías
+# Las barcas (tools/dibujos/barcas/<ruta>.py: la embarcación de cada ruta, para «Tu embarcación») y las mercancías
+# (tools/dibujos/bienes/<ruta>.py: BIENES, una por cada bien de MERCADOS[ruta], en su orden) se pintan igual que los animales,
+# sin cara. Cada archivo se carga por su camino y con un nombre propio, porque la barca y los bienes de una ruta se llaman igual.
+BARCAS = os.path.join(DIBUJOS, 'barcas')
+BIENES = os.path.join(DIBUJOS, 'bienes')
+ANCHO_BIEN = 144                 # un bien se ve de unos 52 px en el mercado: casi el triple, para pantallas de alta densidad
+
+
+def cargar(archivo, nombre):
+    import importlib.util
+    for p in (AQUI, DIBUJOS, os.path.dirname(archivo)):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    spec = importlib.util.spec_from_file_location(nombre, archivo)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def rutas(carpeta):
+    return sorted(f[:-3] for f in os.listdir(carpeta) if f.endswith('.py') and not f.startswith('_')) if os.path.isdir(carpeta) else []
+
+
+def pintar_barca(ruta, previa=True):
+    """Pinta tools/dibujos/barcas/<ruta>.py en tools/dibujos/salida/barcas/<ruta>.webp (con su JSON: vista, fondo, listo)."""
+    mod = cargar(os.path.join(BARCAS, ruta + '.py'), 'barca_' + ruta)
+    img = _pintar(mod.VISTA, mod.dibujar)
+    datos = dict(v=_vista(mod.VISTA), f=getattr(mod, 'FONDO', ''), listo=bool(getattr(mod, 'LISTO', False)))
+    return _guardar(img, os.path.join(SALIDA, 'barcas', ruta), ANCHO_WEBP, datos, mod.VISTA, None, previa)
+
+
+def pintar_bienes(ruta, previa=True):
+    """Pinta cada bien de tools/dibujos/bienes/<ruta>.py en tools/dibujos/salida/bienes/<ruta>-<i>.webp; `i` es su lugar en
+    MERCADOS[ruta]. Devuelve los pesos."""
+    mod = cargar(os.path.join(BIENES, ruta + '.py'), 'bienes_' + ruta)
+    pesos = []
+    for i, b in enumerate(mod.BIENES):
+        if b is None:
+            continue
+        img = _pintar(b['vista'], b['dibujar'])
+        datos = dict(v=_vista(b['vista']), clave=b['clave'], listo=bool(b.get('listo', getattr(mod, 'LISTO', False))))
+        pesos.append(_guardar(img, os.path.join(SALIDA, 'bienes', '%s-%d' % (ruta, i)), ANCHO_BIEN, datos, b['vista'], None, previa))
+    return pesos
+
+
 if __name__ == '__main__':
-    for c in (sys.argv[1:] or claves()):
-        print('%-14s %5.1f KB' % (c, pintar_clave(c) / 1024))
+    args = sys.argv[1:]
+    if args[:1] == ['barcas']:
+        for r in (args[1:] or rutas(BARCAS)):
+            print('barca %-12s %5.1f KB' % (r, pintar_barca(r) / 1024))
+    elif args[:1] == ['bienes']:
+        for r in (args[1:] or rutas(BIENES)):
+            print('bienes %-11s %s' % (r, ' · '.join('%.1f KB' % (p / 1024) for p in pintar_bienes(r))))
+    else:
+        for c in (args or claves()):
+            print('%-14s %5.1f KB' % (c, pintar_clave(c) / 1024))

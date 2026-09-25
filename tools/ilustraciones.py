@@ -347,6 +347,8 @@ def main():
         '// Revisión: todos los animales, los borradores en crudo. No es del juego ni va a git.\nconst ILUSTRACIONES={\n'
         + '\n'.join(revision) + '\n};\n')
     print('juego: %d terminados en %s · revisión: %d en %s' % (len(juego), os.path.relpath(SALIDA, RAIZ), len(revision), os.path.relpath(REVISION, RAIZ)))
+    import pintados      # y las barcas y las mercancías pintadas, en sus propios archivos
+    pintados.main()
 
 
 if __name__ == '__main__':
