@@ -304,10 +304,12 @@ console.log('perfiles OK');
  if(new Set(gl).size!==7||gl.some(g=>g.indexOf('class="casco"')<0)||gl.some(g=>g.length>760)||glifo('otro')!==glifo('cuadrada'))throw 'glifos: '+gl.map(g=>g.length);
  if(glifo('vapor').indexOf('class="humo"')<0||glifo('junco').indexOf('class="vela"')<0||glifo('canoa').indexOf('class="fig"')<0)throw 'glifos sin sus partes';
  setModo('mercader');abrirRio('misisipi');let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('<g id="barca" class="barca"><g class="mece">')<0||capa.indexOf('<path id="estela"')<0)throw 'barca sin mece o sin estela';
- ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="barca mini"')<0||ph.indexOf('class="humo"')<0)throw 'sin la barca en el bloque de la embarcación';
+ /* en la edición amplia, la barca pintada de la ruta reemplaza al glifo chico en el bloque de la embarcación; en la económica, el glifo */
+ const pintada=typeof BARCAS!=='undefined'&&!!BARCAS.misisipi,barcaBloque=pintada?'<svg class="barca-pintada"':'<svg class="barca mini"';
+ ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf(barcaBloque)<0||(pintada?ph.indexOf('<svg class="barca mini"')>=0:ph.indexOf('class="humo"')<0))throw 'sin la barca en el bloque de la embarcación';
  responderGuia(S.guias[0].opciones.find(i=>i!==0));capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('class="barca duda"')<0||S.bamboleo)throw 'sin bamboleo tras errar la guía';
  paso(1);capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('class="barca duda"')>=0)throw 'el bamboleo no debe repetirse';
- bajar(5);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="barca mini"')<0)throw 'sin la barca al llegar al mar';
+ bajar(5);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf(barcaBloque)<0)throw 'sin la barca al llegar al mar';
  console.log('barcas OK')}
 // animales: un glifo SVG por especie, en el globo, la lista, el pasaporte y la barca; salto en el evento
 {if(Object.keys(ANIMALES).length<17)throw 'faltan glifos de animales';

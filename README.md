@@ -15,7 +15,7 @@ un mercado, eventos entre puertos y repaso espaciado.
   amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze) y costas, lagos y relieve más finos; las
   amplias de los dos juegos traen una ilustración de cada animal guía, dibujada de memoria y pintada pixel por pixel en los colores del
   juego (`tools/pintor.py` y un dibujo por animal en `tools/dibujos/`), con cara y ánimos en la ficha «Conocé a …» al empezar la ruta y en
-  el globo. Antes, del 2026-09-17 al 23, fueron vectores sobre siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0
+  el globo; también la embarcación de cada ruta, pintada igual, en «Tu embarcación», y, de prueba, las mercancías del Nilo en su mercado. Antes, del 2026-09-17 al 23, fueron vectores sobre siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0
   (el detalle, en `tools/ilustraciones/fuentes.json`). El progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
   Las versiones congeladas están en los Releases de GitHub (`economica-1`), con los dos HTML económicos para descargar.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma

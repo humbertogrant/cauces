@@ -54,6 +54,8 @@ src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por p
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
 src/data/ilustraciones.js ILUSTRACIONES: los animales dibujados de memoria y pintados (WebP en base64), para la ficha y el globo (solo
                      edición amplia; GENERADO por tools/ilustraciones.py, no editar a mano; ver «Ilustraciones»)
+src/data/barcas.js, bienes.js  BARCAS (la embarcación de cada ruta, pintada, para «Tu embarcación») y BIENES (las mercancías pintadas de
+                     una ruta, en el orden de su carga), solo en la edición amplia; GENERADOS por tools/pintados.py (ver «Barcas y mercancías»)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
 src/data/eventos.js  EVENTOS: pruebas entre puertos por río (tramo, reto, textos)
 src/data/voces.js    VOCES (frases genéricas del compañero), RANGOS y voces de la economía: compartidos por los dos juegos
@@ -84,7 +86,9 @@ tools/itinerarios.py regenera el trazo de cada itinerario a partir de puntos de 
 tools/relieve.py     regenera src/data/relieve.js (o relieve-<juego>.js; con «amplia», relieve-amplia.js): alturas de NOAA NCEI (ETOPO1 y
                      mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
-tools/pintor.py      pinta cada dibujo de tools/dibujos/<clave>.py (numpy, scipy, shapely, Pillow) en un WebP de tools/dibujos/salida/
+tools/pintor.py      pinta cada dibujo de tools/dibujos/<clave>.py (numpy, scipy, shapely, Pillow) en un WebP de tools/dibujos/salida/;
+                     `barcas [ruta…]` y `bienes [ruta…]` pintan las de tools/dibujos/barcas/ y tools/dibujos/bienes/
+tools/pintados.py    genera src/data/barcas.js y bienes.js con las barcas y las mercancías pintadas (tools/ilustraciones.py la llama al final)
 tools/ilustraciones.py genera src/data/ilustraciones.js con los dibujos pintados; todavía sabe armar las de vectores de antes, desde las
                      siluetas de PhyloPic de tools/ilustraciones/ (dominio público o CC0, con autor y licencia en fuentes.json)
 ```
@@ -188,6 +192,29 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
 - Hojas de revisión en scratchpad/webkit: `pintados.js [--grid] [--x2] [claves]` (cada animal grande con su fondo y su cara, a tamaño
   de ficha y los cinco retratos) y `pintados-contacto.js [--x2] [claves]` (todos a 280 px con su globo), con el motor y el CSS del
   juego; `ficha-lote.js río…` y `ficha-lote-exp.js ruta…` (ficha y globo dentro del juego armado, y dicen si cada globo lleva retrato).
+- **Barcas y mercancías** (desde el 2026-09-25, a pedido de Humberto: «un trabajo similar dibujando las barcas, y para una ruta, como
+  prueba, las mercancías»). Cada ruta con barca tiene su embarcación dibujada de memoria según su descripción (NAVES o el vehículo del
+  viaje) en `tools/dibujos/barcas/<ruta>.py`: las 25 de Cauces (la falúa del Nilo, el junco del Yangtsé, la caja de Ulm del Danubio, el
+  kelek del Tigris, la balsa de pieles del Huang He, la de rafting del Reventazón…) y las 4 de Exploradores que son barcos (la flota del
+  tesoro, la galera de Odiseo, la canoa de Humboldt y el Endeavour); las caravanas y los jinetes siguen con su glifo. Van de perfil, con
+  la proa a la derecha, como el glifo del mapa: el casco dorado (la barca es lo tuyo), las velas claras, el metal en tinta; flotan en una
+  franja de agua pintada (`agua`, en `_barcas.py`, que también trae velas, remos, cabinas, techos de paja, esteras, ruedas de paletas,
+  chimeneas y humo; `_canoas.py` da cascos largos de canoa). El motor las pone arriba del bloque «Tu embarcación» (`laminaNave`, en una
+  lámina blanca como la de «Conocé a …») y, si una ruta no tiene, queda el glifo chico. Las mercancías: `tools/dibujos/bienes/<ruta>.py`
+  trae `BIENES`, un bodegón de 40 × 40 por cada bien de MERCADOS[ruta], en su orden y con su nombre en `clave` (tools/pintados.py lo
+  exige); el mercado y la bodega los muestran a 52 px en lugar del icono de línea (`bienPintado`). Por ahora solo el Nilo: café de Jinja,
+  pescado seco de Juba, goma arábiga de Jartum, dátiles de Asuán y trigo de Luxor. Todo va dentro de `/*@amplia*/` y build.js deja en
+  cada juego solo las de sus rutas. Pesos: una barca, de 17 a 52 KB de WebP (la vela, el aparejo y el agua pesan; 907 KB las 29) y un
+  bien, de 4 a 8 KB; con ellas, Cauces amplia pasó de ≈ 1 297 a ≈ 2 321 KB y Exploradores amplia de ≈ 658 a ≈ 892 KB (2026-09-25). La
+  económica no cambia ni un byte: en la plantilla del motor, las marcas `/*@amplia*/` rodean todo lo agregado.
+- Lecciones de las barcas (2026-09-25): una pieza recta (una cabina, un fardo, una vela cuadrada) se redondea con `caja` o `poli`, no con
+  `forma`: el redondeo de Chaikin vuelve octógonos los rectángulos y globos las velas. Un casco de canoa necesita la quilla redonda que
+  sube hasta cada punta (`_canoas.canoa`): con fondo chato y las puntas cortadas parece una cuña. Una carga chica (un racimo de bananos,
+  unos plátanos) no se lee a este tamaño: mejor lo que tiene silueta propia (una piña, un saco, un barril). Un montón (la goma arábiga)
+  va apretado y dentro de su cuenco: el borde del cuenco se pinta después, delante de los trozos de abajo.
+- Hojas de revisión de barcas y mercancías: scratchpad `hoja-barcas.py ruta…` (las barcas grandes, de a dos) y `hoja-bienes.py ruta` (cada
+  bien grande y a 52 y 78 px), y scratchpad/webkit `barcas-hoja.js [ruta…]` (el bloque «Tu embarcación» con el CSS del juego) y
+  `barca-mercado.js [--exp] ruta…` (la barca y el mercado dentro del juego armado, comprando para que se vea la bodega).
 - Descartado: el 2026-09-15, retratos trazados de grabados del siglo XIX y un «personaje» hecho con su silueta más una cara dibujada
   (commits b0715a6 y c69a359); el 2026-09-17, dibujos vectoriales a mano por coordenadas, con cabeza a tres cuartos sobre un cuerpo de
   perfil (commits f10c428 y 7959341); del 2026-09-17 al 2026-09-23, las ilustraciones de vectores sobre siluetas de PhyloPic (sombra por
@@ -500,7 +527,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 1 297 KB y la de Exploradores ≈ 658 KB el 2026-09-24, con las ilustraciones pintadas). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 2 321 KB y la de Exploradores ≈ 892 KB el 2026-09-25, con los animales, las barcas y las mercancías del Nilo pintados). La edición amplia
   (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.

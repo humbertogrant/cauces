@@ -27,6 +27,12 @@ setTimeout(()=>{
   if(edicion==='amplia')for(const [k,r] of Object.entries(ILUSTRACIONES)){if(!r.d===!r.i||(r.i&&!/^data:image\/webp;base64,[A-Za-z0-9+/]+=*$/.test(r.i)))throw 'ilustración sin cuerpo o con dos: '+k;if(r.i&&!/filter="url\(#aro\)"/.test(ilustracion({glifo:k},'normal','cabeza')))throw 'retrato pintado sin filo: '+k;}
   if(edicion==='amplia')for(const [k,r] of Object.entries(ILUSTRACIONES)){if(!r.c||!r.c.ojo||(r.c.ojo2&&!['frente','arriba'].includes(r.c.vista))||(r.c.vista&&!r.c.ojo2)||!r.c.marco||r.c.marco[2]!==r.c.marco[3])throw 'cara de la ilustración '+k;if(ilustracion({glifo:k},'normal','cabeza').indexOf(r.f||'<fondo>')>=0&&r.f)throw 'el retrato no lleva fondo: '+k}
   if(edicion==='amplia')for(const k of Object.keys(ILUSTRACIONES))if(!RUTAS.some(r=>(r.companero.ilus||r.companero.glifo)===k))throw 'ilustración sin animal en este juego: '+k;
+  /* las barcas y las mercancías pintadas: solo en la amplia, solo las de las rutas del juego, un WebP cada una; la barca va en la lámina
+     de «Tu embarcación» y cada bien, en el orden de la carga de su ruta */
+  const webp=/^data:image\/webp;base64,[A-Za-z0-9+/]+=*$/;
+  if((edicion==='amplia')!==(typeof BARCAS!=='undefined'&&typeof BIENES!=='undefined'&&typeof laminaNave==='function'))throw 'barcas y mercancías pintadas en la edición '+edicion;
+  if(edicion==='amplia'){for(const [k,b] of Object.entries(BARCAS)){const r=rutaPor(k);if(!r||!r.vehiculo)throw 'barca pintada sin su ruta: '+k;if(!webp.test(b.i)||b.v.split(' ').length!==4)throw 'barca pintada sin imagen: '+k;if(!/barca-pintada/.test(laminaNave(r)))throw 'la lámina no lleva la barca: '+k}
+    for(const [k,bs] of Object.entries(BIENES)){const r=rutaPor(k);if(!r||bs.length!==r.carga.length)throw 'mercancías pintadas que no calzan con la carga de '+k;bs.forEach((b,i)=>{if(b!==null&&!webp.test(b))throw 'mercancía pintada sin imagen: '+k+' '+i;if(b&&!/img class="bien"/.test(bienPintado(r,i)))throw 'el mercado no muestra la mercancía: '+k+' '+i})}}
   const kb=Math.round(html.length/1024);if(!JUEGO.edicion||JUEGO.edicion.nombre!==E.nombre||JUEGO.edicion.kb!==kb)throw 'JUEGO.edicion '+JSON.stringify(JUEGO.edicion)+' en un archivo de '+kb+' KB';
   for(const t of Object.keys(VOCAB))if(!(t==='rio'?juego==='cauces':juego==='exploradores'))throw 'VOCAB.'+t+' sobra en '+juego;
   for(const r of RUTAS){if(!r.vocab||!r.vocab.inicio)throw 'ruta sin vocabulario '+r.id;if(!ANIMALES[r.companero.glifo])throw 'animal recortado de más: '+r.companero.glifo;

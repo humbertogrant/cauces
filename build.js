@@ -13,11 +13,12 @@
 const fs=require('fs'),path=require('path');
 const src=p=>fs.readFileSync(path.join(__dirname,'src',p),'utf8');
 const JUEGOS={
-  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/ilustraciones.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'}},
-  exploradores:{titulo:'Exploradores: los grandes viajes, etapa por etapa',vocab:['itinerario','travesia'],archivos:['data/mapa-exploradores.js','data/itinerarios.js','data/ilustraciones.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js']}
+  cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/ilustraciones.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'},soloAmplia:['data/barcas.js','data/bienes.js']},
+  exploradores:{titulo:'Exploradores: los grandes viajes, etapa por etapa',vocab:['itinerario','travesia'],archivos:['data/mapa-exploradores.js','data/itinerarios.js','data/ilustraciones.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js'],soloAmplia:['data/barcas.js','data/bienes.js']}
 };
 const EDICIONES={economica:{nombre:'económica',sufijo:'',tope:500},amplia:{nombre:'amplia',sufijo:'-amplia',tope:0}};
-function archivosDe(id,edicion){const j=JUEGOS[id],rep=(edicion==='amplia'&&j.amplia)||{};return j.archivos.map(f=>rep[f]||f)}// archivos del juego en una edición
+function archivosDe(id,edicion){const j=JUEGOS[id],rep=(edicion==='amplia'&&j.amplia)||{},mas=edicion==='amplia'&&j.soloAmplia||[];
+  return j.archivos.flatMap(f=>[rep[f]||f].concat(f==='data/ilustraciones.js'?mas:[]))}// archivos del juego en una edición; `soloAmplia` (barcas y mercancías pintadas) entra tras las ilustraciones
 const ABRE='/*@amplia*/',CIERRA='/*@fin:amplia*/';
 function cortarEdicion(texto,edicion){// la económica quita los bloques marcados; la amplia, solo las marcas (y el salto de línea que las sigue)
   const tras=(t,i)=>t[i]==='\n'?i+1:i;
@@ -32,7 +33,8 @@ function usados(datos){/* claves que usan los datos del juego: glifos de animal,
   const i=new Set();for(const m of datos.matchAll(/\b(?:i|icono):["']([a-z]+)["']/g))i.add(m[1]);/* iconos de bienes y eventos */
   for(const m of datos.matchAll(/icono:["']animal:([a-z]+)["']/g))g.add(m[1]);for(const m of datos.matchAll(/icono:["']barca:([a-z]+)["']/g))t.add(m[1]);
   const il=new Set();for(const m of datos.matchAll(/glifo:["']([a-zñ]+)["'][^\n]*?(?:ilus:["']([a-zñ]+)["']|$)/gm))il.add(m[2]||m[1]);/* ilustraciones: la de cada compañero, su `ilus` si lo trae (en la misma línea) y si no su glifo; no las de animales de escena. Boto y Bulán tienen el glifo «delfin» pero su propia ilustración: la «delfin» es la de Nerea, en Exploradores */
-  return{glifos:g,pictos:p,tipos:t,iconos:i,ilus:il}}
+  const ru=new Set();for(const m of datos.matchAll(/\bid:["']([a-z]+)["']/g))ru.add(m[1]);/* las rutas del juego: sus barcas y sus mercancías pintadas */
+  return{glifos:g,pictos:p,tipos:t,iconos:i,ilus:il,rutas:ru}}
 /* sin comentarios ni sangría: src los conserva; en dist pesan unos 9 KB en el motor y 1,4 KB en los datos (bloques y líneas de
    comentario, comentarios al final de línea y la sangría, que dentro de las plantillas HTML solo es espacio en blanco) */
 const limpiar=m=>m.replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*\n?/gm,'').replace(/^[ \t]*\/\/[^\n]*\n/gm,'').replace(/[ \t]*\/\*[^\n]*?\*\/[ \t]*$/gm,'').replace(/^[ \t]+/gm,'').replace(/\n{2,}/g,'\n');
@@ -54,7 +56,8 @@ function ensamblar(id,edicion){
   const datos=archivos.filter(f=>f!=='motor.js').map(leer).join('\n'),u=usados(datos),{motor,quitado}=recortar(leer('motor.js'),j,u);
   const titulo=j.titulo+(e.sufijo?' · edición '+e.nombre:'');
   const ilustraciones=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-zñ]+):\{v:/);if(!k||u.ilus.has(k[1]))return true;quitado.ilustraciones=(quitado.ilustraciones||0)+1;return false}).join('\n');/* ilustraciones (data/ilustraciones.js): solo las de los animales del juego */
-  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):limpiar(leer(f));
+  const porRuta=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-z]+):[{[]/);return !k||u.rutas.has(k[1])}).join('\n');/* barcas y mercancías: solo las de las rutas del juego */
+  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):f==='data/barcas.js'||f==='data/bienes.js'?porRuta(limpiar(leer(f))):limpiar(leer(f));
   const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
   /* el archivo dice cuánto pesa; el número entra en el mismo archivo, así que se comprueba después de escribirlo */
   let kb=Math.round(base.length/1024),html=base.replace('__PESO__',kb);const kb2=Math.round(html.length/1024);if(kb2!==kb){kb=kb2;html=base.replace('__PESO__',kb)}
