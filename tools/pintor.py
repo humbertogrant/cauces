@@ -19,6 +19,7 @@ sorpresa, dormido, pensativo), con los datos de `CARA`. El fondo (`FONDO`, el lu
 python tools/pintor.py [clave …]   pinta y guarda tools/dibujos/salida/<clave>.webp, .json y dos vistas previas (todas sin claves)
 python tools/pintor.py barcas [ruta …]   las embarcaciones de tools/dibujos/barcas/, en tools/dibujos/salida/barcas/
 python tools/pintor.py bienes [ruta …]   las mercancías de tools/dibujos/bienes/, en tools/dibujos/salida/bienes/<ruta>-<i>
+python tools/pintor.py postales [ruta [i …]]   las postales de tools/dibujos/postales/, en tools/dibujos/salida/postales/<ruta>-<i>
 """
 import importlib
 import io
@@ -522,10 +523,13 @@ def _pintar(vista, dibujar, cara=None):
     return l.imagen()
 
 
-def _guardar(img, base, ancho, datos, vista, cara=None, previa=True):
-    """Guarda <base>.webp (de `ancho` pixeles), <base>.json con `datos` y, con `previa`, las vistas grande y con rejilla."""
+def _guardar(img, base, ancho, datos, vista, cara=None, previa=True, opaco=False):
+    """Guarda <base>.webp (de `ancho` pixeles), <base>.json con `datos` y, con `previa`, las vistas grande y con rejilla. `opaco`: sin
+    canal de transparencia (una postal cubre toda su caja)."""
     os.makedirs(os.path.dirname(base), exist_ok=True)
     chica = img.resize((ancho, int(round(ancho * img.size[1] / img.size[0]))), Image.LANCZOS)
+    if opaco:
+        chica = chica.convert('RGB')
     b = io.BytesIO()
     chica.save(b, 'WEBP', quality=CALIDAD, method=6)
     io.open(base + '.webp', 'wb').write(b.getvalue())
@@ -562,7 +566,9 @@ def claves():
 # sin cara. Cada archivo se carga por su camino y con un nombre propio, porque la barca y los bienes de una ruta se llaman igual.
 BARCAS = os.path.join(DIBUJOS, 'barcas')
 BIENES = os.path.join(DIBUJOS, 'bienes')
+POSTALES = os.path.join(DIBUJOS, 'postales')
 ANCHO_BIEN = 144                 # un bien se ve de unos 52 px en el mercado: casi el triple, para pantallas de alta densidad
+ANCHO_POSTAL = 744               # la postal ocupa el ancho de la ficha (372 px en el teléfono): el doble
 
 
 def cargar(archivo, nombre):
@@ -602,9 +608,29 @@ def pintar_bienes(ruta, previa=True):
     return pesos
 
 
+def pintar_postales(ruta, previa=True, solo=None):
+    """Pinta las postales de tools/dibujos/postales/<ruta>.py (POSTALES: el nacimiento, una por parada y el mar, en ese orden) en
+    tools/dibujos/salida/postales/<ruta>-<i>.webp; `solo`: los índices a pintar (todas, si no). Devuelve los pesos."""
+    mod = cargar(os.path.join(POSTALES, ruta + '.py'), 'postales_' + ruta)
+    pesos = []
+    for i, p in enumerate(mod.POSTALES):
+        if p is None or (solo is not None and i not in solo):
+            continue
+        img = _pintar(p.get('vista', mod.VISTA), p['dibujar'])
+        datos = dict(v=_vista(p.get('vista', mod.VISTA)), clave=p['clave'], listo=bool(p.get('listo', getattr(mod, 'LISTO', False))))
+        pesos.append(_guardar(img, os.path.join(SALIDA, 'postales', '%s-%d' % (ruta, i)), ANCHO_POSTAL, datos, p.get('vista', mod.VISTA),
+                              None, previa, opaco=True))
+    return pesos
+
+
 if __name__ == '__main__':
     args = sys.argv[1:]
-    if args[:1] == ['barcas']:
+    if args[:1] == ['postales']:
+        # python tools/pintor.py postales ruta [índice…]
+        for r in (args[1:2] or rutas(POSTALES)):
+            solo = [int(a) for a in args[2:]] or None
+            print('postales %-9s %s' % (r, ' · '.join('%.1f KB' % (p / 1024) for p in pintar_postales(r, solo=solo))))
+    elif args[:1] == ['barcas']:
         for r in (args[1:] or rutas(BARCAS)):
             print('barca %-12s %5.1f KB' % (r, pintar_barca(r) / 1024))
     elif args[:1] == ['bienes']:
