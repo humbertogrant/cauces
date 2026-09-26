@@ -187,6 +187,10 @@ abrirRio('amazonas');bajar(5);paso(1);if(!S.evento||S.evento.tramo!==6)throw 'po
 ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Entre Belém y el mar')<0)throw 'kicker del mar';
 responderEvento(S.evento.q.correcta);ph=todo();if(ph.indexOf('Seguir hacia el mar')<0)throw 'sin seguir al mar';
 continuarEvento();if(S.paso!==6||S.evento)throw 'no llegó al mar';
+// al mar con contracción: «a» + «el Atlántico» es «al Atlántico» (y «a la bahía de Bengala» queda igual); ninguna frase con el marEn dice «a el» ni «de el»
+if(todo().indexOf('el Amazonas llega al Atlántico.')<0)throw 'llegada al mar sin contraer';
+for(const r of RIVERS){const V=r.vocab;for(const t of [V.cabecera(r),V.llegada(r),V.vozFin(r),V.preguntas.finNota(r)])if(/(^|[^\p{L}])([aA]|[dD]e) el (?!\p{Lu})/u.test(sinNum(t)))throw '«a el» sin contraer en '+r.id+': '+t}
+if(!rioPor('ganges').vocab.llegada(rioPor('ganges')).endsWith('llega a la bahía de Bengala.'))throw 'Ganges: «a la bahía de Bengala»';
 setModo('mercader');
 // preguntas nuevas: la imagen no delata el nombre; el país correcto es el de la ciudad
 for(const r of RIVERS){const qi=preguntaTipo('imagen',r,1),nom=r.ciudades[1].nombre;if(qi.texto.toLowerCase().indexOf(nom.toLowerCase())>=0)throw 'imagen delata '+r.id;

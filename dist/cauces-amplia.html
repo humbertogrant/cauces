@@ -1223,6 +1223,7 @@ return monedas}
 document.getElementById('tierra').setAttribute('d',LAND);document.getElementById('lagos').setAttribute('d',LAGOS);document.getElementById('fronteras').setAttribute('d',BORDES);
 const hav=(a,b)=>{const R=6371,toR=x=>x*Math.PI/180,dl=toR(b[0]-a[0]),dn=toR(b[1]-a[1]),q=Math.sin(dl/2)**2+Math.cos(toR(a[0]))*Math.cos(toR(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(q))};
 const cap=t=>t[0].toUpperCase()+t.slice(1);
+const al=s=>('a '+s).replace(/^a el /,'al ');
 const VOCAB={
 rio:{tipo:'río',tipos:'ríos',Tipos:'Ríos',
 inicio:'Nacimiento',fin:'Desembocadura',extremoInicio:'Fuente',extremoFin:'Mar',entreInicio:'la fuente',entreFin:'el mar',Parada:'Parada',proxima:'¿Cuál es la próxima parada?',
@@ -1242,8 +1243,8 @@ ordenBien:'Sin errores: el cauce ya es tuyo.',ordenMal:e=>`${e} errores: volvé 
 cabecera:r=>`${esc(r.region)} · ${num(km(r.longitud)+' km')} hasta ${esc(r.fin.en)}`,tarjeta:r=>num(km(r.longitud)+' km'),
 kickerInicio:r=>`Nacimiento · km ${num('0 de '+km(r.longitud))}`,kickerParada:(r,p,n,c)=>`Parada ${num(p+' de '+n)} · km ${num('≈'+km(c.km)+' de '+km(r.longitud))}`,kickerFin:r=>`Desembocadura · km ${num(km(r.longitud))}`,
 tramo:(r,c,prev)=>prev?`${num(km(c.km-prev.km)+' km')} desde ${esc(prev.nombre)}`:c.km?`${num(km(c.km)+' km')} desde la fuente`:'en la fuente misma',
-llegada:r=>`Después de ${km(r.longitud)} km, el ${r.nombre} llega a ${r.fin.en}.`,contame:cx=>'Contame más: la '+cx.titulo.toLowerCase(),
-vozInicio:r=>`Nacimiento: ${r.inicio.nombre}.`,vozParada:(p,n,c)=>`Parada ${p} de ${n}: ${c.nombre}, ${c.pais}.`,vozFin:r=>`Desembocadura: ${r.fin.nombre}. Después de ${r.longitud} kilómetros, el ${r.nombre} llega a ${r.fin.en}.`,
+llegada:r=>`Después de ${km(r.longitud)} km, el ${r.nombre} llega ${al(r.fin.en)}.`,contame:cx=>'Contame más: la '+cx.titulo.toLowerCase(),
+vozInicio:r=>`Nacimiento: ${r.inicio.nombre}.`,vozParada:(p,n,c)=>`Parada ${p} de ${n}: ${c.nombre}, ${c.pais}.`,vozFin:r=>`Desembocadura: ${r.fin.nombre}. Después de ${r.longitud} kilómetros, el ${r.nombre} llega ${al(r.fin.en)}.`,
 preguntas:{ciudad:(r,c)=>`¿Junto a qué río está ${c.nombre} (${c.pais})?`,cerca:r=>`¿Cuál de estas ciudades está más cerca de la desembocadura del ${r.nombre}?`,orden:r=>'De la fuente al mar: '+lista(r)+'.',
 contexto:(r,cx)=>`Ruta ${cx.clave}: «${cx.pista}» ¿De qué río se trata?`,fin:r=>`¿Dónde desemboca el ${r.nombre}?`,finNota:r=>`${km(r.longitud)} km hasta ${r.fin.en}. ${r.inicio.nota}`,
 siguiente:(r,c)=>`En el ${r.nombre}, ¿qué parada sigue después de ${c.nombre}?`,relleno:'La desembocadura',imagen:(r,c)=>`¿De qué ciudad del ${r.nombre} es esta imagen? «${sinNombre(c.imagen,c.nombre)}»`,
