@@ -33,6 +33,9 @@ setTimeout(()=>{
   if((edicion==='amplia')!==(typeof BARCAS!=='undefined'&&typeof BIENES!=='undefined'&&typeof laminaNave==='function'))throw 'barcas y mercancías pintadas en la edición '+edicion;
   if(edicion==='amplia'){for(const [k,b] of Object.entries(BARCAS)){const r=rutaPor(k);if(!r||!r.vehiculo)throw 'barca pintada sin su ruta: '+k;if(!webp.test(b.i)||b.v.split(' ').length!==4)throw 'barca pintada sin imagen: '+k;if(!/barca-pintada/.test(laminaNave(r)))throw 'la lámina no lleva la barca: '+k}
     for(const [k,bs] of Object.entries(BIENES)){const r=rutaPor(k);if(!r||bs.length!==r.carga.length)throw 'mercancías pintadas que no calzan con la carga de '+k;bs.forEach((b,i)=>{if(b!==null&&!webp.test(b))throw 'mercancía pintada sin imagen: '+k+' '+i;if(b&&!/img class="bien"/.test(bienPintado(r,i)))throw 'el mercado no muestra la mercancía: '+k+' '+i})}}
+  /* las postales pintadas: solo en la amplia; cada lista calza con el recorrido de su río (el nacimiento, las paradas y el mar) */
+  if((edicion==='amplia')!==(typeof POSTALES!=='undefined'&&typeof postal==='function'))throw 'postales pintadas en la edición '+edicion;
+  if(edicion==='amplia')for(const [k,ps] of Object.entries(POSTALES)){const r=rutaPor(k);if(!r||ps.length!==r.paradas.length+2)throw 'postales que no calzan con el recorrido de '+k;ps.forEach((p,i)=>{if(p!==null&&!webp.test(p))throw 'postal sin imagen: '+k+' '+i})}
   const kb=Math.round(html.length/1024);if(!JUEGO.edicion||JUEGO.edicion.nombre!==E.nombre||JUEGO.edicion.kb!==kb)throw 'JUEGO.edicion '+JSON.stringify(JUEGO.edicion)+' en un archivo de '+kb+' KB';
   for(const t of Object.keys(VOCAB))if(!(t==='rio'?juego==='cauces':juego==='exploradores'))throw 'VOCAB.'+t+' sobra en '+juego;
   for(const r of RUTAS){if(!r.vocab||!r.vocab.inicio)throw 'ruta sin vocabulario '+r.id;if(!ANIMALES[r.companero.glifo])throw 'animal recortado de más: '+r.companero.glifo;
@@ -49,5 +52,12 @@ setTimeout(()=>{
   setTab('preguntar');for(let i=0;i<6;i++){responder(S.quiz.qs[S.quiz.i].correcta);siguiente()}
   irInicio();iniciarReto();for(let i=0;i<10;i++){responder(S.quiz.qs[S.quiz.i].correcta);siguiente()}
   if(document.querySelector('#capa').innerHTML.length<500)throw 'mapa vacío';
+  /* en el juego: bajando un río con postales pintadas, cada ficha (el nacimiento, cada parada y el mar) muestra la suya en lugar de la
+     de pictogramas, y el reto de imagen también la lleva de pista */
+  if(edicion==='amplia')for(const [k,ps] of Object.entries(POSTALES)){const rt=rutaPor(k),n=rt.paradas.length;abrirRio(k);
+    for(let i=0;i<=n+1;i++){const ph=document.querySelector('#panel').innerHTML,pintada=ph.indexOf('<img class="escena pintada"')>=0;
+      if(pintada!==!!ps[i]||pintada===(ph.indexOf('<svg class="escena"')>=0))throw 'postal de '+k+' en el lugar '+i;if(i<=n)bajar(1)}
+    const q=preguntaTipo('imagen',rt,1);S.pantalla='rio';S.rio=k;setTab('preguntar');S.quiz.qs=[q];S.quiz.i=0;render();
+    if(!!ps[2]!==(document.querySelector('#panel').innerHTML.indexOf('<img class="escena pintada quiz"')>=0))throw 'el reto de imagen de '+k+' sin su postal';irInicio()}
   console.log('DIST OK',juego,E.nombre,kb,'KB')
 },50);

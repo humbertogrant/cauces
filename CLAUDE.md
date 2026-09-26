@@ -54,8 +54,9 @@ src/data/naves.js    NAVES: embarcación, zarpe, llegada y carga narrativa por p
 src/data/mascotas.js MASCOTAS (animal guía por río) y VOCES (frases genéricas)
 src/data/ilustraciones.js ILUSTRACIONES: los animales dibujados de memoria y pintados (WebP en base64), para la ficha y el globo (solo
                      edición amplia; GENERADO por tools/ilustraciones.py, no editar a mano; ver «Ilustraciones»)
-src/data/barcas.js, bienes.js  BARCAS (la embarcación de cada ruta, pintada, para «Tu embarcación») y BIENES (las mercancías pintadas de
-                     una ruta, en el orden de su carga), solo en la edición amplia; GENERADOS por tools/pintados.py (ver «Barcas y mercancías»)
+src/data/barcas.js, bienes.js, postales.js  BARCAS (la embarcación de cada ruta, pintada, para «Tu embarcación»), BIENES (las mercancías
+                     pintadas de una ruta, en el orden de su carga) y POSTALES (las de un río: el nacimiento, una por ciudad y el mar); solo
+                     en la edición amplia; GENERADOS por tools/pintados.py (ver «Barcas y mercancías» y «Postales»)
 src/data/mercados.js MERCADOS (bienes por río), RANGOS y voces de la economía
 src/data/eventos.js  EVENTOS: pruebas entre puertos por río (tramo, reto, textos)
 src/data/voces.js    VOCES (frases genéricas del compañero), RANGOS y voces de la economía: compartidos por los dos juegos
@@ -87,8 +88,8 @@ tools/relieve.py     regenera src/data/relieve.js (o relieve-<juego>.js; con «a
                      mosaico DEM), nombres de Natural Earth 50 m y OpenStreetMap
 tools/verificacion.py genera docs/verificacion.md
 tools/pintor.py      pinta cada dibujo de tools/dibujos/<clave>.py (numpy, scipy, shapely, Pillow) en un WebP de tools/dibujos/salida/;
-                     `barcas [ruta…]` y `bienes [ruta…]` pintan las de tools/dibujos/barcas/ y tools/dibujos/bienes/
-tools/pintados.py    genera src/data/barcas.js y bienes.js con las barcas y las mercancías pintadas (tools/ilustraciones.py la llama al final)
+                     `barcas [ruta…]`, `bienes [ruta…]` y `postales [ruta [i…]]` pintan las de tools/dibujos/barcas/, bienes/ y postales/
+tools/pintados.py    genera src/data/barcas.js, bienes.js y postales.js con lo pintado (tools/ilustraciones.py la llama al final)
 tools/ilustraciones.py genera src/data/ilustraciones.js con los dibujos pintados; todavía sabe armar las de vectores de antes, desde las
                      siluetas de PhyloPic de tools/ilustraciones/ (dominio público o CC0, con autor y licencia en fuentes.json)
 ```
@@ -212,6 +213,26 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   sube hasta cada punta (`_canoas.canoa`): con fondo chato y las puntas cortadas parece una cuña. Una carga chica (un racimo de bananos,
   unos plátanos) no se lee a este tamaño: mejor lo que tiene silueta propia (una piña, un saco, un barril). Un montón (la goma arábiga)
   va apretado y dentro de su cuenco: el borde del cuenco se pinta después, delante de los trozos de abajo.
+- **Postales** (desde el 2026-09-25, a pedido de Humberto, con el Tigris como prueba: «dale, hacé el Tigris completo»). La postal de cada
+  parada deja de ser una fila de pictogramas genéricos y pinta la imagen para recordar de la ciudad, que es lo que el jugador tiene que
+  retener, con lo que dice su dato: en el Tigris, los montes Tauro con dos ríos jóvenes (el Tigris y el Éufrates, su gemelo), las
+  murallas negras de Diyarbakır y el puente de los Diez Ojos, un toro alado de Nínive bajo una tela de muselina en Mosul, el sol hecho
+  reloj sobre la ciudadela de Tikrit («un tic-tac de 800 años»), la Malwiya de Samarra, la ciudad redonda de Bagdad con la biblioteca
+  en el centro y el río de tinta con libros flotando, el barco de Simbad en Basora y el golfo al atardecer con un petrolero y un faro.
+  `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
+  tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
+  `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes); se guardan en WebP sin
+  transparencia de 744 px de ancho. El motor las pone con `postal(rid, i, cls)` (i = 0 el nacimiento, 1…n cada parada, n+1 el mar) en
+  la ficha del nacimiento, de cada parada y del mar, y de pista en el reto de imagen; donde un río no tiene, queda la de pictogramas,
+  y el sello del pasaporte sigue con su pictograma. Pesan de 11 a 24 KB cada una (170 KB las ocho del Tigris): Cauces amplia pasó de
+  ≈ 2 321 a ≈ 2 491 KB. Para todo Cauces serían 201 postales, unos 3 MB más en la amplia: convendría bajarles la resolución.
+- Lecciones de las postales (2026-09-25): la postal pinta la imagen absurda de la ciudad, no un monumento cualquiera; donde coinciden
+  (la Malwiya), mejor. Lo que se ve de costado se aplana: la ciudad redonda, vista casi de perfil, parecía un barco, y hay que verla desde
+  arriba, con el anillo de la muralla, las cuatro puertas y las avenidas que llegan al centro. Blanco sobre blanco no se ve: la muselina
+  es transparente sobre una piedra verde, con pliegues claros y flecos. Un barco chico en el horizonte con una torre al medio parece un
+  submarino: el petrolero lleva el puente y la chimenea a popa.
+- Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra) y scratchpad/webkit
+  `postales.js río` (cada ficha dentro del juego armado, bajando el río) y `reto-imagen.js río índice` (el reto de imagen con su pista).
 - Hojas de revisión de barcas y mercancías: scratchpad `hoja-barcas.py ruta…` (las barcas grandes, de a dos) y `hoja-bienes.py ruta` (cada
   bien grande y a 52 y 78 px), y scratchpad/webkit `barcas-hoja.js [ruta…]` (el bloque «Tu embarcación» con el CSS del juego) y
   `barca-mercado.js [--exp] ruta…` (la barca y el mercado dentro del juego armado, comprando para que se vea la bodega).
@@ -304,7 +325,7 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   mal, `S.bamboleo` añade la clase `duda` una vez. El mismo glifo va en el bloque «Tu embarcación» (`.barca.mini`).
   El animal (`ANIMALES[m.glifo]`) va en `#masc` sobre la barca, derecho y mirando hacia adelante
   (`rotate(-ang·sx)`: se anula el giro pero no el espejo), y en el globo del evento salta una vez (`.globo.salta`).
-- Escenas (`PICTOS`, `escena(items)`): un vocabulario de pictogramas SVG (caja 40×40, suelo en y=40; clases `p`
+- Escenas (`PICTOS`, `escena(items)`; en la edición amplia, la postal pintada del río si la tiene, `postal(rid, i, cls)`, ver «Postales»): un vocabulario de pictogramas SVG (caja 40×40, suelo en y=40; clases `p`
   verde, `d` dorado, `b` blanco, `l` línea, `w` línea clara, `a` agua) y `animal:<glifo>` para los animales. Cada
   ciudad lleva `escena` con 3-4 claves y cada río `escenaNace`/`escenaMar`; se dibuja como postal (cielo, sol,
   suelo, río) sobre la imagen para recordar, en la fuente y en el mar; el reto de imagen la muestra sin nombre como
@@ -527,7 +548,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 2 321 KB y la de Exploradores ≈ 892 KB el 2026-09-25, con los animales, las barcas y las mercancías del Nilo pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 2 491 KB y la de Exploradores ≈ 893 KB el 2026-09-25, con los animales, las barcas, las mercancías del Nilo y las postales del Tigris pintados). La edición amplia
   (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
