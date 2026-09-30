@@ -219,18 +219,35 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   murallas negras de Diyarbakır y el puente de los Diez Ojos, un toro alado de Nínive bajo una tela de muselina en Mosul, el sol hecho
   reloj sobre la ciudadela de Tikrit («un tic-tac de 800 años»), la Malwiya de Samarra, la ciudad redonda de Bagdad con la biblioteca
   en el centro y el río de tinta con libros flotando, el barco de Simbad en Basora y el golfo al atardecer con un petrolero y un faro.
+  El 2026-09-26 siguió el Volga («hagamos las postales del volga»): el pantano de Valdái con la capillita de madera sobre el manantial
+  (de memoria: revisar contra una foto), el río angosto bajo un puente de un solo arco en Tver, el oso del escudo de Yaroslavl de pie
+  con el hacha dorada al hombro (la leyenda del príncipe que lo mata se cuenta con el escudo, no con la pelea), una balanza gigante de
+  la feria de Nizhni Nóvgorod que pesa un cajón de té contra un atado de pieles frente al Kremlin de ladrillo, el caldero que hierve
+  dentro del Kremlin de Kazán con la mezquita Kul Sharif y la catedral, el río hecho anzuelo alrededor de las montañas de Zhiguli en
+  Samara, la Madre Patria con su espada sobre la colina de Volgogrado, el gorro de astracán y la lata de caviar en un muelle del delta, y
+  el Caspio con juncos, lotos y un pesquero.
   `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
   tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
-  `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes); se guardan en WebP sin
+  `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes; desde el Volga, abedules, abetos,
+  iglesias de cúpulas de cebolla, juncos, aves y lotos); se guardan en WebP sin
   transparencia de 744 px de ancho. El motor las pone con `postal(rid, i, cls)` (i = 0 el nacimiento, 1…n cada parada, n+1 el mar) en
   la ficha del nacimiento, de cada parada y del mar, y de pista en el reto de imagen; donde un río no tiene, queda la de pictogramas,
-  y el sello del pasaporte sigue con su pictograma. Pesan de 11 a 24 KB cada una (170 KB las ocho del Tigris): Cauces amplia pasó de
-  ≈ 2 321 a ≈ 2 491 KB. Para todo Cauces serían 201 postales, unos 3 MB más en la amplia: convendría bajarles la resolución.
+  y el sello del pasaporte sigue con su pictograma. Pesan de 11 a 38 KB cada una (170 KB las ocho del Tigris y 244 KB las nueve del
+  Volga, en el archivo de datos; el delta de Astracán, con sus juncos, es la más pesada): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB
+  con el Tigris y a ≈ 2 734 KB con el Volga. Para todo Cauces serían 201 postales, unos 5 MB en la amplia (≈ 24 KB por postal):
+  convendría bajarles la resolución.
 - Lecciones de las postales (2026-09-25): la postal pinta la imagen absurda de la ciudad, no un monumento cualquiera; donde coinciden
   (la Malwiya), mejor. Lo que se ve de costado se aplana: la ciudad redonda, vista casi de perfil, parecía un barco, y hay que verla desde
   arriba, con el anillo de la muralla, las cuatro puertas y las avenidas que llegan al centro. Blanco sobre blanco no se ve: la muselina
   es transparente sobre una piedra verde, con pliegues claros y flecos. Un barco chico en el horizonte con una torre al medio parece un
   submarino: el petrolero lleva el puente y la chimenea a popa.
+- Lecciones del Volga (2026-09-26): un prado y un río del mismo verde se confunden; la tierra va teñida de amarillo (`prado` y `orilla`
+  en volga.py) y el agua queda verde azul. Lo que la frase dice que pasa dentro se pinta dentro: con la muralla detrás, el caldero de
+  Kazán quedaba fuera del Kremlin; va en el patio, con un lienzo de muralla adelante. Una cosa chica sin silueta propia no se lee: un
+  fardo de pieles parecía un arbusto y, colgadas con su cabecita, sus patas y su cola, son pieles; un gorro de piel suelto parecía una
+  maceta o una pantalla de lámpara y, puesto en un poste con el borde rizado, es un gorro. Una hoja de hacha en abanico parece una
+  bandera: va en media luna, con sus dos puntas. Una figura alta con los brazos arriba (la Madre Patria y su espada) se dibuja con
+  escala para que quepa entera; cortada, no se entiende.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra) y scratchpad/webkit
   `postales.js río` (cada ficha dentro del juego armado, bajando el río) y `reto-imagen.js río índice` (el reto de imagen con su pista).
 - Hojas de revisión de barcas y mercancías: scratchpad `hoja-barcas.py ruta…` (las barcas grandes, de a dos) y `hoja-bienes.py ruta` (cada
@@ -548,7 +565,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 2 491 KB y la de Exploradores ≈ 893 KB el 2026-09-25, con los animales, las barcas, las mercancías del Nilo y las postales del Tigris pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 2 734 KB y la de Exploradores ≈ 893 KB el 2026-09-26, con los animales, las barcas, las mercancías del Nilo y las postales del Tigris y del Volga pintados). La edición amplia
   (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
