@@ -264,26 +264,39 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   estrellas doradas de Europa; los tipos de imprenta que flotan en Maguncia y dicen BIBLIA; el jinete dorado de la Esquina Alemana, en
   Coblenza; el frasco del agua de colonia, dorado, delante de las dos torres de la catedral de Colonia; un garaje con una grúa dorada en
   cada lugar, en Duisburgo; una bandera blanca en su asta dorada, clavada en el río, en Rotterdam; y una veleta dorada con la N del norte
-  en el dique del mar del Norte, frío y gris (la barcaza del Rin no ve el mar).
+  en el dique del mar del Norte, frío y gris (la barcaza del Rin no ve el mar). Siguieron el Ganges y el Mekong («sigamos con el Ganges
+  y el Mekong»): Gaumukh, «boca de vaca», hecha una cara de vaca de hielo con los cuernos dorados, que escupe el río por la boca de la
+  cueva; la puerta dorada de Haridwar por donde el río sale de la montaña, con las lámparas que flotan; un perro con cuatro zapatos de
+  cuero dorados frente a las curtidurías de Kanpur; la trenza de tres aguas de Prayagraj (el Saraswati, invisible, es solo un borde de
+  puntos), atada con una gomita dorada, entre la multitud del Kumbh Mela; el fuego dorado al pie de los ghats de Benarés, con el sol
+  pálido del amanecer; el león de Ashoka, dorado, que planta la pata frente a la empalizada de Pataliputra en Patna; el puente Howrah,
+  dorado, la última puerta de Calcuta; y el tigre de Bengala, dorado, en los manglares de los Sundarbans (la barca se queda en el
+  Hooghly). En el Mekong: un chorten de punta dorada con sus banderas de oración en la meseta tibetana; un elefante dorado con una torta
+  de té pu'er en la trompa, en Jinghong; la fila de monjes de túnica dorada que reciben arroz al amanecer en Luang Prabang; la estupa
+  dorada del Pha That Luang con el viento manso y una cometa en Vientián; el lago Tonlé Sap con forma de pulmón, con sus bronquios y una
+  flecha dorada de ida y vuelta, en Phnom Penh; el mercado flotante de Can Tho con sus sombreros cónicos dorados; y los nueve dragones
+  dorados que salen al mar de los nueve brazos del delta (la cola larga se queda en el delta).
   `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
   tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
   `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes; desde el Volga, abedules, abetos,
   iglesias de cúpulas de cebolla, juncos, aves y lotos; desde el Nilo, cintas y espejos de agua, prados, orillas, pasto, papiros, selva,
   pirámides y obeliscos, y `corrido`, un lienzo que corre lo que se dibuja en él, para mover una pieza sin tocar sus números; desde el
-  Danubio, `casitas` de pueblo, `piedra` arenisca y `cebolla_baja`, el chapitel de una torre barroca); se
+  Danubio, `casitas` de pueblo, `piedra` arenisca y `cebolla_baja`, el chapitel de una torre barroca; desde el Ganges, `mangle`); se
   guardan en WebP sin transparencia de 600 px de ancho y calidad 75 (hasta el 2026-10-26, de 744 px y calidad 84: ver abajo). El motor
   las pone con `postal(rid, i, cls)` (i = 0 el nacimiento, 1…n cada parada, n+1 el mar) en
   la ficha del nacimiento, de cada parada y del mar, y de pista en el reto de imagen; donde un río no tiene, queda la de pictogramas,
   y el sello del pasaporte sigue con su pictograma. Pesan de 5,5 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
   130 KB las nueve del Volga, 97 KB las ocho del Nilo, 73 KB las siete del Amazonas, 77 KB las siete del Yangtsé, 81 KB las siete
-  del Misisipi, 143 KB las diez del Danubio y 111 KB las nueve del Rin; el delta de Astracán, con sus juncos, es la más pesada, y la
-  Selva Negra la sigue): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el Tigris, a ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo,
-  a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y
-  calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin.
+  del Misisipi, 143 KB las diez del Danubio, 111 KB las nueve del Rin, 112 KB las ocho del Ganges y 99 KB las siete del Mekong; el
+  delta de Astracán, con sus juncos, es la más pesada, y la Selva Negra la sigue): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el
+  Tigris, a ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo, a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el
+  Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin y a ≈ 3 343 KB
+  con el Ganges y el Mekong.
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
-  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,7 MB, con
-  ≈ 300 KB de sobra (medido sobre las 65 pintadas; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando
-  las vistas grandes como lo haría el pintor y prueba otras combinaciones, `640/75`). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
+  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,8 MB, con
+  ≈ 240 KB de sobra (medido sobre las 80 pintadas; el margen se achica porque las postales nuevas traen más detalle: con 25, la
+  proyección dejaba 370 KB; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las vistas grandes como
+  lo haría el pintor y prueba otras combinaciones, `640/75`). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
   juncos de Astracán, los renglones de Bagdad, el cielo de Luxor, las caras de Leticia…), y eligió la liviana: «no vale la pena la
   diferencia». Cambiar otra vez es tocar `ANCHO_POSTAL` y `CALIDAD_POSTAL` en tools/pintor.py y correr `python tools/pintados.py`,
   que repinta todas. test/dist.js falla si la amplia pasa de 5 MB y dice cuánto le queda. Las mercancías de los demás ríos (hoy solo
@@ -332,6 +345,11 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   adelante y la cabeza larga; con el cuello recto hacia arriba, parece una llama. Una aguja gótica tiene que entrar entera en la postal:
   cortada por el borde de arriba, la torre parece un bloque. Las letras se leen enteras a 360 px si miden al menos un tercio del alto
   (BIBLIA en Maguncia); las de una veleta, más chicas, se leen por su forma y por la N, más grande.
+- Lecciones del Ganges y del Mekong (2026-10-26): un paisaje se vuelve cara con poco (Gaumukh: la frente del glaciar, dos orejas, los
+  cuernos, los ojos, el hocico, y la cueva por boca). Una trenza se lee si es grande y sus gajos se cruzan de un lado al otro en
+  zigzag; una columna chica de óvalos no. Un pulmón se lee por su árbol de bronquios; el contorno solo parece una hoja o una gota. Cuando
+  la protagonista son muchas cosas chicas (los sombreros de Can Tho), las de adelante van grandes. Las cordilleras llegan hasta abajo:
+  una postal sin suelo adelante muestra una franja oscura. Dos cabezas enfrentadas parecen besarse: los dragones del medio miran afuera.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -651,7 +669,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 3 132 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de ocho ríos pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 3 343 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de diez ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
