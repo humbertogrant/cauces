@@ -14,6 +14,7 @@ from pintor import curva, forma, ovalo, tubo
 
 VISTA = (0, 0, 120, 40)
 CIELO = 'E6F3EE'
+PIEDRA = 'BF9129'          # la piedra arenisca: el pálido de `vientre` teñido de ocre
 
 
 def cielo(l, sol=(106, 7.4), tarde=0.0):
@@ -367,3 +368,32 @@ class corrido:
         if kw.get('zona') is not None:
             kw['zona'] = self._g(kw['zona'])
         return self.l.pelaje(masa, **kw)
+
+
+def piedra(l, piezas, tono=.3, linea=.35, alto=.25):
+    """piezas de piedra clara, un poco ocre"""
+    m = l.masa(piezas, material='vientre', alto=alto, brillo=.1, vientre=0, hondo=0, linea=linea, escalon=.2, contraluz=.25)
+    l.mancha(unary_union(piezas).buffer(1), PIEDRA, tono, dentro=m)
+    return m
+
+
+def casitas(l, x0, x1, base, alto_=4.0, semilla=0, material='claro'):
+    """una fila de casas de pueblo, de techo a dos aguas, con sus ventanas"""
+    rng = np.random.default_rng(semilla)
+    x = x0
+    while x < x1:
+        w, h = rng.uniform(3, 4.6), alto_ * rng.uniform(.7, 1.1)
+        c = l.masa(box(x, base - h, x + w, base).buffer(.05), material=material, alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25,
+                   arroja=False)
+        for k in range(int(w // 1.4)):
+            l.mancha(box(x + .5 + k * 1.4, base - h + 1, x + 1.1 + k * 1.4, base - h + 1.9), '164F46', .75, dentro=c)
+        l.masa(Polygon([(x - .3, base - h), (x + w / 2, base - h - w * .45), (x + w + .3, base - h)]), material='lejos', alto=.2, brillo=.15,
+               vientre=0, hondo=0, linea=.25, arroja=False)
+        x += w + rng.uniform(.2, 1.2)
+
+
+def cebolla_baja(x, y, r):
+    """el chapitel barroco de una torre de pueblo: una cebolla chica con su aguja"""
+    pts = [(x - r, y), (x - r * 1.05, y - r * .7), (x - r * .5, y - r * 1.4), (x - r * .2, y - r * 1.9), (x, y - r * 2.6),
+           (x + r * .2, y - r * 1.9), (x + r * .5, y - r * 1.4), (x + r * 1.05, y - r * .7), (x + r, y)]
+    return forma(pts, 1)
