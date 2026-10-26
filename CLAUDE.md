@@ -289,6 +289,18 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   corrientes, en Corrientes; la bandera argentina, con su sol de mayo dorado, sobre los silos de soya de Rosario; un león dorado echado
   en el río color de león, frente al Obelisco de Buenos Aires; el vigía de camisa y catalejo dorados, en la cofa, que ve el Cerro de
   Montevideo; y un cofre de plata, de herrajes dorados, que flota en la boca del Río de la Plata (el lanchón no llega al mar).
+  Siguieron el Indo y el Congo («sigamos con el Indo y el Congo»). En el Indo: el Kailash dorado, con sus gradas de roca y sus vetas de
+  nieve, reflejado en el lago Manasarovar; en Leh, el hilo verde de álamos a lo largo del río, entre montañas ocres, que una aguja
+  dorada va cosiendo; en Skardu, una K dorada delante del K2; en Attock, el puente de barcas dorado con un jinete que lo cruza y el
+  fuerte de Akbar; en Sukkur, una regadera dorada delante de la presa de muchas compuertas; en Hyderabad, los techos llenos de torres
+  de viento doradas; en Karachi, el río seco que termina en una llave de agua dorada que apenas gotea, con la ciudad enorme atrás; y en
+  el mar Arábigo, los números arábigos dorados (1, 2, 3) que flotan (la barca se queda en el delta). En el Congo, juegos de sílabas: la
+  cruz de cobre de Katanga, dorada, en la meseta donde nace el Lualaba; la vaca (Bu-kama) dormida en su cama flotante entre papiros; el
+  kínder (Kin-du) de barcacitas doradas que suben al tren; el pescador wagenia que le tira un beso (Kis-angani) a la catarata desde su
+  andamio de nasas; la banda (M-banda-ka) de uniforme dorado que da el paso sobre la línea del ecuador; el boxeador con corona
+  (Kin-shasa) que cruza en balsa entre Kinshasa y Brazzaville; la mata de piedras doradas (Mata-di) debajo del puente colgante; el
+  baobab dorado con gorra y bigote de capitán (Bo-ma); y la lengua de arena de Banana, donde el Congo entra al Atlántico, hecha un
+  plátano gigante dorado con su faro (el convoy se queda en Boma).
   `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
   tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
   `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes; desde el Volga, abedules, abetos,
@@ -301,15 +313,15 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   y el sello del pasaporte sigue con su pictograma. Pesan de 5,5 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
   130 KB las nueve del Volga, 97 KB las ocho del Nilo, 73 KB las siete del Amazonas, 77 KB las siete del Yangtsé, 81 KB las siete
   del Misisipi, 143 KB las diez del Danubio, 111 KB las nueve del Rin, 112 KB las ocho del Ganges, 99 KB las siete del Mekong, 93 KB
-  las nueve del Níger y 75 KB las ocho del Paraná; el
+  las nueve del Níger, 75 KB las ocho del Paraná, 93 KB las ocho del Indo y 101 KB las nueve del Congo; el
   delta de Astracán, con sus juncos, es la más pesada, y la Selva Negra la sigue): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el
   Tigris, a ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo, a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el
   Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin, a ≈ 3 343 KB
-  con el Ganges y el Mekong y a ≈ 3 510 KB con el Níger y el Paraná.
+  con el Ganges y el Mekong, a ≈ 3 510 KB con el Níger y el Paraná y a ≈ 3 705 KB con el Indo y el Congo.
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
-  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,7 MB, con
-  ≈ 340 KB de sobra (medido sobre las 97 pintadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y el Níger
-  y el Paraná, más sencillos, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
+  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,6 MB, con
+  ≈ 365 KB de sobra (medido sobre las 114 pintadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y el
+  Níger y el Paraná, más sencillos, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
   vistas grandes como lo haría el pintor y prueba otras combinaciones: `560/75` dejaría ≈ 540 KB). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
   juncos de Astracán, los renglones de Bagdad, el cielo de Luxor, las caras de Leticia…), y eligió la liviana: «no vale la pena la
   diferencia». Cambiar otra vez es tocar `ANCHO_POSTAL` y `CALIDAD_POSTAL` en tools/pintor.py y correr `python tools/pintados.py`,
@@ -369,6 +381,11 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   cartel se lee a 360 px si sus letras miden un décimo del alto (NÍGER). Una figura en lo alto de un mástil, chica y en una esquina, se
   pierde: se la pinta de cerca (el vigía de Montevideo). De noche, la protagonista es la luz (las llamas de Port Harcourt). Un arcoíris
   de una sola banda dorada es un arco: lleva sus bandas pálidas.
+- Lecciones del Indo y del Congo (2026-10-26): un dibujo puede leerse como un símbolo que no se buscó: una cúpula dorada con una veta
+  vertical y dos franjas blancas era una iglesia con su cruz (el Kailash); hay que buscar cruces, letras y banderas que no se
+  pidieron. Los juegos de sílabas del Congo (Bu-kama, Kin-du, M-banda-ka) se pintan tal cual, con la escena absurda entera. De frente,
+  un pie a cada lado de una línea es un paso: un pie más arriba, detrás, y el otro adelante. Una «mata de piedras» lleva las piedras
+  sueltas, cada una con su borde; juntas en una sola masa son una nube o un árbol.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -688,7 +705,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 3 510 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de doce ríos pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 3 705 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de catorce ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
