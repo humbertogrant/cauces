@@ -275,7 +275,20 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   de té pu'er en la trompa, en Jinghong; la fila de monjes de túnica dorada que reciben arroz al amanecer en Luang Prabang; la estupa
   dorada del Pha That Luang con el viento manso y una cometa en Vientián; el lago Tonlé Sap con forma de pulmón, con sus bronquios y una
   flecha dorada de ida y vuelta, en Phnom Penh; el mercado flotante de Can Tho con sus sombreros cónicos dorados; y los nueve dragones
-  dorados que salen al mar de los nueve brazos del delta (la cola larga se queda en el delta).
+  dorados que salen al mar de los nueve brazos del delta (la cola larga se queda en el delta). Siguieron el Níger y el Paraná («sigamos
+  con el Níger y el Paraná»). El Níger es un bumerán (naceNota y frase) y su bumerán dorado atraviesa la serie: sale volando de las
+  tierras altas de Guinea, de espaldas al Atlántico; es la punta, echado sobre la curva del río, en Gao, junto a la tumba de los Askia;
+  y vuelve a la costa en el mar (la pinaza no sale al golfo). En el medio: tres cocodrilos dorados en la orilla de Bamako; la ciudad de
+  barro dorado de Mopti, con su mezquita, reflejada en los canales, y las piraguas taxi; en Tombuctú, el camello con la sal, el cesto de
+  oro y, al medio, el manuscrito abierto de cantos dorados; en Niamey, un poste dorado con dos flechas que dicen lo mismo, NÍGER (el
+  país y el río), y una jirafa; en Lokoja, un policía de tránsito de uniforme dorado que dirige el cruce loco del Benue, con el río
+  juntado el doble de ancho; y en Port Harcourt, de noche, las llamas de gas doradas entre los manglares y las torres de petróleo. En el
+  Paraná: la suma dorada del nacimiento (Paranaíba + Grande = Paraná, con sus represas y sus campos); las cataratas del Iguazú y la
+  represa de Itaipú lado a lado, con un arcoíris dorado entre los dos muros, en Foz do Iguaçu; las ruinas de piedra roja de la misión
+  de Trinidad, con su campana dorada, frente a Yacyretá, en Encarnación; un acordeón dorado de chamamé donde se juntan las dos
+  corrientes, en Corrientes; la bandera argentina, con su sol de mayo dorado, sobre los silos de soya de Rosario; un león dorado echado
+  en el río color de león, frente al Obelisco de Buenos Aires; el vigía de camisa y catalejo dorados, en la cofa, que ve el Cerro de
+  Montevideo; y un cofre de plata, de herrajes dorados, que flota en la boca del Río de la Plata (el lanchón no llega al mar).
   `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
   tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
   `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes; desde el Volga, abedules, abetos,
@@ -287,16 +300,17 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   la ficha del nacimiento, de cada parada y del mar, y de pista en el reto de imagen; donde un río no tiene, queda la de pictogramas,
   y el sello del pasaporte sigue con su pictograma. Pesan de 5,5 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
   130 KB las nueve del Volga, 97 KB las ocho del Nilo, 73 KB las siete del Amazonas, 77 KB las siete del Yangtsé, 81 KB las siete
-  del Misisipi, 143 KB las diez del Danubio, 111 KB las nueve del Rin, 112 KB las ocho del Ganges y 99 KB las siete del Mekong; el
+  del Misisipi, 143 KB las diez del Danubio, 111 KB las nueve del Rin, 112 KB las ocho del Ganges, 99 KB las siete del Mekong, 93 KB
+  las nueve del Níger y 75 KB las ocho del Paraná; el
   delta de Astracán, con sus juncos, es la más pesada, y la Selva Negra la sigue): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el
   Tigris, a ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo, a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el
-  Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin y a ≈ 3 343 KB
-  con el Ganges y el Mekong.
+  Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin, a ≈ 3 343 KB
+  con el Ganges y el Mekong y a ≈ 3 510 KB con el Níger y el Paraná.
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
-  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,8 MB, con
-  ≈ 240 KB de sobra (medido sobre las 80 pintadas; el margen se achica porque las postales nuevas traen más detalle: con 25, la
-  proyección dejaba 370 KB; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las vistas grandes como
-  lo haría el pintor y prueba otras combinaciones, `640/75`). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
+  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,7 MB, con
+  ≈ 340 KB de sobra (medido sobre las 97 pintadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y el Níger
+  y el Paraná, más sencillos, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
+  vistas grandes como lo haría el pintor y prueba otras combinaciones: `560/75` dejaría ≈ 540 KB). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
   juncos de Astracán, los renglones de Bagdad, el cielo de Luxor, las caras de Leticia…), y eligió la liviana: «no vale la pena la
   diferencia». Cambiar otra vez es tocar `ANCHO_POSTAL` y `CALIDAD_POSTAL` en tools/pintor.py y correr `python tools/pintados.py`,
   que repinta todas. test/dist.js falla si la amplia pasa de 5 MB y dice cuánto le queda. Las mercancías de los demás ríos (hoy solo
@@ -350,6 +364,11 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   zigzag; una columna chica de óvalos no. Un pulmón se lee por su árbol de bronquios; el contorno solo parece una hoja o una gota. Cuando
   la protagonista son muchas cosas chicas (los sombreros de Can Tho), las de adelante van grandes. Las cordilleras llegan hasta abajo:
   una postal sin suelo adelante muestra una franja oscura. Dos cabezas enfrentadas parecen besarse: los dragones del medio miran afuera.
+- Lecciones del Níger y del Paraná (2026-10-26): una figura que recorre la serie de un río la ata (el bumerán del Níger: sale, dobla
+  y vuelve). Una forma echada sobre un río sigue su dirección: el bumerán de Gao, pintado en V sobre un río en Λ, no decía nada. Un
+  cartel se lee a 360 px si sus letras miden un décimo del alto (NÍGER). Una figura en lo alto de un mástil, chica y en una esquina, se
+  pierde: se la pinta de cerca (el vigía de Montevideo). De noche, la protagonista es la luz (las llamas de Port Harcourt). Un arcoíris
+  de una sola banda dorada es un arco: lleva sus bandas pálidas.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -669,7 +688,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 3 343 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de diez ríos pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 3 510 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de doce ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
