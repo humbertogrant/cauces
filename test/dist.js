@@ -7,6 +7,7 @@ const {montar}=require('./arnes'),{JUEGOS,EDICIONES,cortarEdicion}=require('../b
 const juego=process.argv[2]||'cauces',edicion=process.argv[3]||'economica';
 if(!JUEGOS[juego]||!EDICIONES[edicion])throw 'uso: node test/dist.js [cauces|exploradores] [economica|amplia]';
 const E=EDICIONES[edicion],archivo=juego+E.sufijo+'.html';
+const TOPE_AMPLIA=5120;   // la edición amplia no tiene el tope de 500 KB de la económica, pero sí uno: 5 MB (Humberto, 2026-10-26)
 /* el corte por edición: la económica quita los bloques marcados, la amplia solo las marcas, y una marca sin cierre es un error */
 if(cortarEdicion('a,/*@amplia*/b,/*@fin:amplia*/c;/*@amplia*/d/*@fin:amplia*/','economica')!=='a,c;')throw 'corte económico';
 if(cortarEdicion('a,/*@amplia*/b,/*@fin:amplia*/c','amplia')!=='a,b,c')throw 'corte amplio';
@@ -37,6 +38,7 @@ setTimeout(()=>{
   if((edicion==='amplia')!==(typeof POSTALES!=='undefined'&&typeof postal==='function'))throw 'postales pintadas en la edición '+edicion;
   if(edicion==='amplia')for(const [k,ps] of Object.entries(POSTALES)){const r=rutaPor(k);if(!r||ps.length!==r.paradas.length+2)throw 'postales que no calzan con el recorrido de '+k;ps.forEach((p,i)=>{if(p!==null&&!webp.test(p))throw 'postal sin imagen: '+k+' '+i})}
   const kb=Math.round(html.length/1024);if(!JUEGO.edicion||JUEGO.edicion.nombre!==E.nombre||JUEGO.edicion.kb!==kb)throw 'JUEGO.edicion '+JSON.stringify(JUEGO.edicion)+' en un archivo de '+kb+' KB';
+  if(edicion==='amplia'&&kb>TOPE_AMPLIA)throw 'la edición amplia de '+juego+' pesa '+kb+' KB: pasa de los 5 MB (ver tools/peso_postales.py)';
   for(const t of Object.keys(VOCAB))if(!(t==='rio'?juego==='cauces':juego==='exploradores'))throw 'VOCAB.'+t+' sobra en '+juego;
   for(const r of RUTAS){if(!r.vocab||!r.vocab.inicio)throw 'ruta sin vocabulario '+r.id;if(!ANIMALES[r.companero.glifo])throw 'animal recortado de más: '+r.companero.glifo;
     for(const c of r.paradas)for(const e of c.escena)if(!picto(e))throw 'pictograma recortado de más: '+e+' en '+c.nombre;
@@ -59,5 +61,5 @@ setTimeout(()=>{
       if(pintada!==!!ps[i]||pintada===(ph.indexOf('<svg class="escena"')>=0))throw 'postal de '+k+' en el lugar '+i;if(i<=n)bajar(1)}
     const q=preguntaTipo('imagen',rt,1);S.pantalla='rio';S.rio=k;setTab('preguntar');S.quiz.qs=[q];S.quiz.i=0;render();
     if(!!ps[2]!==(document.querySelector('#panel').innerHTML.indexOf('<img class="escena pintada quiz"')>=0))throw 'el reto de imagen de '+k+' sin su postal';irInicio()}
-  console.log('DIST OK',juego,E.nombre,kb,'KB')
+  console.log('DIST OK',juego,E.nombre,kb,'KB'+(edicion==='amplia'?' (quedan '+(TOPE_AMPLIA-kb)+' KB hasta los 5 MB)':''))
 },50);

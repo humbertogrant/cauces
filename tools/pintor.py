@@ -523,15 +523,15 @@ def _pintar(vista, dibujar, cara=None):
     return l.imagen()
 
 
-def _guardar(img, base, ancho, datos, vista, cara=None, previa=True, opaco=False):
-    """Guarda <base>.webp (de `ancho` pixeles), <base>.json con `datos` y, con `previa`, las vistas grande y con rejilla. `opaco`: sin
-    canal de transparencia (una postal cubre toda su caja)."""
+def _guardar(img, base, ancho, datos, vista, cara=None, previa=True, opaco=False, calidad=None):
+    """Guarda <base>.webp (de `ancho` pixeles y `calidad`, CALIDAD si no se dice), <base>.json con `datos` y, con `previa`, las vistas
+    grande y con rejilla. `opaco`: sin canal de transparencia (una postal cubre toda su caja)."""
     os.makedirs(os.path.dirname(base), exist_ok=True)
     chica = img.resize((ancho, int(round(ancho * img.size[1] / img.size[0]))), Image.LANCZOS)
     if opaco:
         chica = chica.convert('RGB')
     b = io.BytesIO()
-    chica.save(b, 'WEBP', quality=CALIDAD, method=6)
+    chica.save(b, 'WEBP', quality=CALIDAD if calidad is None else calidad, method=6)
     io.open(base + '.webp', 'wb').write(b.getvalue())
     io.open(base + '.json', 'w', encoding='utf8', newline='\n').write(json.dumps(datos, ensure_ascii=False, indent=1))
     if previa:
@@ -568,7 +568,9 @@ BARCAS = os.path.join(DIBUJOS, 'barcas')
 BIENES = os.path.join(DIBUJOS, 'bienes')
 POSTALES = os.path.join(DIBUJOS, 'postales')
 ANCHO_BIEN = 144                 # un bien se ve de unos 52 px en el mercado: casi el triple, para pantallas de alta densidad
-ANCHO_POSTAL = 744               # la postal ocupa el ancho de la ficha (372 px en el teléfono): el doble
+ANCHO_POSTAL = 600               # la postal ocupa el ancho de la ficha (unos 372 px en el teléfono). Con 744 px y calidad 84 pesaba un
+CALIDAD_POSTAL = 75              # 42 % más y las 201 de Cauces no cabían en los 5 MB de la amplia; Humberto las comparó a ciegas en el
+#                                  teléfono: «no vale la pena la diferencia» (2026-10-26). tools/peso_postales.py proyecta el total
 
 
 def cargar(archivo, nombre):
@@ -619,7 +621,7 @@ def pintar_postales(ruta, previa=True, solo=None):
         img = _pintar(p.get('vista', mod.VISTA), p['dibujar'])
         datos = dict(v=_vista(p.get('vista', mod.VISTA)), clave=p['clave'], listo=bool(p.get('listo', getattr(mod, 'LISTO', False))))
         pesos.append(_guardar(img, os.path.join(SALIDA, 'postales', '%s-%d' % (ruta, i)), ANCHO_POSTAL, datos, p.get('vista', mod.VISTA),
-                              None, previa, opaco=True))
+                              None, previa, opaco=True, calidad=CALIDAD_POSTAL))
     return pesos
 
 
