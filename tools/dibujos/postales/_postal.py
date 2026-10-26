@@ -8,8 +8,9 @@ import math
 import numpy as np
 from shapely import affinity
 from shapely.geometry import Polygon, box
+from shapely.ops import unary_union
 
-from pintor import forma, ovalo, tubo
+from pintor import curva, forma, ovalo, tubo
 
 VISTA = (0, 0, 120, 40)
 CIELO = 'E6F3EE'
@@ -209,3 +210,160 @@ def loto(l, x, y, s=1.0):
                                 b - e * .5 * s]).buffer(.05))
     l.masa(petalos, material='claro', alto=.3, brillo=.25, vientre=0, hondo=0, linea=.25, contraluz=.3, arroja=False)
     l.masa(ovalo(x, y - .5 * s, .7 * s, .45 * s), material='acento', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.2, arroja=False)
+
+
+def cinta(pts, anchos, n=10):
+    """una cinta de ancho variable a lo largo de una curva (un río que serpentea, un brazo del delta, un chorro de agua)"""
+    c = curva(pts, n)
+    a = np.interp(np.linspace(0, 1, len(c)), np.linspace(0, 1, len(anchos)), anchos)
+    izq, der = [], []
+    for i in range(len(c)):
+        d = c[min(i + 1, len(c) - 1)] - c[max(i - 1, 0)]
+        d = d / (np.hypot(*d) or 1)
+        nrm = np.array([-d[1], d[0]])
+        izq.append(c[i] + nrm * a[i] / 2)
+        der.append(c[i] - nrm * a[i] / 2)
+    return Polygon(izq + der[::-1]).buffer(0)
+
+
+def prado(l, suelo, hasta=41.0, tinte=.24):
+    """la tierra verde: un prado, más amarillo que el agua para que no se confundan"""
+    return tierra(l, suelo, hasta, desierto=tinte)
+
+
+def orilla(l, g, tinte=.24, linea=.35):
+    """una orilla de pasto (con más `tinte`, de arena), con su línea"""
+    m = l.masa(g, material='vientre', alto=.12, brillo=.04, vientre=0, hondo=0, linea=linea, escalon=.1, contraluz=.2)
+    l.mancha(g, 'E8B952', tinte, dentro=m)
+    return m
+
+
+def pasto(l, x0, x1, y0, y1, n, semilla=0, dentro=None):
+    """matas de pasto: tres hojitas que salen de un punto, más grandes adelante"""
+    rng = np.random.default_rng(semilla)
+    for _ in range(n):
+        x, y = rng.uniform(x0, x1), rng.uniform(y0, y1)
+        s = .6 + (y - y0) / max(y1 - y0, 1) * .6
+        for dx, h in ((-.7, 1.1), (0, 1.5), (.7, 1.1)):
+            l.trazo([(x + dx * s * .4, y), (x + dx * s, y - h * s)], .12 * s + .04, color='2F8A74', alfa=.8, dentro=dentro)
+
+
+def agua(l, g, material='lejos', brillo='64C8AA', ondas=0, semilla=0, linea=.3):
+    """un espejo de agua (un charco, un lago, un brazo de río) con su brillo y unas ondas claras"""
+    m = l.masa(g, material=material, alto=.05, brillo=0, vientre=0, hondo=0, linea=linea, tinta=linea > 0, escalon=0, contraluz=0,
+               arroja=False)
+    l.mancha(g, brillo, .6, dentro=m, difuso=.6)
+    rng = np.random.default_rng(semilla)
+    x0, y0, x1, y1 = g.bounds
+    for _ in range(ondas):
+        x, y = rng.uniform(x0, x1), rng.uniform(y0, y1)
+        l.trazo([(x, y), (x + 2, y - .2), (x + 4, y)], .16, color='D2F2DA', alfa=.8, dentro=m)
+    return m
+
+
+def papiro(l, x, y, alto_=6.0, n=7, semilla=0, material='cuerpo'):
+    """una mata de papiro: tallos finos que se abren en abanico desde el agua, cada uno con su penacho de hilos, redondo y liviano"""
+    rng = np.random.default_rng(semilla)
+    tallos, penachos = [], []
+    for k in range(n):
+        a = ((k + .5) / n - .5) * 1.1 + rng.uniform(-.08, .08)
+        h = alto_ * rng.uniform(.75, 1.05)
+        tope = (x + math.sin(a) * h * .7, y - math.cos(a) * h)
+        tallos.append(tubo([(x + a * .4, y), (x + math.sin(a) * h * .3, y - math.cos(a) * h * .5), tope], [.13, .1, .07], 4))
+        penachos.append((tope, a))
+    l.masa(tallos, material=material, alto=.15, brillo=.1, vientre=0, hondo=0, linea=.16, arroja=False)
+    r = alto_ * .2
+    for (px, py), a in penachos:                                         # el penacho: un abanico de hilos finos, sin masa, que se abre
+        l.mancha(ovalo(px, py - r * .4, r * .9, r * .55), '6CC8A8', .4, difuso=.2)
+        for t in np.linspace(-1.4, 1.4, 11):
+            ang = a * .5 + t - math.pi / 2
+            fin = (px + math.cos(ang) * r * 1.15, py + math.sin(ang) * r * .9)
+            l.trazo([(px, py), ((px + fin[0]) / 2, (py + fin[1]) / 2 - r * .12), fin], [.09, .07, .04], color='1C6659', alfa=.9)
+
+
+def selva(l, x0, x1, y, alto_=7.0, semilla=0, material='lejos', emergentes=2):
+    """la selva: una franja de copas redondas y apretadas que sube y baja, y algunos árboles altos que sobresalen con su copa en
+    sombrilla; `y` es el pie de la franja"""
+    rng = np.random.default_rng(semilla)
+    for _ in range(emergentes):
+        ex, h = rng.uniform(x0 + 3, x1 - 3), alto_ * rng.uniform(1.45, 1.8)
+        tronco = tubo([(ex, y - alto_ * .4), (ex + .3, y - h + .6)], [.32, .22], 4)
+        copa = [ovalo(ex + dx, y - h + dy, rx, ry) for dx, dy, rx, ry in ((0, 0, 2.8, 1.1), (-1.8, .5, 1.7, .9), (1.9, .4, 1.7, .9))]
+        l.masa([tronco] + copa, material=material, alto=.3, brillo=.12, vientre=0, hondo=0, linea=.3, contraluz=.3)
+    copas, x = [Polygon([(x0, y), (x0 + 1, y - alto_ * .3), (x1 - 1, y - alto_ * .3), (x1, y)])], x0 + alto_ * .3
+    while x < x1 - alto_ * .2:                                           # las copas, redondas y grandes, que se tocan
+        r = alto_ * rng.uniform(.3, .5)
+        copas.append(ovalo(x, y - r * rng.uniform(.6, 1.1), r * 1.15, r))
+        x += r * rng.uniform(.9, 1.4)
+    g = unary_union(copas)
+    m = l.masa(g, material=material, alto=.3, brillo=.08, vientre=0, hondo=0, linea=.3, contraluz=.3)
+    for _ in range(int((x1 - x0) * alto_ * .3)):                         # el follaje: manchas más oscuras y más claras
+        px, py = rng.uniform(x0, x1), rng.uniform(y - alto_, y)
+        l.mancha(ovalo(px, py, rng.uniform(.6, 1.2), rng.uniform(.5, .9)), str(rng.choice(['164F46', '4AA189'])), .35, dentro=m)
+    return m
+
+
+def piramide(l, x, base, ancho, alto_, luz=-1):
+    """una pirámide vista un poco de costado: la cara del sol (a la izquierda con `luz` -1), clara, y la de la sombra, más oscura, con
+    sus hiladas de piedra"""
+    arista = x - luz * ancho * .12                                       # la arista corre hacia el lado de la sombra
+    izq = Polygon([(x - ancho / 2, base), (x, base - alto_), (arista, base)])
+    der = Polygon([(arista, base), (x, base - alto_), (x + ancho / 2, base)])
+    for k, cara in enumerate((izq, der) if luz < 0 else (der, izq)):   # primero la cara del sol, después la de la sombra
+        m = l.masa(cara.buffer(.05), material='vientre', alto=.15, brillo=.1 if k == 0 else 0, vientre=0, hondo=0, linea=.35, escalon=0,
+                   contraluz=.2 if k == 0 else 0)
+        l.mancha(cara, ('E8B952', 'BF9129')[k], (.5, .6)[k], dentro=m)
+        for f in np.arange(.12, 1, .12):                                 # las hiladas
+            l.trazo([(x - ancho / 2 * (1 - f), base - alto_ * f), (x + ancho / 2 * (1 - f), base - alto_ * f)], .07, color='6B4E10', alfa=.4,
+                    dentro=m)
+    return izq.union(der)
+
+
+def obelisco(l, x, base, alto_=10.0, ancho=1.3, punta='acento'):
+    """un obelisco: el fuste que se angosta, de piedra clara con sus jeroglíficos, y la punta en pirámide (dorada, si no se pide otro
+    `punta`)"""
+    w, t = ancho / 2, base - alto_ * .9
+    fuste = Polygon([(x - w, base), (x - w * .7, t), (x + w * .7, t), (x + w, base)])
+    f = l.masa(fuste.buffer(.05), material='vientre', alto=.25, brillo=.1, vientre=0, hondo=0, linea=.35, contraluz=.25)
+    l.mancha(fuste, 'E8B952', .4, dentro=f)
+    for k in np.arange(t + 1.2, base - .6, 1.5):
+        l.trazo([(x - .15, k), (x + .15, k + .3)], .1, color='6B4E10', alfa=.5, dentro=f)
+    l.masa(Polygon([(x - w * .75, t), (x, base - alto_), (x + w * .75, t)]).buffer(.04), material=punta, alto=.3, brillo=.5, vientre=0,
+           hondo=0, linea=.3)
+    return fuste
+
+
+class corrido:
+    """un lienzo corrido: lo que se dibuja en él cae `dx`, `dy` más allá; sirve para mover una pieza ya dibujada (el toro alado, las
+    ruinas) sin tocar sus números"""
+
+    def __init__(self, l, dx=0.0, dy=0.0):
+        self.l, self.dx, self.dy = l, dx, dy
+
+    def _g(self, g):
+        if isinstance(g, (list, tuple)):
+            return [self._g(p) for p in g]
+        return affinity.translate(g, self.dx, self.dy) if hasattr(g, 'geom_type') else g
+
+    def _dentro(self, kw):
+        if hasattr(kw.get('dentro'), 'geom_type'):
+            kw['dentro'] = self._g(kw['dentro'])
+        return kw
+
+    def masa(self, piezas, **kw):
+        if kw.get('bultos'):
+            kw['bultos'] = [(self._g(b), h) for b, h in kw['bultos']]
+        if kw.get('sin_tinta') is not None:
+            kw['sin_tinta'] = self._g(kw['sin_tinta'])
+        return self.l.masa(self._g(piezas), **kw)
+
+    def trazo(self, pts, anchos, **kw):
+        return self.l.trazo([(x + self.dx, y + self.dy) for x, y in pts], anchos, **self._dentro(kw))
+
+    def mancha(self, g, color, alfa=1.0, **kw):
+        return self.l.mancha(self._g(g), color, alfa, **self._dentro(kw))
+
+    def pelaje(self, masa, **kw):
+        if kw.get('zona') is not None:
+            kw['zona'] = self._g(kw['zona'])
+        return self.l.pelaje(masa, **kw)
