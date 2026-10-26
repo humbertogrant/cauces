@@ -11,12 +11,13 @@ un mercado, eventos entre puertos y repaso espaciado.
   tramos, Trazar reconstruye la forma del viaje tocando el mapa y las preguntas miden la magnitud: cuánto duró, hasta dónde
   llegó, qué mares y desiertos cruzó, cuál viaje fue primero. Cada juego guarda su progreso aparte; cada archivo pesa menos de medio megabyte y lleva solo lo que su juego usa.
 - Dos ediciones de cada juego, del mismo código: la económica (`cauces.html`, `exploradores.html`), de menos de medio
-  megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), sin tope de peso. La
+  megabyte, que es la que se comparte, y la amplia (`cauces-amplia.html`, `exploradores-amplia.html`), con un tope más holgado: 5 MB. La
   amplia de Cauces trae además cuatro ríos (Orinoco, Murray, San Lorenzo y Zambeze) y costas, lagos y relieve más finos; las
   amplias de los dos juegos traen una ilustración de cada animal guía, dibujada de memoria y pintada pixel por pixel en los colores del
   juego (`tools/pintor.py` y un dibujo por animal en `tools/dibujos/`), con cara y ánimos en la ficha «Conocé a …» al empezar la ruta y en
   el globo; también la embarcación de cada ruta, pintada igual, en «Tu embarcación», y, de prueba, las mercancías del Nilo en su mercado
-  y las postales de seis ríos (Tigris, Volga, Nilo, Amazonas, Yangtsé y Misisipi), que pintan la imagen para recordar de cada ciudad. Antes, del 2026-09-17 al 23, fueron vectores sobre siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0
+  y las postales de ocho ríos (Tigris, Volga, Nilo, Amazonas, Yangtsé, Misisipi, Danubio y Rin), que pintan la imagen para recordar de
+  cada ciudad. Antes, del 2026-09-17 al 23, fueron vectores sobre siluetas de [PhyloPic](https://www.phylopic.org) de dominio público o CC0
   (el detalle, en `tools/ilustraciones/fuentes.json`). El progreso se comparte entre las dos ediciones. Cada archivo dice su edición y su peso al final de «¿Cómo se juega?».
   Las versiones congeladas están en los Releases de GitHub (`economica-1`), con los dos HTML económicos para descargar.
 - En línea: <https://humbertogrant.github.io/cauces/> (Cauces en `cauces.html`, Exploradores en `exploradores.html`). Es la misma
