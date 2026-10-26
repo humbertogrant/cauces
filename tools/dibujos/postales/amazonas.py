@@ -24,8 +24,8 @@ from shapely import affinity
 from shapely.geometry import Polygon, box
 from shapely.ops import unary_union
 
-from _postal import (VISTA, agua, ave, cielo, cinta, cordillera, nube, orilla, palmera, pasto, prado, reflejo, rio,  # noqa: F401
-                     selva, tierra)
+from _postal import (VISTA, agua, ave, cielo, cinta, cordillera, mangle, nube, orilla, palmera, pasto, prado, reflejo, rio, selva,  # noqa: F401
+                     tierra)
 from pintor import forma, ovalo, tubo
 
 PIEL = '93701A'            # el tono de la piel: dorado oscuro sobre el pálido de `vientre`
@@ -445,18 +445,6 @@ def regatao(l, x, y, s=1.0):
     c = l.masa(casco, material='acento', alto=.35, brillo=.3, vientre=0, hondo=0, linea=.45, contraluz=.3)
     l.trazo(P([(-12.6, -1.4), (0, -.4), (12.6, -1.6)]), [.05, .14, .05], color='6B4E10', alfa=.6, dentro=c)
     return casco.union(techo)
-
-
-def mangle(l, x, y, h=8.0, semilla=0):
-    """un mangle parado en el agua sobre sus raíces en arco, con la copa redonda"""
-    rng = np.random.default_rng(semilla)
-    raices = [tubo([(x + rng.uniform(-.4, .4), y - h * .45), (x + d * .55, y - h * .3), (x + d, y + .4)], [.2, .16, .12], 6)
-              for d in (-3.4, -2, -.8, .8, 2.2, 3.4)]
-    l.masa(raices + [tubo([(x, y - h * .45), (x + .2, y - h * .8)], [.4, .3], 4)], material='lejos', alto=.25, brillo=.15, vientre=0,
-           hondo=0, linea=.25)
-    l.masa([ovalo(x + dx * h * .3, y - h * .82 + dy * h * .2, h * .32 * rr, h * .22 * rr) for dx, dy, rr in ((0, 0, 1), (-1, .3, .8),
-                                                                                                          (1, .3, .8), (0, -.6, .7))],
-           material='cuerpo', alto=.35, brillo=.12, vientre=0, hondo=.1, linea=.3, contraluz=.25)
 
 
 def mar(l):
