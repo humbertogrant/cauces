@@ -74,8 +74,8 @@ build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores) 
 test/arnes.js        DOM simulado y carga de los archivos de un juego en una edición (amplia por defecto; la económica recorta como
                      build.js y carga sus generados; EDICION global); test/pruebas.js [juego] [edicion] corre test/casos.js (Cauces) o
                      test/casos-exploradores.js; test/instantanea.js compara 200 pantallas de Cauces con test/instantanea.json.gz.
-                     test/dist.js [juego] [edicion] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte y
-                     que cada edición diga lo que es). `npm test` corre todo: "TODO OK" tres veces (Cauces amplia y económica, Exploradores), "INSTANTÁNEA OK" y "DIST OK" cuatro veces
+                     test/dist.js [juego] [edicion] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte,
+                     que cada edición diga lo que es y que la amplia no pase de 5 MB; dice cuánto le queda). `npm test` corre todo: "TODO OK" tres veces (Cauces amplia y económica, Exploradores), "INSTANTÁNEA OK" y "DIST OK" cuatro veces
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap; con ids
                      como argumentos, solo esos ríos
 tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js; con «amplia» de segundo argumento, mapa-amplia.js) desde Natural Earth
@@ -90,6 +90,7 @@ tools/verificacion.py genera docs/verificacion.md
 tools/pintor.py      pinta cada dibujo de tools/dibujos/<clave>.py (numpy, scipy, shapely, Pillow) en un WebP de tools/dibujos/salida/;
                      `barcas [ruta…]`, `bienes [ruta…]` y `postales [ruta [i…]]` pintan las de tools/dibujos/barcas/, bienes/ y postales/
 tools/pintados.py    genera src/data/barcas.js, bienes.js y postales.js con lo pintado (tools/ilustraciones.py la llama al final)
+tools/peso_postales.py cuánto pesan las postales y cuánto pesaría la amplia de Cauces con todas, con cada ancho y calidad (tope: 5 MB)
 tools/ilustraciones.py genera src/data/ilustraciones.js con los dibujos pintados; todavía sabe armar las de vectores de antes, desde las
                      siluetas de PhyloPic de tools/ilustraciones/ (dominio público o CC0, con autor y licencia en fuentes.json)
 ```
@@ -107,7 +108,7 @@ cambio: `npm test` y `npm run build`, y abrir `dist/cauces.html` en un navegador
 Desde el 2026-09-13 cada juego sale en dos ediciones del mismo código, y no son ramas ni forks: build.js ensambla las cuatro
 salidas de la misma fuente. La **económica** (`dist/cauces.html`, `dist/exploradores.html`) pesa 500 KB o menos, es la que se
 comparte y la que juega bien en cualquier teléfono; la **amplia** (`dist/cauces-amplia.html`, `dist/exploradores-amplia.html`)
-no tiene tope de peso. Lo que solo va en la amplia se envuelve en `/*@amplia*/ … /*@fin:amplia*/` (JS o CSS, en datos, juego,
+tiene un tope más holgado: 5 MB (desde el 2026-10-26; Humberto: «hasta 5MB estamos bien de peso total»). Lo que solo va en la amplia se envuelve en `/*@amplia*/ … /*@fin:amplia*/` (JS o CSS, en datos, juego,
 motor o cabeza; en un array la marca abarca el elemento con su coma): la económica recorta el bloque y la amplia solo quita las
 marcas. Los archivos generados no llevan marcas: la amplia tiene los suyos, `mapa-amplia.js` y `relieve-amplia.js` (todas las rutas;
 costas, lagos, fronteras y franjas del mundo unas tres veces más finas), y `JUEGOS.cauces.amplia` en build.js dice qué archivo
@@ -225,17 +226,55 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   la feria de Nizhni Nóvgorod que pesa un cajón de té contra un atado de pieles frente al Kremlin de ladrillo, el caldero que hierve
   dentro del Kremlin de Kazán con la mezquita Kul Sharif y la catedral, el río hecho anzuelo alrededor de las montañas de Zhiguli en
   Samara, la Madre Patria con su espada sobre la colina de Volgogrado, el gorro de astracán y la lata de caviar en un muelle del delta, y
-  el Caspio con juncos, lotos y un pesquero.
+  el Caspio con juncos, lotos y un pesquero. El 2026-10-25 entró el Nilo, ya con la regla del protagonista (ver abajo): el Nilo Blanco,
+  claro, y el Nilo Azul, oscuro, que nacen de sus lagos y bajan hacia nosotros; el jinete que salta a caballo desde el lago Victoria en
+  Jinja; el bebé con chupón y banderita de estrella en su canasta, frente al muelle de Juba; las dos jarras que vacían agua blanca y
+  azul en el mismo cauce en Jartum; la barrera a rayas de la aduana que cruza el río en Asuán, con la Presa Alta al fondo; la máscara de
+  oro en la orilla de las tumbas de Luxor, con el sol que se pone, y Karnak en la de los templos; el delta de El Cairo abierto en
+  abanico, con la letra Δ en dorado; y la falúa que sale al Mediterráneo. Ese mismo día, a pedido de Humberto («reparemos las
+  existentes y dale con el amazonas»), el Tigris y el Volga pasaron a la regla (en Diyarbakır la muralla negra se curva alrededor del
+  río; la Malwiya es dorada, como un cono de helado; el reloj de Tikrit, el toro alado, el barco de Simbad y el faro, al medio; los libros
+  de Bagdad, abiertos y echados en el agua; el puente de Tver, la balanza de Nizhni y la Madre Patria, grandes; el anzuelo de Samara, en
+  J; en Astracán, un mercader con su gorro de astracán que muestra la lata de caviar) y entró el Amazonas: el nevado Mismi con su
+  glaciar, alpacas y un cóndor; el taxi dorado que flota en Iquitos, con un delfín rosado y una avioneta; las tres vecinas que se dan la
+  mano en Leticia; las dos manos, oscura y café con leche, que se buscan sin tocarse sobre el encuentro de las aguas en Manaos; el santo
+  de aureola que maneja un camión de soya en Santarém; la estrella de Belén sobre el estuario y el mercado Ver-o-Peso; y el regatão que
+  sale al Atlántico entre manglares. En los mares, la protagonista es la barca del juego, con su casco dorado (la falúa del Nilo, la
+  lodia del Volga, el regatão del Amazonas), salvo en el Tigris, cuyo kelek se desarma en Bagdad: su mar tiene el faro. El 2026-10-26
+  siguieron el Yangtsé y el Misisipi («sigamos»): el Jinsha, «arenas doradas», trenzado sobre su banco de arena dorada, con yaks; la
+  ciudad vertical de Chongqing en su cerro, con el tren dorado que atraviesa un edificio, la niebla y una olla de hotpot; el río que
+  choca contra la presa de las Tres Gargantas en Yichang y hace «¡chan!», con un estallido dorado de historieta; el puente de Wuhan con
+  su W de acero dorada; la puerta Ming de Nankín con su techo dorado, reflejada entera en el río como en un espejo, y una rosa de los
+  vientos con el sur lleno; los rascacielos de Shanghái «sobre el mar», con las esferas doradas de la Perla Oriental; el junco que sale
+  al mar entre grúas. En el Misisipi: un niño de gorra dorada que cruza el río recién nacido por las piedras del lago Itasca; el muñeco
+  de masa que amasa junto a las cataratas de Mineápolis, con panes dorados; el Gateway Arch de San Luis, que enmarca el sol que se pone
+  en el Oeste; un cantante de copete y traje dorado con una guitarra hecha de un capullo de algodón, frente al puente en M de Memphis;
+  el bastón clavado en la orilla de Baton Rouge (dorado, como todo lo que hay que recordar, aunque la frase lo diga rojo: el rojo del
+  juego es solo para los errores), con las chimeneas de las plantas enfrente; la trompeta dorada que sale del agua en la media luna de
+  Nueva Orleans; y el vapor de rueda que sale al golfo de México, con pelícanos.
   `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
   tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
   `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes; desde el Volga, abedules, abetos,
-  iglesias de cúpulas de cebolla, juncos, aves y lotos); se guardan en WebP sin
-  transparencia de 744 px de ancho. El motor las pone con `postal(rid, i, cls)` (i = 0 el nacimiento, 1…n cada parada, n+1 el mar) en
+  iglesias de cúpulas de cebolla, juncos, aves y lotos; desde el Nilo, cintas y espejos de agua, prados, orillas, pasto, papiros, selva,
+  pirámides y obeliscos, y `corrido`, un lienzo que corre lo que se dibuja en él, para mover una pieza sin tocar sus números); se
+  guardan en WebP sin transparencia de 600 px de ancho y calidad 75 (hasta el 2026-10-26, de 744 px y calidad 84: ver abajo). El motor
+  las pone con `postal(rid, i, cls)` (i = 0 el nacimiento, 1…n cada parada, n+1 el mar) en
   la ficha del nacimiento, de cada parada y del mar, y de pista en el reto de imagen; donde un río no tiene, queda la de pictogramas,
-  y el sello del pasaporte sigue con su pictograma. Pesan de 11 a 38 KB cada una (170 KB las ocho del Tigris y 244 KB las nueve del
-  Volga, en el archivo de datos; el delta de Astracán, con sus juncos, es la más pesada): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB
-  con el Tigris y a ≈ 2 734 KB con el Volga. Para todo Cauces serían 201 postales, unos 5 MB en la amplia (≈ 24 KB por postal):
-  convendría bajarles la resolución.
+  y el sello del pasaporte sigue con su pictograma. Pesan de 5,5 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
+  130 KB las nueve del Volga, 97 KB las ocho del Nilo, 73 KB las siete del Amazonas, 77 KB las siete del Yangtsé y 81 KB las siete
+  del Misisipi; el delta de Astracán, con sus juncos, es la más pesada): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el Tigris, a
+  ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo, a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el Misisipi, y
+  bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75.
+  **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
+  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,6 MB, con
+  ≈ 370 KB de sobra (`python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las vistas grandes como lo haría
+  el pintor y prueba otras combinaciones, `640/75`). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
+  juncos de Astracán, los renglones de Bagdad, el cielo de Luxor, las caras de Leticia…), y eligió la liviana: «no vale la pena la
+  diferencia». Cambiar otra vez es tocar `ANCHO_POSTAL` y `CALIDAD_POSTAL` en tools/pintor.py y correr `python tools/pintados.py`,
+  que repinta todas. test/dist.js falla si la amplia pasa de 5 MB y dice cuánto le queda. Las mercancías de los demás ríos (hoy solo
+  las cinco del Nilo, 41 KB en el archivo de datos) sumarían ≈ 1 MB más: con todas las postales no cabrían sin achicarlas también. El
+  AVIF pesaría lo mismo con 744 px (≈ 9,6 KB por postal a calidad 60), pero Safari lo lee desde iOS 16 y el WebP desde iOS 14: un
+  iPad viejo se quedaría sin postales.
 - Lecciones de las postales (2026-09-25): la postal pinta la imagen absurda de la ciudad, no un monumento cualquiera; donde coinciden
   (la Malwiya), mejor. Lo que se ve de costado se aplana: la ciudad redonda, vista casi de perfil, parecía un barco, y hay que verla desde
   arriba, con el anillo de la muralla, las cuatro puertas y las avenidas que llegan al centro. Blanco sobre blanco no se ve: la muselina
@@ -248,7 +287,31 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   maceta o una pantalla de lámpara y, puesto en un poste con el borde rizado, es un gorro. Una hoja de hacha en abanico parece una
   bandera: va en media luna, con sus dos puntas. Una figura alta con los brazos arriba (la Madre Patria y su espada) se dibuja con
   escala para que quepa entera; cortada, no se entiende.
-- Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra) y scratchpad/webkit
+- La regla del protagonista (2026-10-25, propuesta tras revisar las 25 postales al tamaño del teléfono y aprobada por Humberto: «dale,
+  aplicá 1, 2 y 3 al Nilo»): la imagen para recordar es la protagonista; ocupa al menos un tercio del alto, va al medio y es lo único
+  dorado de la postal (en la postal el dorado dice «esto es lo que hay que recordar», como en el juego dice «estás aquí»). No hay sol,
+  salvo cuando es parte de la imagen (el reloj de Tikrit; el atardecer de Luxor, pálido y medio tapado por los cerros); las palmeras van
+  sin dátiles dorados (`datiles=False`), el obelisco sin punta dorada (`punta`) y las falúas con casco de madera, salvo cuando la barca
+  es la protagonista (la del mar del Nilo). Se revisa a 360 px, el ancho de la ficha en el teléfono: así se vio que el bebé de Juba, la
+  barrera de Asuán, la balanza de Nizhni y el gorro y la lata de Astracán quedaban chicos, que Samara parece un bote lleno de melones y
+  que los cuatro mares eran casi la misma postal. Desde el 2026-10-25 la cumplen todas las series.
+- Lecciones de la reparación (2026-10-25): una U con algo adentro parece un bote (Samara, con las montañas como carga): el anzuelo es
+  una J, con la caña larga y recta, el ojo y el sedal arriba, y la punta corta con su barba, y las montañas salen por la boca hacia el
+  horizonte. Un gorro solo, en un poste, parece un letrero o una lámpara: en la cabeza de alguien es un gorro. Unos libros abiertos de
+  costado, en V, parecen gaviotas: echados en el agua, con sus dos páginas y sus renglones, son libros. Un glaciar con volumen propio
+  parece un cono colgado: va plano, como una lengua de hielo con grietas que sale de la nieve de la cumbre. Lo oscuro sobre lo oscuro se
+  pierde: las pieles van contra el cielo y el cajón de té contra la colina. Para que la barca del mar sea la del juego, tiene que poder
+  llegar al mar según su propio dato (el kelek no). Una figura de frente se arma igual que un animal: piernas, vestido o caftán, brazos
+  en tubo hasta las manos, cabeza con ojos de punto y una sonrisa; las tres vecinas de Leticia llevan cada una su peinado (moño, pelo
+  largo, rizos) para distinguirse.
+- Lecciones del Yangtsé y del Misisipi (2026-10-26): una ciudad vertical se lee por su cerro: los edificios van escalonados sobre la
+  pendiente, de atrás hacia adelante; sueltos, flotan. Un reflejo que tiene que decir «espejo» va entero y fuerte, aunque haya que achicar
+  lo reflejado (la puerta de Nankín, para que su techo dorado entre en el agua). Una onomatopeya se pinta como el estallido de una
+  historieta. Un afluente que entra se pinta antes que el río, para que se junten sin borde; si no, parece una rampa (el Misuri). Un
+  pelícano se reconoce por el pico largo con su bolsa; las alas solas parecen un cocodrilo que vuela.
+- Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
+  tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
+  Playwright: conviene pasarlos a tools/) y scratchpad/webkit
   `postales.js río` (cada ficha dentro del juego armado, bajando el río) y `reto-imagen.js río índice` (el reto de imagen con su pista).
 - Hojas de revisión de barcas y mercancías: scratchpad `hoja-barcas.py ruta…` (las barcas grandes, de a dos) y `hoja-bienes.py ruta` (cada
   bien grande y a 52 y 78 px), y scratchpad/webkit `barcas-hoja.js [ruta…]` (el bloque «Tu embarcación» con el CSS del juego) y
@@ -565,8 +628,10 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 2 734 KB y la de Exploradores ≈ 893 KB el 2026-09-26, con los animales, las barcas, las mercancías del Nilo y las postales del Tigris y del Volga pintados). La edición amplia
-  (`-amplia.html`) no tiene tope: lo que no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»). Palancas de peso ya usadas: recorte del motor por juego en build.js;
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 2 878 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de seis ríos pintados). La edición amplia
+  (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
+  no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
+  `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
   ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
   Lo que queda por probar si hace falta: un minificador de desarrollo sobre el motor (terser como herramienta, no como dependencia
