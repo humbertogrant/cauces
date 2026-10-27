@@ -327,16 +327,20 @@ console.log('perfiles OK');
  setModo('historia');abrirRio('nilo');if(document.querySelector('#capa').innerHTML.indexOf('id="masc"')<0)throw 'adulto: sin animal en la barca';setModo('mercader');
  irInicio();console.log('animales OK')}
 // escenas: todas las ciudades y extremos con pictogramas válidos; postal en la parada, la fuente y el mar; pista en el reto de imagen; sello con pictograma
+// (en la amplia todos los ríos tienen postales pintadas, que prueba test/dist.js: para probar las de pictogramas, que son las de la
+// económica y las de un río sin pintar, el Térraba y el Tárcoles las prestan mientras dura el bloque)
 {if(Object.keys(PICTOS).length<36)throw 'faltan pictogramas';
  for(const r of RIVERS){for(const k of ['escenaNace','escenaMar'])if(!r[k]||r[k].length<3||r[k].some(x=>!picto(x)))throw r.id+' '+k+' inválida';
    r.ciudades.forEach(c=>{if(!c.escena||c.escena.length<3||c.escena.length>4||c.escena.some(x=>!picto(x)))throw r.id+' '+c.nombre+' escena inválida'})}
  for(const k in PICTOS)if(PICTOS[k].length>620)throw 'pictograma pesado '+k+' '+PICTOS[k].length;
+ const prestadas=typeof POSTALES!=='undefined'?{terraba:POSTALES.terraba,tarcoles:POSTALES.tarcoles}:null;if(prestadas){delete POSTALES.terraba;delete POSTALES.tarcoles}
  setModo('mercader');abrirRio('terraba');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena"')<0)throw 'fuente sin postal';
  bajar(4);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena"')<0||ph.indexOf(PICTOS.mascara)<0)throw 'Rey Curré sin su máscara';
  bajar(3);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena"')<0)throw 'mar sin postal';
  const q=preguntaTipo('imagen',rioPor('tarcoles'),4);if(!q.escena||q.escena.indexOf('animal:cocodrilo')<0)throw 'reto de imagen sin escena';
  S.pantalla='rio';S.rio='tarcoles';setTab('preguntar');S.quiz.qs=[q];S.quiz.i=0;render();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena quiz"')<0||ph.indexOf('<g class="animal"')<0)throw 'el reto no muestra la escena';
  abrirRio('tarcoles');responderGuia(0);paso(1);verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena pic"')<0)throw 'sello sin pictograma';
+ if(prestadas)Object.assign(POSTALES,prestadas);
  irInicio();console.log('escenas OK')}
 // sellos con carácter: forma, inclinación y aro propios por ciudad, estables, y el vacío con su forma
 {crearPerfil('Sellos');const r=rioPor('rin'),n=r.ciudades.length;setModo('mercader');abrirRio('rin');for(let i=0;i<n;i++){responderGuia(i);paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}}

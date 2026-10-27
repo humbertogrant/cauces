@@ -329,6 +329,36 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   dorado bajo el humo que truena (Livingstone); la caja dorada que guarda el río, con los botes que rescatan animales (Kariba); la pava
   dorada que hierve sola sobre el puente colgante, con el carbón debajo (Tete); el chinchorro dorado del capitán inglés entre dos
   manglares (Chinde); y la mano dorada de un cartel que apunta con el índice al Índico (el mokoro se queda entre los manglares).
+  Por último, los seis ríos de Costa Rica («vamos con los ríos ticos»), con lo que quedan pintadas las 201 postales de Cauces. En el
+  Tempisque: el árbol de guanacaste dorado, el que le da nombre a la provincia, en el llano seco al pie del volcán Orosí; un sabanero de
+  camisa blanca y una vaca cebú, los dos con su sombrero dorado, frente a las casas blancas de Liberia; el guardia de uniforme dorado,
+  con el machete al hombro, que cuida el puente (Guardia); el queso crema gigante, de papel dorado y con su cuchillo de untar, que flota
+  con sombrero de paja entre los arrozales (Filadelfia); el bolsón dorado lleno de mazorcas que pasa del muelle al bongo (Bolsón); las
+  ollas doradas de arroz cuyo humo tapa el muelle, frente a las garzas y las espátulas de Palo Verde (Puerto Humo); y el bongo de casco
+  dorado que entra al golfo de Nicoya, con Puntarenas enfrente. En el Reventazón: los ríos de agua que bajan de Talamanca y del valle de
+  Cartago y se juntan en el Reventazón dorado; el oso dorado que reza de rodillas en la iglesia de Orosi; la cara dorada de cachetes
+  inflados que tapa el cañón y aguanta el embalse (Cachí); don Juan Viñas, de saco dorado, con su café en la banca de la estación; la
+  bola de béisbol dorada, con su volcancito de sombrero, que rema en la balsa (Turrialba); el SÍ dorado que chirría sobre el cruce de
+  las vías, con la represa atrás (Siquirres); la tortuga dorada con boina y paraguas que desova en la playa (Parismina); y la balsa de
+  rafting de tubos dorados que sale a la barra, frente a las olas del Caribe. En el Sarapiquí: las cataratas doradas entre el Poás y el
+  Barva; el arcángel dorado que se baña bajo la catarata con su paraguas (San Miguel); la virgen de yeso con el chaleco salvavidas
+  dorado, que se sube a la balsa bajo el puente colgante (La Virgen); los mates dorados que cuelgan del higuerón (Chilamate); las mulas
+  cansadas, doradas, que pasan del muelle al bote (Puerto Viejo); los tres botes dorados que se dan la mano entre las banderas de Costa
+  Rica y de Nicaragua (Trinidad); y el bote de casco dorado que entra al San Juan, con Bruno, el mono congo, que grita en la orilla. En el
+  San Juan: el río dorado que sale del lago de Nicaragua, con Ometepe en el horizonte; la pajilla dorada que vacía el lago por encima del
+  fuerte (San Carlos); el sábalo de plata, de aletas doradas, que salta sobre el bote y saluda (Sábalos); Rafaela, de vestido dorado, que
+  dispara el cañón desde la muralla (El Castillo); la boca dorada que se toma el río San Carlos (Boca San Carlos); la Δ dorada partida por
+  el cuchillo, sobre el río que se parte (Delta); la pala dorada clavada al final del canal sin terminar, junto al pueblo gris (San Juan
+  de Nicaragua); y el vapor del Tránsito, de casco dorado, que sale al Caribe, con la aleta de Tiburcio. En el Tárcoles: el Grande y el
+  Virilla, dorados, que recogen el agua del Valle Central a los dos lados de la ciudad; el Fortín dorado que mira el río entre las flores
+  (Heredia); el chip dorado que brilla de estrella sobre el portal, con las mulas en el puente de piedra (Belén); la balsa de troncos
+  dorada en el abrazo de los dos ríos (Balsa); la oreja dorada que escucha el tren de los mangos y las sandías (Orotina); los cocodrilos
+  dorados bajo el puente de los turistas (Tárcoles); y la lancha de casco dorado que sale al golfo, con Ara y otra lapa en el almendro.
+  En el Térraba: el general de uniforme dorado que saluda al pie del Chirripó, porque el río nace como río General; San Isidro, de
+  túnica dorada, con un cerro de sombrero; las piñas doradas que escupe el volcán (Volcán); el rey dorado que bautiza desde el puente las
+  dos manos de agua (Paso Real); el rey que baila con la máscara de diablito dorada (Rey Curré); las esferas doradas que ruedan entre los
+  bananos (Palmar); el conquistador con botas de hule doradas en la inundación (Ciudad Cortés); y la lancha de casco dorado, cargada de
+  piñas, que sale al Pacífico entre los manglares de Sierpe. En los seis mares la barca del juego llega, según su propio dato.
   `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
   tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
   `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes; desde el Volga, abedules, abetos,
@@ -338,19 +368,23 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   guardan en WebP sin transparencia de 600 px de ancho y calidad 75 (hasta el 2026-10-26, de 744 px y calidad 84: ver abajo). El motor
   las pone con `postal(rid, i, cls)` (i = 0 el nacimiento, 1…n cada parada, n+1 el mar) en
   la ficha del nacimiento, de cada parada y del mar, y de pista en el reto de imagen; donde un río no tiene, queda la de pictogramas,
-  y el sello del pasaporte sigue con su pictograma. Pesan de 5,5 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
+  y el sello del pasaporte sigue con su pictograma. Pesan de 4 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
   130 KB las nueve del Volga, 97 KB las ocho del Nilo, 73 KB las siete del Amazonas, 77 KB las siete del Yangtsé, 81 KB las siete
   del Misisipi, 143 KB las diez del Danubio, 111 KB las nueve del Rin, 112 KB las ocho del Ganges, 99 KB las siete del Mekong, 93 KB
   las nueve del Níger, 75 KB las ocho del Paraná, 93 KB las ocho del Indo, 101 KB las nueve del Congo, 91 KB las nueve del Huang He,
-  71 KB las ocho del Orinoco, 100 KB las nueve del Murray, 63 KB las ocho del San Lorenzo y 83 KB las ocho del Zambeze; el
+  71 KB las ocho del Orinoco, 100 KB las nueve del Murray, 63 KB las ocho del San Lorenzo, 83 KB las ocho del Zambeze, 78 KB las
+  siete del Tempisque, 102 KB las ocho del Reventazón, 87 KB las siete del Sarapiquí, 79 KB las ocho del San Juan, 98 KB las siete del
+  Tárcoles y 107 KB las ocho del Térraba; el
   delta de Astracán, con sus juncos, es la más pesada, y la Selva Negra la sigue): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el
   Tigris, a ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo, a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el
   Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin, a ≈ 3 343 KB
   con el Ganges y el Mekong, a ≈ 3 510 KB con el Níger y el Paraná, a ≈ 3 705 KB con el Indo y el Congo, a ≈ 3 867 KB con el Huang He
-  y el Orinoco y a ≈ 4 113 KB con el Murray, el San Lorenzo y el Zambeze.
+  y el Orinoco, a ≈ 4 113 KB con el Murray, el San Lorenzo y el Zambeze y a ≈ 4 663 KB con los seis ríos de Costa Rica, con lo que
+  están las 201.
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
-  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,5 MB, con
-  ≈ 500 KB de sobra (medido sobre las 156 pintadas: faltan solo las 45 de los ríos de Costa Rica; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y las
+  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201, todas pintadas desde el
+  2026-10-26, queda en ≈ 4 663 KB, con ≈ 457 KB de sobra (la proyección sobre las 156 primeras daba ≈ 500 KB: las ticas, con más figuras,
+  salieron un poco más pesadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y las
   series más sencillas, del Níger en adelante, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
   vistas grandes como lo haría el pintor y prueba otras combinaciones: `560/75` dejaría ≈ 540 KB). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
   juncos de Astracán, los renglones de Bagdad, el cielo de Luxor, las caras de Leticia…), y eligió la liviana: «no vale la pena la
@@ -428,6 +462,17 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   de Quebec se pinta encima de la otra orilla. Una mancha que tiñe una pieza va `dentro=` de esa pieza; suelta, tiñe toda su caja (el
   emparrado de Renmark pintó el fondo de café). Cuando la imagen es un juego de palabras con el nombre del mar (Bengala, Arábigo, Banana,
   Índico), la protagonista del mar sale del juego: el tigre, los números, el plátano, la mano que apunta con el índice.
+- Lecciones de los ríos de Costa Rica (2026-10-26): `cordillera` cierra su polígono abajo, en el borde de la postal: un volcán en el
+  horizonte de un lago (Ometepe) va en su propio polígono, cerrado en la línea del agua, o tapa el lago entero. Varios ríos dorados que
+  se juntan, angostos, parecen varillas o cuernos de venado: los afluentes van de agua y lo dorado es el río que forman, largo y en una
+  curva suave; corto y con curvas cerradas parece un chorizo o una media. Una barra blanca en el agua con un papel dorado y una punta
+  doblada es un barco: el queso crema se lee por su crema, el papel arrugado y el cuchillo de untar. Una bolsa dorada con hojas verdes
+  arriba es una piña: las mazorcas llevan tusas pálidas y la bolsa su borde enrollado. La piel teñida con el dorado oscuro sobre
+  `vientre` sale verde oliva: va un café tibio (`A2683A`) a .6; la paja de un sombrero teñida de ocre se ve dorada: va pálida
+  (`D2B070`). Un bigote con las puntas hacia abajo es una cara de enojo; con las puntas hacia arriba y una sonrisa, la cara es amable.
+  Una mula que baja un escalón va inclinada entera (`affinity.rotate`), no con las patas estiradas. Una estatua de yeso lleva la cara de
+  yeso. Una locomotora lleva la chimenea adelante y la cabina atrás. Con todas las postales pintadas, test/casos.js les quita un momento
+  las suyas al Térraba y al Tárcoles para probar las de pictogramas, que son las de la económica.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -747,7 +792,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 113 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de los diecinueve ríos del mundo pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 663 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de los 25 ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
