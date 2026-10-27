@@ -2,19 +2,20 @@
 """Las postales del Tigris, de memoria: una por parada, y la del nacimiento y la del mar, en el orden de POSTALES. Cada una pinta la
 «imagen para recordar» de su ciudad (rios.js), que es lo que el jugador tiene que retener, con lo que dice el dato del lugar:
 
-- el nacimiento, en los montes Tauro: las montañas nevadas, los campos y dos ríos jóvenes que bajan juntos, el Tigris y el Éufrates,
-  «su gemelo», que nace a pocos kilómetros;
+- el nacimiento, en los montes Tauro: las montañas nevadas, los campos y dos ríos jóvenes y dorados que bajan juntos, el Tigris y
+  el Éufrates, «su gemelo», que nace a pocos kilómetros;
 - Diyarbakır: «murallas negras de basalto rodean al río recién nacido»: la muralla larga, con sus torres, que se curva alrededor
-  del río joven, entre los huertos;
-- Mosul: un toro alado de Nínive (un lamassu, con cabeza de hombre barbado y tiara de cuernos) cubierto con una tela de muselina,
-  que se llama así por Mosul, y al fondo las ruinas de la muralla de Nínive;
+  del río joven, dorado, entre los huertos;
+- Mosul: un toro alado de Nínive (un lamassu, con cabeza de hombre barbado y tiara de cuernos), dorado, cubierto con una tela de
+  muselina, que se llama así por Mosul, y al fondo las ruinas de la muralla de Nínive;
 - Tikrit: «un tic-tac de 800 años»: el sol es un reloj sobre la ciudadela, en lo alto del barranco sobre el río;
 - Samarra: la Malwiya, el minarete en espiral de la Gran Mezquita, dorada «como cono de helado», y el muro de la mezquita con sus
   torres redondas;
 - Bagdad: la ciudad redonda, con la muralla y sus puertas, una biblioteca gigante en el centro y el río teñido de tinta, con libros
   que flotan (762 y 1258);
 - Basora: el barco de Simbad que zarpa donde los dos ríos ya son uno, entre palmerales datileros;
-- el mar: el faro en la punta de la escollera, donde el Shatt al-Arab se abre al golfo Pérsico, con un petrolero en el horizonte.
+- el mar: un gato persa dorado, por el golfo Pérsico, sentado en la punta de la escollera donde el Shatt al-Arab se abre al golfo,
+  con el faro y un petrolero en el horizonte (el kelek se desarma en Bagdad: no llega al mar).
 
 Desde el 2026-10-25 siguen la regla del protagonista: la imagen para recordar va grande y al medio, y es lo único dorado; sin sol,
 salvo el que es un reloj en Tikrit.
@@ -42,6 +43,30 @@ def cinta(pts, anchos):
         izq.append(c[i] + n * a[i] / 2)
         der.append(c[i] - n * a[i] / 2)
     return Polygon(izq + der[::-1]).buffer(0)
+
+
+def rio_dorado(l, pts, anchos):
+    """un río joven, dorado porque es lo que hay que recordar: una cinta ancha que se abre hacia nosotros, con ondas blancas sueltas
+    (de orilla a orilla parecían los anillos de un gusano); la cabeza, donde sale de detrás de algo, va sin tinta y en sombra"""
+    g = cinta(pts, anchos)
+    y0 = pts[0][1]
+    m = l.masa(g, material='acento', alto=.25, brillo=.45, vientre=0, hondo=0, linea=.35, escalon=.1, contraluz=.3, arroja=False,
+               sin_tinta=box(-5, -5, 125, y0 + .6))
+    l.mancha(box(-5, -5, 125, y0 + 1.2), '6B4E10', .45, dentro=m, difuso=.8)
+    c = curva(pts, 10)
+    a = np.interp(np.linspace(0, 1, len(c)), np.linspace(0, 1, len(anchos)), anchos)
+    y, fila = y0 + 1.4, 0
+    while y < pts[-1][1] - .6:
+        k = int(np.argmin(np.abs(c[:, 1] - y)))
+        n = max(1, int(a[k] / 3.6))
+        for j in range(n):
+            x = c[k][0] + ((j + .5 + (fila % 2) * .25) / n - .55) * a[k] * .8
+            w, h = min(.5 + a[k] * .55 / n, 3.2), .12 + a[k] * .014
+            l.trazo([(x - w, y + h), (x - w / 2, y - h), (x, y + h * .6), (x + w / 2, y - h), (x + w, y + h)], .13 + a[k] * .012,
+                    color='FFFFFF', alfa=.85, dentro=m)
+        y += .9 + a[k] * .2
+        fila += 1
+    return g
 
 
 def rio_joven(l, pts, anchos):
@@ -73,17 +98,21 @@ def nace(l):
         while x < 122:
             w = rng.uniform(12, 22) * (1 + fila * .25)
             g = Polygon([(x, y0), (x + w, y0), (x + w + (fila + 1) * .8, y1), (x + (fila + 1) * .8, y1)])
-            m = l.masa(g, material=['vientre', 'cuerpo', 'claro'][rng.integers(0, 3)] if fila else 'vientre', alto=.06, brillo=0,
+            m = l.masa(g, material=['vientre', 'cuerpo', 'vientre'][rng.integers(0, 3)] if fila else 'vientre', alto=.06, brillo=0,
                        vientre=0, hondo=0, linea=.25, escalon=0, contraluz=0, arroja=False)
             for k in np.arange(y0 + .7, y1, .9 + fila * .15):
                 l.trazo([(x + .6, k), (x + w - .4, k)], .1, color='2F8A74', alfa=.45, dentro=m)
             x += w
     for x, y in ((8, 29.2), (26, 28.6), (96, 29), (112, 28.4)):
         arbol(l, x, y, 1.8)
-    # los dos ríos jóvenes, gemelos, que bajan juntos hacia nosotros: el Tigris, a la izquierda, y el Éufrates, en espejo
-    puntos, anchos = [(53, 23.6), (50.4, 26.6), (53.2, 30.6), (47.6, 35.2), (50.4, 41.5)], [1, 1.8, 3.2, 5, 7.4]
-    rio_joven(l, puntos, anchos)
-    rio_joven(l, [(120 - x, y) for x, y in puntos], anchos)
+    # los dos ríos jóvenes, gemelos, que salen del pie de los montes y bajan juntos hacia nosotros: el Tigris, a la izquierda, y el
+    # Éufrates, en espejo; entre los dos, la tierra entre ríos
+    espejo = lambda pts: [(120 - x, y) for x, y in pts]
+    puntos, anchos = [(37, 26.4), (33.6, 28.6), (32.6, 30.8), (39.6, 34.4), (46, 37.6), (44, 41.9)], [1.4, 2, 2.6, 3.4, 4.4, 5.6]
+    for pts in (puntos, espejo(puntos)):
+        rio_dorado(l, pts, anchos)
+        x, y = pts[0]
+        l.mancha(ovalo(x, y + .3, 1.9, 1.1), 'FFFFFF', .9, difuso=.3)     # la cascada donde sale de la montaña
 
 
 # ------------------------------------------------------------------------------------------------ Diyarbakır
@@ -122,13 +151,14 @@ def diyarbakir(l):
     for x, y, r in ((6, 33.4, 2.8), (13, 32.2, 2.4), (20, 31.2, 2.6), (28, 30, 2.2), (36, 28.4, 2), (44, 26.8, 1.8), (76, 26.8, 1.8),
                     (84, 28.4, 2), (92, 30, 2.2), (100, 31.2, 2.6), (107, 32.2, 2.4), (114, 33.4, 2.8)):
         arbol(l, x, y, r)
-    rio_joven(l, [(60, 20.4), (57.6, 25), (62.4, 30), (56.4, 35.4), (58.6, 41.5)], [2, 3.4, 5.2, 7.6, 10.6])
+    rio_dorado(l, [(60, 20.6), (54.4, 23.8), (52, 27.8), (58, 32.4), (67, 36.6), (69, 41.9)], [2.6, 3, 3.8, 4.8, 5.8, 7])
 
 
 # ------------------------------------------------------------------------------------------------ Mosul
 def lamassu(l):
     """el toro alado de Nínive, de perfil, mirando a la derecha: cuerpo de toro, el ala que nace del hombro y se abre hacia atrás y
-    hacia arriba en filas de plumas, la cabeza de hombre con barba rizada y tiara de cuernos; sobre su plinto. De piedra: verde claro"""
+    hacia arriba en filas de plumas, la cabeza de hombre con barba rizada y tiara de cuernos; sobre su plinto. De piedra, pero
+    dorado, porque es lo que hay que recordar"""
     l.masa(box(8.4, 29.2, 56.4, 31.4).buffer(.2), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.45)     # el plinto
     patas = [box(15.2, 21, 18.6, 29.4), box(21.4, 21, 24.6, 29.4), box(42.4, 20, 45.6, 29.4), box(47, 20, 50.2, 29.4)]
     for x in (15.2, 21.4, 42.4, 47):                               # las pezuñas
@@ -137,7 +167,7 @@ def lamassu(l):
                     (30, 23), (18, 22.8), (13.4, 21), (12.4, 17)], 2)
     cola = tubo([(13, 15), (10.6, 18), (10.2, 23.4)], [.7, .6, .5])
     borla = ovalo(10.2, 24.6, 1.1, 1.8)
-    c = l.masa([cuerpo, cola, borla] + patas, material='cuerpo', alto=.4, brillo=.15, vientre=.2, hondo=.1, linea=.5, escalon=.2,
+    c = l.masa([cuerpo, cola, borla] + patas, material='acento', alto=.4, brillo=.15, vientre=.2, hondo=.1, linea=.5, escalon=.2,
                contraluz=.3, bultos=[(ovalo(46, 17, 5, 5), .2), (ovalo(18, 18, 5, 5), .15)])
     for x in (16.8, 23, 44, 48.6):                                 # los músculos de las patas, tallados
         l.trazo([(x - 1, 22.6), (x, 24.4), (x - .6, 26.4)], [.08, .2, .08], alfa=.45, dentro=c)
@@ -149,7 +179,7 @@ def lamassu(l):
     abajo = [(47, 13), (42, 12.8), (34, 12), (26, 10.6), (18, 9.2), (12, 8.2), (8.2, 7.2)]
     puntas = [(8.6, 4.6), (7, 5.2), (8.6, 5.8), (7.2, 6.4), (8.2, 7.2)]
     ala = Polygon(arriba_ + puntas[1:-1] + abajo[::-1]).buffer(.2).buffer(-.1)
-    a = l.masa(ala, material='vientre', alto=.3, brillo=.15, vientre=0, hondo=0, linea=.45, escalon=.2, contraluz=.3)
+    a = l.masa(ala, material='acento', alto=.3, brillo=.25, vientre=0, hondo=0, linea=.45, escalon=.2, contraluz=.3)
     A, B = np.array(arriba_), np.array(abajo)
     for f in (.12, .28):                                           # las plumas chicas, en escamas
         fila = A + (B - A) * f
@@ -164,11 +194,11 @@ def lamassu(l):
     cara = forma([(48.8, 11.6), (48.6, 7), (50.4, 5), (53, 5.2), (53.8, 7), (54.6, 8.4), (53.8, 9.2), (54, 10.6), (52.6, 11.4)], 2)
     barba = forma([(48.8, 10.2), (53.4, 10.6), (54, 13.4), (53.4, 17.4), (49.4, 17.6), (48.4, 14)], 1)
     tiara = forma([(49.4, 5.6), (49.2, 1.4), (53.8, 1.4), (53.6, 5.6)], 1)
-    h = l.masa([cara, barba, tiara], material='cuerpo', alto=.35, brillo=.15, vientre=0, hondo=.1, linea=.45, escalon=.2, contraluz=.3)
+    h = l.masa([cara, barba, tiara], material='acento', alto=.35, brillo=.15, vientre=0, hondo=.1, linea=.45, escalon=.2, contraluz=.3)
     for y in np.arange(11.6, 17.4, 1.3):                            # los rizos de la barba
         for x in np.arange(49.2, 53.6, 1.2):
             dx = .6 if int(y) % 2 else 0
-            l.mancha(ovalo(x + dx, y, .42, .42), '2F8A74', .9, dentro=h)
+            l.mancha(ovalo(x + dx, y, .42, .42), '6B4E10', .6, dentro=h)
             l.mancha(ovalo(x + dx + .1, y + .1, .18, .18), '0C3A33', .6, dentro=h)
     for y in (2.4, 3.6, 4.8):                                       # los cuernos de la tiara
         l.trazo([(49.6, y), (51.4, y - .5), (53.4, y)], [.1, .2, .1], alfa=.6, dentro=h)
@@ -203,7 +233,7 @@ def mosul(l):
                   (32, 24.4), (28, 21.8), (24, 24.2), (20.6, 21.2), (17.8, 23.2), (15.6, 16)], 2)
     t = r_.masa(tela, material='claro', alto=.3, brillo=.25, vientre=0, hondo=0, linea=.35, escalon=.15, contraluz=.35, arroja=False)
     # la transparencia: dejo ver el toro por debajo, a través de la tela, con un velo del color del cuerpo
-    r_.mancha(tela.intersection(g), '6CC8A8', .28, dentro=t)
+    r_.mancha(tela.intersection(g), 'E8B952', .4, dentro=t)
     for x0, x1 in ((20.4, 19.4), (25.6, 25), (31, 30.6), (36.6, 36.2), (41.6, 41.6)):
         r_.trazo([(x0 + 1.4, 8.4), (x0 + .4, 14), (x1, 22.4)], [.06, .3, .12], color='FFFFFF', alfa=.95, dentro=t)
         r_.trazo([(x0 + 2.2, 8.8), (x0 + 1.2, 14.4), (x1 + .8, 22.8)], [.04, .16, .06], color='8EB5AA', alfa=.8, dentro=t)
@@ -482,6 +512,31 @@ def basora(l):
 
 
 # ------------------------------------------------------------------------------------------------ el mar
+def gato_persa(l, x, base, s=1.0):
+    """un gato persa dorado, sentado de tres cuartos, mirando a la derecha: el cuerpo redondo y peludo, la gola de pelo largo, la cara
+    chata con los ojos grandes, las orejitas, la cola esponjada que le rodea las patas y los bigotes"""
+    P = lambda pts: [(x + u * s, base + v * s) for u, v in pts]
+    O = lambda u, v, rx, ry, a=0: ovalo(x + u * s, base + v * s, rx * s, ry * s, a)
+    cola = tubo(P([(-6.6, -3.4), (-4.4, -.6), (.6, .2), (5.6, -.4)]), [2 * s, 2.2 * s, 2 * s, 1.4 * s], 8)
+    cuerpo = [O(0, -6.4, 6.2, 6.6), O(2.8, -9.4, 4.2, 3.8), O(3.6, -15, 4.8, 4.2), O(1.8, -.8, 1.8, 1), O(5.2, -.8, 1.8, 1),
+              Polygon(P([(.2, -17.6), (.6, -21), (2.6, -18.6)])), Polygon(P([(5, -18.8), (7.2, -21), (7.4, -17.4)]))]
+    m = l.masa([cola] + cuerpo, material='acento', alto=.55, brillo=.45, vientre=0, hondo=.1, linea=.4, contraluz=.4)
+    rng = np.random.default_rng(int(x))
+    for _ in range(46):                                                  # el pelo largo
+        a = rng.uniform(0, 2 * math.pi)
+        cx, cy = x + (rng.uniform(-5, 6)) * s, base + rng.uniform(-13, -1) * s
+        l.trazo([(cx, cy), (cx + math.cos(a) * 1.2 * s, cy + math.sin(a) * 1.2 * s)], .12 * s, color='6B4E10', alfa=.4, dentro=m)
+    for dx in (2, 5.4):                                                  # los ojos grandes
+        l.masa(O(dx, -15.4, 1.1, 1.2), material='claro', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.2)
+        l.mancha(O(dx + .2, -15.3, .5, .9), '05201C', 1)
+    l.mancha(Polygon(P([(3.2, -13.4), (4.4, -13.4), (3.8, -12.6)])), 'C86A6A', .9)                       # la nariz
+    l.trazo(P([(3.1, -12.2), (3.8, -11.8), (4.5, -12.2)]), .12 * s, color='3A2A0A', alfa=.8)
+    for k in (-1, 1):                                                    # los bigotes
+        l.trazo(P([(1.6, -12.6), (-1.6, -12.6 + k * .9)]), .08 * s, color='FFFFFF', alfa=.9)
+        l.trazo(P([(6, -12.6), (9.4, -12.6 + k * .9)]), .08 * s, color='FFFFFF', alfa=.9)
+    return unary_union([cola] + cuerpo)
+
+
 def mar(l):
     cielo(l, sol=None)
     nube(l, 28, 7, 16, .55)
@@ -496,30 +551,28 @@ def mar(l):
         x, y = rng.uniform(2, 116), rng.uniform(horizonte + 2, 39)
         l.trazo([(x, y), (x + 3, y - .25), (x + 6, y)], .16, color='A4DCC4', alfa=.7)
     # un petrolero en el horizonte: el casco largo y bajo, el puente y la chimenea a popa
-    l.masa([forma([(86, horizonte + .4), (105.4, horizonte + .4), (106.4, horizonte - .9), (86.6, horizonte - .7)], 0),
-            box(86.8, horizonte - 2.8, 89.6, horizonte - .6), box(87.6, horizonte - 3.8, 88.6, horizonte - 2.6)], material='lejos',
+    l.masa([forma([(72, horizonte + .4), (91.4, horizonte + .4), (92.4, horizonte - .9), (72.6, horizonte - .7)], 0),
+            box(72.8, horizonte - 2.8, 75.6, horizonte - .6), box(73.6, horizonte - 3.8, 74.6, horizonte - 2.6)], material='lejos',
            alto=.15, brillo=0, vientre=0, hondo=0, linea=.25, arroja=False)
     # la última orilla del Shatt al-Arab, con sus palmeras, a la izquierda
     orilla = forma([(-2, 22.8), (8, 22.4), (18, 23.4), (24, 25), (26, 27.8), (20, 30.2), (8, 31.2), (-2, 31.6)], 2)
     l.masa(orilla, material='vientre', alto=.15, brillo=0, vientre=0, hondo=0, linea=.35, contraluz=.25)
     for x, h, lado in ((2, 9.4, 1), (8, 11, -1), (14, 8.6, 1), (20, 7.8, -1)):
         palmera(l, x, 28.4, h, lado, datiles=False)
-    # el faro, al medio, en la punta de la escollera, con su luz dorada que alumbra el golfo
-    l.masa(forma([(42, horizonte + 1.8), (50, horizonte - .4), (70, horizonte - .4), (80, horizonte + 1.4), (80, horizonte + 3.2),
-                  (42, horizonte + 3.2)], 1), material='lejos', alto=.2, brillo=.05, vientre=0, hondo=0, linea=.35)
-    for lado in (-1, 1):                                                 # los rayos de luz
-        l.mancha(Polygon([(60, 5.6), (60 + lado * 30, 1.2), (60 + lado * 30, 10.4)]), 'F2D48A', .3, difuso=.8)
-    l.mancha(ovalo(60, 5.6, 9, 4.4), 'F2D48A', .4, difuso=1.6)
-    torre = forma([(56, horizonte - .2), (57.4, 9), (62.6, 9), (64, horizonte - .2)], 0)
-    t = l.masa(torre, material='claro', alto=.35, brillo=.2, vientre=0, hondo=0, linea=.45, escalon=.2, contraluz=.3)
-    for y in (12.6, 18):
-        l.mancha(box(50, y, 70, y + 2.6), '2F8A74', .85, dentro=t)
-    l.mancha(forma([(59, horizonte - .2), (59, 21.4), (60, 20.6), (61, 21.4), (61, horizonte - .2)], 1), '164F46', .85, dentro=t)
-    l.masa(box(56.4, 7.6, 63.6, 9.4).buffer(.15), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.35)
-    l.masa(box(57.6, 4, 62.4, 7.6).buffer(.1), material='acento', alto=.3, brillo=.5, vientre=0, hondo=0, linea=.35)
-    l.trazo([(60, 4.2), (60, 7.4)], .2, color='6B4E10', alfa=.6)
-    l.masa(forma([(56.8, 4.2), (60, 1.2), (63.2, 4.2)], 0), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.35)
-    reflejo(l, torre, horizonte + .2, .3)
+    # el faro, blanco y lejos, en su islote, a la derecha
+    l.masa(forma([(98, horizonte + .6), (102, horizonte - .6), (112, horizonte - .6), (116, horizonte + .6)], 1), material='lejos', alto=.2, brillo=.05,
+           vientre=0, hondo=0, linea=.3)
+    torre = forma([(104.6, horizonte - .4), (105.4, 12), (108.6, 12), (109.4, horizonte - .4)], 0)
+    t = l.masa(torre, material='claro', alto=.35, brillo=.2, vientre=0, hondo=0, linea=.35, escalon=.2, contraluz=.3)
+    l.mancha(box(100, 16, 114, 17.6), '2F8A74', .85, dentro=t)
+    l.masa([box(104.8, 10.4, 109.2, 12.2), forma([(104.6, 10.6), (107, 8.4), (109.4, 10.6)], 0)], material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0,
+           linea=.3)
+    # la escollera, al medio, y el gato persa dorado, protagonista, sentado en la punta, mirando el golfo
+    l.masa(forma([(36, horizonte + 3.6), (42, horizonte + .6), (78, horizonte + .6), (86, horizonte + 3.6), (86, horizonte + 6.4),
+                  (36, horizonte + 6.4)], 1), material='lejos', alto=.2, brillo=.05, vientre=0, hondo=0, linea=.35)
+    l.mancha(ovalo(61, horizonte + 1.4, 9, .9), '0C3A33', .3, difuso=.4)
+    g = gato_persa(l, 58, horizonte + 1.2, 1.18)
+    reflejo(l, g, horizonte + 6.4, .25)
 
 
 POSTALES = [dict(clave='nace', dibujar=nace), dict(clave='Diyarbakır', dibujar=diyarbakir), dict(clave='Mosul', dibujar=mosul),

@@ -2,22 +2,23 @@
 """Las postales del Volga, de memoria: una por parada, y la del nacimiento y la del mar, en el orden de POSTALES. Cada una pinta la
 «imagen para recordar» de su ciudad (rios.js), con lo que dice el dato del lugar:
 
-- el nacimiento, en las colinas de Valdái: el pantano entre abetos y abedules, con charcos y juncos, y el Volga que sale como un
-  arroyito de la capillita de madera que está sobre el manantial, con su pasarela;
-- Tver: «el Volga todavía cabe bajo un puente corto»: el río angosto que viene hacia nosotros y pasa bajo un puente de un solo arco,
-  entre casas de madera y una iglesia de cúpulas de cebolla;
+- el nacimiento, en las colinas de Valdái: el pantano entre abetos y abedules, con charcos y juncos, y el Volga, un arroyito dorado,
+  que sale del manantial que está bajo la capilla de madera, grande, con su cúpula de cebolla dorada y su pasarela;
+- Tver: «el Volga todavía cabe bajo un puente corto»: el río angosto, dorado, que viene en curva hacia nosotros y pasa bajo un puente
+  blanco de lomo y de un solo arco, con juncos en las orillas y dos patos, entre casas de madera y una iglesia de cúpulas de cebolla;
 - Yaroslavl: el oso de su escudo, de pie, con el hacha dorada al hombro (la leyenda del príncipe que mató al oso con un hacha), en la
   orilla, y enfrente las iglesias de la ciudad;
-- Nizhni Nóvgorod: la gran feria donde Oriente y Occidente regateaban: una balanza gigante pesa un cajón de té contra un fardo de
-  pieles, en la lengua de tierra donde el Oká entra al Volga, y enfrente, sobre la colina, el Kremlin de ladrillo con sus torres;
-- Kazán: un caldero (kazan, en tártaro) hirviendo sobre el fuego delante del Kremlin blanco, donde la mezquita Kul Sharif, con sus
-  minaretes, y la catedral de cúpulas de cebolla comparten el recinto;
-- Samara: «un anzuelo gigante»: visto desde arriba, el río rodea las montañas boscosas de Zhiguli y casi vuelve sobre sí mismo, como
-  un anzuelo colgado de su sedal, entre campos;
-- Volgogrado: la Madre Patria de Mamáyev Kurgán, una mujer de piedra que alza una espada y llama con la otra mano, en lo alto de su
-  colina sobre el río;
-- Astracán: un mercader con su gorro de astracán, de piel de rizos apretados, que muestra una lata de caviar abierta; la tapa, con su
-  esturión, en el muelle del delta, donde el río se deshace en brazos entre juncales; lejos, las cúpulas del Kremlin;
+- Nizhni Nóvgorod: la gran feria donde Oriente y Occidente regateaban: una balanza gigante de dos platillos, dorada, pesa un cajón
+  de té contra un montón de pieles, en la lengua de tierra donde el Oká entra al Volga, y enfrente, sobre la colina, el Kremlin de
+  ladrillo con sus torres (con un gancho y las pieles colgadas, la balanza parecía una horca);
+- Kazán: un caldero dorado (kazan, en tártaro) hirviendo sobre el fuego delante del Kremlin blanco, donde la mezquita Kul Sharif, con
+  sus minaretes, y la catedral de cúpulas de cebolla comparten el recinto;
+- Samara: «un anzuelo gigante»: visto desde arriba, el río, dorado, rodea las montañas boscosas de Zhiguli y casi vuelve sobre sí
+  mismo, como un anzuelo colgado de su sedal, entre campos;
+- Volgogrado: la Madre Patria de Mamáyev Kurgán, dorada, una mujer que alza una espada de acero y llama con la otra mano, en lo alto
+  de su colina sobre el río;
+- Astracán: un mercader con su gorro de astracán, de piel de rizos apretados, que muestra una lata de caviar abierta, dorada; la
+  tapa, con su esturión, en el muelle del delta, donde el río se deshace en brazos entre juncales; lejos, las cúpulas del Kremlin;
 - el mar: la lodia de los mercaderes del Volga, la barca del juego, que sale al Caspio, un mar cerrado, entre juncos y lotos en flor.
 
 Desde el 2026-10-25 siguen la regla del protagonista: la imagen para recordar va grande y al medio, y es lo único dorado; sin sol.
@@ -32,7 +33,46 @@ from shapely.ops import unary_union
 
 from _postal import (VISTA, abedul, abeto, agua, ave, cebolla, cielo, cinta, iglesia, juncos, loto, nube, orilla, pasto,  # noqa: F401
                      prado, reflejo, rio)
-from pintor import forma, ovalo, tubo
+from pintor import curva, forma, ovalo, tubo
+
+
+def ondas_doradas(l, m, pts, anchos, n=10, desde=1.2):
+    """las ondas blancas de un río dorado, sueltas a lo largo de su eje (de orilla a orilla parecían los anillos de un gusano)"""
+    c = curva(pts, n)
+    a = np.interp(np.linspace(0, 1, len(c)), np.linspace(0, 1, len(anchos)), anchos)
+    largo = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(c, axis=0).T))])
+    t, fila = desde, 0
+    while t < largo[-1] - .6:
+        k = int(np.searchsorted(largo, t))
+        x, y = c[k]
+        w, h = min(.4 + a[k] * .3, 2.6), .1 + a[k] * .02
+        x += (.18 if fila % 2 else -.18) * a[k]
+        l.trazo([(x - w, y + h), (x - w / 2, y - h), (x, y + h * .6), (x + w / 2, y - h), (x + w, y + h)], .12 + a[k] * .014,
+                color='FFFFFF', alfa=.85, dentro=m)
+        t += 1.1 + a[k] * .35
+        fila += 1
+
+
+def rio_dorado(l, pts, anchos, n=10):
+    """un río dorado, porque es lo que hay que recordar: la cinta con sus ondas; la cabeza, que sale del agua, sin tinta"""
+    g = cinta(pts, anchos, n)
+    m = l.masa(g, material='acento', alto=.25, brillo=.45, vientre=0, hondo=0, linea=.35, escalon=.1, contraluz=.3, arroja=False,
+               sin_tinta=box(-5, -5, 125, pts[0][1] + .5))
+    ondas_doradas(l, m, pts, anchos, n)
+    return g
+
+
+def pato(l, x, y, s=1.0, lado=1):
+    """un pato blanco que nada, mirando a `lado`: el cuerpo de barquito, la cabeza redonda con su pico y su ojo, y la estela en V"""
+    P = lambda pts: [(x + lado * u * s, y + v * s) for u, v in pts]
+    for k in (-1, 1):
+        l.trazo(P([(-2.2, .3), (-4.6, .3 + k * .9)]), .14 * s, color='FFFFFF', alfa=.75)          # la estela
+    cuerpo = forma(P([(-2.4, -1.2), (-1.8, -.1), (1.4, .1), (2.2, -.7), (1.2, -1.4), (-1.2, -1.3)]), 2)
+    cabeza = [tubo(P([(1.2, -1.2), (1.6, -2.2)]), [.6 * s, .5 * s], 4), ovalo(x + lado * 1.8 * s, y - 2.6 * s, .8 * s, .7 * s)]
+    m = l.masa([cuerpo] + cabeza, material='claro', alto=.4, brillo=.2, vientre=0, hondo=0, linea=.3, contraluz=.3)
+    l.masa(Polygon(P([(2.4, -2.9), (3.6, -2.5), (2.4, -2.2)])), material='claro', alto=.2, brillo=.2, vientre=0, hondo=0, linea=.2)
+    l.mancha(Polygon(P([(2.2, -3), (3.8, -2.5), (2.2, -2.1)])), 'F0A57A', .9)                       # el pico
+    l.mancha(ovalo(x + lado * 2 * s, y - 2.8 * s, .16 * s, .16 * s), '05201C', 1, dentro=m)
 
 
 def casa_madera(l, x, base, w=6.0, h=4.0, techo='lejos'):
@@ -69,33 +109,38 @@ def nace(l):
     for x, y, rx, ry in ((14, 27, 7, 1.1), (30, 32.6, 8, 1.3), (90, 28.4, 8, 1.2), (102, 34.4, 10, 1.6), (12, 37.6, 8, 1.5)):
         agua(l, ovalo(x, y, rx, ry), ondas=1, semilla=int(x), linea=.2)
     pasto(l, 0, 120, 24, 40, 30, semilla=3)
-    # el manantial, bajo la capillita, y el Volga que sale de él como un arroyito, hacia nosotros
-    cx, pie, e = 60, 28, 1.3
-    agua(l, ovalo(cx, pie - .6, 6.4, 1.4), ondas=1, linea=.2)
-    agua(l, cinta([(cx - .6, pie), (cx - 3.4, 31.4), (cx + 1.6, 34.4), (cx - 3, 37.8), (cx - .6, 41.5)], [1, 1.6, 2.4, 3.2, 4.2]), ondas=3,
-         semilla=4, linea=.25)
-    # la capillita de madera sobre pilotes, protagonista, con su cúpula dorada, y la pasarela de tablas que llega hasta ella
+    # el manantial, bajo la capilla, y el Volga que sale de él como un arroyito dorado, hacia nosotros
+    cx, pie, e = 60, 28.4, 1.25
+    agua(l, ovalo(cx, pie - .4, 9, 1.7), ondas=1, linea=.2)
+    rio_dorado(l, [(cx - .4, pie + .6), (cx - 4, 31.8), (cx - 2, 35.4), (cx + 4, 38.6), (cx + 6, 41.9)], [2, 2.8, 3.8, 5, 6.4])
+    # la capilla de madera sobre pilotes, protagonista y grande, con su cúpula de cebolla dorada, y la pasarela de tablas que llega
+    # hasta ella (chica y con la cúpula chica, se perdía en el pantano)
     P = lambda pts: [(cx + u * e, pie + v * e) for u, v in pts]
-    for u in np.arange(-19, -2, 2.4):
-        l.masa(Polygon(P([(u - .15, -2.4), (u + .15, -2.4), (u + .15, -.6), (u - .15, -.6)])), material='lejos', alto=.2, brillo=.1,
+    MADERA = 'A2683A'                                                   # un café de madera, no dorado
+    for u in np.arange(-21, -5, 2.4):
+        l.masa(Polygon(P([(u - .15, -2.2), (u + .15, -2.2), (u + .15, -.4), (u - .15, -.4)])), material='lejos', alto=.2, brillo=.1,
                vientre=0, hondo=0, linea=.2, arroja=False)
-    pa = l.masa(Polygon(P([(-20, -3.2), (-2, -3.2), (-2, -2.4), (-20, -2.4)])), material='lejos', alto=.2, brillo=.15, vientre=0, hondo=0,
-                linea=.3)
-    for u in np.arange(-19.4, -2, 1.1):
-        l.trazo(P([(u, -3.1), (u, -2.5)]), .07, color='0C3A33', alfa=.6, dentro=pa)
-    l.masa([Polygon(P([(x - .25, -10), (x + .25, -10), (x + .25, 0), (x - .25, 0)])) for x in (-2.4, 2.4)], material='lejos', alto=.2,
+    pa = l.masa(Polygon(P([(-22, -2.9), (-4.6, -2.9), (-4.6, -2.2), (-22, -2.2)])), material='lejos', alto=.2, brillo=.15, vientre=0,
+                hondo=0, linea=.3)
+    for u in np.arange(-21.4, -4.6, 1.1):
+        l.trazo(P([(u, -2.8), (u, -2.3)]), .07, color='0C3A33', alfa=.6, dentro=pa)
+    l.masa([Polygon(P([(x - .3, -3), (x + .3, -3), (x + .3, 0), (x - .3, 0)])) for x in (-3.6, 0, 3.6)], material='lejos', alto=.2,
            brillo=.1, vientre=0, hondo=0, linea=.25)
-    cap = l.masa(Polygon(P([(-3.4, -10.2), (3.4, -10.2), (3.4, -4), (-3.4, -4)])).buffer(.1), material='vientre', alto=.25, brillo=.05,
-                 vientre=0, hondo=0, linea=.35)
-    l.mancha(Polygon(P([(-4, -11), (4, -11), (4, -3.6), (-4, -3.6)])), 'E8B952', .35, dentro=cap)
-    for v in np.arange(-9.5, -4, .75):
-        l.trazo(P([(-3.4, v), (3.4, v)]), .07, color='6B4E10', alfa=.5, dentro=cap)
-    l.mancha(forma(P([(-.9, -4), (-.9, -7.4), (0, -8.2), (.9, -7.4), (.9, -4)]), 1), '164F46', .85, dentro=cap)
-    l.masa(Polygon(P([(-4.6, -10), (0, -14), (4.6, -10)])).buffer(.1), material='lejos', alto=.25, brillo=.1, vientre=0, hondo=0, linea=.35)
-    l.masa(Polygon(P([(-.8, -15.8), (.8, -15.8), (.8, -13.6), (-.8, -13.6)])), material='vientre', alto=.2, brillo=.05, vientre=0, hondo=0,
-           linea=.3)
-    l.masa(cebolla(cx, pie - 15.8 * e, 1.2 * e), material='acento', alto=.5, brillo=.4, vientre=0, hondo=0, linea=.3, contraluz=.3)
-    tope = pie - (15.8 + 1.2 * 3.05) * e
+    cap = l.masa(Polygon(P([(-4.6, -9.6), (4.6, -9.6), (4.6, -2.6), (-4.6, -2.6)])).buffer(.1), material='vientre', alto=.25,
+                 brillo=.05, vientre=0, hondo=0, linea=.4)
+    l.mancha(Polygon(P([(-5, -10), (5, -10), (5, -2.2), (-5, -2.2)])), MADERA, .45, dentro=cap)
+    for v in np.arange(-9, -2.8, .8):                                   # los troncos
+        l.trazo(P([(-4.6, v), (4.6, v)]), .08, color='6B4E10', alfa=.5, dentro=cap)
+    l.mancha(forma(P([(-1.2, -2.6), (-1.2, -6.4), (0, -7.4), (1.2, -6.4), (1.2, -2.6)]), 1), '164F46', .85, dentro=cap)
+    for u in (-3.2, 3.2):                                               # las ventanitas
+        l.mancha(box(*P([(u - .6, -7.2), (u + .6, -5.6)])[0], *P([(u - .6, -7.2), (u + .6, -5.6)])[1]), '164F46', .8, dentro=cap)
+    l.masa(Polygon(P([(-5.8, -9.4), (0, -13.4), (5.8, -9.4)])).buffer(.1), material='lejos', alto=.25, brillo=.1, vientre=0, hondo=0,
+           linea=.4)
+    tb = l.masa(Polygon(P([(-1.1, -15), (1.1, -15), (1.1, -12.8), (-1.1, -12.8)])), material='vientre', alto=.2, brillo=.05, vientre=0,
+                hondo=0, linea=.3)
+    l.mancha(Polygon(P([(-1.4, -15.4), (1.4, -15.4), (1.4, -12.4), (-1.4, -12.4)])), MADERA, .45, dentro=tb)
+    l.masa(cebolla(cx, pie - 15 * e, 1.9 * e), material='acento', alto=.5, brillo=.45, vientre=0, hondo=0, linea=.35, contraluz=.35)
+    tope = pie - (15 + 1.9 * 3.05) * e
     l.trazo([(cx, tope + .1), (cx, tope - 2)], .18, alfa=.9)
     l.trazo([(cx - .7, tope - 1.2), (cx + .7, tope - 1.2)], .16, alfa=.9)
     for x, y, h in ((6, 30, 10), (12, 28.4, 8.4), (96, 29, 9), (110, 31, 11), (116, 27.6, 8)):
@@ -110,16 +155,13 @@ def tver(l):
     nube(l, 26, 6, 14, .6)
     nube(l, 98, 4.4, 10, .45)
     prado(l, 19, 41)
-    # el río angosto, que viene de lejos hacia nosotros y se ensancha
-    w = lambda y: 3 + (y - 19) / 22.5 * 53
-    lecho = Polygon([(60 - w(19) / 2, 19), (60 + w(19) / 2, 19), (60 + w(41.5) / 2, 41.5), (60 - w(41.5) / 2, 41.5)])
-    agua(l, lecho, linea=.3)
-    for k in range(6):                                                # las ondas, más grandes adelante
-        y = 32 + k * 1.6
-        s_ = (y - 19) / 22.5
-        for dx in (-.28, .18):
-            x = 60 + dx * w(y) + (k % 2) * 3 * s_
-            l.trazo([(x - 2.4 * s_, y), (x, y - .25 * s_), (x + 2.4 * s_, y)], .1 + .12 * s_, color='D2F2DA', alfa=.8)
+    # el río angosto y dorado, protagonista, que viene de lejos en una curva, pasa bajo el puente y se ensancha hacia nosotros (recto y
+    # con las ondas de orilla a orilla, parecía un camino de ladrillos)
+    eje = [(48, 18.6), (55, 21.4), (59.4, 25), (60, 29), (59.4, 33.6), (60.6, 37.8), (62.4, 41.9)]
+    anchos = [2, 4, 7.2, 10.6, 15, 20, 25]
+    lecho = cinta(eje, anchos, 10)
+    lm = l.masa(lecho, material='acento', alto=.15, brillo=.4, vientre=0, hondo=0, linea=.35, escalon=.1, contraluz=.25, arroja=False)
+    ondas_doradas(l, lm, eje, anchos, 10, desde=4)
     # la línea de árboles lejos, que tapa de dónde viene el río, y en las orillas, las casas de madera y la iglesia
     for x in np.arange(-1, 121, 3.2):
         l.masa(ovalo(x, 18.6, 1.9, 1.3), material='lejos', alto=.3, brillo=.05, vientre=0, hondo=0, linea=.22, arroja=False)
@@ -128,24 +170,32 @@ def tver(l):
     iglesia(l, 105, 22.6, 12, 7, cupulas=((0, 1.1), (-4, .66), (4, .66)), dorada=None)
     for x, h in ((92, 8.6), (118, 7.6)):
         abedul(l, x, 23.4, h, 2, semilla=int(x))
-    # el puente corto, protagonista: de piedra, de un solo arco, que cruza el río de orilla a orilla
-    agua_y, yt = 29, 17
-    r = w(agua_y) / 2
-    x0, x1 = 60 - r - 11, 60 + r + 11
-    arco = ovalo(60, agua_y, r + .4, 8)
-    pte = box(x0, yt, x1, agua_y + .8).difference(arco).difference(box(60 - r - .4, agua_y, 60 + r + .4, agua_y + 2))
-    l.mancha(arco.intersection(box(40, agua_y - 2.6, 80, agua_y)), '0C3A33', .35)          # la sombra bajo el arco
+    # el puente corto, de piedra blanca, de lomo y de un solo arco, ancho y bajo, que cruza el río de orilla a orilla
+    agua_y = 29
+    r = 10.6 / 2 + 2.6
+    x0, x1 = 60 - r - 8, 60 + r + 8
+    lomo = lambda x: 21 + 2.4 * ((x - 60) / (x1 - 60)) ** 2
+    arco = ovalo(60, agua_y, r, 5.6)
+    borde = [(x, lomo(x)) for x in np.linspace(x0, x1, 40)]
+    pte = Polygon(borde + [(x1 + 3.4, agua_y + .8), (x0 - 3.4, agua_y + .8)]).difference(arco).difference(
+        box(60 - r, agua_y, 60 + r, agua_y + 2))
+    l.mancha(arco.intersection(box(40, agua_y - 2.6, 80, agua_y)), '0C3A33', .45, dentro=lm)  # la sombra bajo el arco
     espejo = affinity.scale(pte, 1, -1, origin=(0, agua_y)).intersection(lecho)
     for k in np.arange(agua_y + .2, 39, .9):                            # su reflejo, que cierra el ojo del arco
-        l.mancha(espejo.intersection(box(-2, k, 122, k + .5)), 'D2F2DA', .55 * max(0, 1 - (k - agua_y) / 9))
+        l.mancha(espejo.intersection(box(-2, k, 122, k + .5)), 'FBEFCB', .7 * max(0, 1 - (k - agua_y) / 9), dentro=lm)
     p = l.masa(pte, material='claro', alto=.3, brillo=.15, vientre=0, hondo=0, linea=.5, escalon=.2, contraluz=.3)
-    l.mancha(box(x0, yt, x1, yt + 1.6), 'CFE0DA', .8, dentro=p)
-    for a in range(10, 175, 11):                                        # las dovelas del arco
+    l.mancha(Polygon(borde + [(x, lomo(x) + 1.4) for x in np.linspace(x1, x0, 40)]), 'CFE0DA', .8, dentro=p)    # el pretil
+    for a in range(8, 177, 10):                                         # las dovelas del arco
         c, s_ = math.cos(math.radians(a)), math.sin(math.radians(a))
-        l.trazo([(60 + (r + .4) * c, agua_y - 8 * s_), (60 + (r + 2.6) * c, agua_y - 10.2 * s_)], .14, color='8EB5AA', alfa=.9, dentro=p)
+        l.trazo([(60 + r * c, agua_y - 5.6 * s_), (60 + (r + 2) * c, agua_y - 7.4 * s_)], .14, color='8EB5AA', alfa=.9, dentro=p)
     for x in np.arange(x0 + 1, x1, 2.2):                                # la baranda
-        l.trazo([(x, yt - 1.6), (x, yt)], .2, alfa=.8)
-    l.trazo([(x0 - .3, yt - 1.7), (x1 + .3, yt - 1.7)], .3, alfa=.9)
+        l.trazo([(x, lomo(x) - 1.5), (x, lomo(x))], .2, alfa=.8)
+    l.trazo([(x, lomo(x) - 1.6) for x in np.linspace(x0 - .3, x1 + .3, 30)], .3, alfa=.9)
+    # los juncos de las orillas del río y dos patos que nadan
+    for x0, x1, y, h, k in ((44, 50.4, 37.4, 3.4, 21), (39.6, 49.4, 41.2, 4, 22), (70.4, 76.4, 37.6, 3.4, 23), (74, 83, 41.2, 4, 24)):
+        juncos(l, x0, x1, y, h, 12, semilla=k)
+    pato(l, 56.2, 35.2, 1, -1)
+    pato(l, 64.2, 38.8, 1.15, 1)
     # las orillas de adelante, con pasto y juncos
     for x, s_ in ((4, 1), (116, -1)):
         orilla(l, forma([(x - 12 * s_, 41.5), (x - 12 * s_, 33), (x, 33.6), (x + 12 * s_, 36.4), (x + 18 * s_, 41.5)], 2))
@@ -256,9 +306,9 @@ def tienda(l, x, base, w=9.0, h=5.6, banderin='cuerpo'):
 
 def caja_te(l, x, base, w=5.4, h=4.2):
     """un cajón de té: la madera clara con sus flejes y el sello del té, una hoja"""
-    c = l.masa(box(x - w / 2, base - h, x + w / 2, base).buffer(.08), material='vientre', alto=.25, brillo=.12, vientre=0, hondo=0,
-               linea=.35)
-    l.mancha(box(x - w / 2, base - h, x + w / 2, base), 'E8B952', .45, dentro=c)
+    c = l.masa(box(x - w / 2, base - h, x + w / 2, base).buffer(.08), material='claro', alto=.25, brillo=.12, vientre=0, hondo=0,
+               linea=.4)
+    l.mancha(box(x - w / 2, base - h, x + w / 2, base), 'B08A6A', .45, dentro=c)
     for yy in (base - h + .45, base - .45):
         l.trazo([(x - w / 2, yy), (x + w / 2, yy)], .14, color='6B4E10', alfa=.7, dentro=c)
     m = base - h / 2
@@ -291,29 +341,51 @@ def pieles(l, puntos, largo=6.0, semilla=0):
         l.mancha(affinity.rotate(ovalo(x + .35, y + 1.2, .14, .14), g, origin=(x, y)), '05201C', .9, dentro=f)
 
 
-def balanza(l, x, base, alto_=20.0, brazo=11.0, lado=1):
-    """la gran balanza de la feria: de un lado, un platillo colgado de cadenas (a la izquierda; a la derecha con `lado` -1); del otro,
-    un gancho; da dónde asienta el platillo y dónde está el gancho"""
+def balanza(l, x, base, alto_=30.0, brazo=15.0, cadena=11.0):
+    """la gran balanza de la feria, de dos platillos y dorada: el pie escalonado, la columna, el astil con su fiel arriba y, colgado
+    de cada punta por sus tres cadenas, un platillo; da dónde asienta cada platillo (con un gancho y las pieles colgadas de un lado,
+    parecía una horca)"""
     tope = base - alto_
-    l.masa([box(x - .45, tope, x + .45, base - .8), forma([(x - 3.6, base), (x - 2.4, base - 1.4), (x + 2.4, base - 1.4), (x + 3.6, base)], 1)],
-           material='oscuro', alto=.3, brillo=.35, vientre=0, hondo=0, linea=.35, contraluz=.3)
-    xp, yp = x - lado * (brazo - .4), tope + 7
-    for dx in (-2.8, 2.8):
-        l.trazo([(xp, tope + .3), (xp + dx, yp)], .1, alfa=.85)
-    xg, yg = x + lado * (brazo - .4), tope + 3.4
-    l.trazo([(xg, tope + .3), (xg, yg - .6)], .14, alfa=.9)
-    l.masa([box(x - brazo, tope - .35, x + brazo, tope + .35).buffer(.1), ovalo(x, tope - .7, .9, .9)], material='oscuro', alto=.3,
-           brillo=.35, vientre=0, hondo=0, linea=.35, contraluz=.3)
-    l.masa(forma([(x - .7, tope - 1.4), (x, tope - 3.4), (x + .7, tope - 1.4)], 1), material='acento', alto=.3, brillo=.3, vientre=0,
-           hondo=0, linea=.3)                                           # el fiel
-    l.masa(forma([(xp - 3.4, yp), (xp + 3.4, yp), (xp + 2.4, yp + 1.2), (xp - 2.4, yp + 1.2)], 1), material='acento', alto=.3, brillo=.3,
-           vientre=0, hondo=0, linea=.35, contraluz=.3)
-    return (xp, yp), (xg, yg)
+    yp = tope + cadena
+    for xe in (x - brazo, x + brazo):                                    # las cadenas
+        for dx in (-4.4, 0, 4.4):
+            l.trazo([(xe, tope + .6), (xe + dx, yp + .1)], .13, alfa=.85)
+    piezas = [forma([(x - 5.4, base), (x - 4.6, base - 1.2), (x - 2.8, base - 1.6), (x - 1.8, base - 2.8), (x + 1.8, base - 2.8),
+                     (x + 2.8, base - 1.6), (x + 4.6, base - 1.2), (x + 5.4, base)], 1),
+              box(x - .75, tope + .8, x + .75, base - 2.6),
+              Polygon([(x - brazo - .5, tope - .45), (x, tope - .95), (x + brazo + .5, tope - .45), (x + brazo + .5, tope + .45), (x, tope + .95),
+                       (x - brazo - .5, tope + .45)]),
+              ovalo(x, tope, 1.6, 1.6), Polygon([(x - .8, tope - 1.2), (x, tope - 5.6), (x + .8, tope - 1.2)]),
+              ovalo(x - brazo, tope, .9, .9), ovalo(x + brazo, tope, .9, .9)]
+    platillos = [forma([(xe - 5.4, yp), (xe + 5.4, yp), (xe + 4.2, yp + 1.5), (xe + 2.2, yp + 2.2), (xe - 2.2, yp + 2.2), (xe - 4.2, yp + 1.5)], 2)
+                 for xe in (x - brazo, x + brazo)]
+    m = l.masa(piezas + platillos, material='acento', alto=.4, brillo=.45, vientre=0, hondo=0, linea=.4, escalon=.15, contraluz=.35)
+    l.mancha(ovalo(x, tope, .55, .55), '6B4E10', .85, dentro=m)          # el eje
+    return (x - brazo, yp), (x + brazo, yp)
 
 
-def gancho(l, x, y):
-    """el gancho de donde cuelgan las pieles, con su cuerda dorada"""
-    l.masa(ovalo(x, y, .8, .7).difference(ovalo(x, y, .4, .35)), material='oscuro', alto=.2, brillo=.35, vientre=0, hondo=0, linea=.25)
+def piel_echada(x, y, largo=7.0, lado=1):
+    """una piel de marta echada sobre el platillo: el cuerpo largo y chato, la cabecita con sus orejas en la punta de `lado`, las
+    patitas abiertas y la cola peluda, que cuelga por el borde de la otra punta; (x, y) es el medio del lomo"""
+    L = largo / 2
+    cuerpo = forma([(x - L, y + .4), (x - L * .7, y - .6), (x + L * .7, y - .6), (x + L, y + .3), (x + L * .7, y + .8), (x - L * .7, y + .8)], 2)
+    hx, hy = x + lado * (L + .4), y - .1
+    cabeza = ovalo(hx, hy, .9, .72)
+    orejas = [Polygon([(hx - .7, hy - .3), (hx - .4, hy - 1.2), (hx - .05, hy - .5)]), Polygon([(hx + .05, hy - .5), (hx + .4, hy - 1.2), (hx + .7, hy - .3)])]
+    cola = tubo([(x - lado * (L - .3), y + .2), (x - lado * (L + .9), y + .5), (x - lado * (L + 1.4), y + 1.8), (x - lado * (L + 1.3), y + 3.2)],
+                [.5, .7, .6, .3], 6)
+    patas = [Polygon([(x + d - .5, y + .6), (x + d + .5, y + .6), (x + d + lado * 1, y + 1.4)]) for d in (L * .55 * lado, -L * .45 * lado)]
+    return unary_union([cuerpo, cabeza, cola] + orejas + patas).buffer(.03), (hx, hy)
+
+
+def pila_pieles(l, x, base, semilla=0):
+    """unas pieles echadas una sobre otra en el platillo, peludas, cada una con su cabecita y su cola"""
+    capas = [(x - .2, base - .9, 8, 1), (x + .5, base - 2.4, 7.6, -1), (x - .4, base - 3.9, 6.8, 1)]
+    hechas = [piel_echada(px, py, lg, ld) for px, py, lg, ld in capas]
+    for k, (g, (hx, hy)) in enumerate(hechas):
+        f = l.masa(g, material='lejos', alto=.4, brillo=.15, vientre=0, hondo=0, linea=.3, contraluz=.3)
+        l.pelaje(f, densidad=9, largo=.5, ancho=.11, alfa=.55, semilla=semilla + k, claro=.4, flujo=0)
+        l.mancha(ovalo(hx + capas[k][3] * .3, hy - .05, .16, .16), '05201C', .95, dentro=f)     # el ojito
 
 
 def nizhni(l):
@@ -348,11 +420,10 @@ def nizhni(l):
     l.masa([box(97.2, 30.6, 98, 38.6), box(116, 31.6, 116.8, 39.2), tubo([(96.6, 31.2), (117.4, 32.2)], [.3, .3], 4)], material='lejos',
            alto=.3, brillo=.15, vientre=0, hondo=0, linea=.3)
     pieles(l, [(100 + k * 3.6, 31.6 + k * .18, (-1) ** k * 4) for k in range(5)], 4.6, semilla=13)
-    # la balanza gigante, protagonista, al medio: un atado de pieles, contra el cielo, y un cajón de té, contra la colina
-    (xa, ya), (xg, yg) = balanza(l, 60, 39.4, 26, 17, lado=-1)
-    caja_te(l, xa, ya, 6.6, 5)
-    pieles(l, [(xg - 2.2, yg + .3, 14), (xg, yg + .7, 0), (xg + 2.2, yg + .3, -14)], 7, semilla=15)
-    gancho(l, xg, yg)
+    # la balanza gigante, dorada, protagonista, al medio: un montón de pieles, contra el cielo, y un cajón de té, contra la colina
+    (xa, ya), (xb, yb) = balanza(l, 60, 39.4, 31, 15, 11)
+    pila_pieles(l, xa, ya, semilla=15)
+    caja_te(l, xb, yb, 6.6, 5)
 
 
 # ------------------------------------------------------------------------------------------------ Kazán
@@ -421,17 +492,18 @@ def kazan(l):
     iglesia(l, 104, 24.2, 11, 7, cupulas=((0, 1.05), (-3.6, .62), (3.6, .62), (-1.8, .5), (1.8, .5)), dorada=None)
     # el caldero, protagonista, al medio, hirviendo sobre el fuego en el patio del Kremlin
     cx, ry = 60, 24
-    l.mancha(ovalo(cx, 34.6, 15, 3.6), 'F2D48A', .5, difuso=1.4)      # el resplandor del fuego
+    l.mancha(ovalo(cx, 34.6, 15, 3.6), 'FBEFCB', .45, difuso=1.4)      # el resplandor del fuego
     for dx, y, w, h, s_ in ((-12.4, 36, 3.6, 8.8, -1), (-8.6, 36.6, 3.2, 6.8, 1), (8.6, 36.6, 3.2, 6.8, -1), (12.4, 36, 3.6, 8.8, 1)):
-        f = l.masa(llama(cx + dx, y, w, h, s_), material='acento', alto=.3, brillo=.35, vientre=0, hondo=0, linea=.3, contraluz=.3)
-        l.mancha(llama(cx + dx, y - .2, w * .5, h * .6, s_), 'FBEFCB', .9, dentro=f)
+        f = l.masa(llama(cx + dx, y, w, h, s_), material='claro', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.3, contraluz=.3)
+        l.mancha(llama(cx + dx, y, w, h, s_), 'EE8E5A', .85, dentro=f)       # el fuego, anaranjado: lo dorado es el caldero
+        l.mancha(llama(cx + dx, y - .2, w * .5, h * .6, s_), 'FFF3D6', .95, dentro=f)
     caldero = forma([(cx - 13, ry), (cx + 13, ry), (cx + 12.4, ry + 3.8), (cx + 9.6, ry + 7.8), (cx + 4, ry + 9.8), (cx - 4, ry + 9.8),
                      (cx - 9.6, ry + 7.8), (cx - 12.4, ry + 3.8)], 3)
-    l.masa(caldero, material='oscuro', alto=.6, brillo=.5, vientre=0, hondo=0, linea=.5, contraluz=.4)
+    l.masa(caldero, material='acento', alto=.6, brillo=.5, vientre=0, hondo=0, linea=.5, contraluz=.4)
     for x in (cx - 13.2, cx + 13.2):                                    # las asas
-        l.masa(ovalo(x, ry + 1.6, 1.5, 1.1).difference(ovalo(x, ry + 1.6, .75, .5)), material='oscuro', alto=.3, brillo=.4, vientre=0,
+        l.masa(ovalo(x, ry + 1.6, 1.5, 1.1).difference(ovalo(x, ry + 1.6, .75, .5)), material='acento', alto=.3, brillo=.4, vientre=0,
                hondo=0, linea=.3)
-    l.masa(ovalo(cx, ry, 13.3, 1.8), material='oscuro', alto=.2, brillo=.3, vientre=0, hondo=0, linea=.45)          # el borde
+    l.masa(ovalo(cx, ry, 13.3, 1.8), material='acento', alto=.2, brillo=.45, vientre=0, hondo=0, linea=.45)          # el borde
     l.mancha(ovalo(cx, ry + .1, 12, 1.25), '6FA497', 1)                 # lo que hierve adentro
     for dx, y, r in ((-6, 23.8, .7), (-1.4, 23.6, .9), (3, 24.1, .6), (6.6, 23.8, .8), (-9.6, 24, .5), (1, 22.4, .45), (-4, 21.4, .35)):
         burbuja(l, cx + dx, y, r)
@@ -440,8 +512,9 @@ def kazan(l):
         l.trazo(pts, [.3, .7, .9, .9, .8, .7, .5, .35, .15], color='8BD0B9', alfa=.9)
         l.trazo(pts, [.1, .4, .55, .55, .5, .4, .3, .2, .05], color='FFFFFF', alfa=1)
     for dx, h, s_ in ((-5.6, 4.4, 1), (-.4, 5, -1), (5, 4.2, 1)):        # las llamas de abajo, que lamen el fondo del caldero
-        f = l.masa(llama(cx + dx, 37, 3.2, h, s_), material='acento', alto=.3, brillo=.35, vientre=0, hondo=0, linea=.3, contraluz=.3)
-        l.mancha(llama(cx + dx, 36.8, 1.6, h * .6, s_), 'FBEFCB', .95, dentro=f)
+        f = l.masa(llama(cx + dx, 37, 3.2, h, s_), material='claro', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.3, contraluz=.3)
+        l.mancha(llama(cx + dx, 37, 3.2, h, s_), 'EE8E5A', .85, dentro=f)
+        l.mancha(llama(cx + dx, 36.8, 1.6, h * .6, s_), 'FFF3D6', .95, dentro=f)
     # adelante, el lienzo de muralla blanca con sus almenas y dos torres: el caldero hierve dentro del Kremlin
     muralla(l, 35.4, 41.5, (10, 110), 28.4, 6, 5.4)
 
@@ -484,7 +557,9 @@ def samara(l):
            (67.8, 17.4)]
     anchos = [2.2, 2.8, 3.4, 4.4, 5.2, 5.8, 5.8, 5.4, 4.6, 3.2, .3]
     barba = Polygon([(66.9, 19), (62.2, 24.4), (66.6, 22.8)]).buffer(.2)
-    agua(l, cinta(eje, anchos, 12).union(barba), ondas=14, semilla=5, linea=.35)
+    an = l.masa(cinta(eje, anchos, 12).union(barba), material='acento', alto=.3, brillo=.45, vientre=0, hondo=0, linea=.4, escalon=.1,
+                contraluz=.3)
+    ondas_doradas(l, an, eje[:-1], anchos[:-1], 12, desde=2.4)
     # la ciudad, del otro lado de la curva: casitas con sus techos
     paredes, techos = [], []
     for f, yy in enumerate((22.4, 25, 27.8, 30.8, 34)):
@@ -528,17 +603,17 @@ def madre_patria(l, x, base, s=1.0):
     espada = [Polygon([tuple(puno - d * .6 * s + nrm * .45 * s), tuple(punta - d * 1.4 * s + nrm * .35 * s), tuple(punta),
                        tuple(punta - d * 1.4 * s - nrm * .35 * s), tuple(puno - d * .6 * s - nrm * .45 * s)]),
               tubo([tuple(puno - nrm * 1.3 * s), tuple(puno + nrm * 1.3 * s)], [.28 * s, .28 * s], 4)]
-    l.masa(manto, material='claro', alto=.35, brillo=.15, vientre=0, hondo=0, linea=.4, escalon=.2, contraluz=.3)
+    l.masa(manto, material='acento', alto=.35, brillo=.3, vientre=0, hondo=0, linea=.4, escalon=.2, contraluz=.3)
     e = l.masa(espada, material='claro', alto=.3, brillo=.5, vientre=0, hondo=0, linea=.35, contraluz=.35)
     l.trazo([tuple(puno + d * .8 * s), tuple(punta - d * 1.2 * s)], .12 * s, color='8EB5AA', alfa=.8, dentro=e)
     partes = pies + piernas + [vestido, torso, pelo, adelante, mano, arriba] + cabeza
-    f = l.masa(partes, material='claro', alto=.45, brillo=.2, vientre=0, hondo=.1, linea=.45, escalon=.25, contraluz=.35,
+    f = l.masa(partes, material='acento', alto=.45, brillo=.35, vientre=0, hondo=.1, linea=.45, escalon=.25, contraluz=.35,
                bultos=[(ovalo(X(-.2), Y(-13.4), 2 * s, 2.6 * s), .2)])
     for k in range(3):                                                   # los pliegues del vestido, que vuela hacia atrás
-        l.trazo(P([(.4 + k * .9, -9.4), (2.2 + k * 1.3, -6.4), (4.4 + k * 1.6, -3.6)]), [.06, .2 * s, .08], color='8EB5AA', alfa=.8, dentro=f)
-    l.trazo(P([(-1.6, -9.4), (-2.6, -5.6), (-3.8, -2.4)]), [.06, .18 * s, .06], color='8EB5AA', alfa=.7, dentro=f)    # la pierna de adelante
-    l.trazo(P([(.2, -8.6), (.5, -6.4), (.6, -4.8)]), [.06, .16 * s, .06], color='8EB5AA', alfa=.7, dentro=f)
-    l.trazo(P([(-2.1, -12.4), (-.4, -12.8), (1.2, -12)]), [.06, .14 * s, .06], color='8EB5AA', alfa=.7, dentro=f)     # el cinturón
+        l.trazo(P([(.4 + k * .9, -9.4), (2.2 + k * 1.3, -6.4), (4.4 + k * 1.6, -3.6)]), [.06, .2 * s, .08], color='6B4E10', alfa=.6, dentro=f)
+    l.trazo(P([(-1.6, -9.4), (-2.6, -5.6), (-3.8, -2.4)]), [.06, .18 * s, .06], color='6B4E10', alfa=.5, dentro=f)    # la pierna de adelante
+    l.trazo(P([(.2, -8.6), (.5, -6.4), (.6, -4.8)]), [.06, .16 * s, .06], color='6B4E10', alfa=.5, dentro=f)
+    l.trazo(P([(-2.1, -12.4), (-.4, -12.8), (1.2, -12)]), [.06, .14 * s, .06], color='6B4E10', alfa=.5, dentro=f)     # el cinturón
     return unary_union(partes + espada + [manto])
 
 
@@ -614,11 +689,11 @@ def esturion(x, y, s=1.0):
 
 
 def tapa_caviar(l, x, y, s=1.0, giro=-8):
-    """la tapa de la lata de caviar, azul, con su aro y su esturión dorados; (x, y) es su centro"""
-    tp = l.masa(ovalo(x, y, 4.8 * s, 5.2 * s, giro), material='lejos', alto=.3, brillo=.35, vientre=0, hondo=0, linea=.4, contraluz=.3)
+    """la tapa de la lata de caviar, dorada, con su aro y su esturión oscuros; (x, y) es su centro"""
+    tp = l.masa(ovalo(x, y, 4.8 * s, 5.2 * s, giro), material='acento', alto=.3, brillo=.45, vientre=0, hondo=0, linea=.4, contraluz=.3)
     t = np.linspace(0, 2 * math.pi, 40)
-    l.trazo([(x + 4.1 * s * math.cos(a), y + 4.5 * s * math.sin(a)) for a in t], .22 * s, color='E8B952', alfa=.9, dentro=tp)
-    l.mancha(affinity.rotate(esturion(x, y, .78 * s), giro, origin=(x, y)), 'E8B952', 1, dentro=tp)
+    l.trazo([(x + 4.1 * s * math.cos(a), y + 4.5 * s * math.sin(a)) for a in t], .22 * s, color='6B4E10', alfa=.6, dentro=tp)
+    l.mancha(affinity.rotate(esturion(x, y, .78 * s), giro, origin=(x, y)), '0C3A33', .85, dentro=tp)
 
 
 def mercader(l, x, y, semilla=0):
@@ -632,26 +707,29 @@ def mercader(l, x, y, semilla=0):
     l.trazo([(x, y + 4), (x + .3, y + 23)], .16, color='05201C', alfa=.7, dentro=c)          # el cruce del caftán
     for k in range(4):                                                   # sus botones
         l.mancha(ovalo(x + 1.2, y + 6 + k * 2.2, .3, .3), '0C3A33', .9, dentro=c)
-    # la cabeza, con la barba gris y los bigotes
-    h = l.masa([ovalo(x, y, 3.1, 3.5), ovalo(x - 3, y + .2, .6, .9), ovalo(x + 3, y + .2, .6, .9)], material='vientre', alto=.45, brillo=.15,
-               vientre=0, hondo=0, linea=.4, contraluz=.25)
-    l.mancha(box(x - 4, y - 4, x + 4, y + 4), PIEL_, .45, dentro=h)
-    for dx in (-1.2, 1.2):
-        l.mancha(ovalo(x + dx, y - .7, .3, .32), '05201C', 1, dentro=h)        # los ojos
-        l.trazo([(x + dx - .6, y - 1.6), (x + dx + .6, y - 1.7)], .2, color='3E7A6D', alfa=.9, dentro=h)    # las cejas
-    l.trazo([(x, y - .6), (x - .3, y + .6), (x + .3, y + .8)], .14, color='6B4E10', alfa=.8, dentro=h)
-    barba = forma([(x - 3, y + .8), (x - 3.4, y + 3.4), (x - 2.2, y + 6.4), (x, y + 7.6), (x + 2.2, y + 6.4), (x + 3.4, y + 3.4), (x + 3, y + .8),
-                   (x + 1.6, y + 1.8), (x, y + 2.2), (x - 1.6, y + 1.8)], 2)
+    # la cabeza, grande, con la cara a la vista, la barba gris y los bigotes (con la cara chica entre el gorro alto y la barba, la cabeza
+    # parecía un frasco)
+    h = l.masa([ovalo(x, y + .3, 3.6, 3.9), ovalo(x - 3.5, y + .5, .65, 1), ovalo(x + 3.5, y + .5, .65, 1)], material='vientre', alto=.45,
+               brillo=.15, vientre=0, hondo=0, linea=.4, contraluz=.25)
+    l.mancha(box(x - 5, y - 4.4, x + 5, y + 5), 'A2683A', .6, dentro=h)
+    for dx in (-1.4, 1.4):
+        l.mancha(ovalo(x + dx, y - .4, .44, .46), 'FFFFFF', .9, dentro=h)      # los ojos, con su blanco
+        l.mancha(ovalo(x + dx + .08, y - .35, .28, .32), '05201C', 1, dentro=h)
+        l.trazo([(x + dx - .8, y - 1.5), (x + dx + .7, y - 1.7)], .3, color='3E7A6D', alfa=.95, dentro=h)    # las cejas
+        l.mancha(ovalo(x + dx * 1.5, y + 1.1, .8, .5), 'C86A6A', .35, dentro=h)                             # los cachetes
+    l.trazo([(x, y - .2), (x - .4, y + 1), (x + .3, y + 1.2)], .16, color='6B4E10', alfa=.8, dentro=h)
+    barba = forma([(x - 3.3, y + 1.6), (x - 3.5, y + 3.8), (x - 2.2, y + 6.4), (x, y + 7.4), (x + 2.2, y + 6.4), (x + 3.5, y + 3.8), (x + 3.3, y + 1.6),
+                   (x + 1.6, y + 2.8), (x, y + 3.1), (x - 1.6, y + 2.8)], 2)
     b = l.masa(barba, material='claro', alto=.35, brillo=.15, vientre=0, hondo=0, linea=.35, contraluz=.25)
     l.mancha(barba, '8EB5AA', .45, dentro=b)
     rng = np.random.default_rng(semilla)
     for _ in range(14):                                                  # los pelos de la barba
         u = rng.uniform(-2.6, 2.6)
         l.trazo([(x + u, y + 2.2), (x + u * .8, y + 6)], .08, color='6FA497', alfa=.8, dentro=b)
-    l.masa(forma([(x - 2.8, y + 1.6), (x - 1.4, y + 1), (x, y + 1.4), (x + 1.4, y + 1), (x + 2.8, y + 1.6), (x + 1.2, y + 2), (x, y + 1.8),
-                  (x - 1.2, y + 2)], 1), material='claro', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.25)     # los bigotes
-    # el gorro de astracán, en la cabeza
-    gorro(l, x, y - 2.2, 8.6, 7.6, 0, semilla=semilla + 1)
+    l.masa(forma([(x - 2.8, y + 2.4), (x - 1.4, y + 1.8), (x, y + 2.2), (x + 1.4, y + 1.8), (x + 2.8, y + 2.4), (x + 1.2, y + 2.8), (x, y + 2.6),
+                  (x - 1.2, y + 2.8)], 1), material='claro', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.25)     # los bigotes
+    # el gorro de astracán, en la cabeza: ancho y no tan alto
+    gorro(l, x, y - 2.6, 9.4, 5.6, 0, semilla=semilla + 1)
     # la lata de caviar abierta, en las manos
     lata_caviar(l, x, y + 14.6, 1.05, semilla=semilla + 2, tapa=False)
     for sx in (-1, 1):
@@ -660,16 +738,16 @@ def mercader(l, x, y, semilla=0):
 
 
 def lata_caviar(l, x, base, s=1.0, semilla=0, tapa=True):
-    """una lata de caviar abierta, llena de huevas negras que brillan, y su tapa azul con el esturión dorado, apoyada detrás"""
+    """una lata de caviar abierta, dorada, llena de huevas negras que brillan, y su tapa con el esturión, apoyada detrás"""
     rng = np.random.default_rng(semilla)
     O = lambda u, v, rx, ry, ang=0: ovalo(x + u * s, base + v * s, rx * s, ry * s, ang)
     P = lambda pts: [(x + u * s, base + v * s) for u, v in pts]
     if tapa:
         tapa_caviar(l, x + 11 * s, base - 5.4 * s, s)
     lado = Polygon(P([(-8, -2.6), (8, -2.6), (8, -.6), (-8, -.6)])).union(O(0, -.6, 8, 2.2))
-    lt = l.masa(lado, material='lejos', alto=.3, brillo=.35, vientre=0, hondo=0, linea=.4, contraluz=.3)
-    l.trazo(P([(-8, -1.6), (-4, -.1), (0, .3), (4, -.1), (8, -1.6)]), .2 * s, color='E8B952', alfa=.8, dentro=lt)
-    borde = l.masa(O(0, -2.6, 8, 2.3), material='claro', alto=.25, brillo=.4, vientre=0, hondo=0, linea=.35)
+    lt = l.masa(lado, material='acento', alto=.3, brillo=.45, vientre=0, hondo=0, linea=.4, contraluz=.3)
+    l.trazo(P([(-8, -1.6), (-4, -.1), (0, .3), (4, -.1), (8, -1.6)]), .2 * s, color='6B4E10', alfa=.55, dentro=lt)
+    borde = l.masa(O(0, -2.6, 8, 2.3), material='acento', alto=.25, brillo=.55, vientre=0, hondo=0, linea=.35)
     l.mancha(O(0, -2.5, 7.2, 1.8), '05201C', 1, dentro=borde)
     for _ in range(int(150 * s)):
         a, rr = rng.uniform(0, 2 * math.pi), math.sqrt(rng.uniform(0, 1))
@@ -708,7 +786,7 @@ def astracan(l):
     # abierta (el gorro solo, en un poste, parecía un letrero), y la tapa con el esturión
     mu = l.masa(Polygon([(12, 30.4), (108, 30.4), (114, 41.5), (6, 41.5)]).buffer(.1), material='vientre', alto=.12, brillo=.1, vientre=0,
                 hondo=0, linea=.4)
-    l.mancha(box(4, 30, 116, 42), 'E8B952', .25, dentro=mu)
+    l.mancha(box(4, 30, 116, 42), 'B08A6A', .3, dentro=mu)
     for k in np.linspace(32, 40.6, 6):
         l.trazo([(12 - (k - 30.4) * .55, k), (108 + (k - 30.4) * .55, k)], .1, color='6B4E10', alfa=.5, dentro=mu)
     mercader(l, 58, 18.6, semilla=9)

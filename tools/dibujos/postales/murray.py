@@ -9,8 +9,9 @@ recordar va grande y al medio, y es lo único dorado; sin sol, salvo la naranja 
   la cama de arriba de la cucheta, tapado con su manta; abajo, el río que ya separa dos estados;
 - Echuca: «un eco repite el silbato de los vapores contra un muelle de madera altísimo»: el vapor de ruedas silba y el eco dorado rebota
   contra el muelle de tres pisos, cada vez más chico;
-- Swan Hill: «una colina llena de cisnes negros que graznan toda la noche»: de noche, la colina llena de cisnes negros de pico dorado,
-  y la carpa de Mitchell, iluminada, que no lo dejan dormir;
+- Swan Hill: «una colina llena de cisnes negros que graznan toda la noche»: de noche, con la luna llena, la colina llena de cisnes
+  negros, con un filo de luna, que graznan con sus graznidos dorados, y la carpa de lona de Mitchell, con su farol, que no lo dejan
+  dormir;
 - Mildura: «una naranja gigante hace de sol sobre un desierto verde»: la naranja dorada, en el cielo, sobre los naranjales y las viñas
   regados en la tierra roja;
 - Renmark: «un marinero renombra cada uva de la parra»: el marinero, con su gorra, le pone etiqueta a cada uva dorada del racimo, en la
@@ -198,18 +199,32 @@ def echuca(l):
 
 # ------------------------------------------------------------------------------------------------ Swan Hill
 def cisne_negro(l, x, y, s=1.0, lado=1, cuac=False):
-    """un cisne negro, de perfil, con el cuello en S, las plumas blancas de las puntas de las alas y el pico dorado; con `cuac`, abre el
-    pico y grazna"""
+    """un cisne negro echado, de perfil: el cuerpo de barca con la cola alzada y las plumas rizadas del lomo, las puntas blancas de las
+    alas, el cuello largo en S, el ojo claro y el pico dorado, grande; con un filo pálido de luna alrededor, para que no se pierda en la
+    noche (chicos y sin filo, parecían culebras o caballitos de mar); con `cuac`, abre el pico y grazna: el graznido, dorado, en tres
+    arcos que salen del pico (lo que no dejó dormir a Mitchell)"""
     P = lambda pts: [(x + lado * u * s, y + v * s) for u, v in pts]
-    l.masa([ovalo(x, y - 1.6 * s, 3.4 * s, 1.6 * s), tubo(P([(2.4, -2.4), (3.4, -5), (2.6, -7), (3.6, -8.4)]), [.9 * s, .7 * s, .6 * s, .6 * s], 8),
-            ovalo(x + lado * 3.9 * s, y - 8.6 * s, .9 * s, .7 * s)], material='oscuro', alto=.4, brillo=.35, vientre=0, hondo=0, linea=.3)
-    l.mancha(Polygon(P([(-3.4, -1.4), (-2, -2.4), (-1.6, -1.2)])), 'FFFFFF', .8)
-    pico = Polygon(P([(4.4, -9), (6.6, -8.6), (4.6, -8.2)])) if not cuac else unary_union([Polygon(P([(4.4, -9), (6.6, -9.8), (4.6, -8.6)])),
-                                                                                          Polygon(P([(4.4, -8.6), (6.4, -7.6), (4.6, -8.2)]))])
-    l.masa(pico, material='acento', alto=.3, brillo=.5, vientre=0, hondo=0, linea=.2)
+    cuerpo = forma(P([(-4.8, -4.6), (-3.8, -2.2), (-2.6, -.6), (0, .1), (2.6, -.1), (3.8, -1.4), (3.4, -3.2), (1, -3.9), (-2.2, -4),
+                      (-3.8, -5.2)]), 2)
+    cuello = tubo(P([(2.4, -2.8), (3.8, -5.2), (2.9, -7.4), (3.5, -9.2)]), [.95 * s, .72 * s, .6 * s, .6 * s], 8)
+    cabeza = ovalo(x + lado * 4.1 * s, y - 9.5 * s, .95 * s, .75 * s)
+    silueta = unary_union([cuerpo, cuello, cabeza])
+    l.mancha(silueta.buffer(.5 * s), '8EB5AA', .45, difuso=.3 * s)      # el filo de luna
+    c = l.masa([cuerpo, cuello, cabeza], material='oscuro', alto=.4, brillo=.4, vientre=0, hondo=0, linea=.3, contraluz=.5)
+    for k in range(4):                                                   # las plumas rizadas del lomo
+        u0 = -2.8 + k * 1.3
+        l.trazo(P([(u0, -3.4), (u0 + .5, -4.4), (u0 + 1.1, -3.8), (u0 + .8, -3.3)]), .14 * s, color='6FA497', alfa=.8, dentro=c)
+    l.mancha(Polygon(P([(-4.6, -2.6), (-2.4, -2), (-1.8, -1), (-3.6, -1.4)])), 'FFFFFF', .85, dentro=c)    # las puntas blancas
+    l.mancha(ovalo(x + lado * 4.4 * s, y - 9.7 * s, .22 * s, .22 * s), 'D2F2DA', 1, dentro=c)           # el ojo
+    pico = Polygon(P([(4.4, -9.8), (7.6, -9.2), (4.6, -8.6)])) if not cuac else unary_union([Polygon(P([(4.4, -9.8), (7.6, -10.9), (4.8, -9.2)])),
+                                                                                           Polygon(P([(4.4, -9), (7.4, -7.8), (4.8, -8.5)]))])
+    l.masa(pico, material='acento', alto=.3, brillo=.5, vientre=0, hondo=0, linea=.22)
     if cuac:
-        for k in range(3):
-            l.trazo(P([(7 + k * .8, -10 - k * .6), (7.6 + k * .8, -10.6 - k * .6)]), .16 * s, color='FFFFFF', alfa=.9)
+        for k in range(3):                                               # el graznido: tres arcos dorados que se abren
+            r = 1.2 + k * 1.1
+            a = np.linspace(-.7, .7, 7)
+            l.trazo([(x + lado * (7.4 + r * math.cos(t)) * s, y + (-9.3 + r * math.sin(t)) * s) for t in a], .28 * s, color='E8B952',
+                    alfa=.95 - k * .15)
 
 
 def swan_hill(l):
@@ -220,25 +235,35 @@ def swan_hill(l):
     for _ in range(36):
         x, y = rng.uniform(0, 120), rng.uniform(0, 16)
         l.mancha(ovalo(x, y, .18, .18), 'FFFFFF', rng.uniform(.5, 1))
-    l.mancha(ovalo(16, 6, 3.2, 3.2), 'FBEFCB', .85)
-    l.mancha(ovalo(17.4, 5.2, 2.8, 2.8), '0C3A33', .9)                   # la luna en cuarto
+    l.mancha(ovalo(16, 6, 6.4, 6.4), 'FBEFCB', .2, difuso=1.6)          # la luna llena, con su halo (en cuarto, con las estrellas,
+    l.mancha(ovalo(16, 6, 3.2, 3.2), 'FBEFCB', .9)                       # parecía la media luna y la estrella de una bandera)
+    for dx, dy, r in ((-1, -.8, .7), (.9, .6, .5), (-.4, 1.2, .4)):
+        l.mancha(ovalo(16 + dx, 6 + dy, r, r), 'D9D2B8', .6)
     # la colina, llena de cisnes negros que graznan
     colina = forma([(-2, 34), (14, 24), (34, 18), (56, 16.6), (78, 19), (98, 26), (122, 32), (122, 41.6), (-2, 41.6)], 2)
     c = l.masa(colina, material='lejos', alto=.3, brillo=.1, vientre=0, hondo=0, linea=.35)
-    l.mancha(colina, '0C3A33', .45, dentro=c)
+    l.mancha(colina, '0C3A33', .15, dentro=c)
+    l.mancha(box(-2, 14, 122, 26), '8EB5AA', .3, dentro=c, difuso=3)     # la luz de la luna en la colina, para que se vean los cisnes
     agua(l, forma([(-2, 37), (40, 36), (80, 37.4), (122, 36), (122, 41.6), (-2, 41.6)], 2), linea=.3)
-    puestos = [(24, 26), (34, 21.6), (44, 19.8), (52, 23), (64, 20.4), (74, 23.6), (84, 22.4), (92, 27.6), (40, 28), (60, 28.4), (80, 30), (28, 32),
-               (102, 31)]
-    for k, (x, y) in enumerate(puestos):
-        cisne_negro(l, x, y, rng.uniform(.8, 1.1), 1 if k % 2 else -1, cuac=k % 3 != 1)
-    # la carpa de Mitchell, iluminada por dentro, y él, sentado, sin poder dormir
-    carpa = Polygon([(98, 21.4), (106, 12), (114, 21.4)])
-    l.mancha(ovalo(106, 17, 9, 7), 'F2D48A', .3, difuso=2)
-    t = l.masa(carpa, material='acento', alto=.3, brillo=.5, vientre=0, hondo=0, linea=.35, contraluz=.4)
-    l.mancha(Polygon([(104, 21.4), (106, 14), (108, 21.4)]), '6B4E10', .7, dentro=t)
-    l.mancha(ovalo(106, 18.6, .9, 1), '0C3A33', .9, dentro=t)            # la cabeza de Mitchell, que se tapa las orejas
-    l.mancha(ovalo(104.8, 18.8, .4, .5), '0C3A33', .9, dentro=t)
-    l.mancha(ovalo(107.2, 18.8, .4, .5), '0C3A33', .9, dentro=t)
+    puestos = [(30, 22.6, .7), (41, 19.6, .72), (53, 17.8, .72), (66, 18.2, .72), (79, 20.6, .7),                     # en la cresta
+               (22, 28.6, 1.02), (45, 25.6, 1.08), (69, 26, 1.08), (90, 29.4, 1),                                       # en la ladera
+               (33, 35.6, 1.45), (60, 34.4, 1.55), (86, 36.4, 1.4)]                                                     # adelante, grandes
+    for k, (x, y, e) in enumerate(puestos):
+        cisne_negro(l, x, y, e, 1 if k % 2 else -1, cuac=k % 3 != 1)
+    # la carpa de lona de Mitchell, con la luz de su farol adentro (clara: lo dorado son los graznidos), vista de frente y de costado,
+    # con su palo y sus vientos (un triángulo solo, con la cabeza de Mitchell adentro, parecía un ojo en una pirámide)
+    l.mancha(ovalo(106, 18, 11, 6), 'FBEFCB', .18, difuso=2)
+    for a, b in (((102.4, 13.2), (96.2, 22.8)), ((112.6, 12), (119.4, 21.6))):      # los vientos
+        l.trazo([a, b], .1, color='D2F2DA', alfa=.7)
+    costado = Polygon([(102.4, 13.4), (112.6, 12.2), (117.4, 21.2), (107.2, 22.4)])
+    c = l.masa(costado, material='claro', alto=.25, brillo=.2, vientre=0, hondo=0, linea=.35)
+    l.mancha(costado, '8EB5AA', .45, dentro=c)
+    frente = Polygon([(97.6, 22.4), (102.4, 13.4), (107.2, 22.4)])
+    f = l.masa(frente, material='claro', alto=.25, brillo=.35, vientre=0, hondo=0, linea=.35)
+    l.mancha(frente, 'FBEFCB', .4, dentro=f)
+    l.mancha(Polygon([(100.4, 22.4), (102.4, 16.8), (104.4, 22.4)]), 'FFF6DE', .95, dentro=f)       # la puerta abierta, con la luz
+    l.trazo([(102.4, 16.8), (102.4, 22.4)], .12, color='8EB5AA', alfa=.7, dentro=f)
+    l.trazo([(102.4, 13.6), (102.4, 11.8)], .2, alfa=.9)                                            # la punta del palo
 
 
 # ------------------------------------------------------------------------------------------------ Mildura

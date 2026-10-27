@@ -15,7 +15,10 @@ recordar va grande y al medio, y es lo único dorado; sin sol.
   refleja en el río como en un espejo, y una rosa de los vientos que señala el sur;
 - Shanghái: «la ciudad sobre el mar»: los rascacielos de Pudong, que salen del agua, con las esferas doradas de la Torre de la Perla
   Oriental;
-- el mar: el junco, la barca del juego, con sus velas de estera, que sale al mar de China Oriental frente a las grúas del puerto.
+- el mar: el junco se queda en el estuario y del Yangtsé al mar salen los portacontenedores; la protagonista sale del nombre del mar,
+  «Oriental», donde sale el sol: el sol que nace, dorado, en el horizonte del mar de China Oriental, con su camino de luz en el agua
+  (sin rayos en abanico, que dirían otra cosa); a la derecha, las grúas del puerto y un portacontenedores que sale; adelante, el junco,
+  de madera.
 """
 import math
 
@@ -358,9 +361,9 @@ def shanghai(l):
 
 
 # ------------------------------------------------------------------------------------------------ el mar
-def junco(l, x, y, s=1.0):
-    """el junco del Yangtsé, la barca del juego, mirando a la derecha: el casco de popa alta y proa cuadrada, dorado, y las velas de
-    estera con sus listones de bambú, abiertas en abanico; (x, y) es la línea del agua bajo el medio"""
+def junco(l, x, y, s=1.0, dorado=True):
+    """el junco del Yangtsé, la barca del juego, mirando a la derecha: el casco de popa alta y proa cuadrada, dorado (de madera, sin
+    `dorado`), y las velas de estera con sus listones de bambú, abiertas en abanico; (x, y) es la línea del agua bajo el medio"""
     P = lambda pts: [(x + u * s, y + v * s) for u, v in pts]
     palos = [tubo(P([(u, -2), (u, -top)]), [.3 * s, .22 * s], 4) for u, top in ((-7.6, 11.6), (0, 17.6), (7.4, 13.6))]
     l.masa(palos, material='lejos', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.25)
@@ -372,7 +375,9 @@ def junco(l, x, y, s=1.0):
             l.trazo(P([(u0 - w * (.7 + .1 * f), -top + .4 + (top - 3.6) * f), (u0 + w * (.25 + .1 * f), -top - .6 + (top - 3) * f)]), .16 * s,
                     color='3E7A6D', alfa=.9, dentro=v)
     casco = forma(P([(-12.6, -5.8), (-11.6, -1.4), (-7, .9), (8, .9), (11.4, -1.4), (12, -3.6), (9, -2.6), (-6, -2.2), (-9.8, -4.4)]), 1)
-    c = l.masa(casco, material='acento', alto=.35, brillo=.3, vientre=0, hondo=0, linea=.45, contraluz=.3)
+    c = l.masa(casco, material='acento' if dorado else 'vientre', alto=.35, brillo=.3, vientre=0, hondo=0, linea=.45, contraluz=.3)
+    if not dorado:
+        l.mancha(casco.buffer(.3), 'A2683A', .6, dentro=c)
     for v_ in (-1.2, -.2):
         l.trazo(P([(-11, v_ - 1.6), (-4, v_), (8, v_), (11, v_ - 1.4)]), [.05, .12, .12, .05], color='6B4E10', alfa=.6, dentro=c)
     l.mancha(ovalo(x + 10.2 * s, y - 2.4 * s, .45 * s, .45 * s), '05201C', .9, dentro=c)            # el ojo de la proa
@@ -390,7 +395,16 @@ def mar(l):
     rng = np.random.default_rng(9)
     for _ in range(22):
         x, y = rng.uniform(2, 118), rng.uniform(horizonte + 2, 40)
-        l.trazo([(x, y), (x + 3, y - .25), (x + 6, y)], .16, color='A4DCC4', alfa=.7)
+        if abs(x + 3 - 62) > 8:
+            l.trazo([(x, y), (x + 3, y - .25), (x + 6, y)], .16, color='A4DCC4', alfa=.7)
+    # el sol que nace en el mar, dorado, protagonista: medio disco sobre el horizonte, con su resplandor y su camino de luz en el agua
+    l.mancha(ovalo(62, horizonte, 17, 11), 'FBEFCB', .5, difuso=2.4)
+    sol = ovalo(62, horizonte + .2, 9.6, 9.6).intersection(box(40, 0, 84, horizonte + .2))
+    l.masa(sol, material='acento', alto=.35, brillo=.5, vientre=0, hondo=0, linea=.45, escalon=.1, contraluz=.35, arroja=False)
+    for k, y in enumerate(np.arange(horizonte + 1, 40, 1.3)):          # el camino de luz, que se angosta y se rompe hacia nosotros
+        w = 8.4 - k * .25
+        for dx in ((-w * .5, w * .35) if k % 2 else (-w * .15,)):
+            l.trazo([(62 + dx - w * .3, y), (62 + dx + w * .3, y)], .4 - k * .008, color='E8B952', alfa=.85 - k * .025)
     # el puerto de contenedores, a la derecha: el muelle, las grúas y un barco cargado
     l.masa(box(84, horizonte - 1.4, 122, horizonte + .8), material='vientre', alto=.15, brillo=.05, vientre=0, hondo=0, linea=.3)
     for x in (90, 100, 110):                                             # las grúas
@@ -402,18 +416,20 @@ def mar(l):
     for k in range(7):
         l.mancha(box(88 + k * 3, horizonte - 3.4 - (k % 2), 90.8 + k * 3, horizonte - 1.2), str(['4AA189', '3E7A6D', 'A4DCC4'][k % 3]), .8,
                  dentro=cont)
-    # un faro chico, a la izquierda, en su roca
-    l.masa(forma([(2, horizonte + 1), (8, horizonte - 1.2), (16, horizonte - .6), (20, horizonte + 1.2)], 1), material='lejos', alto=.2,
-           brillo=.05, vientre=0, hondo=0, linea=.3)
-    f = l.masa(forma([(9.4, horizonte - 1), (10, 13.4), (12.4, 13.4), (13, horizonte - 1)], 0), material='claro', alto=.3, brillo=.2,
-               vientre=0, hondo=0, linea=.3)
-    l.mancha(box(8, 16, 14, 17.4), '2F8A74', .85, dentro=f)
-    l.masa(Polygon([(9.6, 13.6), (11.2, 11.6), (12.8, 13.6)]), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25)
-    for x, yv, sv in ((40, 8, .9), (46, 6.4, .7)):
+    # un portacontenedores que sale al mar, a la izquierda del sol
+    sale = l.masa([forma([(20, horizonte + .4), (40, horizonte + .4), (41.4, horizonte - 1.4), (20.6, horizonte - 1.2)], 0),
+                   box(21, horizonte - 4.2, 23.6, horizonte - 1.2)] + [box(25 + k * 2.4, horizonte - 2.8 - (k % 2) * .8, 27.2 + k * 2.4, horizonte - 1.2)
+                                                                         for k in range(6)], material='claro', alto=.2, brillo=.15, vientre=0,
+                  hondo=0, linea=.25)
+    for k in range(6):
+        l.mancha(box(25 + k * 2.4, horizonte - 2.8 - (k % 2) * .8, 27.2 + k * 2.4, horizonte - 1.2), str(['4AA189', '3E7A6D', 'A4DCC4'][k % 3]),
+                 .8, dentro=sale)
+    l.mancha(box(19, horizonte - .4, 42, horizonte + .6), '164F46', .6, dentro=sale)
+    for x, yv, sv in ((28, 8, .9), (34, 6.4, .7)):
         ave(l, x, yv, sv)
-    # el junco, la barca del juego, protagonista, que sale al mar
-    g = junco(l, 58, 35, 1.45)
-    reflejo(l, g, 35.2, .22)
+    # el junco, de madera, que se queda en el estuario, adelante a la izquierda
+    g = junco(l, 22, 37, 1.05, dorado=False)
+    reflejo(l, g, 37.2, .2)
 
 
 POSTALES = [dict(clave='nace', dibujar=nace), dict(clave='Chongqing', dibujar=chongqing), dict(clave='Yichang', dibujar=yichang),

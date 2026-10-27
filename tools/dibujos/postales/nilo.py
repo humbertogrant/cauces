@@ -4,9 +4,10 @@
 medio, y lo único dorado de la postal; no hay sol, salvo el que se pone en Luxor, que es parte de la imagen.
 
 - el nacimiento: los dos ríos que nacen y bajan hacia nosotros, grandes: el Nilo Blanco, claro, que sale del lago Victoria, a la
-  izquierda, y el Nilo Azul, oscuro, que sale del lago Tana, al pie de las tierras altas de Etiopía, y cae por su catarata;
-- Jinja: «un jinete salta a caballo desde el lago Victoria»: el caballo en el aire, sobre el agua donde nace el Nilo Blanco, con la
-  corona de agua que dejó al saltar; río abajo, la represa de Owen Falls, que tapó las cataratas Ripon;
+  izquierda, y el Nilo Azul, oscuro, que sale del lago Tana, al pie de las tierras altas de Etiopía, y cae por su catarata; en cada
+  lago, parada en el agua, su inicial dorada, la V de Victoria y la T de Tana;
+- Jinja: «un jinete salta a caballo desde el lago Victoria»: el caballo dorado en el aire, sobre el agua donde nace el Nilo Blanco,
+  con la corona de agua que dejó al saltar; río abajo, la represa de Owen Falls, que tapó las cataratas Ripon;
 - Juba: «un país recién nacido con chupón»: un bebé grande, con su chupón y su banderita de estrella, en una canasta que flota en el
   río, frente al muelle de Juba y sus casas de techos de lata; río abajo, el Sudd, el pantano de papiros;
 - Jartum: «dos jarras, una de agua blanca y otra azul, se vacían en el mismo cauce»: el Nilo Blanco y el Nilo Azul se juntan y corren
@@ -16,8 +17,9 @@ medio, y lo único dorado de la postal; no hay sol, salvo el que se pone en Luxo
 - Luxor: «lujo de faraones»: en la orilla de los muertos, donde se pone el sol, los cerros del Valle de los Reyes y una máscara de oro
   de faraón; en la de los vivos, las columnas de Karnak, un obelisco y un pilono;
 - El Cairo: «el río cae en un abanico»: visto desde arriba y desde el mar, el Nilo baja del horizonte y en la punta, donde está la
-  ciudad, se abre en el delta, un triángulo como la letra Δ, hasta el mar; junto a la ciudad, las pirámides de Guiza;
-- el mar: la falúa del Nilo, la barca del juego, sale al Mediterráneo por el último brazo del delta, entre palmeras.
+  ciudad, se abre en el delta, un triángulo dorado como la letra Δ, hasta el mar; junto a la ciudad, las pirámides de Guiza;
+- el mar: la falúa no sale al mar (en el delta la carga sigue en gabarra hasta Alejandría): el faro de Alejandría, dorado, en su isla,
+  con la gabarra cargada que va hacia él, y la falúa, de madera, que da la vuelta en el último brazo del delta, entre palmeras.
 """
 import math
 
@@ -61,6 +63,25 @@ def faluca(l, x, y, s=1.0, lado=1, casco='lejos'):
 
 
 # ------------------------------------------------------------------------------------------------ el nacimiento
+def inicial(l, pts, x, base, s=1.0):
+    """una letra grande y dorada, parada en el agua de su lago, con sus ondas al pie; `pts`, su contorno, con la base en 0"""
+    g = Polygon([(x + u * s, base + v * s) for u, v in pts]).buffer(.15 * s)
+    l.masa(g, material='acento', alto=.45, brillo=.45, vientre=0, hondo=0, linea=.45, escalon=.15, contraluz=.35)
+    x0, _, x1, _ = g.bounds
+    for k, w in enumerate((1, 1.5)):
+        cx, rx = (x0 + x1) / 2, (x1 - x0) / 2 * w * .6
+        t = np.linspace(.15, math.pi - .15, 12)
+        l.trazo([(cx + rx * math.cos(a), base + .3 + k * .5 + .5 * math.sin(a)) for a in t], .14, color='FFFFFF', alfa=.85 - k * .25)
+    return g
+
+
+# las letras van con remates, como de imprenta: la T de palo seco parecía una cruz
+LETRA_V = [(-6, -13), (-1.2, -13), (-1.2, -11.8), (-2.2, -11.8), (0, -4.6), (2.2, -11.8), (1.2, -11.8), (1.2, -13), (6, -13), (6, -11.8),
+           (5, -11.8), (1.4, 0), (-1.4, 0), (-5, -11.8), (-6, -11.8)]
+LETRA_T = [(-6, -13), (6, -13), (6, -9.2), (5, -9.2), (4.6, -10.4), (1.6, -10.4), (1.6, -1.2), (3, -1.2), (3, 0), (-3, 0), (-3, -1.2),
+           (-1.6, -1.2), (-1.6, -10.4), (-4.6, -10.4), (-5, -9.2), (-6, -9.2)]
+
+
 def nace(l):
     cielo(l, sol=None)
     nube(l, 30, 5.4, 14, .6)
@@ -86,16 +107,20 @@ def nace(l):
     for x, y, h in ((30, 25.4, 4.6), (27, 32.4, 6), (16, 36.6, 6.6), (50, 27.6, 4.4), (56, 33.2, 5.4)):
         papiro(l, x, y, h, 7, semilla=int(x * 3))
     pasto(l, 2, 120, 24, 40.6, 30, semilla=6)
+    # las protagonistas: la inicial de cada lago, dorada y parada en su agua: la V de Victoria y la T de Tana
+    inicial(l, LETRA_V, 20, 18.4, 1.0)
+    inicial(l, LETRA_T, 97, 20.6, .95)
 
 
 # ------------------------------------------------------------------------------------------------ Jinja
 def jinete(l, cx, cy):
-    """un jinete que salta a caballo, mirando a la derecha: el caballo estirado en el aire, con las manos dobladas debajo del pecho,
-    las patas de atrás estiradas y la cola y la crin que vuelan; el jinete inclinado hacia adelante, con su sombrero dorado"""
+    """un jinete que salta a caballo, mirando a la derecha: el caballo, dorado, estirado en el aire, con las manos dobladas debajo del
+    pecho, las patas de atrás estiradas y la cola y la crin oscuras que vuelan; el jinete inclinado hacia adelante, con su sombrero"""
     T = lambda pts: [(cx + u, cy + v) for u, v in pts]
     lejanas = [tubo(T([(5, 1.8), (8.2, 3.8), (6.4, 5.8)]), [1, .75, .5], 6), tubo(T([(-7, 1.4), (-10.6, 4.6), (-14.4, 6.4)]), [1.4, .8, .5], 6)]
     lejanas += [ovalo(cx + 6.1, cy + 6.2, .7, .45, 30), ovalo(cx - 14.9, cy + 6.6, .75, .45, 20)]
-    l.masa(lejanas, material='lejos', alto=.35, brillo=.1, vientre=0, hondo=0, linea=.35, contraluz=.2)
+    lj = l.masa(lejanas, material='acento', alto=.35, brillo=.15, vientre=0, hondo=0, linea=.35, contraluz=.2)
+    l.mancha(unary_union(lejanas), '6B4E10', .4, dentro=lj)             # las patas del otro lado, en sombra
     l.masa(tubo(T([(-8, -1.4), (-11.8, -2.8), (-15.6, -1.2), (-18, -.2)]), [.9, 1.15, .8, .3], 8), material='oscuro', alto=.3, brillo=.25,
            vientre=0, hondo=0, linea=.3)                                # la cola, que vuela
     torso = forma(T([(-8.4, -.6), (-7, -2.8), (-2, -3.4), (4, -3.2), (7.6, -2), (8.6, .4), (7, 2.6), (2, 3), (-3, 3), (-7, 2.4)]), 3)
@@ -105,7 +130,7 @@ def jinete(l, cx, cy):
     manos = [tubo(T([(6.2, 1.4), (9.4, 3), (7.8, 5.2)]), [1.1, .8, .55], 6)]
     patas = [tubo(T([(-6, .8), (-9.8, 3.4), (-13.8, 4.6)]), [1.7, .9, .6], 6)]
     cascos = [ovalo(cx + 7.5, cy + 5.6, .75, .5, 30), ovalo(cx - 14.3, cy + 4.9, .8, .5, 15)]
-    c = l.masa([torso, cuello, cabeza, oreja] + manos + patas, material='lejos', alto=.45, brillo=.15, vientre=.15, hondo=.1, linea=.45,
+    c = l.masa([torso, cuello, cabeza, oreja] + manos + patas, material='acento', alto=.45, brillo=.35, vientre=0, hondo=.1, linea=.45,
                escalon=.2, contraluz=.35, bultos=[(ovalo(cx - 5, cy - .4, 3, 2.4), .2), (ovalo(cx + 4.6, cy - .6, 2.6, 2.2), .2)])
     l.masa(cascos, material='oscuro', alto=.2, brillo=.3, vientre=0, hondo=0, linea=.25)
     l.masa(tubo(T([(6.6, -3.2), (8.4, -6.2), (10, -9.4)]), [.75, .65, .55], 6), material='oscuro', alto=.3, brillo=.25, vientre=0, hondo=0,
@@ -122,7 +147,7 @@ def jinete(l, cx, cy):
            linea=.35)
     l.trazo(T([(8.4, -6.4), (11.6, -6.2), (14.6, -6.4)]), .1, alfa=.9)      # las riendas
     h = l.masa(ovalo(cx + 4.4, cy - 9.9, 1.25, 1.35), material='vientre', alto=.4, brillo=.15, vientre=0, hondo=0, linea=.35)
-    l.mancha(ovalo(cx + 4.4, cy - 9.9, 1.4, 1.5), PIEL, .4, dentro=h)
+    l.mancha(ovalo(cx + 4.4, cy - 9.9, 1.4, 1.5), 'A2683A', .6, dentro=h)
     l.mancha(ovalo(cx + 5.1, cy - 10, .18, .18), '05201C', 1, dentro=h)
     l.masa(forma(T([(2.2, -10.4), (3.2, -12.2), (5.2, -12.4), (5.8, -10.9), (7, -10.5), (6.6, -10.1), (1.8, -10.1)]), 1), material='acento',
            alto=.3, brillo=.3, vientre=0, hondo=0, linea=.3)              # el sombrero
@@ -446,27 +471,23 @@ def cairo(l):
     rng = np.random.default_rng(6)
     cielo(l, sol=None)
     # visto desde muy arriba y desde el mar, mirando al sur: el Nilo baja del horizonte y en la punta, donde está la ciudad, se abre en
-    # abanico hasta el mar, que queda adelante; el delta es un triángulo, como la letra Δ
-    tierra(l, 6, 41, desierto=.42)
+    # abanico hasta el mar, que queda adelante; el delta, protagonista, es un triángulo dorado, como la letra Δ (con el triángulo
+    # marcado solo por una línea punteada, no se veía)
+    tierra(l, 6, 41, desierto=.3)
     agua(l, box(-2, 34.4, 122, 41.5), ondas=10, semilla=1, linea=0)
     apice = (60, 15)
     costa = [(2, 35), (12, 35.8), (22, 35), (32, 35.8), (42, 35), (52, 35.8), (62, 35), (72, 35.8), (82, 35), (92, 35.8), (102, 35),
              (112, 35.8), (118, 35.2)]
     delta = Polygon([apice] + costa).buffer(.3)
-    d = orilla(l, delta, tinte=.1, linea=.4)
+    d = l.masa(delta, material='acento', alto=.15, brillo=.35, vientre=0, hondo=0, linea=.6, escalon=.1, contraluz=.25)
     for _ in range(90):                                                  # los campos del delta
         x, y = rng.uniform(4, 116), rng.uniform(16, 35)
-        l.mancha(ovalo(x, y, rng.uniform(.8, 2.2), rng.uniform(.3, .8)), str(rng.choice(['3D9582', '8BD0B9'])), .3, dentro=d)
+        l.mancha(ovalo(x, y, rng.uniform(.8, 2.2), rng.uniform(.3, .8)), str(rng.choice(['6B4E10', 'FBEFCB'])), .16, dentro=d)
     # los brazos del río, como las varillas del abanico, más anchos adelante, y el Nilo que baja derecho del horizonte hasta la punta
     brazos = [cinta([apice, (apice[0] + (bx - apice[0]) * .5, 25.4), (bx, 35.6)], [a * .6, a, a * 1.7], 8)
               for bx, a in ((8, 1.5), (22, .9), (38, 1), (60, .9), (82, 1), (98, .9), (112, 1.5))]
     nilo = Polygon([(59.7, 6), (60.3, 6), (60.8, apice[1] + .6), (59.2, apice[1] + .6)])
     agua(l, unary_union(brazos + [nilo]), ondas=4, semilla=2, linea=.25)
-    # el triángulo del delta, en dorado: la letra Δ
-    for (xa, ya), (xb, yb) in ((apice, (3, 34.4)), (apice, (117, 34.4)), ((3, 34.4), (117, 34.4))):
-        for u in np.arange(0, 1, .04):
-            l.trazo([(xa + (xb - xa) * u, ya + (yb - ya) * u), (xa + (xb - xa) * (u + .024), ya + (yb - ya) * (u + .024))], .34, color='E8B952',
-                    alfa=.95)
     # la ciudad en la punta del delta: torres, minaretes y una cúpula; y del lado oeste, a la derecha, las pirámides de Guiza
     for x, w, h in ((51, 1.8, 4.4), (53.4, 1.6, 3), (66, 1.8, 3.6), (68.2, 1.6, 5)):
         t = l.masa(box(x - w / 2, 15.6 - h, x + w / 2, 15.6).buffer(.06), material='claro', alto=.25, brillo=.15, vientre=0, hondo=0,
@@ -486,6 +507,46 @@ def cairo(l):
 
 
 # ------------------------------------------------------------------------------------------------ el mar
+def faro(l, x, base, s=1.0):
+    """el faro de Alejandría, como lo cuentan las descripciones antiguas: tres cuerpos, uno sobre otro (el de abajo, cuadrado y alto,
+    con sus ventanas; el del medio, octogonal; el de arriba, redondo, con el fuego) sobre su zócalo; dorado, porque la carga sigue
+    hasta Alejandría"""
+    P = lambda pts: Polygon([(x + u * s, base + v * s) for u, v in pts])
+    cuerpos = [P([(-7.6, 0), (7.6, 0), (7.6, -1.8), (-7.6, -1.8)]), P([(-5.4, -1.8), (5.4, -1.8), (4.6, -12.4), (-4.6, -12.4)]),
+               P([(-5.4, -12.4), (5.4, -12.4), (5.4, -13.3), (-5.4, -13.3)]), P([(-3.4, -13.3), (3.4, -13.3), (3, -19.4), (-3, -19.4)]),
+               P([(-3.7, -19.4), (3.7, -19.4), (3.7, -20.1), (-3.7, -20.1)]), P([(-2, -20.1), (2, -20.1), (1.8, -23.4), (-1.8, -23.4)]),
+               forma([(x - 2.2 * s, base - 23.4 * s), (x - 1.6 * s, base - 24.8 * s), (x, base - 25.6 * s), (x + 1.6 * s, base - 24.8 * s),
+                      (x + 2.2 * s, base - 23.4 * s)], 2)]
+    m = l.masa(cuerpos, material='acento', alto=.4, brillo=.45, vientre=0, hondo=0, linea=.45, escalon=.15, contraluz=.35)
+    for v in (-4.6, -8.4):                                               # las ventanas
+        for u in (-2.6, 0, 2.6):
+            l.mancha(box(x + (u - .45) * s, base + (v - 1.2) * s, x + (u + .45) * s, base + v * s), '6B4E10', .75, dentro=m)
+    for u in (-1.4, 1.4):
+        l.mancha(box(x + (u - .35) * s, base - 17.4 * s, x + (u + .35) * s, base - 15.8 * s), '6B4E10', .75, dentro=m)
+    l.mancha(box(x - .9 * s, base - 22.8 * s, x + .9 * s, base - 21 * s), 'FFFFFF', .9, dentro=m)       # el fuego
+    return unary_union(cuerpos)
+
+
+def gabarra(l, x, y, s=1.0):
+    """una gabarra, mirando a la derecha: el casco largo y chato, de madera, cargado de sacos, con su timón atrás y un palo con su vela
+    cuadrada chica; (x, y) es la línea del agua bajo el medio"""
+    P = lambda pts: [(x + u * s, y + v * s) for u, v in pts]
+    l.masa(Polygon(P([(-1, -2), (-.6, -2), (-.6, -10), (-1, -10)])), material='lejos', alto=.2, brillo=.2, vientre=0, hondo=0, linea=.25)
+    v = l.masa(Polygon(P([(-4, -9.6), (2.4, -9.6), (2.8, -4.4), (-3.6, -4.4)])).buffer(.1 * s), material='claro', alto=.3, brillo=.15,
+               vientre=0, hondo=0, linea=.35, contraluz=.25)
+    l.trazo(P([(-3.8, -7), (2.6, -7)]), .08, color='8EB5AA', alfa=.7, dentro=v)
+    sacos = [ovalo(x + u * s, y + v_ * s, 1.6 * s, .9 * s) for u, v_ in ((-5.6, -2.4), (-2.4, -2.4), (.8, -2.4), (4, -2.4), (-4, -3.8),
+                                                                           (-.8, -3.8), (2.4, -3.8))]
+    sc = l.masa(sacos, material='claro', alto=.4, brillo=.15, vientre=0, hondo=0, linea=.3, contraluz=.25)
+    l.mancha(unary_union(sacos), 'B08A6A', .35, dentro=sc)
+    casco = forma(P([(-8.6, -1.8), (8.4, -1.8), (9.6, -2.6), (8.2, .6), (-7.8, .6), (-9, -2.4)]), 1)
+    c = l.masa(casco, material='vientre', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.4, contraluz=.25)
+    l.mancha(casco, 'A2683A', .55, dentro=c)
+    l.trazo(P([(-8.2, -.6), (8.6, -.6)]), .1, color='6B4E10', alfa=.6, dentro=c)
+    l.trazo(P([(-8.6, -1.6), (-10.4, .8)]), .3, alfa=.85)              # el timón
+    return casco
+
+
 def mar(l):
     cielo(l, sol=None)
     nube(l, 40, 7, 16, .55)
@@ -498,19 +559,22 @@ def mar(l):
     for _ in range(22):
         x, y = rng.uniform(30, 116), rng.uniform(horizonte + 2, 40)
         l.trazo([(x, y), (x + 3, y - .25), (x + 6, y)], .16, color='A4DCC4', alfa=.7)
-    # un barco de carga en el horizonte
-    l.masa([forma([(84, horizonte + .3), (100, horizonte + .3), (101, horizonte - 1), (84.6, horizonte - .8)], 0),
-            box(86, horizonte - 2.8, 89, horizonte - .7), box(91, horizonte - 2.4, 98, horizonte - .7)], material='lejos', alto=.15, brillo=0,
-           vientre=0, hondo=0, linea=.25, arroja=False)
+    # a la derecha, en su isla, el faro de Alejandría, dorado, protagonista
+    l.masa(forma([(78, horizonte + 3.6), (82, horizonte + .4), (106, horizonte + .4), (112, horizonte + 3.6)], 1), material='lejos',
+           alto=.2, brillo=.05, vientre=0, hondo=0, linea=.35)
+    fr = faro(l, 94, horizonte + 1.6, .82)
+    reflejo(l, fr.intersection(box(-2, 0, 122, horizonte + 1.6)), horizonte + 3.6, .22)
     # la última orilla del delta, a la izquierda, partida por el brazo del Nilo, que se abre al mar
     canal = cinta([(-2, 27), (14, 27.4), (28, 27), (40, 26.2), (52, 25.4)], [2.4, 3, 3.8, 5.6, 9], 8)
     tierra_ = forma([(-2, 20.6), (12, 20.4), (26, 21.2), (38, 22.4), (46, 25.4), (40, 29.6), (24, 31.6), (8, 32.4), (-2, 32.8)], 2)
     orilla(l, tierra_.difference(canal), tinte=.36)
     for x, y, h, lado in ((6, 23.6, 8.6, 1), (13, 23.8, 7, -1), (24, 24.2, 7.8, 1), (10, 31.2, 9, -1), (20, 30.4, 7.4, 1)):
         palmera(l, x, y, h, lado, datiles=False)
-    # la falúa, la barca del Nilo, que sale al mar
-    g = faluca(l, 64, 33.6, 1.45, casco='acento')
-    reflejo(l, g, 33.8, .22)
+    # la gabarra, cargada, que sigue hacia Alejandría, y la falúa, la barca del Nilo, de madera, que da la vuelta hacia el sur
+    g = gabarra(l, 64, 29.6, 1.1)
+    reflejo(l, g, 29.8, .2)
+    g = faluca(l, 40, 36.4, 1.2, lado=-1)
+    reflejo(l, g, 36.6, .2)
     for x, y, s in ((30, 9, 1), (36, 7.4, .8), (100, 8.6, .7)):
         ave(l, x, y, s)
 

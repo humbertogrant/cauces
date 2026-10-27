@@ -207,28 +207,39 @@ def camello(l, x, base, s=1.0, lado=1):
     l.mancha(unary_union(patas + cuerpo).buffer(1), BARRO, .45, dentro=c)
     l.mancha(ovalo(x + lado * 12.4 * s, base - 17.6 * s, .35 * s, .35 * s), '05201C', 1)
     sal = [Polygon(P([(-5.4, -10.6), (-1, -12.6), (-.6, -9), (-5, -7.4)])), Polygon(P([(1, -12.6), (5.4, -10.6), (5, -7.4), (.6, -9)]))]
-    l.masa(sal, material='claro', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.35)
-    for g in sal:
-        l.trazo([tuple(g.exterior.coords[0]), tuple(g.exterior.coords[2])], .1 * s, color='9DB9B0', alfa=.7)
+    sl = l.masa(sal, material='claro', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.35)
+    l.mancha(unary_union(sal).buffer(.5), '9DB9B0', .45, dentro=sl)      # la sal, gris, en losas, atadas con sogas (blancas y lisas,
+    for g in sal:                                                       # parecían libros)
+        c0, c1, c2, c3 = [np.array(q) for q in g.exterior.coords[:4]]
+        for f in (.3, .7):
+            l.trazo([tuple(c0 + (c1 - c0) * f), tuple(c3 + (c2 - c3) * f)], .2 * s, color='5A3E1E', alfa=.85)
+        l.trazo([tuple(c0 + (c3 - c0) * .5), tuple(c1 + (c2 - c1) * .5)], .08 * s, color='6FA497', alfa=.8)
     return c
 
 
 def libro_abierto(l, x, y, w, h):
-    """un manuscrito abierto sobre su atril: las dos páginas claras, con sus renglones de letra, los cantos y las tapas doradas"""
+    """un manuscrito abierto sobre su atril: las tapas de cuero dorado, anchas, las dos páginas de pergamino, con sus renglones de
+    letra y la orla y el título dorados de cada página (con las tapas finas, lo dorado del cuadro era el oro del cesto)"""
     at = [tubo([(x - w * .36, y + .4), (x + w * .3, y + h * .62)], [1, .9], 3), tubo([(x + w * .36, y + .4), (x - w * .3, y + h * .62)], [1, .9], 3)]
     a = l.masa(at, material='vientre', alto=.3, brillo=.15, vientre=0, hondo=0, linea=.35)               # el atril de madera, en X
     l.mancha(unary_union(at).buffer(1), '5A3E1E', .6, dentro=a)
-    tapa = Polygon([(x - w / 2 - .6, y + .6), (x, y + 1.6), (x + w / 2 + .6, y + .6), (x + w / 2 + .6, y - h + .4), (x, y - h + 1.4), (x - w / 2 - .6, y - h + .4)])
+    tapa = Polygon([(x - w / 2 - 1.6, y + 1.2), (x, y + 2.4), (x + w / 2 + 1.6, y + 1.2), (x + w / 2 + 1.6, y - h - .4), (x, y - h + .8),
+                    (x - w / 2 - 1.6, y - h - .4)])
     l.masa(tapa, material='acento', alto=.4, brillo=.45, vientre=0, hondo=0, linea=.4, contraluz=.35)
     for lado in (-1, 1):
         pg = Polygon([(x, y + .6), (x + lado * w / 2, y - .4), (x + lado * w / 2, y - h), (x, y - h + 1.2)])
         p = l.masa(pg, material='claro', alto=.3, brillo=.25, vientre=0, hondo=0, linea=.3)
         l.mancha(pg.buffer(1), 'FBEFCB', .5, dentro=p)
-        for k in range(1, 9):                                            # los renglones, en curva como la página
+        for k in range(2, 9):                                            # los renglones, en curva como la página
             f = k / 9.6
             a0 = (x + lado * w * .08, y - h + 1.2 + (h - 1.2) * f + .3)
             a1 = (x + lado * w * .46, y - h + .2 + (h - .8) * f)
             l.trazo([a0, a1], .16, color='0C3A33', alfa=.65, dentro=p)
+        f = 1 / 9.6                                                      # el título, dorado
+        l.trazo([(x + lado * w * .1, y - h + 1.2 + (h - 1.2) * f + .3), (x + lado * w * .34, y - h + .3 + (h - .8) * f)], .5, color='E8B952',
+                alfa=.95, dentro=p)
+        l.trazo([(x + lado * w * .04, y - .1), (x + lado * w * .47, y - .9), (x + lado * w * .47, y - h + .1), (x + lado * w * .04, y - h + 1.5)],
+                .22, color='E8B952', alfa=.9, dentro=p)                 # la orla
 
 
 def tombuctu(l):
@@ -254,7 +265,7 @@ def tombuctu(l):
         l.trazo([(91, y), (106, y)], .14, color='5A3E1E', alfa=.6, dentro=c)
     pepitas = [ovalo(92 + k * 1.6 + rng.uniform(-.3, .3), 31 - (k % 3) * .9 - rng.uniform(0, .6), 1, .8) for k in range(9)]
     l.masa(pepitas, material='acento', alto=.6, brillo=.6, vientre=0, hondo=0, linea=.3, contraluz=.4)
-    libro_abierto(l, 60, 30, 26, 14)
+    libro_abierto(l, 60, 31, 28, 15)
 
 
 # ------------------------------------------------------------------------------------------------ Gao

@@ -4,29 +4,32 @@
 recordar va grande y al medio, y es lo único dorado; sin sol.
 
 - el nacimiento: en los Andes del Perú, el nevado Mismi, donde suele ponerse su fuente más lejana: el glaciar del que sale un arroyito
-  que pasa por una laguna y baja hacia nosotros por la puna, con alpacas, y un cóndor que planea;
+  que pasa por una laguna, y de la laguna el río recién nacido, dorado, que baja hacia nosotros por la puna, con alpacas, y un cóndor
+  que planea;
 - Iquitos: «un taxi flotante»: a Iquitos no llega ninguna carretera; un taxi dorado flota en el río, frente a las casas que flotan, un
   delfín rosado salta a su lado y una avioneta pasa en el cielo, porque solo se entra por río o por aire;
 - Leticia: «tres vecinas se dan la mano en una esquina»: Leticia, Tabatinga y Santa Rosa, en la triple frontera: tres mujeres que se
   toman de la mano a la orilla del río;
 - Manaos: «dos manos que no se juntan»: el Río Negro, oscuro, y el Solimões, café con leche, que corren lado a lado sin mezclarse, y
-  dos manos, una de cada color, que se buscan sin tocarse; enfrente, la ciudad con la cúpula del Teatro Amazonas;
-- Santarém: «un santo con un camión lleno de soya»: el camión, con la caja llena de soya dorada y un santo de aureola al volante, que
-  va al puerto, donde los silos cargan los barcos;
-- Belém: «Belén, el nacimiento»: la estrella de Belén, dorada, sobre el estuario donde el río nace al mar; en la orilla, el mercado
-  Ver-o-Peso con sus torrecitas y los barcos, y las palmeras de asaí;
-- el mar: el regatão, la barca del juego, que sale al Atlántico entre manglares, donde el agua café del río empuja al mar azul.
+  dos manos doradas, una oscura y otra clara, como sus aguas, que se buscan sin tocarse (la oscura, sobre el agua oscura, no se veía);
+  enfrente, la ciudad con la cúpula del Teatro Amazonas;
+- Santarém: «un santo con un camión lleno de soya»: el camión, con la caja llena de soya dorada, y el santo, grande, de túnica blanca y
+  aureola dorada, parado sobre la soya, que va al puerto, donde los silos cargan los barcos (al volante, el santo era un punto);
+- Belém: «Belén, el nacimiento»: la estrella de Belén, dorada, de puntas anchas y con la de abajo larga, que apunta al estuario donde
+  el río nace al mar; en la orilla, el mercado Ver-o-Peso con sus torrecitas y los barcos, y las palmeras de asaí;
+- el mar: el regatão da la vuelta en Belém: «el Atlántico es de los cargueros y el delta de Marajó, de las mareas»: la pororoca, la
+  ola de la marea que entra del mar y sube por el río, dorada, de manglar a manglar, con su cresta de espuma; lejos, los cargueros.
 """
 import math
 
 import numpy as np
 from shapely import affinity
-from shapely.geometry import Polygon, box
+from shapely.geometry import LineString, Point, Polygon, box
 from shapely.ops import unary_union
 
 from _postal import (VISTA, agua, ave, cielo, cinta, cordillera, mangle, nube, orilla, palmera, pasto, prado, reflejo, rio, selva,  # noqa: F401
                      tierra)
-from pintor import forma, ovalo, tubo
+from pintor import curva, forma, ovalo, tubo
 
 PIEL = '93701A'            # el tono de la piel: dorado oscuro sobre el pálido de `vientre`
 CAFE = 'BF9129'            # el café con leche del Solimões y del agua del río, sobre el pálido de `vientre`
@@ -64,6 +67,27 @@ def condor(l, x, y, s=1.0):
     l.masa(ovalo(x, y - 1.7 * s, .6 * s, .55 * s), material='vientre', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.25)
 
 
+def rio_dorado(l, pts, anchos, n=10):
+    """el río recién nacido, dorado porque es lo que hay que recordar: una cinta de curvas suaves, con ondas blancas sueltas a lo largo
+    del eje; la cabeza, que sale de la laguna, sin tinta y teñida del agua"""
+    m = l.masa(cinta(pts, anchos, n), material='acento', alto=.25, brillo=.45, vientre=0, hondo=0, linea=.35, escalon=.1, contraluz=.3,
+               arroja=False, sin_tinta=box(-5, -5, 125, pts[0][1] + .5))
+    l.mancha(box(-5, -5, 125, pts[0][1] + 1.4), '64C8AA', .45, dentro=m, difuso=.8)
+    c = curva(pts, n)
+    a = np.interp(np.linspace(0, 1, len(c)), np.linspace(0, 1, len(anchos)), anchos)
+    largo = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(c, axis=0).T))])
+    t, fila = 2.2, 0
+    while t < largo[-1] - .6:
+        k = int(np.searchsorted(largo, t))
+        x, y = c[k]
+        w, h = min(.4 + a[k] * .3, 2.6), .1 + a[k] * .02
+        x += (.18 if fila % 2 else -.18) * a[k]
+        l.trazo([(x - w, y + h), (x - w / 2, y - h), (x, y + h * .6), (x + w / 2, y - h), (x + w, y + h)], .12 + a[k] * .014,
+                color='FFFFFF', alfa=.85, dentro=m)
+        t += 1.1 + a[k] * .35
+        fila += 1
+
+
 def nace(l):
     cielo(l, sol=None)
     nube(l, 22, 6, 14, .6)
@@ -82,11 +106,11 @@ def nace(l):
     puna = forma([(-2, 23), (14, 21.6), (30, 22.8), (46, 21), (60, 20.2), (76, 21.4), (92, 22.6), (108, 21.2), (122, 22.4), (122, 41.5),
                   (-2, 41.5)], 2)
     p = l.masa(puna, material='vientre', alto=.1, brillo=.04, vientre=0, hondo=0, linea=.3, escalon=.1, contraluz=.2)
-    l.mancha(puna, 'E8B952', .34, dentro=p)
+    l.mancha(puna, 'E8B952', .24, dentro=p)
     # el arroyito que sale del glaciar, la laguna, y el río recién nacido que baja hacia nosotros
     agua(l, cinta([(60.4, 17), (59.6, 19.6), (58.4, 22.4)], [.6, .9, 1.2], 6), linea=.2)
     agua(l, ovalo(56, 24.6, 9.6, 2), ondas=2, semilla=1, linea=.25)
-    agua(l, cinta([(52, 26), (49, 30), (53.4, 34.6), (48.6, 38.4), (51, 41.5)], [1.2, 2, 3, 4, 5.2], 10), ondas=3, semilla=2, linea=.25)
+    rio_dorado(l, [(53.4, 25.9), (48.6, 29.6), (50.4, 33.8), (58, 37.4), (60.6, 41.9)], [2, 2.8, 3.8, 5, 6.4])
     pasto(l, 2, 118, 25, 40.6, 34, semilla=3)
     # las alpacas, y el cóndor
     alpaca(l, 24, 34.4, 1.1, 1, 'claro', semilla=4)
@@ -282,15 +306,51 @@ def manaos(l):
     for k in range(5):                                                   # los remolinos de la línea donde se encuentran
         x, y = medio[2 + k * 2]
         l.trazo([(x - 1.6, y), (x - .4, y - .8), (x + .8, y), (x - .2, y + .6)], .14, color='E2EDE9', alfa=.6)
-    # las dos manos, protagonistas: una de cada agua, que se buscan sin tocarse
-    mano(l, 24, 42, 56.2, 24.4, 1, 'oscuro')
-    mano(l, 96, 42, 63.8, 24.4, -1, 'vientre', CAFE)
+    # las dos manos, protagonistas y doradas: una oscura y otra clara, como sus aguas, que se buscan sin tocarse
+    mano(l, 24, 42, 56.2, 24.4, 1, 'acento', '6B4E10')
+    mano(l, 96, 42, 63.8, 24.4, -1, 'acento', 'FBEFCB')
 
 
 # ------------------------------------------------------------------------------------------------ Santarém
+def santo(l, x, base, s=1.0, semilla=0):
+    """un santo de frente, parado, con la túnica blanca, el manto verde sobre los hombros, los brazos abiertos que bendicen, la barba y,
+    detrás de la cabeza, la aureola dorada, grande; (x, base) es donde se le hunden los pies, en la soya, que le cubre los tobillos"""
+    P = lambda pts: [(x + u * s, base + v * s) for u, v in pts]
+    O = lambda u, v, rx, ry, a=0: ovalo(x + u * s, base + v * s, rx * s, ry * s, a)
+    rng = np.random.default_rng(semilla)
+    l.mancha(O(0, -12.2, 5.4, 5.4), 'FBEFCB', .45, difuso=.8 * s)       # el resplandor
+    l.masa(O(0, -12.2, 3.8, 3.8), material='acento', alto=.3, brillo=.5, vientre=0, hondo=0, linea=.4, contraluz=.35)    # la aureola
+    tunica = forma(P([(-2.2, -9.6), (2.2, -9.6), (2.9, -5), (3.7, 0), (-3.7, 0), (-2.9, -5)]), 2)
+    brazos = [tubo(P([(sx * 1.8, -9), (sx * 4, -7.2), (sx * 5.8, -5.8)]), [.8 * s, .7 * s, .6 * s], 6) for sx in (-1, 1)]
+    t = l.masa([tunica] + brazos, material='claro', alto=.45, brillo=.2, vientre=0, hondo=.1, linea=.45, escalon=.2, contraluz=.3)
+    for u in (-1.2, 1.2):                                                # los pliegues
+        l.trazo(P([(u * .6, -8.4), (u, -4), (u * 1.4, -.4)]), [.05, .12 * s, .06], color='8EB5AA', alfa=.7, dentro=t)
+    l.masa(forma(P([(-2.6, -9.8), (2.6, -9.8), (3.1, -7.8), (1.6, -7), (0, -7.8), (-1.6, -7), (-3.1, -7.8)]), 1), material='cuerpo', alto=.3,
+           brillo=.2, vientre=0, hondo=0, linea=.35)                     # el manto
+    manos = [O(sx * 6.1, -5.6, .75, .65) for sx in (-1, 1)]
+    mn = l.masa(manos, material='vientre', alto=.3, brillo=.15, vientre=0, hondo=0, linea=.3)
+    l.mancha(unary_union(manos).buffer(.3), 'A2683A', .6, dentro=mn)
+    h = l.masa(O(0, -11.8, 1.75, 2), material='vientre', alto=.4, brillo=.15, vientre=0, hondo=0, linea=.35)
+    l.mancha(O(0, -11.8, 2, 2.2), 'A2683A', .6, dentro=h)
+    l.mancha(O(0, -13.6, 2, 1.1), '3A2A0A', .85, dentro=h)               # el pelo
+    for u in (-.65, .65):
+        l.mancha(O(u, -12, .2, .22), '05201C', 1, dentro=h)              # los ojos
+    barba = forma(P([(-1.8, -11.9), (-1.7, -10.2), (-1, -8.7), (0, -8), (1, -8.7), (1.7, -10.2), (1.8, -11.9), (1.2, -11), (.6, -10.3),
+                     (0, -10.1), (-.6, -10.3), (-1.2, -11)]), 1)
+    b = l.masa(barba, material='lejos', alto=.3, brillo=.15, vientre=0, hondo=0, linea=.25)
+    l.mancha(barba.buffer(.3), '3A2A0A', .75, dentro=b)                  # la barba, café como el pelo, alrededor del mentón
+    l.trazo(P([(-.5, -10.8), (0, -10.6), (.5, -10.8)]), .12 * s, color='6B4E10', alfa=.8, dentro=h)    # la boca
+    # la soya que le tapa los pies
+    mont = forma(P([(-5, .8), (-3.4, -.6), (-1, -1.1), (1.4, -1), (3.6, -.5), (5, .8)]), 2)
+    so = l.masa(mont, material='acento', alto=.35, brillo=.35, vientre=0, hondo=0, linea=.3, contraluz=.3, arroja=False)
+    for _ in range(40):
+        u, v = rng.uniform(-4.8, 4.8), rng.uniform(-1.1, .8)
+        l.mancha(O(u, v, .34, .3), str(rng.choice(['F2D48A', 'BF9129', 'FBEFCB'])), .9, dentro=so)
+
+
 def camion(l, x, y, s=1.0, semilla=0):
-    """un camión de carga, de costado, mirando a la derecha, con la caja llena de soya, un montón de granos dorados; en la cabina, un
-    santo con su aureola dorada al volante; (x, y) es el suelo bajo el medio"""
+    """un camión de carga, de costado, mirando a la derecha, con la caja llena de soya, un montón de granos dorados; (x, y) es el suelo
+    bajo el medio"""
     P = lambda pts: [(x + u * s, y + v * s) for u, v in pts]
     O = lambda u, v, rx, ry: ovalo(x + u * s, y + v * s, rx * s, ry * s)
     rng = np.random.default_rng(semilla)
@@ -312,21 +372,12 @@ def camion(l, x, y, s=1.0, semilla=0):
     ruedas = [O(u, -3, 3, 3) for u in (-12, -6, 9.4)]
     l.masa(ruedas, material='oscuro', alto=.45, brillo=.35, vientre=0, hondo=0, linea=.35)
     l.masa([O(u, -3, 1.2, 1.2) for u in (-12, -6, 9.4)], material='claro', alto=.3, brillo=.4, vientre=0, hondo=0, linea=.25)
-    # la cabina, blanca, con su ventana, y el santo adentro, con su aureola
+    # la cabina, blanca, con su ventana
     cab = forma(P([(1.6, -5.8), (1.6, -15.2), (3, -16.6), (9.6, -16.6), (13.4, -11.8), (15.8, -10.6), (16.2, -5.8)]), 1)
     c = l.masa(cab, material='claro', alto=.35, brillo=.2, vientre=0, hondo=0, linea=.45, escalon=.15, contraluz=.3)
     ventana = Polygon(P([(3.4, -15.2), (9, -15.2), (12, -11.6), (3.4, -11.6)]))
     l.mancha(ventana.buffer(.15 * s), '164F46', .9, dentro=c)
     l.mancha(ventana, 'A4DCC4', .85, dentro=c)
-    l.masa(Polygon(P([(4, -11.6), (9.6, -11.6), (9, -13), (4.6, -13)])).buffer(.1 * s), material='lejos', alto=.2, brillo=.15, vientre=0,
-           hondo=0, linea=.25)                                           # el manto, en los hombros
-    h = l.masa(O(6.8, -13.6, 1.4, 1.5), material='vientre', alto=.4, brillo=.15, vientre=0, hondo=0, linea=.3)
-    l.mancha(O(6.8, -13.6, 1.6, 1.7), PIEL, .4, dentro=h)
-    l.masa(forma(P([(5.6, -13.4), (8, -13.4), (7.6, -11.8), (6.8, -11.2), (6, -11.8)]), 1), material='claro', alto=.3, brillo=.2, vientre=0,
-           hondo=0, linea=.2)                                            # la barba
-    l.mancha(O(7.5, -14, .17, .17), '05201C', 1, dentro=h)
-    l.masa(O(6.8, -15.8, 2, .75).difference(O(6.8, -15.8, 1.4, .4)), material='acento', alto=.3, brillo=.5, vientre=0, hondo=0, linea=.25)
-    l.mancha(O(6.8, -15.8, 3, 1.4), 'F2D48A', .35, difuso=.6 * s)        # el resplandor de la aureola
     l.mancha(O(15.4, -8.4, .7, .6), 'FBEFCB', 1, dentro=c)              # el farol
     l.trazo(P([(8.2, -11.2), (8.2, -6.2)]), .12 * s, color='8EB5AA', alfa=.8, dentro=c)    # la puerta
     return unary_union([cab, soya] + ruedas)
@@ -350,26 +401,28 @@ def santarem(l):
     l.masa(tubo([(86, 14), (76, 21.4)], [.4, .4], 4), material='lejos', alto=.2, brillo=.2, vientre=0, hondo=0, linea=.25)   # la cinta
     l.masa([forma([(60, 22.6), (84, 22.6), (85.4, 24.8), (61, 24.8)], 0), box(80, 19.6, 84, 22.8)], material='lejos', alto=.2, brillo=.1,
            vientre=0, hondo=0, linea=.3)                                 # el barco de la soya
-    # el camino de tierra, adelante, y el camión con el santo, protagonista, que va al puerto
+    # el camino de tierra, adelante, y el camión con el santo parado sobre la soya, protagonistas, que va al puerto
     camino = l.masa(forma([(-2, 27), (122, 27), (122, 41.5), (-2, 41.5)], 0), material='vientre', alto=.08, brillo=0, vientre=0, hondo=0,
                     linea=.3, escalon=0, contraluz=0, arroja=False)
     l.mancha(box(-2, 27, 122, 42), 'E8B952', .3, dentro=camino)
     for y in (30.4, 35):
         l.trazo([(-2, y), (122, y + .4)], .14, color='93701A', alfa=.35, dentro=camino)
     camion(l, 58, 38.6, 1.3, semilla=7)
+    santo(l, 45, 16.8, 1.0, semilla=10)
     pasto(l, 0, 24, 29, 31, 6, semilla=8)
     pasto(l, 96, 120, 29, 31, 6, semilla=9)
 
 
 # ------------------------------------------------------------------------------------------------ Belém
 def estrella(l, x, y, r, hasta=30.0):
-    """la estrella de Belén: ocho puntas, cuatro largas y cuatro cortas, dorada, con su resplandor y su cola de luz que baja"""
+    """la estrella de Belén: ocho puntas anchas, cuatro largas y cuatro cortas, y la de abajo más larga, dorada, con su resplandor y su
+    cola de luz que baja (de puntas finas, era un brillo)"""
     l.mancha(Polygon([(x - r * .25, y), (x + r * .25, y), (x + r * .9, hasta), (x - r * .9, hasta)]), 'F2D48A', .3, difuso=1)
     l.mancha(ovalo(x, y, r * 2.4, r * 2.4), 'F2D48A', .4, difuso=2)
     puntas = []
     for k in range(16):
         a = math.radians(k * 22.5 - 90)
-        rr = r if k % 4 == 0 else (r * .55 if k % 2 == 0 else r * .2)
+        rr = (r * 1.6 if k == 8 else r) if k % 4 == 0 else (r * .6 if k % 2 == 0 else r * .34)
         puntas.append((x + rr * math.cos(a), y + rr * math.sin(a)))
     e = l.masa(Polygon(puntas), material='acento', alto=.4, brillo=.55, vientre=0, hondo=0, linea=.35, contraluz=.35)
     l.mancha(ovalo(x, y, r * .25, r * .25), 'FBEFCB', .95, dentro=e)
@@ -399,7 +452,7 @@ def belem(l):
                arroja=False)
     l.mancha(box(-2, horizonte, 122, horizonte + 2.6), '64C8AA', .55, dentro=m, difuso=.8)
     # la estrella de Belén, protagonista, sobre el río que nace al mar
-    estrella(l, 62, 9.6, 8.4, hasta=33)
+    estrella(l, 62, 8.6, 8.4, hasta=33)
     rng = np.random.default_rng(5)
     for _ in range(20):
         x, y = rng.uniform(2, 118), rng.uniform(horizonte + 2, 40)
@@ -447,38 +500,75 @@ def regatao(l, x, y, s=1.0):
     return casco.union(techo)
 
 
+def pororoca(l):
+    """la pororoca, la ola de la marea que entra del mar y sube por el río, de perfil, corriendo hacia la izquierda, río arriba: el lomo
+    dorado que sube desde el mar, la cresta que se rompe hacia adelante en un rizo, con su espuma y sus gotas, y la cara cóncava, en
+    sombra, bajo el rizo (de frente, de orilla a orilla y con vetas, parecía una cerca)"""
+    rng = np.random.default_rng(3)
+    lomo = [(112, 34.6), (102, 32), (92, 28.2), (82, 23.2), (74, 18.6), (66, 14.6), (58, 12.2), (51, 11.8), (45.4, 13.2), (41.4, 15.8),
+            (39.2, 18.8)]
+    cara = [(39.6, 21.2), (41.8, 21.6), (43.4, 19.8), (45.6, 18.2), (48.6, 18.4), (50.6, 20.6), (51, 24), (49.4, 27.8), (46, 31),
+            (41.6, 33.4), (35.4, 34.6)]
+    ola = forma(lomo + cara, 2).buffer(0)
+    m = l.masa(ola, material='acento', alto=.45, brillo=.45, vientre=0, hondo=0, linea=.45, escalon=.15, contraluz=.35)
+    l.mancha(LineString(cara[3:]).buffer(4.4), '6B4E10', .4, dentro=m, difuso=1.6)          # la cara, en sombra
+    for k in range(6):                                                   # las vetas del lomo, que siguen la curva
+        d = 3 + k * 3.2
+        l.trazo([(112 - d * .4, 34.6 - d * .1), (96 - d * .9, 30.6 - d * .25), (80 - d * .9, 24.4 + d * .05), (66 - d * .5, 18.6 + d * .3)],
+                [.06, .2, .16, .05], color='FBEFCB', alfa=.45, dentro=m)
+    # la espuma de la cresta, que crece hacia el rizo, y las gotas que salta hacia adelante
+    c = curva(lomo[3:] + [(39.6, 21.2)], 4)
+    espuma = [ovalo(x + rng.uniform(-.3, .3), y + rng.uniform(-.2, .3), (.9 + 1.5 * k / len(c)) * rng.uniform(.8, 1.2),
+                    (.7 + 1.1 * k / len(c)) * rng.uniform(.8, 1.2)) for k, (x, y) in enumerate(c)]
+    l.masa(espuma, material='claro', alto=.45, brillo=.3, vientre=0, hondo=0, linea=.35, contraluz=.3)
+    for _ in range(34):
+        x, y, r = rng.uniform(28, 46), rng.uniform(10, 26), rng.uniform(.18, .45)
+        if ola.buffer(.8).contains(Point(x, y)):
+            continue
+        l.mancha(ovalo(x, y, r, r), 'FFFFFF', .9)
+    # la espuma al pie, donde la ola revienta contra el río, y la estela del lomo
+    l.masa([ovalo(x, 34.4 + rng.uniform(-.4, .4), rng.uniform(1.2, 2.2), rng.uniform(.6, 1)) for x in np.arange(31, 58, 2.2)], material='claro',
+           alto=.3, brillo=.2, vientre=0, hondo=0, linea=.3, arroja=False)
+    for x in np.arange(60, 112, 6):
+        l.trazo([(x, 35.4), (x + 3, 35.1), (x + 6, 35.4)], .2, color='FFFFFF', alfa=.7)
+    return ola
+
+
 def mar(l):
     cielo(l, sol=None)
     nube(l, 30, 7, 16, .55)
     nube(l, 92, 5, 12, .45)
-    horizonte = 21
-    # el mar azul, al fondo, y el agua café del río, adelante, que lo empuja
+    horizonte = 20.6
+    # el agua: el mar abierto a la derecha, hasta el horizonte, y el agua café del río, adelante y a la izquierda
     m = l.masa(box(-2, horizonte, 122, 41.5), material='lejos', alto=.05, brillo=0, vientre=0, hondo=0, tinta=False, escalon=0, contraluz=0,
                arroja=False)
     l.mancha(box(-2, horizonte, 122, horizonte + 2.6), '64C8AA', .55, dentro=m, difuso=.8)
-    cafe = Polygon([(-2, 29)] + [(x, 28.6 + .8 * math.sin(x / 7)) for x in np.arange(0, 122.1, 4)] + [(122, 41.5), (-2, 41.5)])
-    l.mancha(cafe, CAFE, .5, dentro=m, difuso=1.2)
-    l.mancha(cafe, 'E2EDE9', .18, dentro=m, difuso=1.2)
+    cafe = Polygon([(-2, 22), (40, 22), (70, 28), (122, 31), (122, 41.5), (-2, 41.5)])
+    l.mancha(cafe, CAFE, .5, dentro=m, difuso=2.4)
+    l.mancha(cafe, 'E2EDE9', .18, dentro=m, difuso=2.4)
     rng = np.random.default_rng(9)
     for _ in range(22):
         x, y = rng.uniform(2, 118), rng.uniform(horizonte + 2, 40)
-        l.trazo([(x, y), (x + 3, y - .25), (x + 6, y)], .16, color='A4DCC4' if y < 29 else 'FBEFCB', alfa=.65)
-    # un faro, lejos, en una punta de tierra
-    l.masa(forma([(96, horizonte + .6), (106, horizonte - .6), (122, horizonte - .4), (122, horizonte + 1.4), (96, horizonte + 1.4)], 1),
-           material='vientre', alto=.15, brillo=0, vientre=0, hondo=0, linea=.3)
-    f = l.masa(forma([(110.4, horizonte - .4), (111, 12.4), (113, 12.4), (113.6, horizonte - .4)], 0), material='claro', alto=.3, brillo=.2,
-               vientre=0, hondo=0, linea=.3)
-    l.mancha(box(108, 15, 116, 16.4), '2F8A74', .85, dentro=f)
-    l.masa(box(110.6, 10.4, 113.4, 12.6).buffer(.1), material='claro', alto=.2, brillo=.3, vientre=0, hondo=0, linea=.3)
-    l.masa(Polygon([(110.4, 10.6), (112, 9), (113.6, 10.6)]), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25)
-    # los manglares, a los costados, parados en el agua sobre sus raíces
-    for x, y, h in ((4, 31, 10), (12, 33.4, 11), (20, 30.4, 8.4), (102, 32.4, 9), (110, 34.6, 11), (118, 31.6, 9.6)):
+        l.trazo([(x, y), (x + 3, y - .25), (x + 6, y)], .16, color='A4DCC4' if x > 70 and y < 30 else 'FBEFCB', alfa=.6)
+    # la otra orilla del delta, a la izquierda, con su manglar, que se acaba donde empieza el Atlántico
+    l.masa(forma([(-2, 22.4), (-2, 19), (20, 18.6), (44, 19.2), (60, 20.2), (66, 21.2), (60, 22.2), (30, 22.6)], 2), material='lejos',
+           alto=.2, brillo=.05, vientre=0, hondo=0, linea=.3)
+    for x in np.arange(0, 62, 3.4):
+        l.masa(ovalo(x + rng.uniform(-.6, .6), 18.8 + abs(x - 40) * .01, 2, 1.5), material='cuerpo', alto=.3, brillo=.05, vientre=0,
+               hondo=0, linea=.22, arroja=False)
+    # lejos, en el Atlántico, los cargueros: el casco largo, el puente y las pilas de contenedores
+    for x0, w in ((78, 14), (100, 11)):
+        l.masa([forma([(x0, horizonte + .3), (x0 + w, horizonte + .3), (x0 + w + 1, horizonte - 1), (x0 + .6, horizonte - .8)], 0),
+                box(x0 + 1, horizonte - 3, x0 + 3.2, horizonte - .8)] + [box(x0 + 4 + k * 2.2, horizonte - 2, x0 + 5.8 + k * 2.2, horizonte - .8)
+                                                                          for k in range(int((w - 5) / 2.2))],
+               material='lejos', alto=.15, brillo=0, vientre=0, hondo=0, linea=.25, arroja=False)
+    # la pororoca, protagonista, que entra del mar y sube por el río
+    pororoca(l)
+    # los manglares de esta orilla, a la izquierda, parados en el agua sobre sus raíces
+    for x, y, h in ((4, 33.6, 10.4), (13, 36.4, 11.4), (22, 34.4, 8.6)):
         mangle(l, x, y, h, semilla=int(x))
-    for x, y, s in ((36, 8, 1), (42, 6.4, .8), (78, 9.4, .9)):
+    for x, y, s in ((24, 8, 1), (30, 6.4, .8), (90, 7.4, .9)):
         ave(l, x, y, s)
-    # el regatão, la barca del juego, protagonista, que sale al Atlántico
-    g = regatao(l, 60, 34.6, 1.25)
-    reflejo(l, g, 34.8, .22)
 
 
 POSTALES = [dict(clave='nace', dibujar=nace), dict(clave='Iquitos', dibujar=iquitos), dict(clave='Leticia', dibujar=leticia),

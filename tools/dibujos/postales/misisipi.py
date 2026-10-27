@@ -5,8 +5,9 @@ recordar va grande y al medio, y es lo único dorado; sin sol, salvo el de San L
 
 - el nacimiento: el río sale del lago Itasca tan chico que se cruza a pie por unas piedras: un niño, con su gorra y su camiseta
   doradas, cruza de piedra en piedra con los brazos abiertos, entre pinos;
-- Mineápolis: «un muñeco de masa amasa junto a una catarata»: el muñeco, con su gorro de cocinero, amasa en su mesa al lado de las
-  cataratas de San Antonio, con panes dorados ya horneados; atrás, el molino de harina y el puente de piedra en arcos;
+- Mineápolis: «un muñeco de masa amasa junto a una catarata»: el muñeco de masa, dorado como una galleta de jengibre, con sus botones y
+  sus zigzags de azúcar y su gorro de cocinero, amasa en su mesa al lado de las cataratas de San Antonio, con panes ya horneados;
+  atrás, el molino de harina y el puente de piedra en arcos (blanco y redondo, parecía un muñeco de nieve);
 - San Luis: «un arco de 192 m como puerta»: el Gateway Arch, de acero, en la orilla, que enmarca el sol que se pone en el Oeste, hacia
   donde salían Lewis y Clark; a la izquierda, el Misuri que entra al Misisipi;
 - Memphis: «Elvis toca una guitarra hecha de algodón»: un cantante de rock con su copete y su traje dorado, que toca una guitarra cuyo
@@ -15,7 +16,9 @@ recordar va grande y al medio, y es lo único dorado; sin sol, salvo el de San L
   recordar, con sus plumas; enfrente, las chimeneas de las plantas y un barco;
 - Nueva Orleans: «una trompeta sale del agua en una media luna»: el río que se curva en media luna alrededor de la ciudad, con sus casas
   de balcones detrás del dique, y la trompeta dorada que sale del agua;
-- el mar: el vapor de rueda, la barca del juego, que sale al golfo de México entre los pantanos del delta, con pelícanos y un faro.
+- el mar: el vapor no sale al golfo (en Nueva Orleans la carga pasa a los barcos de altura): el delta del Misisipi, la «pata de
+  pájaro», visto desde arriba como una pata de gallina dorada echada en el golfo de México: la caña con sus escamas, que viene de
+  tierra, los tres dedos, que son los pasos del río entre sus diques de barro, con sus almohadillas y sus uñas, y el dedo de atrás.
 """
 import math
 
@@ -88,30 +91,35 @@ def nace(l):
 
 # ------------------------------------------------------------------------------------------------ Mineápolis
 def muneco(l, x, base, s=1.0):
-    """un muñeco de masa, redondo y blandito, con su gorro de cocinero, que amasa detrás de su mesa: la bola de masa entre las manos y,
-    en la punta de la mesa, los panes ya horneados, dorados"""
+    """un muñeco de masa, dorado como una galleta de jengibre, con sus botones y sus zigzags de azúcar y su gorro de cocinero, que amasa
+    detrás de su mesa: la bola de masa cruda entre las manos y, en la punta de la mesa, los panes ya horneados"""
     P = lambda pts: [(x + u * s, base + v * s) for u, v in pts]
     O = lambda u, v, rx, ry, a=0: ovalo(x + u * s, base + v * s, rx * s, ry * s, a)
-    cuerpo = l.masa([O(0, -9, 5.6, 6.2), O(-3.4, -.8, 1.6, 1.2), O(3.4, -.8, 1.6, 1.2)], material='claro', alto=.6, brillo=.25, vientre=0,
+    cuerpo = l.masa([O(0, -9, 5.6, 6.2), O(-3.4, -.8, 1.6, 1.2), O(3.4, -.8, 1.6, 1.2)], material='acento', alto=.6, brillo=.4, vientre=0,
                     hondo=.1, linea=.45, contraluz=.35)
-    l.mancha(O(0, -9, 6, 7), 'E8B952', .16, dentro=cuerpo)
-    cab = l.masa(O(0, -18.2, 4.2, 3.8), material='claro', alto=.6, brillo=.25, vientre=0, hondo=.1, linea=.45, contraluz=.35)
-    l.mancha(O(0, -18.2, 4.6, 4.2), 'E8B952', .16, dentro=cab)
+    for k in range(3):                                                   # los botones de azúcar
+        l.mancha(O(0, -12.6 + k * 2.2, .55, .55), 'FFFFFF', .95, dentro=cuerpo)
+    for sx in (-1, 1):                                                   # el zigzag de azúcar de los pies
+        l.trazo(P([(sx * 2.4, -1.2), (sx * 2.9, -.5), (sx * 3.4, -1.2), (sx * 3.9, -.5), (sx * 4.4, -1.2)]), .16 * s, color='FFFFFF',
+                alfa=.95, dentro=cuerpo)
+    cab = l.masa(O(0, -18.2, 4.2, 3.8), material='acento', alto=.6, brillo=.4, vientre=0, hondo=.1, linea=.45, contraluz=.35)
     for dx in (-1.5, 1.5):
         l.mancha(O(dx, -18.8, .4, .5), '05201C', 1, dentro=cab)
-        l.mancha(O(dx * 1.6, -17.2, .8, .45), 'E8B952', .35, dentro=cab)   # los cachetes
+        l.mancha(O(dx * 1.6, -17.2, .8, .45), 'C86A6A', .4, dentro=cab)   # los cachetes
     l.trazo(P([(-1.4, -16.8), (0, -16.1), (1.4, -16.8)]), .18 * s, color='0C3A33', alfa=.9, dentro=cab)
     l.masa([O(0, -24.6, 3.4, 2.6), O(-2.4, -23.8, 2, 1.8), O(2.4, -23.8, 2, 1.8), Polygon(P([(-3.2, -21.4), (3.2, -21.4), (3, -23.4), (-3, -23.4)]))],
            material='claro', alto=.4, brillo=.25, vientre=0, hondo=0, linea=.4)        # el gorro de cocinero
     # la mesa, la bola de masa entre las manos y los panes
     l.masa([Polygon(P([(-11, -6.2), (13, -6.2), (13, -5), (-11, -5)])), box(x - 10 * s, base - 5, x - 9 * s, base),
             box(x + 11.6 * s, base - 5, x + 12.6 * s, base)], material='lejos', alto=.25, brillo=.15, vientre=0, hondo=0, linea=.35)
-    l.masa([O(0, -7.6, 3.4, 1.6), O(-1.6, -8.2, 1.4, 1)], material='claro', alto=.5, brillo=.2, vientre=0, hondo=0, linea=.35)
+    l.masa([O(0, -7.6, 3.4, 1.6), O(-1.6, -8.2, 1.4, 1)], material='claro', alto=.5, brillo=.2, vientre=0, hondo=0, linea=.35)  # la masa cruda
     for sx in (-1, 1):                                                   # los brazos que amasan
-        l.masa([tubo(P([(sx * 4.6, -11), (sx * 4.4, -8.8), (sx * 2.4, -7.8)]), [1.2 * s, 1.1 * s, 1 * s], 6), O(sx * 2.2, -7.8, 1.3, 1)],
-               material='claro', alto=.5, brillo=.2, vientre=0, hondo=0, linea=.35)
-    panes = l.masa([O(7.4, -7.4, 2.4, 1.3), O(10.6, -7.2, 2, 1.1)], material='acento', alto=.6, brillo=.4, vientre=0, hondo=0, linea=.35,
+        b = l.masa([tubo(P([(sx * 4.6, -11), (sx * 4.4, -8.8), (sx * 2.4, -7.8)]), [1.2 * s, 1.1 * s, 1 * s], 6), O(sx * 2.2, -7.8, 1.3, 1)],
+                   material='acento', alto=.5, brillo=.35, vientre=0, hondo=0, linea=.35)
+        l.trazo(P([(sx * 3.6, -10.4), (sx * 4.6, -10.1), (sx * 5.3, -10.5)]), .14 * s, color='FFFFFF', alfa=.9, dentro=b)
+    panes = l.masa([O(7.4, -7.4, 2.4, 1.3), O(10.6, -7.2, 2, 1.1)], material='vientre', alto=.6, brillo=.3, vientre=0, hondo=0, linea=.35,
                    contraluz=.3)
+    l.mancha(O(9, -7.3, 5, 2), 'A2683A', .6, dentro=panes)              # los panes, café: lo dorado es el muñeco
     for u in (6.4, 7.6, 8.8):
         l.trazo(P([(u - .4, -7.9), (u + .4, -7)]), .14 * s, color='FBEFCB', alfa=.9, dentro=panes)
 
@@ -127,7 +135,8 @@ def mineapolis(l):
     for x in np.arange(78, 95, 2.4):
         for y in (8.6, 11.6):
             l.mancha(box(x, y, x + 1.2, y + 1.6), '164F46', .8, dentro=mol)
-    l.masa(box(70, 1.4, 72.2, 16.4), material='lejos', alto=.25, brillo=.2, vientre=0, hondo=0, linea=.3)
+    l.masa(box(116.2, 1.4, 118.4, 16.4), material='lejos', alto=.25, brillo=.2, vientre=0, hondo=0, linea=.3)    # la chimenea (detrás
+    # del muñeco le salía del gorro como una antena)
     puente = box(-2, 14.4, 122, 17.4)
     for x in np.arange(2, 122, 7):
         puente = puente.difference(ovalo(x, 17.6, 2.6, 2.2))
@@ -367,34 +376,55 @@ def pelicano(l, x, y, s=1.0):
     l.mancha(Polygon(P([(3.2, .1), (6.6, .6), (5.4, 1.2), (3.4, .7)])), 'A4DCC4', .6)    # la bolsa del pico
 
 
+def pata_de_pajaro(l):
+    """el delta del Misisipi, la «pata de pájaro», dorada, vista desde arriba como una pata de gallina echada en el golfo: la caña, con
+    sus escamas, que viene de tierra (el cauce principal), los tres dedos, que son los pasos del río entre sus diques de barro, con sus
+    almohadillas y sus uñas, y el dedo de atrás, corto (con el cielo atrás y los dedos lisos, parecía una horqueta o un tridente parado
+    en el mar)"""
+    J = (60, 24.6)
+    cana = ([(60.6, 42.6), (60.3, 33), J], [6.4, 5.8, 5.4])
+    dedos = [([J, (54.4, 18.8), (48.6, 13.6), (43.4, 9.4)], [4.8, 4, 3.2, 2.5]),
+             ([J, (60, 17.6), (60.2, 11), (60.4, 5.4)], [4.8, 4, 3.2, 2.5]),
+             ([J, (65.6, 18.8), (71.4, 13.6), (76.6, 9.4)], [4.8, 4, 3.2, 2.5]),
+             ([J, (64.6, 28.6), (68, 31.6)], [3.6, 2.8, 2.2])]          # el dedo de atrás
+    almohadillas = [ovalo(x, y, w * .68, w * .6) for p_, a_ in dedos for (x, y), w in zip(p_[1:-1], a_[1:-1])]
+    puntas = [ovalo(p_[-1][0], p_[-1][1], a_[-1] * .56, a_[-1] * .5) for p_, a_ in dedos]
+    pata = unary_union([cinta(*cana, 8)] + [cinta(p_, a_, 8) for p_, a_ in dedos] + almohadillas + puntas +
+                       [ovalo(J[0], J[1], 4, 3.6)]).buffer(.5).buffer(-.5)
+    for p_, a_ in dedos:                                                 # las uñas, oscuras, que siguen la dirección del dedo
+        (xa, ya), (xb, yb) = p_[-2], p_[-1]
+        d = np.array([xb - xa, yb - ya]) / math.hypot(xb - xa, yb - ya)
+        n_ = np.array([-d[1], d[0]])
+        b0 = np.array([xb, yb]) + d * a_[-1] * .25
+        una = Polygon([tuple(b0 + n_ * a_[-1] * .42), tuple(b0 + d * a_[-1] * 1.6 + n_ * a_[-1] * .12), tuple(b0 - n_ * a_[-1] * .42)])
+        l.masa(una.buffer(.1), material='oscuro', alto=.3, brillo=.35, vientre=0, hondo=0, linea=.3)
+    t = l.masa(pata, material='acento', alto=.4, brillo=.45, vientre=0, hondo=0, linea=.5, escalon=.1, contraluz=.35)
+    canales = unary_union([cinta(cana[0], [w * .2 for w in cana[1]], 8)] + [cinta(p_, [w * .2 for w in a_], 8) for p_, a_ in dedos[:3]])
+    l.mancha(canales, '2F8A74', .8, dentro=t)                            # el río, que corre por adentro de cada dedo
+    for y in np.arange(28.4, 42, 1.5):                                   # las escamas de la caña
+        l.trazo([(57.4, y + .35), (60.4, y - .45), (63.4, y + .35)], .16, color='6B4E10', alfa=.6, dentro=t)
+    for p_, a_ in dedos[:3]:                                             # los pliegues entre las almohadillas
+        for (xa, ya), (xb, yb), w in zip(p_[1:-1], p_[2:], a_[2:]):
+            xm, ym = (xa + xb) / 2, (ya + yb) / 2
+            d = np.array([xb - xa, yb - ya]) / math.hypot(xb - xa, yb - ya)
+            n_ = np.array([-d[1], d[0]])
+            l.trazo([(xm + n_[0] * w * .5, ym + n_[1] * w * .5), (xm - n_[0] * w * .5, ym - n_[1] * w * .5)], .14, color='6B4E10', alfa=.55,
+                    dentro=t)
+    return pata
+
+
 def mar(l):
-    cielo(l, sol=None)
-    nube(l, 30, 7, 16, .55)
-    nube(l, 90, 5, 12, .45)
-    horizonte = 22
-    m = l.masa(box(-2, horizonte, 122, 41.5), material='lejos', alto=.05, brillo=0, vientre=0, hondo=0, tinta=False, escalon=0, contraluz=0,
+    # visto desde arriba, sin cielo: el golfo de México, con el agua más clara y baja alrededor del delta, y la pata de pájaro dorada,
+    # protagonista, echada en él
+    m = l.masa(box(-2, -2, 122, 42), material='lejos', alto=.05, brillo=0, vientre=0, hondo=0, tinta=False, escalon=0, contraluz=0,
                arroja=False)
-    l.mancha(box(-2, horizonte, 122, horizonte + 2.6), '64C8AA', .55, dentro=m, difuso=.8)
     rng = np.random.default_rng(9)
-    for _ in range(20):
-        x, y = rng.uniform(2, 118), rng.uniform(horizonte + 2, 40)
-        l.trazo([(x, y), (x + 3, y - .25), (x + 6, y)], .16, color='A4DCC4', alfa=.7)
-    # un faro, lejos, en su isla
-    l.masa(forma([(98, horizonte + .6), (104, horizonte - .8), (116, horizonte - .4), (120, horizonte + 1)], 1), material='vientre', alto=.15,
-           brillo=0, vientre=0, hondo=0, linea=.3)
-    f = l.masa(forma([(107.6, horizonte - .6), (108.2, 12.6), (110.2, 12.6), (110.8, horizonte - .6)], 0), material='claro', alto=.3, brillo=.2,
-               vientre=0, hondo=0, linea=.3)
-    l.mancha(box(106, 15.4, 112, 16.8), '2F8A74', .85, dentro=f)
-    l.masa(Polygon([(107.6, 12.8), (109.2, 10.8), (110.8, 12.8)]), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25)
-    # los pantanos del delta, a los costados, con sus pastos altos, y los pelícanos
-    for x0, x1, y in ((-2, 26, 30), (-2, 14, 38.6), (100, 122, 33), (108, 122, 40)):
-        l.mancha(Polygon([(x0, y - .6), (x1, y - .6), (x1 - 2, y + 1.6), (x0, y + 1.6)]), '0C3A33', .25, difuso=.6)
-        juncos(l, x0, x1, y, 5.4, int((x1 - x0) * 1.8), semilla=int(x0 + y), espadanas=False)
-    for x, y, s in ((24, 9, 1), (34, 11.4, .8), (82, 8, .7)):
-        pelicano(l, x, y, s)
-    # el vapor de rueda, la barca del juego, protagonista, que sale al golfo
-    g = vapor(l, 60, 34.4, 1.25)
-    reflejo(l, g, 34.6, .22)
+    for _ in range(46):
+        x, y = rng.uniform(-2, 116), rng.uniform(0, 40)
+        l.trazo([(x, y), (x + 1.6, y - .3), (x + 3.2, y)], .16, color='A4DCC4', alfa=.6, dentro=m)
+    sombra = Polygon([(60.6, 42.6), (54, 24), (40, 6), (60, 1), (80, 6), (70, 30), (61, 42.6)]).buffer(5)
+    l.mancha(sombra, '64C8AA', .45, dentro=m, difuso=2.4)                # el agua baja del delta
+    pata_de_pajaro(l)
 
 
 POSTALES = [dict(clave='nace', dibujar=nace), dict(clave='Mineápolis', dibujar=mineapolis), dict(clave='San Luis', dibujar=san_luis),
