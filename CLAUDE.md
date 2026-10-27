@@ -239,8 +239,9 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   glaciar, alpacas y un cóndor; el taxi dorado que flota en Iquitos, con un delfín rosado y una avioneta; las tres vecinas que se dan la
   mano en Leticia; las dos manos, oscura y café con leche, que se buscan sin tocarse sobre el encuentro de las aguas en Manaos; el santo
   de aureola que maneja un camión de soya en Santarém; la estrella de Belén sobre el estuario y el mercado Ver-o-Peso; y el regatão que
-  sale al Atlántico entre manglares. En los mares, la protagonista es la barca del juego, con su casco dorado (la falúa del Nilo, la
-  lodia del Volga, el regatão del Amazonas), salvo en el Tigris, cuyo kelek se desarma en Bagdad: su mar tiene el faro. El 2026-10-26
+  sale al Atlántico entre manglares. En los mares, la protagonista era la barca del juego, con su casco dorado (la falúa del Nilo, la
+  lodia del Volga, el regatão del Amazonas), salvo en el Tigris, cuyo kelek se desarma en Bagdad: su mar tenía el faro (desde el
+  2026-10-27 la barca solo es la protagonista del mar si su `llegada` dice que llega: ver «Correcciones de la revisión»). El 2026-10-26
   siguieron el Yangtsé y el Misisipi («sigamos»): el Jinsha, «arenas doradas», trenzado sobre su banco de arena dorada, con yaks; la
   ciudad vertical de Chongqing en su cerro, con el tren dorado que atraviesa un edificio, la niebla y una olla de hotpot; el río que
   choca contra la presa de las Tres Gargantas en Yichang y hace «¡chan!», con un estallido dorado de historieta; el puente de Wuhan con
@@ -368,22 +369,22 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   guardan en WebP sin transparencia de 600 px de ancho y calidad 75 (hasta el 2026-10-26, de 744 px y calidad 84: ver abajo). El motor
   las pone con `postal(rid, i, cls)` (i = 0 el nacimiento, 1…n cada parada, n+1 el mar) en
   la ficha del nacimiento, de cada parada y del mar, y de pista en el reto de imagen; donde un río no tiene, queda la de pictogramas,
-  y el sello del pasaporte sigue con su pictograma. Pesan de 4 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
-  130 KB las nueve del Volga, 97 KB las ocho del Nilo, 73 KB las siete del Amazonas, 77 KB las siete del Yangtsé, 81 KB las siete
+  y el sello del pasaporte sigue con su pictograma. Pesan de 4 a 18 KB cada una (en el archivo de datos, 104 KB las ocho del Tigris,
+  138 KB las nueve del Volga, 102 KB las ocho del Nilo, 79 KB las siete del Amazonas, 76 KB las siete del Yangtsé, 77 KB las siete
   del Misisipi, 143 KB las diez del Danubio, 111 KB las nueve del Rin, 112 KB las ocho del Ganges, 99 KB las siete del Mekong, 93 KB
   las nueve del Níger, 75 KB las ocho del Paraná, 93 KB las ocho del Indo, 101 KB las nueve del Congo, 91 KB las nueve del Huang He,
-  71 KB las ocho del Orinoco, 100 KB las nueve del Murray, 63 KB las ocho del San Lorenzo, 83 KB las ocho del Zambeze, 78 KB las
-  siete del Tempisque, 102 KB las ocho del Reventazón, 87 KB las siete del Sarapiquí, 79 KB las ocho del San Juan, 98 KB las siete del
-  Tárcoles y 107 KB las ocho del Térraba; el
+  71 KB las ocho del Orinoco, 103 KB las nueve del Murray, 63 KB las ocho del San Lorenzo, 83 KB las ocho del Zambeze, 78 KB las
+  siete del Tempisque, 103 KB las ocho del Reventazón, 89 KB las siete del Sarapiquí, 79 KB las ocho del San Juan, 98 KB las siete del
+  Tárcoles y 106 KB las ocho del Térraba; el
   delta de Astracán, con sus juncos, es la más pesada, y la Selva Negra la sigue): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el
   Tigris, a ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo, a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el
   Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin, a ≈ 3 343 KB
   con el Ganges y el Mekong, a ≈ 3 510 KB con el Níger y el Paraná, a ≈ 3 705 KB con el Indo y el Congo, a ≈ 3 867 KB con el Huang He
   y el Orinoco, a ≈ 4 113 KB con el Murray, el San Lorenzo y el Zambeze y a ≈ 4 663 KB con los seis ríos de Costa Rica, con lo que
-  están las 201.
+  están las 201, y a ≈ 4 689 KB con las correcciones de la revisión integral (2026-10-27).
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
   calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201, todas pintadas desde el
-  2026-10-26, queda en ≈ 4 663 KB, con ≈ 457 KB de sobra (la proyección sobre las 156 primeras daba ≈ 500 KB: las ticas, con más figuras,
+  2026-10-26, queda en ≈ 4 689 KB, con ≈ 431 KB de sobra (la proyección sobre las 156 primeras daba ≈ 500 KB: las ticas, con más figuras,
   salieron un poco más pesadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y las
   series más sencillas, del Níger en adelante, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
   vistas grandes como lo haría el pintor y prueba otras combinaciones: `560/75` dejaría ≈ 540 KB). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
@@ -482,9 +483,40 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   volcancito del sombrero); alas doradas pegadas a una túnica dorada son mangas (la túnica va blanca y las alas suben desde los hombros,
   con plumas); un chaleco salvavidas que tapa todo el pecho es un manto (va corto, con su cuello, el cierre al medio y las correas, y la
   virgen, sobre un pedestal de estatua); un mono sobre una mula es un jinete; las mulas se reconocen por las orejas largas; un oso que
-  reza necesita su reclinatorio. Quedan pendientes, para decidir con Humberto, los mares del Nilo, el Amazonas, el Yangtsé y el
-  Misisipi (la barca sale al mar aunque su llegada dice que no llega), las protagonistas sin dorado de las cuatro primeras series y las
-  alturas que no calzan con el texto del nacimiento (ver «Pendientes»).
+  reza necesita su reclinatorio. Quedaron pendientes los mares del Nilo, el Amazonas, el Yangtsé y el Misisipi (la barca salía al mar
+  aunque su llegada dice que no llega), las protagonistas sin dorado de las cuatro primeras series y las alturas que no calzaban con el
+  texto del nacimiento; se hicieron ese mismo día (ver «Correcciones de la revisión» y «Relieve»).
+- Correcciones de la revisión (2026-10-27, «subí lo corregido y trabajemos en las correcciones faltantes»). Los cuatro mares cuya barca
+  no llega tienen otra protagonista: en el Nilo, el faro de Alejandría, dorado, con la gabarra cargada que va hacia él y la falúa, de
+  madera, que da la vuelta; en el Amazonas, la pororoca («el delta de Marajó, de las mareas»), la ola de la marea, dorada y de perfil,
+  con su rizo de espuma, y los cargueros lejos; en el Yangtsé, el sol que nace, dorado, en el mar de China «Oriental», sin rayos en
+  abanico, con el junco de madera en el estuario y un portacontenedores que sale; y en el Misisipi, la pata de pájaro del delta, vista
+  desde arriba como una pata de gallina dorada, con sus escamas, sus almohadillas y sus uñas. Las protagonistas sin dorado pasaron a
+  dorado: en el Tigris, los dos ríos gemelos del nacimiento, que salen de sus cascadas, el río recién nacido de Diyarbakır, el toro
+  alado de Mosul y, en el mar, un gato persa por el golfo Pérsico (el faro y el petrolero quedan atrás); en el Volga, la capilla del
+  nacimiento, más grande, con la cúpula y el arroyito dorados, el río de Tver, en curva y con patos, bajo un puente de lomo, la balanza
+  de Nizhni, de dos platillos, el caldero de Kazán, sobre un fuego anaranjado, el anzuelo de Samara, la Madre Patria, con la espada de
+  acero, y la lata de caviar de Astracán, con la cara del mercader más grande; en el Nilo, la V y la T, con remates de imprenta, en los
+  lagos Victoria y Tana, el caballo de Jinja y el delta de El Cairo, entero; y en el Amazonas, el río recién nacido, las dos manos de
+  Manaos (una oscura y otra clara, como sus aguas), el santo de Santarém, grande y parado sobre la soya, y la estrella de Belén, de
+  puntas anchas. Y las que se leían mal: el muñeco de masa de Mineápolis, dorado como una galleta de jengibre (blanco, era un muñeco de
+  nieve), el manuscrito de Tombuctú, de tapas y orla doradas, y en Swan Hill los graznidos, dorados, de unos cisnes más grandes, con un
+  filo de luna. Dos lectores a ciegas leyeron las 25 corregidas: el delta, la pororoca, el encuentro de las aguas, Kazán, la Madre
+  Patria, la feria de Nizhni, la curva de Samara, el faro de Alejandría, los lagos Victoria y Tana, la estrella de Belén y el lamassu
+  salieron por su nombre. Lecciones: un río dorado se lee como río si es una cinta larga, de curvas suaves y ancho casi parejo, que nace
+  del agua o de una cascada, con ondas blancas sueltas a lo largo del eje; angosto y con curvas cerradas es un gusano o un cuerno, ancho
+  y con curvas cerradas es un bulto, con las ondas de orilla a orilla tiene anillos y, recto, es un camino de ladrillos: lo salvan la
+  curva, los juncos de la orilla y algo que nade. Una balanza con un gancho y pieles colgadas es una horca. Un puente que es un bloque
+  con un arco alto y angosto es un portón. Las llamas blancas son dientes y las de durazno, pétalos: el fuego va anaranjado, con el
+  corazón claro. Una barba clara de lado a lado de la cara es una mascarilla, y una cara chica entre un gorro alto y una barba, un
+  frasco. Una ola de frente, de orilla a orilla y con vetas, es una cerca; de perfil y con su rizo es una ola, y su espuma en óvalos
+  parejos, un collar. Tres dedos lisos que se abren, con el cielo atrás, son un tridente parado en el mar: desde arriba, con escamas,
+  almohadillas y uñas, son una pata. Una mano oscura sobre agua oscura no se ve. Unos cisnes negros chicos sobre una colina oscura son
+  culebras: van grandes, con su filo de luna. Hay que buscar símbolos que no se pidieron: la luna en cuarto con estrellas es la de una
+  bandera, un triángulo con una cabeza adentro es un ojo en una pirámide, una T de palo seco es una cruz (con remates, es una letra) y un
+  sol naciente con rayos en abanico, sobre el mar de China, sería una bandera. Lo que está detrás de una cabeza le sale de ella (la
+  chimenea del molino, del gorro del muñeco). Unas losas de sal blancas y lisas parecen libros: van grises, con sus sogas. Rayos de luz
+  difusos, cortados por el borde, dejan un recuadro pálido en el cielo.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -615,7 +647,10 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
     y con el mapa plegado), con el cauce en tierra, un punto por parada y el marcador dorado donde va la barca
     (`fracActual`); `alturaParada(r,i)` interpola la altura en la parada, `textoAltura` la pone en la línea de país
     («el río pasa a 161 m sobre el mar») y `fraseAltura` en la lectura de Adulto. Es la altura del cauce, no la del
-    pueblo (Juan Viñas está a 1 160 m y el Reventazón pasa a 860): se dice «el río pasa a».
+    pueblo (Juan Viñas está a 1 160 m y el Reventazón pasa a 860): se dice «el río pasa a». En relieve.py, `BAJO_MAR` deja
+    bajar del cero al río que termina bajo el nivel del océano (el Volga, en el Caspio, a −28 m) y `FUENTE` pone en el primer
+    vértice la altura publicada de la fuente, la que dice el texto del nacimiento, donde el DEM no la da (desde el 2026-10-27:
+    el pantano de Valdái, 228 m, que el DEM daba en 210; el lago Ontario en Kingston, 74 m, que daba en 58).
 - Zonas (`ZONAS`; hoy solo `cr`, Costa Rica): los ríos con `zona:'cr'` no se tocan en el mapa mundial, donde un
   marcador dorado abre la vista de zona (`verZona`, `S.zona`) con sus ríos tocables y etiquetados y el botón
   ‹ Mundo; el ancho mínimo de vista es 3 unidades para ríos de zona (20 para los del mundo), y dentro de sus cuencas
@@ -780,13 +815,10 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 
 ## Pendientes, en orden de valor
 
-De la revisión integral del 2026-10-27, para decidir con Humberto: (a) los mares del Nilo, el Amazonas, el Yangtsé y el Misisipi pintan la
-barca del juego en el mar, pero su `llegada` dice que no sale al mar: necesitan otra protagonista, como los trece que no llegan; (b) en el
-Tigris, el Volga, el Nilo y el Amazonas, quince protagonistas no tienen nada dorado o casi nada (Diyarbakır, Mosul, Tver, Nizhni, Kazán,
-Samara, Volgogrado, Astracán, los nacimientos del Tigris, el Nilo y el Amazonas, Jinja, Manaos, Belém y el mar del Tigris): desde el
-Yangtsé, toda protagonista es dorada; (c) la altura del nacimiento no calza con su texto en el Volga (210 m contra «228 m») y el San
-Lorenzo (58 m contra «74 m»), y el Tempisque nace a 69 m porque su cauce empieza en el llano (`desde` en tools/cauces.py): alargarlo
-hacia el Orosí pide recortes nuevos del DEM de NOAA, una descarga.
+De la revisión integral del 2026-10-27 queda una: el Tempisque nace a 69 m porque su cauce empieza en el llano (`desde` en
+tools/cauces.py); alargarlo hacia el volcán Orosí pide recortes nuevos del DEM de NOAA, una descarga, y cambia los kilómetros de sus
+paradas (la instantánea). Los mares que contradecían su barca, las protagonistas sin dorado y las alturas del Volga y del San Lorenzo
+quedaron hechos ese mismo día (ver «Correcciones de la revisión» y «Relieve»).
 
 Hecho el 2026-09-06: el rediseño estético en tres fases (identidad, navegación con barra al pie y riel, iconos propios).
 Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente contenido a la vista; si no, la salida es plegar
@@ -815,7 +847,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 663 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de los 25 ríos pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 689 KB y la de Exploradores ≈ 893 KB el 2026-10-27, con los animales, las barcas, las mercancías del Nilo y las postales de los 25 ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
