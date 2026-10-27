@@ -668,8 +668,8 @@ function focoQuiz(q,rDef){
 
 /* ---------- mapa ---------- */
 const proj=p=>[(p[1]+180)/360*1000,(90-p[0])/180*500];
-const trazo=pts=>pts.map((p,i)=>{const q=proj(p);return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join('');
-const trazoTramo=(r,a,b)=>{let d='';for(let i=a;i<=b;i++){const q=proj(r.curso[i]);d+=(i===a||r.cortes.includes(i)?'M':'L')+q[0].toFixed(1)+' '+q[1].toFixed(1)}return d};/* vértices a..b del trazo; cada segmento nuevo (cortes) empieza con M */
+const trazo=pts=>pts.map((p,i)=>{const q=proj(p);return (i?'L':'M')+q[0].toFixed(2)+' '+q[1].toFixed(2)}).join('');
+const trazoTramo=(r,a,b)=>{let d='';for(let i=a;i<=b;i++){const q=proj(r.curso[i]);d+=(i===a||r.cortes.includes(i)?'M':'L')+q[0].toFixed(2)+' '+q[1].toFixed(2)}return d};/* vértices a..b del trazo; cada segmento nuevo (cortes) empieza con M */
 /* caja de vista para unos puntos: se ajusta a la proporción del mapa desplegado (ancho/altoDes) y, si el mapa está plegado
    (alto < altoDes), recorta esa misma vista a la altura plegada centrando el punto de foco: misma escala, menos cielo, nunca
    un mapa encogido. El SVG lleva preserveAspectRatio slice, así que durante la transición de altura también se ve un recorte. */
@@ -691,7 +691,7 @@ function setVB(t,inmediato){const svg=$('#svg'),fmt=v=>`${v.x.toFixed(2)} ${v.y.
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(anim)cancelAnimationFrame(anim);
   if(inmediato||!VB||reduce){VB=t;svg.setAttribute('viewBox',fmt(t));return}
   const de={...VB},t0=performance.now();
-  const step=now=>{let k=Math.min(1,(now-t0)/500);k=1-Math.pow(1-k,3);const v={x:de.x+(t.x-de.x)*k,y:de.y+(t.y-de.y)*k,w:de.w+(t.w-de.w)*k,h:de.h+(t.h-de.h)*k};svg.setAttribute('viewBox',fmt(v));VB=v;if(k<1)anim=requestAnimationFrame(step);else{VB=t;anim=null}};
+  const step=now=>{let k=Math.max(0,Math.min(1,(now-t0)/500));k=1-Math.pow(1-k,3);const v={x:de.x+(t.x-de.x)*k,y:de.y+(t.y-de.y)*k,w:de.w+(t.w-de.w)*k,h:de.h+(t.h-de.h)*k};svg.setAttribute('viewBox',fmt(v));VB=v;if(k<1)anim=requestAnimationFrame(step);else{VB=t;anim=null}};
   anim=requestAnimationFrame(step)}
 function colocar(q,nombre,puestos,px){const w=nombre.length*6.6*px,alto=12*px;
   const cands=[[6,4,'start'],[6,-9,'start'],[6,16,'start'],[-6,4,'end'],[-6,-9,'end'],[-6,16,'end']];
@@ -719,17 +719,17 @@ function renderMapa(foco,inmediato){S.foco=foco;const capa=$('#capa'),m=$('#mapa
     const q=proj(p);if(foco.rio&&foco.rio.antimeridiano){if(q[0]<vb.x&&q[0]+1000<=vb.x+vb.w)q[0]+=1000;else if(q[0]>vb.x+vb.w&&q[0]-1000>=vb.x)q[0]-=1000}/* nombres de relieve en la copia visible */
     if(q[0]<vb.x-2*px||q[0]>vb.x+vb.w+2*px||q[1]<vb.y||q[1]>vb.y+vb.h)return;
     if(L.t==='pico'){if(!foco.rio)return;/* los picos solo al acercarse a un río; en la zona entera se amontonan */
-      const t=`${L.n} ${km(L.e)} m`,[x,y,an]=colocar(q,t,puestos,px);h+=`<path class="pico" d="M${q[0].toFixed(1)} ${(q[1]-4.5*px).toFixed(1)}l${f(3.6)} ${f(6.8)}h${f(-7.2)}z" stroke-width="${f(.8)}"/><text class="etq relieve pico" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(10)}" stroke-width="${f(2.5)}" text-anchor="${an}">${esc(t)}</text>`;return}
+      const t=`${L.n} ${km(L.e)} m`,[x,y,an]=colocar(q,t,puestos,px);h+=`<path class="pico" d="M${q[0].toFixed(2)} ${(q[1]-4.5*px).toFixed(2)}l${f(3.6)} ${f(6.8)}h${f(-7.2)}z" stroke-width="${f(.8)}"/><text class="etq relieve pico" x="${x.toFixed(2)}" y="${y.toFixed(2)}" font-size="${f(10)}" stroke-width="${f(2.5)}" text-anchor="${an}">${esc(t)}</text>`;return}
     const w=L.n.length*(L.t==='llano'?5.6:7.6)*px,rad=a*Math.PI/180,bw=Math.abs(Math.cos(rad))*w+Math.abs(Math.sin(rad))*12*px,bh=Math.abs(Math.sin(rad))*w+Math.abs(Math.cos(rad))*12*px;
-    h+=`<text class="etq relieve ${L.t}" x="${q[0].toFixed(1)}" y="${q[1].toFixed(1)}" font-size="${f(L.t==='llano'?10.5:9.5)}" stroke-width="${f(2.5)}" text-anchor="middle"${a?` transform="rotate(${a} ${q[0].toFixed(1)} ${q[1].toFixed(1)})"`:''}>${esc(L.n)}</text>`;
+    h+=`<text class="etq relieve ${L.t}" x="${q[0].toFixed(2)}" y="${q[1].toFixed(2)}" font-size="${f(L.t==='llano'?10.5:9.5)}" stroke-width="${f(2.5)}" text-anchor="middle"${a?` transform="rotate(${a} ${q[0].toFixed(2)} ${q[1].toFixed(2)})"`:''}>${esc(L.n)}</text>`;
     puestos.push({x0:q[0]-bw/2,x1:q[0]+bw/2,y0:q[1]-bh/2-4*px,y1:q[1]+bh/2})})}
-  if(foco.modo==='mundo')for(const z in ZONAS){const q=proj(ZONAS[z].pos);h+=`<circle class="zona" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(4.5)}" stroke-width="${f(1.5)}"/><text class="etq" x="${(q[0]+7*px).toFixed(1)}" y="${(q[1]+4*px).toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}">${esc(ZONAS[z].nombre)}</text>${foco.tocar?`<circle class="hitz" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(18)}" onclick="verZona('${z}')"><title>Ríos de ${esc(ZONAS[z].nombre)}</title></circle>`:''}`}
-  if(enZona){RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>{const q=proj(r.curso[Math.floor(r.curso.length/2)]),[x,y,an]=colocar(q,r.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(r.nombre)}</text>`})}
+  if(foco.modo==='mundo')for(const z in ZONAS){const q=proj(ZONAS[z].pos);h+=`<circle class="zona" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(4.5)}" stroke-width="${f(1.5)}"/><text class="etq" x="${(q[0]+7*px).toFixed(2)}" y="${(q[1]+4*px).toFixed(2)}" font-size="${f(12)}" stroke-width="${f(3)}">${esc(ZONAS[z].nombre)}</text>${foco.tocar?`<circle class="hitz" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(18)}" onclick="verZona('${z}')"><title>Ríos de ${esc(ZONAS[z].nombre)}</title></circle>`:''}`}
+  if(enZona){RUTAS.filter(r=>r.zona===foco.zona).forEach(r=>{const q=proj(r.curso[Math.floor(r.curso.length/2)]),[x,y,an]=colocar(q,r.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(2)}" y="${y.toFixed(2)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(r.nombre)}</text>`})}
   if(foco.rio){const r=foco.rio;
-    r.paradas.forEach((c,i)=>{const q=proj(c.pos),on=foco.etiquetas.has(i);h+=`<circle class="ciudad${on?' on':''}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(3.5)}"/>`;if(foco.trazar)h+=`<circle class="hitz" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(16)}" onclick="trazarEn(${i})"/>`;
-      if(foco.actual===i)h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`});
-    if(foco.halo){const q=proj(foco.halo);h+=`<circle class="halo" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`}
-    r.paradas.forEach((c,i)=>{if(!foco.etiquetas.has(i))return;const q=proj(c.pos),[x,y,an]=colocar(q,c.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(c.nombre)}</text>`})}
+    r.paradas.forEach((c,i)=>{const q=proj(c.pos),on=foco.etiquetas.has(i);h+=`<circle class="ciudad${on?' on':''}" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(3.5)}"/>`;if(foco.trazar)h+=`<circle class="hitz" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(16)}" onclick="trazarEn(${i})"/>`;
+      if(foco.actual===i)h+=`<circle class="halo" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`});
+    if(foco.halo){const q=proj(foco.halo);h+=`<circle class="halo" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(5)}" stroke-width="${f(1.5)}"/>`}
+    r.paradas.forEach((c,i)=>{if(!foco.etiquetas.has(i))return;const q=proj(c.pos),[x,y,an]=colocar(q,c.nombre,puestos,px);h+=`<text class="etq" x="${x.toFixed(2)}" y="${y.toFixed(2)}" font-size="${f(12)}" stroke-width="${f(3)}" text-anchor="${an}">${esc(c.nombre)}</text>`})}
   let barca=null;if(foco.rio&&foco.barca){const b=foco.barca;if(b.poly)barca={poly:b.poly.map(proj),t0:b.t0,t1:b.t1};else{const lo=Math.min(b.de,b.a),hi=Math.max(b.de,b.a);barca={poly:foco.rio.curso.slice(lo,hi+1).map(proj),t0:b.de<=b.a?0:1,t1:b.de<=b.a?1:0}}const tv=foco.rio.vehiculo?foco.rio.vehiculo.tipo:'',tierra=!!TERRESTRES[tv];h+=`<path id="estela" class="estela${tierra?' huellas':''}" d="" stroke-width="${f(1.6)}" stroke-dasharray="${f(2)} ${f(3)}"/><g id="barca" class="barca${tierra?' tierra':''}${S.bamboleo?' duda':''}"><g class="mece"><g transform="scale(${px.toFixed(4)})">${tierra?'<g class="anda">':''}${glifo(tv)}${tierra?'</g>':''}</g></g>${foco.rio.companero?`<g id="masc">${ANIMALES[foco.rio.companero.glifo]?`<g class="animal" transform="translate(-9 -9) scale(.6)">${ANIMALES[foco.rio.companero.glifo]}</g>`:`<text x="-13" y="-9" font-size="13" text-anchor="middle">${foco.rio.companero.emoji}</text>`}</g>`:''}</g>`;S.bamboleo=false}
   const fr=document.getElementById('fronteras');fr.setAttribute('stroke-width',f(1));fr.setAttribute('stroke-dasharray',f(3)+' '+f(3));fr.style.display=foco.modo==='mundo'?'none':'';
   const bm=document.querySelector('.mundo');if(bm)bm.hidden=!enZona;
@@ -878,7 +878,7 @@ function animarBarca(poly,t0,t1,px,tierra){const g=document.getElementById('barc
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(t0===t1||reduce){poner(pos(t1));S.olas=false;return}
   const T=performance.now(),dur=1400;
-  const step=now=>{let k=Math.min(1,(now-T)/dur);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const p=pos(t0+(t1-t0)*k);poner(p);dibujarEstela(p);if(k<1)animB=requestAnimationFrame(step);else{animB=null;if(estela)estela.setAttribute('class','estela fin');salpicar(p);if(S.olas){S.olas=false;olear()}}};
+  const step=now=>{let k=Math.max(0,Math.min(1,(now-T)/dur));k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const p=pos(t0+(t1-t0)*k);poner(p);dibujarEstela(p);if(k<1)animB=requestAnimationFrame(step);else{animB=null;if(estela)estela.setAttribute('class','estela fin');salpicar(p);if(S.olas){S.olas=false;olear()}}};
   animB=requestAnimationFrame(step)}
 
 /* olas doradas: una barrida sobre el mar al llegar al final de la ruta (clase .va en #olas, se quita sola al terminar) */
