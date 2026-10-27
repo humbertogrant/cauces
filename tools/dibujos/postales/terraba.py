@@ -161,14 +161,18 @@ def labrador(l, x, base, s=1.0):
     # la azada: el cabo largo y la hoja
     l.trazo(P([(-9, -24), (-5.6, -11)]), .35 * s, color=MADERA, alfa=.95)
     l.masa(forma(P([(-10.4, -24.6), (-7.6, -25.2), (-7.4, -23), (-10, -22.4)]), 1), material='claro', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.3)
-    piel(l, [O(5.6, -10.4, .9, .9), O(-6.6, -12, .9, .9), O(0, -20.2, 2.2, 2.5), box(x - .7 * s, base - 18.6 * s, x + .7 * s, base - 17.4 * s)])
-    cara(l, x, base - 20.2 * s, s, bigote=False)
+    piel(l, [O(5.6, -10.4, .9, .9), O(-6.6, -12, .9, .9), O(0, -20.2, 2.2, 2.5), box(x - .7 * s, base - 18.6 * s, x + .7 * s, base - 17.4 * s)], .45)
+    l.masa(forma(P([(-2.2, -20), (-1.8, -18.2), (0, -17.4), (1.8, -18.2), (2.2, -20), (1, -19.2), (0, -19.6), (-1, -19.2)]), 1), material='oscuro', alto=.3,
+           brillo=.3, vientre=0, hondo=0, linea=.25)                     # la barba
+    for dx in (-.85, .85):
+        l.mancha(O(dx, -20.8, .26, .3), '05201C', 1)
     l.masa(forma(P([(-2.4, -20.4), (-2.2, -22.4), (0, -23), (2.2, -22.4), (2.4, -20.4), (1.6, -21.4), (-1.6, -21.4)]), 1), material='oscuro', alto=.35,
            brillo=.3, vientre=0, hondo=0, linea=.25)                     # el pelo
     halo = O(0, -22.8, 3.6, 3.6).difference(O(0, -22.8, 2.8, 2.8))
     l.masa(halo, material='acento', alto=.3, brillo=.6, vientre=0, hondo=0, linea=.25)
     # el sombrero: un cerro de roca con su ala de bosque
-    cerro = forma(P([(-9, -23.4), (-6, -27), (-3.6, -31.6), (-1.6, -33.4), (0, -32.6), (1.6, -34.2), (3.6, -31.4), (6, -27.4), (9, -23.4), (0, -22.6)]), 1)
+    cerro = Polygon(P([(-8, -23.2), (-5.6, -26.6), (-4.4, -26), (-2.6, -30.4), (-1.4, -29.6), (.4, -34.6), (2, -31.6), (3.2, -32.2), (5.4, -27.4),
+                       (8, -23.2), (0, -22.6)]))
     c = l.masa(cerro, material='claro', alto=.4, brillo=.15, vientre=0, hondo=.1, linea=.4, escalon=.3, contraluz=.35)
     l.mancha(cerro.buffer(1), GRIS, .55, dentro=c)
     for u in (-3, 0, 2.6):
@@ -177,7 +181,7 @@ def labrador(l, x, base, s=1.0):
         l.mancha(O(u, v, 1, .6), '2F8A74', .7, dentro=c)
     for dx, dy, r in ((-3.4, -32, 1.6), (-1.6, -32.8, 1.8), (.6, -32.4, 1.5)):   # la nube de la cumbre
         l.mancha(O(dx, dy, r * 1.4, r * .8), 'FFFFFF', .85, difuso=.3)
-    l.masa(O(0, -23.6, 9.6, 1.2), material='cuerpo', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.35)   # el ala, de bosque
+    l.masa(O(0, -23.4, 8.6, .9), material='cuerpo', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.3)      # el ala, de bosque
 
 
 def san_isidro(l):
@@ -401,14 +405,16 @@ def conquistador(l, x, base, s=1.0):
     botas de hule doradas hasta las rodillas; (x, base) es donde pisa, bajo el agua"""
     P = lambda pts: [(x + u * s, base + v * s) for u, v in pts]
     O = lambda u, v, rx, ry, a=0: ovalo(x + u * s, base + v * s, rx * s, ry * s, a)
-    botas = [forma(P([(-4.4, 0), (-4, -8.6), (-1, -8.8), (-.6, -1), (-.4, 0)]), 1), forma(P([(.4, 0), (.6, -1), (1, -8.8), (4, -8.6), (4.4, 0)]), 1)]
-    b = l.masa(botas, material='acento', alto=.5, brillo=.5, vientre=0, hondo=.1, linea=.45, contraluz=.4)
-    for dx in (-2.5, 2.5):
-        l.trazo(P([(dx - 1.4, -8.2), (dx + 1.4, -8.2)]), .3 * s, color='6B4E10', alfa=.6, dentro=b)
-        l.trazo(P([(dx - .4, -7.4), (dx - .2, -2)]), [.05, .3, .05], color='FBEFCB', alfa=.8, dentro=b)
+    botas = [forma(P([(-5.4, 0), (-5.2, -11.8), (-.8, -12), (-.6, -1.2), (-.4, 0)]), 1), forma(P([(.4, 0), (.6, -1.2), (.8, -12), (5.2, -11.8), (5.4, 0)]), 1)]
+    b = l.masa(botas, material='acento', alto=.55, brillo=.55, vientre=0, hondo=.1, linea=.45, contraluz=.45)
+    for dx in (-3, 3):
+        l.trazo(P([(dx - 2.2, -10.8), (dx + 2.2, -10.8)]), .5 * s, color='6B4E10', alfa=.6, dentro=b)        # el borde de arriba
+        l.trazo(P([(dx - 2.4, -.7), (dx + 2.4, -.7)]), .6 * s, color='3A2A0A', alfa=.75, dentro=b)          # la suela
+        l.trazo(P([(dx - 1, -9.8), (dx - .8, -2.4)]), [.05, .45, .05], color='FBEFCB', alfa=.9, dentro=b)   # el brillo del hule
+    base -= 2.8 * s                                                      # lo de arriba, encima de las botas altas
     calzas = [O(-2.4, -11, 2.4, 2.4), O(2.4, -11, 2.4, 2.4)]
     cm = l.masa(calzas, material='claro', alto=.45, brillo=.3, vientre=0, hondo=0, linea=.35)
-    l.mancha(unary_union(calzas).buffer(1), 'C8584A', .5, dentro=cm)
+    l.mancha(unary_union(calzas).buffer(1), 'C8584A', .38, dentro=cm)
     for u in (-3, -1.6, 1.6, 3):
         l.trazo(P([(u, -13), (u, -9)]), .14 * s, color='3A2A0A', alfa=.4, dentro=cm)
     coraza = [forma(P([(-4.4, -21), (4.4, -21), (4.6, -16), (3.6, -12.4), (-3.6, -12.4), (-4.6, -16)]), 2),
@@ -447,14 +453,12 @@ def ciudad_cortes(l):
     agua(l, box(-2, 22.6, 122, 41.6), ondas=16, semilla=11, linea=0)
     l.mancha(box(-2, 22.6, 122, 41.6), '8A6A3A', .3)                     # el agua café de la crecida
     # el conquistador, protagonista, con sus botas de hule doradas metidas en la inundación
-    conquistador(l, 60, 39.4, 1.16)
-    m = l.masa(Polygon([(40, 34.6), (80, 34.6), (80, 41.6), (40, 41.6)]), material='lejos', alto=.05, brillo=0, vientre=0, hondo=0, tinta=False, escalon=0,
-               contraluz=0, arroja=False)
-    l.mancha(box(40, 34.6, 80, 41.6), '8A6A3A', .3, dentro=m)
-    l.mancha(box(40, 34.6, 80, 41.6), '64C8AA', .15, dentro=m)
-    for k in range(3):                                                   # las ondas alrededor de las botas
-        l.trazo([(48 - k * 3, 35 + k * .6), (60, 35.6 + k * .7), (72 + k * 3, 35 + k * .6)], .2, color='D2F2DA', alfa=.75)
-    l.trazo([(40, 34.6), (80, 34.6)], .2, color='D2F2DA', alfa=.6)
+    conquistador(l, 60, 38.8, 1.08)
+    for dx in (-3.2, 3.2):                                               # el agua en los tobillos, con sus ondas
+        cx = 60 + dx * 1.08
+        l.mancha(ovalo(cx, 38.6, 4.4, .9), '7FA79A', .7)
+        for k in range(2):
+            l.trazo([(cx - 4.6 - k * 1.6, 38.8 + k * .7), (cx, 39.4 + k * .7), (cx + 4.6 + k * 1.6, 38.8 + k * .7)], .22, color='E6F3EE', alfa=.85)
 
 
 # ------------------------------------------------------------------------------------------------ el mar

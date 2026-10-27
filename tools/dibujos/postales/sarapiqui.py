@@ -5,10 +5,10 @@ recordar va grande y al medio, y es lo único dorado; sin sol.
 
 - el nacimiento: el lado norte de los volcanes Poás y Barva, con su selva, y el río dorado que nace entre ellos y baja de catarata en
   catarata;
-- San Miguel: «un arcángel con paraguas se baña bajo una catarata»: el arcángel dorado, con sus alas y su aureola, de pie en la poza,
-  y el agua que le cae sobre el paraguas;
-- La Virgen: «una virgen de yeso con chaleco salvavidas se sube a una balsa»: la virgen blanca, de yeso, con su chaleco salvavidas
-  dorado, que pone un pie en la balsa; atrás, el puente colgante sobre el río y la selva;
+- San Miguel: «un arcángel con paraguas se baña bajo una catarata»: el arcángel de alas y aureola doradas y túnica blanca, de pie en
+  la poza, y el agua que le cae sobre el paraguas;
+- La Virgen: «una virgen de yeso con chaleco salvavidas se sube a una balsa»: la virgen blanca, de yeso, en su pedestal, con su chaleco
+  salvavidas dorado, subida a la balsa; atrás, el puente colgante sobre el río y la selva;
 - Chilamate: «un higuerón gigante con un mate colgando de cada rama»: el higuerón de la orilla, ancho y de raíces tablares, con los
   mates dorados, cada uno con su bombilla, que cuelgan de las ramas;
 - Puerto Viejo: «un muelle viejo con mulas cansadas que se bajan a un bote»: las mulas doradas, con sus alforjas y las orejas caídas,
@@ -95,22 +95,27 @@ def nace(l):
 
 # ------------------------------------------------------------------------------------------------ San Miguel
 def arcangel(l, x, base, s=1.0):
-    """un arcángel dorado, de frente, de pie en la poza: la túnica larga, las alas abiertas detrás, la aureola, la cara y el brazo
-    levantado que sostiene el paraguas"""
+    """un arcángel de frente, de pie en la poza: las alas doradas abiertas detrás, que suben desde los hombros con sus plumas, la
+    túnica blanca con el cinto dorado, la aureola, la cara y el brazo levantado que sostiene el paraguas"""
     P = lambda pts: [(x + u * s, base + v * s) for u, v in pts]
     O = lambda u, v, rx, ry, a=0: ovalo(x + u * s, base + v * s, rx * s, ry * s, a)
-    alas = [forma(P([(-2, -17), (-7, -21), (-12, -22), (-14, -19), (-12.6, -16), (-14, -13.6), (-11.6, -11.4), (-12, -9), (-8, -9), (-3, -12)]), 2),
-            forma(P([(2, -17), (7, -21), (12, -22), (14, -19), (12.6, -16), (14, -13.6), (11.6, -11.4), (12, -9), (8, -9), (3, -12)]), 2)]
-    a = l.masa(alas, material='acento', alto=.4, brillo=.4, vientre=0, hondo=0, linea=.4, contraluz=.35)
-    for lado in (-1, 1):                                                 # las plumas
-        for k in range(4):
-            l.trazo(P([(lado * (4 + k * 2), -18 + k * .6), (lado * (6 + k * 1.8), -11 + k * .4)]), .12 * s, color='6B4E10', alfa=.45, dentro=a)
+    alas = []
+    for lado in (-1, 1):
+        borde = [(lado * 2, -17.4), (lado * 6, -22), (lado * 11, -24.4), (lado * 15.4, -24.6)]
+        for k, (u0, v0) in enumerate(((15.4, -24.6), (14.4, -21.4), (13, -18.6), (11, -16), (8.4, -13.8), (5.6, -12.4))):   # las plumas largas del borde
+            borde += [(lado * (u0 - .4), v0 + 1.6), (lado * (u0 - 1.6), v0 + 1.2)]
+        borde += [(lado * 3, -12.6)]
+        alas.append(Polygon(P(borde)).buffer(.25))
+    a = l.masa(alas, material='acento', alto=.4, brillo=.45, vientre=0, hondo=0, linea=.4, contraluz=.35)
+    for lado in (-1, 1):                                                 # las hileras de plumas
+        for k in range(3):
+            l.trazo(P([(lado * (4 + k * 3.2), -20.6 + k * .4), (lado * (6 + k * 2.6), -14.6 + k * .2)]), .14 * s, color='6B4E10', alfa=.5, dentro=a)
     tunica = [forma(P([(-3.4, -17.6), (3.4, -17.6), (4, -12), (5.4, 0), (-5.4, 0), (-4, -12)]), 2),
               tubo(P([(3, -16.8), (5.6, -19.6), (6.6, -23)]), [1 * s, .9 * s, .8 * s], 5), tubo(P([(-3, -16.8), (-4.4, -13), (-2, -10.6)]), [1 * s, .9 * s, .8 * s], 5)]
-    t = l.masa(tunica, material='acento', alto=.45, brillo=.45, vientre=0, hondo=.1, linea=.4, escalon=.2, contraluz=.35)
+    t = l.masa(tunica, material='claro', alto=.45, brillo=.3, vientre=0, hondo=.1, linea=.4, escalon=.2, contraluz=.35)
     for u in (-2.6, 0, 2.6):                                             # los pliegues
-        l.trazo(P([(u * .6, -15), (u, -1)]), [.05, .16, .05], color='6B4E10', alfa=.45, dentro=t)
-    l.mancha(Polygon(P([(-4, -11), (4, -11), (4, -10), (-4, -10)])), '6B4E10', .5, dentro=t)       # el cinto
+        l.trazo(P([(u * .6, -15), (u, -1)]), [.05, .16, .05], color='8EB5AA', alfa=.6, dentro=t)
+    l.masa(Polygon(P([(-4, -11.2), (4, -11.2), (4, -9.8), (-4, -9.8)])), material='acento', alto=.3, brillo=.45, vientre=0, hondo=0, linea=.25)   # el cinto
     piel(l, [O(6.7, -23.4, .9, .9), O(-1.8, -10.6, .9, .9), O(0, -20.2, 2.2, 2.5), box(x - .7 * s, base - 18.6 * s, x + .7 * s, base - 17.4 * s)])
     l.masa(forma(P([(-2.4, -20.6), (-2.2, -22.6), (0, -23.2), (2.2, -22.6), (2.4, -20.6), (1.6, -21.6), (-1.6, -21.6)]), 1), material='acento', alto=.4,
            brillo=.4, vientre=0, hondo=0, linea=.3)                      # el pelo
@@ -139,15 +144,17 @@ def san_miguel(l):
     agua(l, forma([(30, 41.6), (34, 33.6), (60, 32), (86, 33.6), (90, 41.6)], 2), ondas=6, semilla=5, linea=.35)
     # el arcángel dorado, protagonista, que se baña bajo la catarata con su paraguas
     arcangel(l, 60, 39.4, 1.02)
-    tela = forma([(46.4, 15.6), (50, 11.4), (60, 9.4), (70, 11.4), (73.6, 15.6), (70.4, 14.6), (66.6, 15.8), (63.4, 14.6), (60, 15.8), (56.6, 14.6),
-                  (53.4, 15.8), (49.6, 14.6)], 2)
-    l.trazo([(66.8, 15.4), (60, 9.6)], .3, color='3A2A0A', alfa=.9)
-    t = l.masa(tela, material='oscuro', alto=.4, brillo=.3, vientre=0, hondo=0, linea=.35, contraluz=.3)
-    for u in (53, 60, 67):
-        l.trazo([(60, 9.6), (u, 15)], .1, color='6E7E7B', alfa=.6, dentro=t)
+    l.trazo([(66.8, 16), (66.8, 6.6)], .35, color='3A2A0A', alfa=.95)              # el mango del paraguas
+    tela = forma([(53.2, 9.8), (56, 6.4), (61, 3.6), (66.8, 2.8), (72.6, 3.6), (77.6, 6.4), (80.4, 9.8), (77.8, 9), (75.2, 10), (72.4, 9), (69.6, 10), (66.8, 9),
+                  (64, 10), (61.2, 9), (58.4, 10), (55.8, 9)], 1)
+    t = l.masa(tela, material='claro', alto=.45, brillo=.3, vientre=0, hondo=0, linea=.4, contraluz=.35)
+    l.mancha(tela.buffer(1), '1E4A8C', .7, dentro=t)
+    for u in (55.4, 61, 66.8, 72.6, 78.2):                               # las varillas
+        l.trazo([(66.8, 2.8), (u, 9.6)], .14, color='E6F3EE', alfa=.85, dentro=t)
+    l.trazo([(66.8, 2.8), (66.8, 1.2)], .3, color='3A2A0A', alfa=.95)
     for lado in (-1, 1):                                                 # el agua que rebota del paraguas
         for k in range(4):
-            l.trazo([(60 + lado * (12 + k * .6), 15), (60 + lado * (14.6 + k * 1.4), 16.6 + k * 1.6), (60 + lado * (15.4 + k * 1.6), 20 + k * 2)], .3,
+            l.trazo([(66.8 + lado * (13 + k * .6), 9.6), (66.8 + lado * (15.4 + k * 1.4), 11.6 + k * 1.6), (66.8 + lado * (16.2 + k * 1.6), 15 + k * 2)], .3,
                     color='FFFFFF', alfa=.85)
     l.mancha(ovalo(60, 39.2, 12, 1.6), 'FFFFFF', .7, difuso=.6)
 
@@ -168,12 +175,13 @@ def virgen(l, x, base, s=1.0):
     for dx in (-.7, .7):
         l.trazo(P([(dx - .4, -19.8), (dx, -19.6), (dx + .4, -19.8)]), .14 * s, color='3A2A0A', alfa=.8)   # los ojos bajos
     l.trazo(P([(-.5, -18.2), (0, -18), (.5, -18.2)]), .12 * s, color='3A2A0A', alfa=.75)
-    chaleco = [forma(P([(-4.6, -9), (-4.8, -15.6), (-3.6, -18.4), (-1.6, -18), (-.8, -16.4), (.8, -16.4), (1.6, -18), (3.6, -18.4), (4.8, -15.6),
-                        (4.6, -9)]), 1)]
+    chaleco = [Polygon(P([(-4.6, -10.6), (-4.8, -16.6), (-3.8, -18), (-1.2, -18), (-.5, -16.4), (-.5, -10.6)])),
+               Polygon(P([(.5, -10.6), (.5, -16.4), (1.2, -18), (3.8, -18), (4.8, -16.6), (4.6, -10.6)])),
+               tubo(P([(-3.2, -18.2), (-1.6, -19.6), (0, -19.9), (1.6, -19.6), (3.2, -18.2)]), [.9 * s] * 5, 6)]
     c = l.masa(chaleco, material='acento', alto=.5, brillo=.45, vientre=0, hondo=.1, linea=.4, contraluz=.35)
-    for v in (-14.4, -11.4):                                             # las correas, con su hebilla
-        l.trazo(P([(-4.4, v), (4.4, v)]), .4 * s, color='3A2A0A', alfa=.85)
-        l.mancha(Polygon(P([(-.5, v - .4), (.5, v - .4), (.5, v + .4), (-.5, v + .4)])), 'E2EDE9', .95)
+    for v in (-15, -12.4):                                               # las correas, con su hebilla
+        l.trazo(P([(-4.6, v), (4.6, v)]), .45 * s, color='3A2A0A', alfa=.85)
+        l.mancha(Polygon(P([(-.7, v - .5), (.7, v - .5), (.7, v + .5), (-.7, v + .5)])), 'E2EDE9', .95)
     for k in range(3):
         l.trazo(P([(-3.8, -15.4 + k * 2), (-1.8, -15.4 + k * 2)]), .1 * s, color='6B4E10', alfa=.45, dentro=c)
     l.masa(forma(P([(-1.4, -12.6), (0, -15.6), (1.4, -12.6), (0, -11.8)]), 1), material='claro', alto=.3, brillo=.25, vientre=0, hondo=0, linea=.25)  # las manos
@@ -199,7 +207,8 @@ def la_virgen(l):
     g = balsa(l, 66, 36, 1.25)
     reflejo(l, g, 36.4, .2)
     l.mancha(ovalo(58, 37, 6, 1), '0C3A33', .25, difuso=.4)
-    virgen(l, 56, 36.4, 1.12)
+    l.masa([box(49.4, 34.2, 62.6, 36.6), box(50.6, 33, 61.4, 34.4)], material='claro', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.35)   # el pedestal
+    virgen(l, 56, 33.2, 1.04)
 
 
 def balsa(l, x, y, s=1.0):
@@ -275,7 +284,7 @@ def mula(l, x, base, s=1.0, lado=1, giro=0.0, material='acento'):
     cascos = [O(u, -.4, .8, .5) for u in (-6, -4.2, 4.2, 6)]
     cuerpo = [ovalo(x, base - 9 * s, 7.6 * s, 3.8 * s), tubo(P([(5.6, -10), (8.4, -9), (10.2, -6.6)]), [2.2 * s, 1.7 * s, 1.4 * s], 5),
               forma(P([(9.2, -8.4), (11.4, -7.6), (13.4, -3.4), (12.6, -2.2), (11, -2.6), (9, -6.2)]), 2),
-              O(8.2, -10.6, .8, 3.2, 62), O(8.8, -9.8, .8, 3.2, 50), tubo(P([(-7.4, -10), (-8.6, -7), (-8.6, -4)]), [.5 * s, .4 * s, .3 * s], 5)]
+              O(6.6, -12.6, .8, 3.6, -30), O(8.4, -12.4, .8, 3.6, 35), tubo(P([(-7.4, -10), (-8.6, -7), (-8.6, -4)]), [.5 * s, .4 * s, .3 * s], 5)]
     m = l.masa([G(g) for g in patas + cuerpo], material=material, alto=.45, brillo=.4, vientre=0, hondo=.1, linea=.4, contraluz=.35)
     l.masa([G(g) for g in cascos + [O(-8.6, -3.6, .7, 1.1)]], material='oscuro', alto=.3, brillo=.3, vientre=0, hondo=0, linea=.2)
     l.mancha(G(O(12.8, -3, .8, .7)), '6B4E10', .6, dentro=m)            # el hocico
@@ -304,8 +313,8 @@ def puerto_viejo(l):
     for x, w, h in ((86, 6, 3.6), (93, 5.6, 3.2), (100, 6.4, 3.8)):
         c = l.masa(box(x, 21 - h, x + w, 21), material='claro', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25)
         l.masa(Polygon([(x - .4, 21 - h), (x + w / 2, 21 - h - 1.8), (x + w + .4, 21 - h)]), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25)
-    l.trazo([(14, 8.6), (26, 10.4)], .5, color='3A2A0A', alfa=.9)
-    mono(l, 20, 9.2, .9)
+    l.trazo([(96, 8.4), (106, 9.6)], .5, color='3A2A0A', alfa=.9)
+    mono(l, 101, 9, .9)
     rio(l, 21.4)
     # el muelle viejo y torcido, el bote a su lado y las mulas cansadas doradas, protagonistas, que se bajan
     for x, a in ((2, .3), (10, -.4), (18, .5), (26, -.2), (34, .4), (42, -.3)):

@@ -6,13 +6,13 @@ recordar va grande y al medio, y es lo único dorado; sin sol.
 - el nacimiento: la cordillera de Talamanca, con las nubes pegadas, y el valle de cafetales donde los ríos dorados que bajan de la
   montaña, de un lado y del otro, se juntan en uno solo;
 - Orosi: «una iglesia chiquita de techo de tejas y un oso que reza adentro»: la iglesia blanca de techo de teja, con su campanario, y
-  por la puerta abierta el oso dorado, de rodillas, con las manos juntas;
+  por la puerta abierta el oso dorado, de rodillas en su reclinatorio, con las manos juntas;
 - Cachí: «un cachete inflado aguanta el agua de todo el valle»: una cara dorada, con los cachetes inflados y los ojos apretados, que
   tapa el cañón entre los cerros y aguanta el embalse; abajo sale el río;
 - Juan Viñas: «don Juan Viñas se toma un café con azúcar de su propio ingenio, sentado en la estación del tren»: don Juan, de saco
   dorado, en la banca de la estación, con su taza que humea; atrás, la chimenea del ingenio, los cañales y los cafetales, y el tren;
-- Turrialba: «una bola de béisbol con un volcán de sombrero baja el río en balsa»: la bola dorada, con sus costuras, el volcancito
-  que humea de sombrero y el remo, en la balsa, entre los rápidos; al fondo, el volcán Turrialba;
+- Turrialba: «una bola de béisbol con un volcán de sombrero baja el río en balsa»: la bola blanca, con sus costuras rojas, el
+  volcancito dorado que humea de sombrero y el remo, en la balsa, entre los rápidos; al fondo, el volcán Turrialba;
 - Siquirres: «un sí que chirría como los frenos del tren»: las letras SÍ, doradas, en un carro de tren que frena sobre el cruce de
   las vías, con las chispas; atrás, los bananales y la represa;
 - Parismina: «una tortuga con paraguas y boina desova en la playa»: la tortuga dorada, con su boina y su paraguas, y los huevos en
@@ -103,10 +103,12 @@ def nace(l):
 
 # ------------------------------------------------------------------------------------------------ Orosi
 def oso_reza(l, x, base, s=1.0):
-    """un oso dorado, de rodillas y de perfil, mirando a la derecha, con las manos juntas delante del hocico y la cabeza un poco
-    gacha, que reza con los ojos cerrados"""
+    """un oso dorado, de rodillas y de perfil, mirando a la derecha, en su reclinatorio de madera, con las manos juntas apoyadas en
+    el atril y la cabeza un poco gacha, que reza con los ojos cerrados"""
     P = lambda pts: [(x + u * s, base + v * s) for u, v in pts]
     O = lambda u, v, rx, ry, a=0: ovalo(x + u * s, base + v * s, rx * s, ry * s, a)
+    madera(l, [box(x + 8.6 * s, base - 9.6 * s, x + 9.6 * s, base), box(x + 12 * s, base - 10.4 * s, x + 13 * s, base),
+               Polygon(P([(7.2, -9.4), (13.8, -10.8), (14, -9.8), (7.4, -8.4)])), box(x - 8.6 * s, base - 1.2 * s, x + 3 * s, base)], .65)   # el reclinatorio
     cuerpo = [forma(P([(-4.6, -1.6), (-6, -5.6), (-5.4, -10.4), (-3, -13.8), (1, -14.2), (3.2, -11.4), (3.6, -6), (2, -2)]), 2),
               O(-2.4, -1.8, 5.2, 2.1), O(-7.2, -1.2, 1.4, 1.2),
               O(2.4, -16.8, 3.1, 2.8), O(5.2, -15.4, 1.8, 1.2, 30), O(1, -19.4, 1.1, 1.1),
@@ -280,25 +282,25 @@ def juan_vinas(l):
 
 # ------------------------------------------------------------------------------------------------ Turrialba
 def bola(l, x, y, r):
-    """una bola de béisbol dorada: la esfera con las dos costuras curvas, de puntadas, la cara contenta y el volcancito que humea de
-    sombrero"""
-    m = l.masa(ovalo(x, y, r, r), material='acento', alto=.6, brillo=.5, vientre=0, hondo=.1, linea=.45, contraluz=.4)
+    """una bola de béisbol: la esfera blanca con las dos costuras curvas de puntadas rojas, la cara contenta y, de sombrero, el
+    volcancito dorado que humea"""
+    m = l.masa(ovalo(x, y, r, r), material='claro', alto=.6, brillo=.4, vientre=0, hondo=.1, linea=.45, contraluz=.35)
     for lado in (-1, 1):                                                 # las costuras
         c = [(x + lado * r * (.62 - .3 * math.cos(t)), y + r * .9 * math.sin(t)) for t in np.linspace(-1.25, 1.25, 12)]
-        l.trazo(c, .12, color='8A3A22', alfa=.7, dentro=m)
+        l.trazo(c, .16, color='B23A2E', alfa=.8, dentro=m)
         for k in range(1, len(c) - 1):
             px, py = c[k]
-            l.trazo([(px - .6, py - .3), (px, py), (px + .6, py - .3)], .14, color='A0402A', alfa=.9, dentro=m)
+            l.trazo([(px - .75, py - .4), (px, py), (px + .75, py - .4)], .2, color='B23A2E', alfa=.95, dentro=m)
     for dx in (-.25, .25):
         l.mancha(ovalo(x + dx * r, y - .1 * r, .1 * r, .13 * r), '05201C', 1)
     l.trazo([(x - .28 * r, y + .25 * r), (x, y + .42 * r), (x + .28 * r, y + .25 * r)], .1 * r, color='3A2A0A', alfa=.85)
     # el volcancito de sombrero, con su cráter y su humo
     v = Polygon([(x - 1.02 * r, y - .66 * r), (x - .62 * r, y - .98 * r), (x - .26 * r, y - 1.42 * r), (x - .12 * r, y - 1.36 * r), (x, y - 1.42 * r),
                  (x + .14 * r, y - 1.35 * r), (x + .28 * r, y - 1.42 * r), (x + .64 * r, y - .98 * r), (x + 1.02 * r, y - .66 * r)])
-    vm = l.masa(v, material='lejos', alto=.35, brillo=.2, vientre=0, hondo=0, linea=.35)
-    l.mancha(v.buffer(1), MADERA, .5, dentro=vm)
+    vm = l.masa(v, material='acento', alto=.4, brillo=.45, vientre=0, hondo=0, linea=.4, contraluz=.35)
     for u in (-.5, -.1, .35):                                            # las quebradas de la falda
-        l.trazo([(x + u * r * .5, y - 1.3 * r), (x + u * r, y - .8 * r)], .12, color='3A2A0A', alfa=.45, dentro=vm)
+        l.trazo([(x + u * r * .5, y - 1.3 * r), (x + u * r, y - .8 * r)], .14, color='6B4E10', alfa=.55, dentro=vm)
+    l.mancha(ovalo(x, y - 1.4 * r, .22 * r, .06 * r), '6B4E10', .8)
     for k in range(4):
         l.mancha(ovalo(x + k * .26 * r, y - (1.62 + k * .3) * r, (.22 + k * .12) * r, (.14 + k * .06) * r), 'C9D8D2', .9 - k * .12, difuso=.3)
     return m
@@ -337,7 +339,7 @@ def turrialba(l):
     l.trazo([(74, 13), (66, 34)], .45, color='3A2A0A', alfa=.95)        # el remo
     l.masa(forma([(64.6, 33.4), (67.6, 34.6), (66.4, 38.4), (63.6, 37.4)], 1), material='lejos', alto=.3, brillo=.2, vientre=0, hondo=0, linea=.25)
     bola(l, 58, 21, 9.4)
-    l.masa([ovalo(68, 21, 1.2, 1.2), tubo([(65.6, 23), (68, 21)], [.6, .6], 2)], material='acento', alto=.4, brillo=.4, vientre=0, hondo=0, linea=.3)
+    l.masa([ovalo(68, 21, 1.2, 1.2), tubo([(65.6, 23), (68, 21)], [.6, .6], 2)], material='claro', alto=.4, brillo=.4, vientre=0, hondo=0, linea=.3)
     g = balsa(l, 58, 32.4, 1.25)
     for k in range(4):
         l.mancha(ovalo(36 - k * 3, 33.6 + k * .4, 3, .9), 'FFFFFF', .7, difuso=.3)

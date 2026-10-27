@@ -81,17 +81,22 @@ def nace(l):
     nube(l, 20.6, 3.6, 7, .5)
     lancha(l, 86, 22, .9)
     # la orilla de acá, con sus casas, y el río dorado, protagonista, que sale del lago y baja hacia nosotros
-    for pts in ([(-2, 41.6), (-2, 28.4), (20, 27.6), (40, 27.4), (52, 27.6), (52, 41.6)], [(122, 41.6), (122, 28), (100, 27.4), (80, 27.4), (68, 27.6), (68, 41.6)]):
-        orilla(l, forma(pts, 2), tinte=.3)
-    for x, w, h in ((24, 5, 3.2), (30.6, 4.6, 2.8), (36.6, 5, 3.4), (80, 4.6, 3), (86, 5, 3.4)):
-        c = l.masa(box(x, 31.6 - h, x + w, 31.6), material='claro', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25)
-        l.masa(Polygon([(x - .4, 31.6 - h), (x + w / 2, 31.6 - h - 1.6), (x + w + .4, 31.6 - h)]), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0,
+    rio_ = Polygon([(46, 26.4), (74, 26.4), (70, 30), (72, 35), (80, 41.8), (40, 41.8), (48, 35), (50, 30)]).buffer(1.2).buffer(-1.2)
+    m = l.masa(rio_, material='acento', alto=.3, brillo=.45, vientre=0, hondo=0, linea=0, escalon=.1, contraluz=.3)
+    l.mancha(box(40, 25, 80, 28.4), '64C8AA', .45, dentro=m, difuso=1.4)    # el agua del lago que entra al río
+    for x, y, w in ((60, 29.4, 2.4), (55.6, 31.6, 2.8), (64.4, 32.6, 2.8), (59.4, 35, 3.2), (52.6, 37.6, 3.4), (66.6, 38, 3.4), (60, 40.2, 3.6)):
+        l.trazo([(x - w, y + .3), (x - w / 2, y - .2), (x, y + .2), (x + w / 2, y - .2), (x + w, y + .3)], .24, color='FFFFFF', alfa=.85, dentro=m)
+    for pts in ([(-2, 41.6), (-2, 27.6), (20, 26.8), (36, 26.6), (47, 27), (51, 30), (49, 35), (41, 41.6)],
+                [(122, 41.6), (122, 27.4), (100, 26.6), (84, 26.6), (73, 27), (69, 30), (71, 35), (79, 41.6)]):
+        b = orilla(l, forma(pts, 2), tinte=.3)
+    for x in (44, 47, 50, 70, 73, 76):                                    # los juncos de la boca
+        y = 27.6 + abs(x - 60) * .02
+        for dx in (-.6, 0, .6):
+            l.trazo([(x + dx, y + .4), (x + dx * 1.6, y - 2.2)], .14, color='2F8A74', alfa=.85)
+    for x, w, h in ((14, 5, 3.2), (20.6, 4.6, 2.8), (26.6, 5, 3.4), (90, 4.6, 3), (96, 5, 3.4)):
+        c = l.masa(box(x, 30.6 - h, x + w, 30.6), material='claro', alto=.2, brillo=.1, vientre=0, hondo=0, linea=.25)
+        l.masa(Polygon([(x - .4, 30.6 - h), (x + w / 2, 30.6 - h - 1.6), (x + w + .4, 30.6 - h)]), material='lejos', alto=.2, brillo=.1, vientre=0, hondo=0,
                linea=.25)
-    rio_ = cinta([(60, 27), (59.4, 32), (60.8, 37), (60, 41.8)], [5.4, 8, 10.6, 13], 10)
-    m = l.masa(rio_, material='acento', alto=.3, brillo=.45, vientre=0, hondo=0, linea=.4, escalon=.1, contraluz=.3)
-    for x, y in ((60, 29.6), (57.6, 33), (62, 34.6), (58.4, 38.4), (63, 40.2)):
-        l.trazo([(x - 1.8, y), (x, y - .3), (x + 1.8, y)], .18, color='FBEFCB', alfa=.9, dentro=m)
-    l.mancha(ovalo(60, 27.4, 7, 1.6), 'E8B952', .45, difuso=1)           # el agua del lago que entra al río
     for x, y, s in ((30, 8, .6), (36, 6.6, .5), (80, 8, .6)):
         ave(l, x, y, s)
 
