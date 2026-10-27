@@ -381,10 +381,10 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin, a ≈ 3 343 KB
   con el Ganges y el Mekong, a ≈ 3 510 KB con el Níger y el Paraná, a ≈ 3 705 KB con el Indo y el Congo, a ≈ 3 867 KB con el Huang He
   y el Orinoco, a ≈ 4 113 KB con el Murray, el San Lorenzo y el Zambeze y a ≈ 4 663 KB con los seis ríos de Costa Rica, con lo que
-  están las 201, y a ≈ 4 689 KB con las correcciones de la revisión integral (2026-10-27).
+  están las 201, y a ≈ 4 690 KB con las correcciones de la revisión integral (2026-10-27).
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
   calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201, todas pintadas desde el
-  2026-10-26, queda en ≈ 4 689 KB, con ≈ 431 KB de sobra (la proyección sobre las 156 primeras daba ≈ 500 KB: las ticas, con más figuras,
+  2026-10-26, queda en ≈ 4 690 KB, con ≈ 430 KB de sobra (la proyección sobre las 156 primeras daba ≈ 500 KB: las ticas, con más figuras,
   salieron un poco más pesadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y las
   series más sencillas, del Níger en adelante, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
   vistas grandes como lo haría el pintor y prueba otras combinaciones: `560/75` dejaría ≈ 540 KB). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
@@ -516,7 +516,12 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   bandera, un triángulo con una cabeza adentro es un ojo en una pirámide, una T de palo seco es una cruz (con remates, es una letra) y un
   sol naciente con rayos en abanico, sobre el mar de China, sería una bandera. Lo que está detrás de una cabeza le sale de ella (la
   chimenea del molino, del gorro del muñeco). Unas losas de sal blancas y lisas parecen libros: van grises, con sus sogas. Rayos de luz
-  difusos, cortados por el borde, dejan un recuadro pálido en el cielo.
+  difusos, cortados por el borde, dejan un recuadro pálido en el cielo. Y el Tempisque nace donde dice su texto, «hacia el volcán
+  Orosí»: en OpenStreetMap el «Río Tempisque» empieza en la junta del río Los Ahogados y el río Tempisquito (10,733, −85,526), y el
+  Tempisquito, su cabecera, baja del Orosí; el cauce sube ahora por él (`cabeza` en tools/cauces.py, con los puntos de OSM simplificados
+  como el resto), nace a 875 m y mide 153 km de polilínea para los 144 km del texto (antes, 115 y 69 m). Se regeneraron el mapa, el
+  relieve (un recorte nuevo del DEM de NOAA) y la instantánea (el marcado de las 200 pantallas, por el mapa). Lección: un río de OSM
+  puede cambiar de nombre aguas arriba; el nacimiento se busca siguiendo la red hacia arriba, no por el nombre.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -815,10 +820,8 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 
 ## Pendientes, en orden de valor
 
-De la revisión integral del 2026-10-27 queda una: el Tempisque nace a 69 m porque su cauce empieza en el llano (`desde` en
-tools/cauces.py); alargarlo hacia el volcán Orosí pide recortes nuevos del DEM de NOAA, una descarga, y cambia los kilómetros de sus
-paradas (la instantánea). Los mares que contradecían su barca, las protagonistas sin dorado y las alturas del Volga y del San Lorenzo
-quedaron hechos ese mismo día (ver «Correcciones de la revisión» y «Relieve»).
+De la revisión integral del 2026-10-27 no queda nada: los mares que contradecían su barca, las protagonistas sin dorado, las alturas
+del Volga y del San Lorenzo y el nacimiento del Tempisque quedaron hechos ese mismo día (ver «Correcciones de la revisión» y «Relieve»).
 
 Hecho el 2026-09-06: el rediseño estético en tres fases (identidad, navegación con barra al pie y riel, iconos propios).
 Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente contenido a la vista; si no, la salida es plegar
@@ -847,7 +850,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 689 KB y la de Exploradores ≈ 893 KB el 2026-10-27, con los animales, las barcas, las mercancías del Nilo y las postales de los 25 ríos pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 690 KB y la de Exploradores ≈ 893 KB el 2026-10-27, con los animales, las barcas, las mercancías del Nilo y las postales de los 25 ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;

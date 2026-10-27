@@ -65,7 +65,12 @@ CAUCES={
    'brazos':[[[46.3,-77.0],[45.8,-76.5],[45.43,-75.7],[45.53,-75.0],[45.47,-74.4],[45.42,-74.05],[45.4,-73.85]],[[48.42,-71.06],[48.35,-70.8],[48.3,-70.4],[48.2,-70.0],[48.13,-69.75]]]},
  'zambeze':{'nombres':['Zambezi'],'desde':[-11.38,24.27],'hasta':[-18.58,36.5],'cabeza':[[-11.25,24.32]],
    'brazos':[{'nombres':['Kafue'],'desde':[-11.63,26.5],'hasta':[-15.95,28.9]},{'nombres':['ne10:Luangwa'],'desde':[-9.75,33.17],'hasta':[-15.63,30.41]}]},
+ # el Tempisque empieza en OSM donde se juntan el río Los Ahogados y el río Tempisquito (10,733, −85,526); su cabecera, el Tempisquito, baja del
+ # volcán Orosí: va de `cabeza`, con los puntos de OpenStreetMap (consultado el 2026-10-27) simplificados a 0,003° como el resto del cauce
  'tempisque':{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Tempisque'],'desde':[10.73,-85.5],'hasta':[10.18,-85.24],'dec':3,'simpl':0.003,
+   'cabeza':[[10.965,-85.471],[10.941,-85.525],[10.928,-85.53],[10.926,-85.526],[10.92,-85.527],[10.895,-85.56],[10.887,-85.549],[10.872,-85.546],
+             [10.866,-85.553],[10.862,-85.551],[10.856,-85.564],[10.827,-85.552],[10.819,-85.541],[10.79,-85.553],[10.768,-85.55],[10.762,-85.545],
+             [10.755,-85.551],[10.746,-85.546],[10.748,-85.54],[10.733,-85.526]],
    'brazos':[{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Liberia'],'desde':[10.78,-85.33],'hasta':[10.47,-85.55],'dec':3,'simpl':0.003},{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Bebedero'],'desde':[10.37,-85.19],'hasta':[10.25,-85.25],'dec':3,'simpl':0.003}]},
  'reventazon':{'capa':'ne10na','tol':0.002,'puente':0.1,'nombres':['Reventazón'],'desde':[9.68,-83.8],'hasta':[10.3,-83.33],'dec':3,'simpl':0.003,
    'brazos':[{'capa':'osm','tol':0.0005,'puente':0.03,'nombres':['Río Parismina'],'desde':[10.06,-83.72],'hasta':[10.31,-83.38],'dec':3,'simpl':0.003}]},

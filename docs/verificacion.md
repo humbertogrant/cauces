@@ -900,7 +900,7 @@ Altura del cauce en cada parada, muestreada del mosaico DEM global de NOAA NCEI 
 - Danubio: fuente 689 m → Ulm 474 m · Ratisbona 337 m · Passau 306 m · Linz 258 m · Viena 161 m · Bratislava 139 m · Budapest 105 m · Belgrado 70 m → mar 0 m ⚠
 - Rin: fuente 1522 m → Basilea 244 m · Estrasburgo 138 m · Maguncia 85 m · Coblenza 69 m · Colonia 43 m · Duisburgo 26 m · Rotterdam 0 m → mar 0 m ⚠
 - Ganges: fuente 3389 m → Haridwar 301 m · Kanpur 113 m · Prayagraj 80 m · Benarés 67 m · Patna 44 m · Calcuta 3 m → mar 0 m ⚠
-- Volga: fuente 210 m → Tver 132 m · Yaroslavl 84 m · Nizhni Nóvgorod 64 m · Kazán 47 m · Samara 29 m · Volgogrado -11 m · Astracán -24 m → mar -28 m ⚠
+- Volga: fuente 228 m → Tver 132 m · Yaroslavl 84 m · Nizhni Nóvgorod 64 m · Kazán 47 m · Samara 29 m · Volgogrado -11 m · Astracán -24 m → mar -28 m ⚠
 - Tigris: fuente 754 m → Diyarbakır 591 m · Mosul 218 m · Tikrit 86 m · Samarra 61 m · Bagdad 34 m · Basora 0 m → mar 0 m ⚠
 - Mekong: fuente 4625 m → Jinghong 551 m · Luang Prabang 308 m · Vientián 167 m · Phnom Penh 3 m · Can Tho 0 m → mar 0 m ⚠
 - Níger: fuente 766 m → Bamako 318 m · Mopti 265 m · Tombuctú 258 m · Gao 248 m · Niamey 183 m · Lokoja 38 m · Port Harcourt 5 m → mar 0 m ⚠
@@ -910,9 +910,9 @@ Altura del cauce en cada parada, muestreada del mosaico DEM global de NOAA NCEI 
 - Huang He: fuente 4467 m → Lanzhou 1567 m · Yinchuan 1108 m · Baotou 1004 m · Zhengzhou 91 m · Kaifeng 80 m · Jinan 25 m · Dongying 7 m → mar 0 m ⚠
 - Orinoco: fuente 750 m → San Fernando de Atabapo 82 m · Puerto Ayacucho 54 m · Puerto Carreño 43 m · Caicara del Orinoco 28 m · Ciudad Bolívar 14 m · Ciudad Guayana 4 m → mar 0 m ⚠
 - Murray: fuente 1247 m → Albury 153 m · Echuca 91 m · Swan Hill 67 m · Mildura 36 m · Renmark 16 m · Murray Bridge 3 m · Goolwa 0 m → mar 0 m ⚠
-- San Lorenzo: fuente 58 m → Kingston 58 m · Cornwall 53 m · Montreal 12 m · Trois-Rivières 2 m · Quebec 0 m · Tadoussac 0 m → mar 0 m ⚠
+- San Lorenzo: fuente 74 m → Kingston 74 m · Cornwall 53 m · Montreal 12 m · Trois-Rivières 2 m · Quebec 0 m · Tadoussac 0 m → mar 0 m ⚠
 - Zambeze: fuente 1388 m → Mongu 1013 m · Katima Mulilo 943 m · Livingstone 890 m · Kariba 484 m · Tete 125 m · Chinde 2 m → mar 0 m ⚠
-- Tempisque: fuente 69 m → Liberia 57 m · Guardia 30 m · Filadelfia 17 m · Bolsón 5 m · Puerto Humo 3 m → mar 0 m ⚠
+- Tempisque: fuente 875 m → Liberia 57 m · Guardia 30 m · Filadelfia 17 m · Bolsón 5 m · Puerto Humo 3 m → mar 0 m ⚠
 - Reventazón: fuente 2181 m → Orosi 1056 m · Cachí 990 m · Juan Viñas 863 m · Turrialba 555 m · Siquirres 91 m · Parismina 3 m → mar 0 m ⚠
 - Sarapiquí: fuente 1756 m → San Miguel 438 m · La Virgen 183 m · Chilamate 79 m · Puerto Viejo 38 m · Trinidad 0 m → mar 0 m ⚠
 - San Juan: fuente 36 m → San Carlos 36 m · Sábalos 32 m · El Castillo 32 m · Boca San Carlos 20 m · Delta 8 m · San Juan de Nicaragua 0 m → mar 0 m ⚠
