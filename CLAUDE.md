@@ -338,10 +338,10 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   dorado que entra al golfo de Nicoya, con Puntarenas enfrente. En el Reventazón: los ríos de agua que bajan de Talamanca y del valle de
   Cartago y se juntan en el Reventazón dorado; el oso dorado que reza de rodillas en la iglesia de Orosi; la cara dorada de cachetes
   inflados que tapa el cañón y aguanta el embalse (Cachí); don Juan Viñas, de saco dorado, con su café en la banca de la estación; la
-  bola de béisbol dorada, con su volcancito de sombrero, que rema en la balsa (Turrialba); el SÍ dorado que chirría sobre el cruce de
+  bola de béisbol, blanca de costuras rojas, con su volcancito dorado de sombrero, que rema en la balsa (Turrialba); el SÍ dorado que chirría sobre el cruce de
   las vías, con la represa atrás (Siquirres); la tortuga dorada con boina y paraguas que desova en la playa (Parismina); y la balsa de
   rafting de tubos dorados que sale a la barra, frente a las olas del Caribe. En el Sarapiquí: las cataratas doradas entre el Poás y el
-  Barva; el arcángel dorado que se baña bajo la catarata con su paraguas (San Miguel); la virgen de yeso con el chaleco salvavidas
+  Barva; el arcángel de alas doradas que se baña bajo la catarata con su paraguas azul (San Miguel); la virgen de yeso con el chaleco salvavidas
   dorado, que se sube a la balsa bajo el puente colgante (La Virgen); los mates dorados que cuelgan del higuerón (Chilamate); las mulas
   cansadas, doradas, que pasan del muelle al bote (Puerto Viejo); los tres botes dorados que se dan la mano entre las banderas de Costa
   Rica y de Nicaragua (Trinidad); y el bote de casco dorado que entra al San Juan, con Bruno, el mono congo, que grita en la orilla. En el
@@ -473,6 +473,18 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   Una mula que baja un escalón va inclinada entera (`affinity.rotate`), no con las patas estiradas. Una estatua de yeso lleva la cara de
   yeso. Una locomotora lleva la chimenea adelante y la cabina atrás. Con todas las postales pintadas, test/casos.js les quita un momento
   las suyas al Térraba y al Tárcoles para probar las de pictogramas, que son las de la económica.
+- Revisión integral (2026-10-27, a pedido de Humberto: «haz una revisión integral de las tarjetas y el juego»): además de mirar las 201
+  contra su texto, dos lectores a ciegas (agentes que solo ven las postales a 360 px, numeradas, sin el río ni la ciudad) dijeron qué
+  veían en cada una, y un script midió el dorado de cada postal (área, alto y centro de lo que cae en el tono de `acento`). Las ticas que
+  no se leían se corrigieron: unas botas de hule tapadas por el agua no son doradas (van enteras, fuera del agua, con el agua en los
+  tobillos); un río dorado corto y angosto entre dos orillas es una figurita (va ancho desde la boca del lago y se abre hacia nosotros,
+  con ondas blancas); una bola de béisbol dorada es una papa o una naranja (va blanca, con sus costuras rojas, y lo dorado es el
+  volcancito del sombrero); alas doradas pegadas a una túnica dorada son mangas (la túnica va blanca y las alas suben desde los hombros,
+  con plumas); un chaleco salvavidas que tapa todo el pecho es un manto (va corto, con su cuello, el cierre al medio y las correas, y la
+  virgen, sobre un pedestal de estatua); un mono sobre una mula es un jinete; las mulas se reconocen por las orejas largas; un oso que
+  reza necesita su reclinatorio. Quedan pendientes, para decidir con Humberto, los mares del Nilo, el Amazonas, el Yangtsé y el
+  Misisipi (la barca sale al mar aunque su llegada dice que no llega), las protagonistas sin dorado de las cuatro primeras series y las
+  alturas que no calzan con el texto del nacimiento (ver «Pendientes»).
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -553,7 +565,10 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   `renderRecitar`, `renderQuiz`) y mapa (`renderMapa(foco)`), a partir de `S`. Los manejadores son funciones
   globales llamadas desde `onclick` en el HTML generado. No hay componentes ni eventos delegados.
 - Mapa: SVG con proyección equirectangular (`proj`), viewBox animado (`setVB`), tamaños en píxeles constantes
-  (`px = vb.w / ancho del contenedor`). El SVG lleva `preserveAspectRatio` slice y `vbPara` ajusta la vista a la proporción
+  (`px = vb.w / ancho del contenedor`). Las coordenadas del mapa (trazos, paradas, etiquetas, picos) van con dos decimales: con uno, en la
+  vista de Costa Rica, de 3 unidades de ancho, cada décima era una docena de píxeles y los ríos ticos salían en escalera, con las paradas
+  corridas (arreglado el 2026-10-27). El avance de cada animación (`setVB`, `animarBarca`) se acota a [0, 1]: el primer cuadro puede traer
+  una marca de tiempo anterior a la de la llamada, y la curva extrapolaba hacia atrás (un viewBox de ancho negativo al alejarse). El SVG lleva `preserveAspectRatio` slice y `vbPara` ajusta la vista a la proporción
   del mapa desplegado; plegado (▾, `#arriba.compacto`) recorta esa misma vista a la altura chica centrando la barca (misma
   escala, nunca un mapa encogido). Como el alto del CSS cambia con transición, `dimsMapa` mide los dos altos sin transición y
   restaura la animación (FLIP) en cada render; al plegar la caja se anima y al desplegar salta y solo destapa. La barca se anima con `animarBarca` sobre la polilínea del río entre
@@ -764,6 +779,14 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
    corta puede pedir vértices más seguidos en `PASO_RUTA` de tools/itinerarios.py (el test exige 40 vértices o más).
 
 ## Pendientes, en orden de valor
+
+De la revisión integral del 2026-10-27, para decidir con Humberto: (a) los mares del Nilo, el Amazonas, el Yangtsé y el Misisipi pintan la
+barca del juego en el mar, pero su `llegada` dice que no sale al mar: necesitan otra protagonista, como los trece que no llegan; (b) en el
+Tigris, el Volga, el Nilo y el Amazonas, quince protagonistas no tienen nada dorado o casi nada (Diyarbakır, Mosul, Tver, Nizhni, Kazán,
+Samara, Volgogrado, Astracán, los nacimientos del Tigris, el Nilo y el Amazonas, Jinja, Manaos, Belém y el mar del Tigris): desde el
+Yangtsé, toda protagonista es dorada; (c) la altura del nacimiento no calza con su texto en el Volga (210 m contra «228 m») y el San
+Lorenzo (58 m contra «74 m»), y el Tempisque nace a 69 m porque su cauce empieza en el llano (`desde` en tools/cauces.py): alargarlo
+hacia el Orosí pide recortes nuevos del DEM de NOAA, una descarga.
 
 Hecho el 2026-09-06: el rediseño estético en tres fases (identidad, navegación con barra al pie y riel, iconos propios).
 Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente contenido a la vista; si no, la salida es plegar
