@@ -300,7 +300,35 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   andamio de nasas; la banda (M-banda-ka) de uniforme dorado que da el paso sobre la línea del ecuador; el boxeador con corona
   (Kin-shasa) que cruza en balsa entre Kinshasa y Brazzaville; la mata de piedras doradas (Mata-di) debajo del puente colgante; el
   baobab dorado con gorra y bigote de capitán (Bo-ma); y la lengua de arena de Banana, donde el Congo entra al Atlántico, hecha un
-  plátano gigante dorado con su faro (el convoy se queda en Boma).
+  plátano gigante dorado con su faro (el convoy se queda en Boma). Siguieron el Huang He y el Orinoco («huang he y orinoco»). En el
+  Huang He: el río que nace ya dorado de barro entre los lagos Gyaring y Ngoring, el río Amarillo; el lanchón cargado de fideos dorados
+  de Lanzhou, hebra por hebra, bajo el puente de hierro; el yin y el yang de arroz, mitad dorada y mitad verde, en el desierto de
+  Yinchuan; el bao de acero dorado en lo alto de la curva de Baotou; el zapato de bronce del kilómetro cero de Zhengzhou, entre las vías;
+  el río dorado que pasa por arriba de los techos de Kaifeng, entre diques, sobre las ciudades enterradas; el genio dorado que sale del
+  manantial de Jinan; la campana dorada que suena sobre el delta nuevo de Dongying, entre los pozos que cabecean; y el penacho dorado de
+  barro que se abre en el golfo de Bohai (la balsa de pieles se deshace en el delta). En el Orinoco, el primero de los ríos que solo están
+  en la amplia: el Casiquiare dorado, el canal por donde el Orinoco le presta agua al río Negro y al Amazonas; Fernando, que sirve té
+  negro de una tetera dorada en tazas de arena blanca, en San Fernando de Atabapo; los raudales que gritan ¡AY! y las curiaras doradas
+  que se bajan a caminar en Puerto Ayacucho; el carro dorado con su carreta y la meta a cuadros pintada atrás, en Puerto Carreño; el
+  caimán dorado que dobla el río con la cola en Caicara; Bolívar, de casaca dorada, que aprieta el río bajo el puente de Angostura, con
+  la botella de amargo; la guayaba de acero dorada en el muelle de Ciudad Guayana, junto a los dos ríos que no se mezclan; y el delta
+  abierto como un abanico dorado de caños hacia el Atlántico (la curiara se queda en los caños). Después, los otros tres ríos de la
+  amplia («murray san lorenzo y zambeze»), con lo que quedan pintados los diecinueve del mundo. En el Murray: un canguro dorado que salta
+  en la nieve de los Alpes Australianos; el ornitorrinco dorado en la cama de arriba de la cucheta del albergue (Albury); el eco dorado
+  del silbato del vapor que rebota contra el muelle altísimo de Echuca; de noche, la colina de cisnes negros de pico dorado y la carpa de
+  Mitchell, que no lo dejan dormir (Swan Hill); la naranja dorada que hace de sol sobre los naranjales de Mildura; el marinero que le
+  pone etiqueta a cada uva dorada en Renmark; el puente dorado que le hace cosquillas al río con los pies en Murray Bridge; la gaviota
+  que cierra la última compuerta dorada de Goolwa; y la draga dorada que mantiene abierta la boca, entre las dunas y los pelícanos (el
+  vapor se queda ante las barreras). En el San Lorenzo: el embudo dorado por donde se vacía el lago Ontario; el rey de manto dorado y
+  corona de hielo en la boca del lago (Kingston); la vaca dorada que empuja la compuerta de la esclusa (Cornwall); el monte Royal con su
+  sombrero de nieve y su corona dorada que mira saltar las canoas en los rápidos (Montreal); el barco de papel de diario, dorado, donde
+  se juntan los tres brazos (Trois-Rivières); el diamante dorado que angosta el río bajo el cabo y el Château Frontenac (Quebec); la beluga
+  que toca un tambor dorado en la boca del Saguenay (Tadoussac); y la cola dorada de una ballena entre los témpanos del golfo (la canoa
+  se queda en el Saguenay). En el Zambeze: la primera gota, dorada, sobre el manantial del bosque de miombo; el mono rey dorado que rema
+  en la barca a rayas sobre la llanura inundada (Mongu); la gata dorada que mima al mulito que apaga el fuego (Katima Mulilo); el león
+  dorado bajo el humo que truena (Livingstone); la caja dorada que guarda el río, con los botes que rescatan animales (Kariba); la pava
+  dorada que hierve sola sobre el puente colgante, con el carbón debajo (Tete); el chinchorro dorado del capitán inglés entre dos
+  manglares (Chinde); y la mano dorada de un cartel que apunta con el índice al Índico (el mokoro se queda entre los manglares).
   `tools/dibujos/postales/<ruta>.py` trae `POSTALES` en el orden del recorrido (clave 'nace', el nombre de cada ciudad y 'mar';
   tools/pintados.py exige que calcen con rios.js), en una caja de 120 × 40 (la postal mide 240 × 80), con los ayudantes de
   `_postal.py` (cielo, sol, tierra, río, reflejo, palmeras, árboles, cordilleras con nieve y nubes; desde el Volga, abedules, abetos,
@@ -313,15 +341,17 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   y el sello del pasaporte sigue con su pictograma. Pesan de 5,5 a 18 KB cada una (en el archivo de datos, 99 KB las ocho del Tigris,
   130 KB las nueve del Volga, 97 KB las ocho del Nilo, 73 KB las siete del Amazonas, 77 KB las siete del Yangtsé, 81 KB las siete
   del Misisipi, 143 KB las diez del Danubio, 111 KB las nueve del Rin, 112 KB las ocho del Ganges, 99 KB las siete del Mekong, 93 KB
-  las nueve del Níger, 75 KB las ocho del Paraná, 93 KB las ocho del Indo y 101 KB las nueve del Congo; el
+  las nueve del Níger, 75 KB las ocho del Paraná, 93 KB las ocho del Indo, 101 KB las nueve del Congo, 91 KB las nueve del Huang He,
+  71 KB las ocho del Orinoco, 100 KB las nueve del Murray, 63 KB las ocho del San Lorenzo y 83 KB las ocho del Zambeze; el
   delta de Astracán, con sus juncos, es la más pesada, y la Selva Negra la sigue): Cauces amplia pasó de ≈ 2 321 a ≈ 2 491 KB con el
   Tigris, a ≈ 2 734 KB con el Volga, a ≈ 2 903 KB con el Nilo, a ≈ 3 017 KB con el Amazonas y a ≈ 3 289 KB con el Yangtsé y el
   Misisipi, bajó a ≈ 2 878 KB al pasar las postales a 600 px y calidad 75 y subió a ≈ 3 132 KB con el Danubio y el Rin, a ≈ 3 343 KB
-  con el Ganges y el Mekong, a ≈ 3 510 KB con el Níger y el Paraná y a ≈ 3 705 KB con el Indo y el Congo.
+  con el Ganges y el Mekong, a ≈ 3 510 KB con el Níger y el Paraná, a ≈ 3 705 KB con el Indo y el Congo, a ≈ 3 867 KB con el Huang He
+  y el Orinoco y a ≈ 4 113 KB con el Murray, el San Lorenzo y el Zambeze.
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
-  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,6 MB, con
-  ≈ 365 KB de sobra (medido sobre las 114 pintadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y el
-  Níger y el Paraná, más sencillos, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
+  calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201 queda en ≈ 4,5 MB, con
+  ≈ 500 KB de sobra (medido sobre las 156 pintadas: faltan solo las 45 de los ríos de Costa Rica; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y las
+  series más sencillas, del Níger en adelante, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
   vistas grandes como lo haría el pintor y prueba otras combinaciones: `560/75` dejaría ≈ 540 KB). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
   juncos de Astracán, los renglones de Bagdad, el cielo de Luxor, las caras de Leticia…), y eligió la liviana: «no vale la pena la
   diferencia». Cambiar otra vez es tocar `ANCHO_POSTAL` y `CALIDAD_POSTAL` en tools/pintor.py y correr `python tools/pintados.py`,
@@ -386,6 +416,18 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   pidieron. Los juegos de sílabas del Congo (Bu-kama, Kin-du, M-banda-ka) se pintan tal cual, con la escena absurda entera. De frente,
   un pie a cada lado de una línea es un paso: un pie más arriba, detrás, y el otro adelante. Una «mata de piedras» lleva las piedras
   sueltas, cada una con su borde; juntas en una sola masa son una nube o un árbol.
+- Lecciones del Huang He y del Orinoco (2026-10-26): lo que está hecho de muchas hebras (los fideos de Lanzhou) se pinta hebra por hebra;
+  en una sola masa es un pan. Un penacho de barro en el mar es una mancha sin borde que se esfuma; con línea es una isla. Un sauce llorón
+  lleva las ramas largas que caen desde una copa chica; con un sombrero macizo y flecos parece una medusa. Lo que la frase pone «en lo
+  alto de la curva» va en el vértice, no adentro (el bao de Baotou). La piel muy clara sobre el `vientre` verde pálido sale verde: va el
+  tono dorado oscuro, a la mitad (Bolívar). Un río visto desde arriba, teñido de pardo sobre un llano amarillo, se confunde con un
+  camino: lleva su agua y sus ondas.
+- Lecciones del Murray, del San Lorenzo y del Zambeze (2026-10-26): una hamaca colgada bajo, sobre el agua, es una canoa: va alta, entre
+  los troncos, con tierra debajo y su sombra. Un embudo lleva el pico largo y angosto; con el pico corto es una copa. Quien empuja mira a
+  lo que empuja (la vaca de Cornwall, primero de espaldas a la compuerta). El suelo que se pinta después tapa lo de atrás: el acantilado
+  de Quebec se pinta encima de la otra orilla. Una mancha que tiñe una pieza va `dentro=` de esa pieza; suelta, tiñe toda su caja (el
+  emparrado de Renmark pintó el fondo de café). Cuando la imagen es un juego de palabras con el nombre del mar (Bengala, Arábigo, Banana,
+  Índico), la protagonista del mar sale del juego: el tigre, los números, el plátano, la mano que apunta con el índice.
 - Hojas de revisión de postales: scratchpad `hoja-postales.py río` (las postales grandes, una debajo de otra, y otra hoja a 360 px, el
   tamaño del teléfono; el scratchpad se limpia solo y en octubre de 2026 se llevó dos veces estos scripts y dejó rota la instalación de
   Playwright: conviene pasarlos a tools/) y scratchpad/webkit
@@ -705,7 +747,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 3 705 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de catorce ríos pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 113 KB y la de Exploradores ≈ 893 KB el 2026-10-26, con los animales, las barcas, las mercancías del Nilo y las postales de los diecinueve ríos del mundo pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
