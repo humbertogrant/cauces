@@ -50,6 +50,8 @@ RES_PERFIL={'mundo':0.015,'cr':0.0007}               # grados por celda para mue
 CLASES={'Range/mtn':'cordillera','Plateau':'llano','Plain':'llano','Basin':'llano','Valley':'llano','Lowland':'llano','Tundra':'llano','Wetlands':'llano','Foothills':'llano','Desert':'desierto'}
 RANGO_MAX={'cordillera':4,'llano':2,'desierto':3}   # scalerank de Natural Earth admitido por tipo (las cordilleras de rango 4 solo pegadas al cauce)
 BAJO_MAR={'volga':-28}                              # ríos que terminan bajo el nivel del océano (Caspio); los demás no bajan de 0
+FUENTE={'volga':228,'sanlorenzo':74}                # la altura publicada de la fuente, que el texto del nacimiento dice y el DEM no
+                                                    # da en el primer vértice (el pantano de Valdái; el lago Ontario en Kingston)
 EXCLUIR={'Punyab','península ibérica','SELVAS','LES LAURENTIDES','Meandro de Ordos','Superior Upland','Campos Sertão','Escudo Canadiense','TIERRAS BAJAS DE VYCHEGDA'}
 TOPE_POR_VISTA=14
 PERMITIR={'LES LAURENTIDES':('sanlorenzo',),'Escudo Canadiense':('sanlorenzo',)}   # nombres de EXCLUIR que sí entran en la vista de estos ríos
@@ -286,6 +288,7 @@ for r in RIOS:
     for i in range(1,len(pts)): acum.append(acum[-1]+hav(pts[i-1],pts[i]))
     total=acum[-1];alts=[muestra(a,bb,*p) for p in pts]
     piso=BAJO_MAR.get(r['id'],0);alts=[max(x,piso) for x in alts]
+    if r['id'] in FUENTE: alts[0]=FUENTE[r['id']]
     for i in range(1,len(alts)): alts[i]=min(alts[i],alts[i-1])       # el río no sube
     alts[-1]=piso                                                     # el último vértice está en el mar
     # vértice de cada parada, igual que motor.js: el más cercano, sin retroceder
