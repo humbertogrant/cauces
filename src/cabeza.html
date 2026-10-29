@@ -74,6 +74,9 @@ body.pegado #perfil:after{content:"▴ mapa";position:absolute;right:10px;top:6p
 .mundo{position:absolute;left:8px;top:8px;z-index:1;border:1.5px solid var(--verde-claro);background:rgba(12,58,51,.75);color:#fff;font:600 14px var(--cuerpo);padding:6px 12px;border-radius:999px;cursor:pointer}
 .zona{fill:var(--dorado);stroke:var(--mar)}
 .hitz{fill:transparent;cursor:pointer}
+.parada-foco{fill:transparent;outline:none}
+.parada-foco:focus-visible{fill:rgba(232,185,82,.35)}
+.mal-aqui{fill:none;stroke:var(--teja)}
 .zona-titulo{margin-top:22px}
 .sello{width:92px;height:92px;flex:none;--tinta:var(--verde);transform:rotate(var(--rot,0deg));overflow:visible}
 .sello .forma{fill:#fff;stroke:var(--tinta);stroke-width:2.4;stroke-linejoin:round}
@@ -380,6 +383,8 @@ label.enlace{cursor:pointer}
 @supports (height:1svh){#mapa{height:40svh}#arriba.portada #mapa{height:44svh}#arriba.compacto #mapa,#arriba.portada.compacto #mapa{height:22svh}
 @media (min-width:760px){#mapa{height:46svh}}@media (max-width:480px){#mapa{height:34svh}}@media (max-width:759px){body.con-pie #arriba:not(.compacto) #mapa{height:28svh}}}
 @media (max-width:759px) and (max-height:700px) and (min-height:521px){body.con-pie #arriba:not(.compacto) #mapa{height:24vh;height:24svh;min-height:140px}}
+@media (max-width:759px) and (min-height:521px){body.pide-mapa #arriba:not(.compacto) #mapa{height:46vh;height:46svh}}
+@media (max-width:759px) and (max-height:700px) and (min-height:521px){body.pide-mapa #arriba:not(.compacto) #mapa{height:40vh;height:40svh}}
 </style>
 </head>
 <body>

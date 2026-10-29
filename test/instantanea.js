@@ -32,7 +32,7 @@ setTimeout(()=>{
       paso(-1);tomar(k+'/atras');paso(1);
       setTab('ordenar');tomar(k+'/ordenar/0');tocarChip(S.orden.pool[S.orden.pool.length-1]);tomar(k+'/ordenar/fallo');for(let i=0;i<n;i++)tocarChip(i);tomar(k+'/ordenar/fin');
       setTab('recitar');tomar(k+'/recitar/0');setPista('iniciales');revelar();tomar(k+'/recitar/rev');recordada(true);for(let i=1;i<n;i++){revelar();recordada(i%2===0)}tomar(k+'/recitar/fin');
-      setTab('preguntar');for(let i=0;i<6;i++){tomar(k+'/preguntar/'+i);const q=S.quiz.qs[S.quiz.i];responder(i%2?q.correcta:(q.correcta+1)%q.opciones.length);tomar(k+'/preguntar/'+i+'/resp');siguiente()}tomar(k+'/preguntar/fin');
+      setTab('preguntar');for(let i=0;i<6;i++){tomar(k+'/preguntar/'+i);const q=S.quiz.qs[S.quiz.i];responder(i%2?q.correcta:(q.correcta+1)%(q.tipo==='mapa'?r.paradas.length:q.opciones.length));tomar(k+'/preguntar/'+i+'/resp');siguiente()}tomar(k+'/preguntar/fin');
       verPasaporte();tomar(k+'/pasaporte')}
     irInicio();tomar(modo+'/inicio/2');iniciarReto();for(let i=0;i<3;i++){tomar(modo+'/reto/'+i);responder(S.quiz.qs[S.quiz.i].correcta);tomar(modo+'/reto/'+i+'/resp');siguiente()}
     irInicio();iniciarRepaso();tomar(modo+'/repaso');if(S.quiz){responder(S.quiz.qs[0].correcta);tomar(modo+'/repaso/resp')}

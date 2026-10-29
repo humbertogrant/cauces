@@ -220,7 +220,7 @@ setModo('historia');abrirRio('nilo',1);paso(1);if(!lectura().some(t=>/Ripon/.tes
 abrirRio('nilo',1);bajar(2);paso(1);lec=lectura();if(!/^Cocodrilos del Sudd\. En el pantano/.test(lec[1])||!/^¿De qué ciudad del Nilo/.test(lec[2])||!/^cuarta: /.test(lec[6])||lec.length!==7)throw 'lectura evento '+JSON.stringify(lec);
 responderEvento(S.evento.q.correcta);lec=lectura();if(lec.length!==4||!/ Ganás 2 monedas\.$/.test(lec[3]))throw 'lectura evento resuelto '+JSON.stringify(lec);
 setTab('ordenar');lec=lectura();if(lec.length!==8||!/^Tocá las 6 ciudades/.test(lec[1]))throw 'lectura ordenar '+JSON.stringify(lec);
-setTab('preguntar');lec=lectura();if(lec.length!==2+S.quiz.qs[0].opciones.length||!/^primera: /.test(lec[2]))throw 'lectura quiz '+JSON.stringify(lec);
+setTab('preguntar');{const Q=S.quiz,j=Q.qs.findIndex(x=>x.tipo!=='mapa');[Q.qs[0],Q.qs[j]]=[Q.qs[j],Q.qs[0]];render(false)}/* la del mapa no tiene opciones: se lee aparte, en «retos sobre el mapa» */lec=lectura();if(lec.length!==2+S.quiz.qs[0].opciones.length||!/^primera: /.test(lec[2]))throw 'lectura quiz '+JSON.stringify(lec);
 voz.leer();irInicio();if(voz.hablando||ss.cola.length)throw 'la voz sigue al cambiar de pantalla';
 console.log('voz OK');
 
@@ -334,6 +334,23 @@ console.log('perfiles OK');
  verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Tu tripulación · 1 de')<0||ph.indexOf(`<small>${r.companero.nombre}</small>`)<0)throw 'el álbum sin el animal';
  irInicio();if(document.querySelector('#panel').innerHTML.indexOf('emo unido')<0)throw 'la tarjeta sin el aro';
  quitarPerfil();console.log('dorado a la vista OK')}
+// retos sobre el mapa: «¿dónde queda…?» se responde tocando el punto de la parada
+{crearPerfil('Mapa');const r=rioPor('nilo'),n=r.paradas.length;
+ const q=preguntaTipo('mapa',r,2);if(q.tipo!=='mapa'||q.opciones.length||q.correcta!==2||q.texto!=='¿Dónde queda Jartum?'||q.lugar!=='la tercera parada desde la fuente'||q.nota.indexOf('Jartum es la tercera parada desde la fuente. ')!==0)throw 'pregunta del mapa: '+JSON.stringify(q);
+ abrirRio('nilo',1);bajar(n+1);setTab('preguntar');{const qs=S.quiz.qs;if(qs.length!==6||qs.filter(x=>x.tipo==='mapa').length!==1)throw 'las preguntas del río sin la del mapa: '+qs.map(x=>x.tipo)}
+ S.quiz.qs[0]=q;S.quiz.i=0;S.quiz.dicho=vozPregunta(q);render(false);
+ let cp=document.querySelector('#capa').innerHTML;if((cp.match(/aria-label="Parada \d"/g)||[]).length!==n||cp.indexOf('onclick="tocarMapa(event)"')<0||/class="etq"[^>]*>Jartum</.test(cp)||cp.indexOf('id="barca"')<0)throw 'el mapa de la pregunta: puntos tocables, sin nombres y con la barca en la fuente';/* el mapa más alto (body.pide-mapa) se mira en el navegador: el arnés no tiene body */
+ if(document.querySelector('#panel').innerHTML.indexOf('responder(-1)')<0||!VOCES.preguntaMapa.includes(S.quiz.dicho)||!lectura().includes(S.quiz.dicho))throw 'sin «No me acuerdo», o el animal no dice que se toca el mapa';
+ responder(4);cp=document.querySelector('#capa').innerHTML;if(S.quiz.aciertos||cp.indexOf('class="mal-aqui"')<0||cp.indexOf('>Jartum</text>')<0||cp.indexOf('tocarMapa(')>=0)throw 'al fallar: el aro en la tocada, los nombres y sin puntos tocables';
+ if(P.cards['ciudad:nilo:2'].box!==0)throw 'fallar el mapa no bajó la tarjeta';
+ abrirRio('rin',1);bajar(8);irInicio();if(document.querySelector('#panel').innerHTML.indexOf('iniciarRetoMapa()')<0)throw 'Hoy sin el reto del mapa';
+ iniciarRetoMapa();if(S.quiz.modo!=='mapa'||S.quiz.qs.length!==10||S.quiz.qs.some(x=>x.tipo!=='mapa'||!['nilo','rin'].includes(x.rio)))throw 'reto del mapa: '+S.quiz.qs.map(x=>x.rio+':'+x.ciudad);
+ if(document.querySelector('#cab').innerHTML.indexOf('Tocá cada lugar en el mapa')<0||!lectura().includes('Tocá su punto en el mapa.'))throw 'cabecera o consigna del reto del mapa';
+ for(let i=0;i<10;i++){responder(i%2?S.quiz.qs[S.quiz.i].correcta:-1);siguiente()}
+ const ph=sinHtml(sinNum(document.querySelector('#panel').innerHTML));if(ph.indexOf('5 de 10')<0||!/desde la fuente/.test(ph))throw 'cierre del reto del mapa: '+ph.slice(0,300);
+ otraRonda();if(S.quiz.modo!=='mapa'||S.quiz.i!==0)throw 'otra ronda del mapa';
+ {const tipos=new Set();for(let k=0;k<60;k++)tipos.add(preguntaDeCard('ciudad:nilo:3').tipo);if(!tipos.has('mapa')||!tipos.has('imagen')||!tipos.has('ciudad'))throw 'el repaso de una parada sin el mapa: '+[...tipos]}
+ quitarPerfil();console.log('retos sobre el mapa OK')}
 // luz y clima: amanecer en la fuente, atardecer y oleaje en el mar; el clima sale del icono del evento y dura hasta continuar; inicio liviano
 {setModo('mercader');abrirRio('misisipi',1);const luz=document.getElementById('luz'),cl=document.getElementById('clima'),mapa=document.getElementById('mapa');
  if(luz['_data-luz']!=='amanecer'||!(parseFloat(luz.style.opacity)>0.3))throw 'sin amanecer en la fuente '+luz['_data-luz']+' '+luz.style.opacity;
