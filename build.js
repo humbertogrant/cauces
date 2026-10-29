@@ -38,6 +38,22 @@ function usados(datos){/* claves que usan los datos del juego: glifos de animal,
 /* sin comentarios ni sangría: src los conserva; en dist pesan unos 9 KB en el motor y 1,4 KB en los datos (bloques y líneas de
    comentario, comentarios al final de línea y la sangría, que dentro de las plantillas HTML solo es espacio en blanco) */
 const limpiar=m=>m.replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*\n?/gm,'').replace(/^[ \t]*\/\/[^\n]*\n/gm,'').replace(/[ \t]*\/\*[^\n]*?\*\/[ \t]*$/gm,'').replace(/^[ \t]+/gm,'').replace(/\n{2,}/g,'\n');
+/* los trazos del mapa y del relieve (cadenas "M… L… Z") van en coordenadas absolutas en src, donde se leen y se comparan; en dist, en
+   relativas: «l» con las diferencias, sin espacio antes de un negativo ni el cero de «0.5». Las diferencias salen de los valores ya
+   redondeados, así que el dibujo es el mismo, y se comprueba al armar, punto por punto; quita un 39 % del peso de los trazos (≈ 60 KB en
+   la económica de Cauces) */
+function relativo(d){const t=d.match(/[MLZz]|-?\d*\.?\d+/g);if(!t||t.join('')!==d.replace(/[\s,]/g,''))return d;
+  let dec=0;for(const s of t){const k=s.indexOf('.');if(k>=0)dec=Math.max(dec,s.length-k-1)}
+  const F=10**dec,ent=s=>Math.round(parseFloat(s)*F),num=v=>{let s=(v/F).toFixed(dec);if(dec)s=s.replace(/\.?0+$/,'');return s.replace(/^(-?)0\./,'$1.')};
+  let o='',x=0,y=0,sx=0,sy=0,c='',u='';const pts=[],pega=s=>{o+=(/[\d.]$/.test(o)&&/^[\d.]/.test(s)?' ':'')+s};
+  for(let i=0;i<t.length;){const s=t[i];if(s==='M'||s==='L'){c=s;i++;continue}if(s==='Z'||s==='z'){o+='z';u='z';x=sx;y=sy;i++;continue}
+    const X=ent(t[i]),Y=ent(t[i+1]);i+=2;pts.push(X,Y);if(c==='M'){o+='M';pega(num(X));pega(num(Y));u='';c='L';sx=X;sy=Y}else{if(u!=='l'){o+='l';u='l'}pega(num(X-x));pega(num(Y-y))}x=X;y=Y}
+  const q=o.match(/[Mlz]|-?\d*\.?\d+/g),de=[];let a=0,b=0,ax=0,ay=0,k='';/* la prueba: el trazo relativo, leído de vuelta, da los mismos puntos */
+  for(let i=0;i<q.length;){const s=q[i];if(s==='M'||s==='l'){k=s;i++;continue}if(s==='z'){a=ax;b=ay;i++;continue}
+    const X=ent(q[i]),Y=ent(q[i+1]);i+=2;if(k==='M'){a=X;b=Y;ax=a;ay=b;k='l'}else{a+=X;b+=Y}de.push(a,b)}
+  if(de.length!==pts.length||de.some((v,i)=>v!==pts[i]))throw 'un trazo relativo no reproduce el original: '+d.slice(0,60);
+  return o}
+const trazos=m=>m.replace(/"(M-?[\d.][\d. MLZz-]*)"/g,(x,d)=>'"'+relativo(d)+'"');
 function recortar(motor,j,u){
   let m=motor,quitado={vocab:0,animales:0,pictos:0,glifos:0,iconos:0};
   for(const tipo of ['rio','itinerario','travesia']){if(j.vocab.includes(tipo))continue;let hubo=false;for(;;){const a=m.indexOf(`/*@vocab:${tipo}*/`);if(a<0)break;const b=m.indexOf(`/*@fin:${tipo}*/`,a);if(b<0)throw 'sin cierre de VOCAB.'+tipo;m=m.slice(0,a)+m.slice(b+`/*@fin:${tipo}*/`.length);hubo=true}if(!hubo)throw 'sin marcas de VOCAB.'+tipo;quitado.vocab++}/* puede haber varios bloques por tipo: el vocabulario y las funciones propias de ese tipo de ruta */
@@ -57,7 +73,7 @@ function ensamblar(id,edicion){
   const titulo=j.titulo+(e.sufijo?' · edición '+e.nombre:'');
   const ilustraciones=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-zñ]+):\{v:/);if(!k||u.ilus.has(k[1]))return true;quitado.ilustraciones=(quitado.ilustraciones||0)+1;return false}).join('\n');/* ilustraciones (data/ilustraciones.js): solo las de los animales del juego */
   const porRuta=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-z]+):[{[]/);return !k||u.rutas.has(k[1])}).join('\n');/* barcas, mercancías y postales: solo las de las rutas del juego */
-  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):f==='data/barcas.js'||f==='data/bienes.js'||f==='data/postales.js'?porRuta(limpiar(leer(f))):limpiar(leer(f));
+  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):f==='data/barcas.js'||f==='data/bienes.js'||f==='data/postales.js'?porRuta(limpiar(leer(f))):/^data\/(mapa|relieve)/.test(f)?trazos(limpiar(leer(f))):limpiar(leer(f));
   const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
   /* el archivo dice cuánto pesa; el número entra en el mismo archivo, así que se comprueba después de escribirlo */
   let kb=Math.round(base.length/1024),html=base.replace('__PESO__',kb);const kb2=Math.round(html.length/1024);if(kb2!==kb){kb=kb2;html=base.replace('__PESO__',kb)}

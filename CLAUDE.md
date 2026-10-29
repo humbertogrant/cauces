@@ -384,7 +384,7 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   están las 201, y a ≈ 4 690 KB con las correcciones de la revisión integral (2026-10-27).
   **El tope de la amplia es 5 MB** (Humberto, 2026-10-26) y las postales son lo que más la engorda: todo Cauces lleva 201. Con 744 px y
   calidad 84 la amplia habría llegado a ≈ 6,4 MB; a 600 px y calidad 75 pesan un 42 % menos y con las 201, todas pintadas desde el
-  2026-10-26, queda en ≈ 4 690 KB, con ≈ 430 KB de sobra (la proyección sobre las 156 primeras daba ≈ 500 KB: las ticas, con más figuras,
+  2026-10-26, quedaba en ≈ 4 690 KB, con ≈ 430 KB de sobra, y desde el 2026-10-29, con los trazos relativos (ver «Reglas de trabajo»), en ≈ 4 564 KB, con ≈ 556 KB (la proyección sobre las 156 primeras daba ≈ 500 KB: las ticas, con más figuras,
   salieron un poco más pesadas; el margen sube y baja con el detalle de cada serie: con 80 dejaba 240 KB, y las
   series más sencillas, del Níger en adelante, lo agrandaron; `python tools/peso_postales.py` mide las que hay, proyecta el total recodificando las
   vistas grandes como lo haría el pintor y prueba otras combinaciones: `560/75` dejaría ≈ 540 KB). Humberto comparó las dos a ciegas en el teléfono, en ocho postales difíciles (los
@@ -591,6 +591,18 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   `porRegion` (Cauces: por continente, en el orden del río más largo); «Tocá un río…» vive en «¿Cómo se juega?».
   Los números van en Oswald con `num()` (`<span class="num">`): cabecera, kickers, tramos, alturas, monedas y precios;
   las pruebas comparan textos sin esas etiquetas (`sinNum`) y miran `#panel` más `#pie` (`todo()` / `panel()`).
+- Enseñar antes de preguntar (2026-10-29, lote 1 de la revisión como usuario; ver «Revisión como usuario»): el nacimiento trae
+  arriba la frase del orden (`bloqueFrase`); en la primera bajada de una ruta (`S.zarpo`, falso si `P.vistos[id]` no está) la frase va
+  con la lista de paradas y el pie dice «Zarpar ›» (`zarpar()`) antes de la pregunta, que llega con la lista ya tapada; `paso(1)`
+  también suelta el candado. Las fichas de la guía son la que sigue y otras río abajo (si no alcanzan, de las ya pasadas, nunca la
+  actual), y al fallar el animal dice la escena de la que era («Era Jinja: un jinete salta a caballo desde el lago Victoria»;
+  `escenaDe(c)`: la imagen para recordar hasta los dos puntos, sin paréntesis). El sello que no se ganó queda pendiente: se gana
+  cuando esa ciudad se acierta en las preguntas o en el repaso (`responder`). El mercado no aparece si no hay nada que hacer (bodega
+  vacía y nada que comprar). La portada de un perfil sin progreso trae «Empezá aquí» con la primera ruta (`RUTAS[0]`: el Nilo con Hipo)
+  y el modo Niño/Adulto; «Repasar» sale solo si hay algo que repasar. Después de Ordenar viene «Recitar ›» (en los viajes, Trazar); el
+  orden con un error ya no cuenta como acierto y al segundo error el animal da la inicial de la que sigue. El cierre de una ronda lista
+  lo que se falló, con la respuesta («Para repasar»), y si la ronda salió mal ofrece «Bajar otra vez ›». El riel va en 14 px y los
+  toques chicos («‹ Atrás», «Contame más») miden 44 px.
 - Estado en dos objetos: `S` (sesión: pantalla, río, pestaña, paso, orden, quiz, eco, guías, recitar, evento) y `P`
   (persistente: `cards` Leitner, `vistos`, `tesoro`, `modo`, `voz`, `sellos`, `etapas`). `P` se guarda con `guardar()` en `localStorage`
   bajo `cauces:progreso:<perfil>` (memoria si no hay o falla). `PERFILES` (`cauces:perfiles`: lista y activo) da
@@ -662,9 +674,9 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   la costa, los lagos y las fronteras vienen de Natural Earth 10 m con tres decimales. Los distractores de las
   preguntas se toman primero de la misma zona (`otrosRios` y los mares). En la lista del inicio van en su propio
   grupo, «Ríos de Costa Rica». `continente` hace de etiqueta de región («Guanacaste», «Frontera con Nicaragua»).
-- Pasaporte (`P.sellos[río:i] = fecha`): al llegar a una ciudad (`paso`), el sello se gana solo si la guía «¿cuál
-  es la próxima parada?» se acertó al zarpar (`S.llaves[i] === true`, la misma llave del mercado); si no, la página
-  lo dice sin regañar y se puede volver a bajar el río a ganarlo. Es dorado (`selloOro`) cuando la tarjeta
+- Pasaporte (`P.sellos[río:i] = fecha`): al llegar a una ciudad (`paso`), el sello se gana si la guía «¿cuál
+  es la próxima parada?» se acertó al zarpar (`S.llaves[i] === true`, la misma llave del mercado); si no, queda pendiente («te
+  espera») y se gana cuando esa ciudad se acierta en las preguntas o en el repaso (desde el 2026-10-29), o en otra bajada. Es dorado (`selloOro`) cuando la tarjeta
   `ciudad:ID:i` está en caja ≥ 3 y además se recitó de memoria alguna vez (`rec`). `completo(r)` = todos los sellos → el río va en dorado en el mapa mundial y en la
   zona (clase `hecho`) y la fila del inicio dice «completo». Pantalla `pasaporte` (`verPasaporte`,
   `renderPasaporte`): resumen, y por río sus sellos y los huecos vacíos. Va en el JSON de exportación como el
@@ -823,6 +835,21 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 De la revisión integral del 2026-10-27 no queda nada: los mares que contradecían su barca, las protagonistas sin dorado, las alturas
 del Volga y del San Lorenzo y el nacimiento del Tempisque quedaron hechos ese mismo día (ver «Correcciones de la revisión» y «Relieve»).
 
+De la revisión como usuario (2026-10-28: cinco lectores, un niño de 9 años, un adulto que aprende en el bus, una diseñadora de juegos,
+una especialista en memoria y un diseñador de UX móvil, sobre 34 capturas a 375 × 812, 360 × 640 y en horizontal), el lote 1 quedó
+hecho el 2026-10-29 (ver «Enseñar antes de preguntar»). Quedan:
+- Lote 2, el teléfono: lo fijo (encabezado, mapa y perfil, 360 px; pie, 111-147 px) deja al contenido el 37-42 % del alto en 375 × 812
+  y el 23 % en 360 × 640; con las barras de Safari, un iPhone de 812 deja ≈ 650 px. La propuesta: el mapa en el flujo, que al bajar se
+  encoge a una franja pegada (≤ 120 px, la barca sobre el perfil y «Parada 5 de 6») que se abre al tocarla; el pie en una fila; lo
+  fijo ≤ 35 % del alto; el nombre, la postal y la imagen para recordar juntos; el resultado («+2 monedas», el sello) a la vista antes
+  de «Seguir»; en la portada y el pasaporte, el mapa no fijo; en horizontal, dos columnas; «≈» y «▾» con rótulo. Probarlo en el iPhone.
+- Lote 3, una idea grande, cuando Humberto haya jugado lo anterior: «Hoy» como un viaje corto (el animal llega al muelle con sus
+  preguntas; recitar lo que ya sabés, repasar lo que vence y bajar una o dos paradas nuevas; si faltás, la barca espera anclada), el
+  dorado a la vista (Nilo 5/6 · falta Jinja; tus sellos en el mapa; el animal se suma a un álbum cuando el río se dora), los retos
+  sobre el mapa (pendiente 3) y una economía que no desanime (el rival es tu bajada anterior; el mercader llega cuando ya sabés el río).
+- De las preguntas de imagen quedan 20 pistas que se parecen al nombre, casi todas juegos de sonido a propósito (santo → Santarém,
+  kínder → Kindu); tres lo dan casi entero: Shanghái («Shang = sobre, hai = mar»), Budapest y Montevideo.
+
 Hecho el 2026-09-06: el rediseño estético en tres fases (identidad, navegación con barra al pie y riel, iconos propios).
 Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente contenido a la vista; si no, la salida es plegar
 el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
@@ -850,14 +877,20 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - Cambios pequeños y probados. Si tocás datos, corré `npm run verificacion` y leé lo que cambió.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
-  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; la amplia de Cauces ≈ 4 690 KB y la de Exploradores ≈ 893 KB el 2026-10-27, con los animales, las barcas, las mercancías del Nilo y las postales de los 25 ríos pintados). La edición amplia
+  2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; desde el 2026-10-29, con los trazos relativos,
+  Cauces ≈ 443 KB y Exploradores ≈ 391 KB, y las amplias ≈ 4 564 KB y ≈ 829 KB, con los animales, las barcas, las mercancías del Nilo
+  y las postales de los 25 ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
   `python tools/peso_postales.py`). Palancas de peso ya usadas: recorte del motor por juego en build.js;
   comentarios y sangría fuera del motor, de los datos y del archivo del juego en dist (`limpiar` en build.js); en mapa.py, fronteras a 0,5 y lagos
-  ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona.
-  Lo que queda por probar si hace falta: un minificador de desarrollo sobre el motor (terser como herramienta, no como dependencia
-  de ejecución; test/dist.js seguiría probando el HTML ensamblado), que es la palanca grande que queda: la económica de Cauces está a 2 KB del tope.
+  ≥ 1 unidad², costa fina a 0,3 (Cauces) o 0,45 (Exploradores); en relieve.py, franjas a 0,75/4 en el mundo y 0,02/0,02 en la zona;
+  y, desde el 2026-10-29, los trazos del mapa y del relieve en coordenadas relativas en dist (`relativo` y `trazos` en build.js: «l»
+  con las diferencias, sin espacio antes de un negativo ni el cero de «0.5»; las diferencias salen de los valores ya redondeados y el
+  build comprueba punto por punto que el trazo relativo da el mismo dibujo, o se detiene; src sigue en absolutas). Quitó un 39 % del
+  peso de los trazos: ≈ 60 KB en la económica de Cauces, que estaba a 2 KB del tope, y ≈ 130 KB en la amplia. Lo que queda por probar
+  si hace falta: un minificador de desarrollo sobre el motor (terser como herramienta, no como dependencia de ejecución; test/dist.js
+  seguiría probando el HTML ensamblado).
 - Ningún texto de Cauces cambia sin querer: `test/instantanea.js` compara 200 pantallas; si un cambio de texto es a propósito,
   `npm run instantanea` y decirlo en el commit. Hay repositorio git desde el 2026-09-04: commits chicos, en español. El remoto es
   github.com/humbertogrant/cauces (público) desde el 2026-09-06; `gh` en esta máquina está autenticado como humbertogrant.
