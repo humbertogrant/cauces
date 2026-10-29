@@ -603,6 +603,18 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   orden con un error ya no cuenta como acierto y al segundo error el animal da la inicial de la que sigue. El cierre de una ronda lista
   lo que se falló, con la respuesta («Para repasar»), y si la ronda salió mal ofrece «Bajar otra vez ›». El riel va en 14 px y los
   toques chicos («‹ Atrás», «Contame más») miden 44 px.
+- El teléfono (2026-10-29, lote 2 de la revisión como usuario): `#arriba` sigue pegajoso, pero con un tope negativo que calcula
+  `acomodarPie` (su alto menos el del perfil y el del riel de arriba): al bajar por la página se van el encabezado y el mapa y queda
+  pegada solo la franja del perfil de altura; `body.pegado` (lo pone un oyente de `scroll`) muestra «▴ mapa» sobre el perfil y tocarlo
+  vuelve arriba. En el teléfono (`telefono()`: ancho ≤ 759 px o alto ≤ 520) el riel sube a esa franja (`#rielArriba`, con `RIEL`, que
+  arma `renderPie`) y el pie lleva solo la acción del momento. En la portada y el pasaporte el mapa no queda fijo (`top:0!important`
+  gana al tope del motor). En horizontal (alto ≤ 520 y ancho ≥ 560), dos columnas: el encabezado, el mapa, el perfil y el riel a la
+  izquierda, pegados a todo el alto; el contenido y el pie a la derecha. Con alto ≤ 700 el mapa baja a 24 % del alto. Los altos del
+  mapa van también en `svh` (el alto con las barras de Safari a la vista). Al responder un evento o una pregunta, la página baja lo
+  justo para dejar el resultado entero sobre el pie (`verNota`), y el sello nuevo lo dice el animal en el globo al llegar. Los botones
+  dicen lo que hacen («≈ sonido», «▾ achicar») y el subtítulo del encabezado va en un renglón. Medidas, en 375 × 812: arriba de todo, el
+  bloque mide 417 px y el pie 102; al bajar quedan pegados 114 y el contenido tiene 596 px (73 %; antes, 305-340); en 360 × 640, 471
+  (antes, 149); en horizontal, 320 de 375 (antes, 228).
 - Estado en dos objetos: `S` (sesión: pantalla, río, pestaña, paso, orden, quiz, eco, guías, recitar, evento) y `P`
   (persistente: `cards` Leitner, `vistos`, `tesoro`, `modo`, `voz`, `sellos`, `etapas`). `P` se guarda con `guardar()` en `localStorage`
   bajo `cauces:progreso:<perfil>` (memoria si no hay o falla). `PERFILES` (`cauces:perfiles`: lista y activo) da
@@ -838,11 +850,9 @@ del Volga y del San Lorenzo y el nacimiento del Tempisque quedaron hechos ese mi
 De la revisión como usuario (2026-10-28: cinco lectores, un niño de 9 años, un adulto que aprende en el bus, una diseñadora de juegos,
 una especialista en memoria y un diseñador de UX móvil, sobre 34 capturas a 375 × 812, 360 × 640 y en horizontal), el lote 1 quedó
 hecho el 2026-10-29 (ver «Enseñar antes de preguntar»). Quedan:
-- Lote 2, el teléfono: lo fijo (encabezado, mapa y perfil, 360 px; pie, 111-147 px) deja al contenido el 37-42 % del alto en 375 × 812
-  y el 23 % en 360 × 640; con las barras de Safari, un iPhone de 812 deja ≈ 650 px. La propuesta: el mapa en el flujo, que al bajar se
-  encoge a una franja pegada (≤ 120 px, la barca sobre el perfil y «Parada 5 de 6») que se abre al tocarla; el pie en una fila; lo
-  fijo ≤ 35 % del alto; el nombre, la postal y la imagen para recordar juntos; el resultado («+2 monedas», el sello) a la vista antes
-  de «Seguir»; en la portada y el pasaporte, el mapa no fijo; en horizontal, dos columnas; «≈» y «▾» con rótulo. Probarlo en el iPhone.
+- Lote 2, el teléfono: hecho el 2026-10-29 (ver «El teléfono» en «Cómo está hecho el motor»). Falta probarlo en el iPhone de Humberto:
+  el alto real con las barras de Safari, la barra de inicio sobre el pie, que el dedo sobre el mapa desplace la página, la voz con el
+  interruptor de silencio y que lo guardado sobreviva a los 7 días de Safari («Agregar a inicio», «guardar en un archivo»).
 - Lote 3, una idea grande, cuando Humberto haya jugado lo anterior: «Hoy» como un viaje corto (el animal llega al muelle con sus
   preguntas; recitar lo que ya sabés, repasar lo que vence y bajar una o dos paradas nuevas; si faltás, la barca espera anclada), el
   dorado a la vista (Nilo 5/6 · falta Jinja; tus sellos en el mapa; el animal se suma a un álbum cuando el río se dora), los retos
@@ -851,8 +861,8 @@ hecho el 2026-10-29 (ver «Enseñar antes de preguntar»). Quedan:
   kínder → Kindu); tres lo dan casi entero: Shanghái («Shang = sobre, hai = mar»), Budapest y Montevideo.
 
 Hecho el 2026-09-06: el rediseño estético en tres fases (identidad, navegación con barra al pie y riel, iconos propios).
-Queda por sentir en el iPhone de Humberto si la barra al pie deja suficiente contenido a la vista; si no, la salida es plegar
-el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
+La duda de si la barra al pie dejaba suficiente contenido a la vista la resolvió el lote 2 del 2026-10-29 (lo fijo se va al bajar y queda
+una franja; ver «El teléfono»); queda probarlo en el iPhone de Humberto.
 
 0. Más ríos del mundo (hechos el 2026-09-13 en la edición amplia: Orinoco, Murray, San Lorenzo y Zambeze). Los que sigan pesan
    12-15 KB cada uno y entran marcados `/*@amplia*/`, solo en la edición amplia (ver «Ediciones»), porque la económica de Cauces está
@@ -878,7 +888,7 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
   2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; desde el 2026-10-29, con los trazos relativos,
-  Cauces ≈ 443 KB y Exploradores ≈ 391 KB, y las amplias ≈ 4 564 KB y ≈ 829 KB, con los animales, las barcas, las mercancías del Nilo
+  Cauces ≈ 446 KB y Exploradores ≈ 395 KB, y las amplias ≈ 4 567 KB y ≈ 832 KB, con los animales, las barcas, las mercancías del Nilo
   y las postales de los 25 ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
@@ -903,7 +913,8 @@ el mapa (▾) al abrir la barra o bajar el perfil de altura a 44 px.
   muestra solo el fondo; no es un fallo del juego (WebKit lo corre sin errores por http y por file://, `tools/safari.js`).
   En iPhone se abre la dirección de Pages (o cualquier hosting estático, o una app que sirva HTML local).
 - Móvil (revisado el 2026-09-04 a 375×812, 360×640 y 812×375): nada desborda a lo ancho, toques de 36 px o más, campo de
-  texto de 17 px (sin zoom en iPhone). Reglas en cabeza.html: con ancho ≤ 480 px el mapa baja a 34vh (el bloque pegajoso
-  queda en ~55 % del alto); con alto ≤ 520 px (teléfono en horizontal) `#arriba` deja de ser pegajoso; con la barra al pie (`body.con-pie`) y ancho < 760 px el mapa
-  baja a 28vh (mínimo 190 px) y el panel se acolcha con el alto de la barra. En el panel de vista
-  previa las transiciones CSS no avanzan: para medir alturas hay que poner `transition:none`.
+  texto de 17 px (sin zoom en iPhone). Reglas en cabeza.html: con ancho ≤ 480 px el mapa baja a 34vh; con la barra al pie
+  (`body.con-pie`) y ancho < 760 px, a 28vh (mínimo 190 px), y con alto ≤ 700, a 24vh; el panel se acolcha con el alto de la barra.
+  Desde el 2026-10-29 lo fijo se va al bajar y queda una franja (ver «El teléfono»); en horizontal, dos columnas. En el panel de vista
+  previa las transiciones CSS no avanzan (para medir alturas hay que poner `transition:none`) y un desplazamiento suave puede tardar en
+  arrancar: medir después de esperar.
