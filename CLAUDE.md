@@ -587,7 +587,8 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   recitar con ≥ n−1 aciertos, preguntar con una ronda del río al 60 % o más). `body.con-pie` acolcha el panel con el alto
   real de la barra (`acomodarPie`) y en teléfono baja el mapa a 28vh. En el inicio y el pasaporte no hay barra.
   La portada empieza por Hoy, sigue «¿Quién juega?», el tesoro y las rutas en tarjetas (`.tarjeta`: animal, nombre,
-  `vocab.tarjeta(r)` y barra de dominio; tres columnas en teléfono), agrupadas por región cuando el grupo trae
+  `vocab.tarjeta(r)` y los sellos en puntitos, `puntos(r)`: vacío, verde o dorado, que desde el 2026-10-29 reemplazan a la barra de
+  dominio; el animal lleva un aro dorado si ya está en la tripulación; tres columnas en teléfono), agrupadas por región cuando el grupo trae
   `porRegion` (Cauces: por continente, en el orden del río más largo); «Tocá un río…» vive en «¿Cómo se juega?».
   Los números van en Oswald con `num()` (`<span class="num">`): cabecera, kickers, tramos, alturas, monedas y precios;
   las pruebas comparan textos sin esas etiquetas (`sinNum`) y miran `#panel` más `#pie` (`todo()` / `panel()`).
@@ -615,8 +616,9 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   dicen lo que hacen («≈ sonido», «▾ achicar») y el subtítulo del encabezado va en un renglón. Medidas, en 375 × 812: arriba de todo, el
   bloque mide 417 px y el pie 102; al bajar quedan pegados 114 y el contenido tiene 596 px (73 %; antes, 305-340); en 360 × 640, 471
   (antes, 149); en horizontal, 320 de 375 (antes, 228).
-- Estado en dos objetos: `S` (sesión: pantalla, río, pestaña, paso, orden, quiz, eco, guías, recitar, evento) y `P`
-  (persistente: `cards` Leitner, `vistos`, `tesoro`, `modo`, `voz`, `sellos`, `etapas`). `P` se guarda con `guardar()` en `localStorage`
+- Estado en dos objetos: `S` (sesión: pantalla, río, pestaña, paso, orden, quiz, eco, guías, recitar, evento, `hoy` si se va en el
+  viaje de hoy) y `P` (persistente: `cards` Leitner, `vistos`, `tesoro`, `modo`, `voz`, `sellos`, `etapas`, `dia` (lo hecho hoy), `anclas`
+  (la barca anclada de cada ruta), `tripu` (la tripulación) y `bajadas` (con cuántas monedas llegaste la última vez)). `P` se guarda con `guardar()` en `localStorage`
   bajo `cauces:progreso:<perfil>` (memoria si no hay o falla). `PERFILES` (`cauces:perfiles`: lista y activo) da
   un `P` por persona; "¿Quién juega?" en el inicio los elige o crea (`elegirPerfil`, `crearPerfil`,
   `quitarPerfil`); `cargarPerfiles()` migra el guardado viejo (`cauces:progreso`) al perfil Capitán. Copia y
@@ -691,7 +693,12 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   espera») y se gana cuando esa ciudad se acierta en las preguntas o en el repaso (desde el 2026-10-29), o en otra bajada. Es dorado (`selloOro`) cuando la tarjeta
   `ciudad:ID:i` está en caja ≥ 3 y además se recitó de memoria alguna vez (`rec`). `completo(r)` = todos los sellos → el río va en dorado en el mapa mundial y en la
   zona (clase `hecho`) y la fila del inicio dice «completo». Pantalla `pasaporte` (`verPasaporte`,
-  `renderPasaporte`): resumen, y por río sus sellos y los huecos vacíos. Va en el JSON de exportación como el
+  `renderPasaporte`): resumen (sellos y dorados: `oro(r,i)` es un sello ganado y dorado, `orosDe(r)`), la tripulación y, por río, sus
+  sellos, lo que falta (`falta(r)`: «falta Jinja», «faltan Juba y Jartum», «para el dorado faltan 4», «todo dorado») y los huecos vacíos.
+  La tripulación (desde el 2026-10-29, lote 3): cuando todas las paradas de una ruta tienen sello dorado, su animal se suma (`P.tripu`,
+  `dorar(r)` desde `marcar` y `sellar`) y lo dice en el globo (`unido()`, voces `unido`, en la guía, los eventos, las preguntas,
+  Recitar y Trazar); no se va aunque después se olvide una parada. `renderTripu` muestra el álbum: los que se sumaron, con su nombre, y
+  los demás en silueta. Va en el JSON de exportación como el
   resto de `P`. Cada sello (`sello(r,i)`) es un SVG con carácter propio y estable: un hash de `río:parada` elige
   la forma (`FORMAS`: círculo, óvalo, cuadrado, hexágono, octógono, escudo), la inclinación (`--rot`), el desgaste
   del aro interior (`DESGASTES`) y la tinta (verde o verde medio; ocre con estrellas si es de oro); lleva el río y
@@ -704,10 +711,24 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   `rec`. Así el dominio de un río sin recitar tope en 60 % y nada se muestra consolidado por reconocerlo recién. Tarjetas por río: `rio:ID:orden|antigua|moderna|mar`
   y `ciudad:ID:i`. Entran al repaso al terminar un descenso (`sembrar`, que las marca `nuevo`) o al jugar (`marcar`).
 - Hoy (`colaHoy`, bloque «Hoy» en el inicio con `renderHoy`): las vencidas ya repasadas entran todas; las nuevas
-  (sembradas y nunca respondidas) entran de a `NUEVAS_POR_DIA` (10) por día: `P.dia = {fecha, nuevas}` cuenta las
+  (sembradas y nunca respondidas) entran de a `NUEVAS_POR_DIA` (10) por día: `P.dia = {fecha, nuevas, …}` cuenta las
   que estrenaron hoy (`marcar` quita la marca `nuevo` y suma) y `diaHoy()` reinicia al cambiar la fecha. La cola
-  intercala ríos (una tarjeta por río y ronda) y el repaso toma las primeras 10 en ese orden. El bloque dice
-  cuántas, unos minutos (15 s por tarjeta), qué ríos, y cuántas nuevas esperan turno (`nuevasEnEspera`).
+  intercala ríos (una tarjeta por río y ronda) y el repaso toma las primeras 10 en ese orden. Desde el 2026-10-29 (lote 3 de la
+  revisión como usuario) el bloque es un viaje corto (`viajeHoy`), con hasta tres pasos en orden: recitar de memoria una ruta ya
+  bajada que no esté toda dorada (la de la parada más vencida; en los viajes, Trazar), repasar lo que vence (de a 10, sin las paradas
+  de esa ruta mientras no se recitó: el recitado las repasa) y bajar dos paradas nuevas (donde espera anclada la barca, o en la primera
+  ruta sin bajar). `P.dia` guarda lo hecho (`rec`: la ruta recitada, `rep`: las preguntas repasadas, `paradas`: las nuevas). El animal
+  de la ruta del paso que sigue «te espera» (en Adulto, «El viaje de hoy»); el paso que sigue va en dorado y los hechos con un check;
+  cada fila hace su paso (`hoyPaso`) y «Empezar ›» o «Seguir ›» lleva al primero que falta (`seguirHoy`, que pone `S.hoy`; `irInicio`
+  lo quita). Dentro del viaje, el final de Recitar, de Trazar y del repaso dice «Seguir el viaje ›» o «Listo por hoy ›» (`botonHoy`), y
+  la segunda parada nueva avisa, bajo el globo, que la barca puede quedarse ahí hasta mañana (`S.hoyListo`). Hecho, el bloque dice qué
+  vuelve mañana (`manana()`: lo que vence hasta el fin de mañana, no más de 10) y dónde espera la barca. Sin rachas ni castigos: si
+  faltás, el viaje no crece; lo acumulado sale de a 10, y «Repasar más» aparece cuando el viaje ya está hecho.
+- La barca anclada (2026-10-29, lote 3): si dejás una bajada a medias, `P.anclas[id] = {paso, t, llaves, eco}` (lo escribe `anclar(r)` en
+  `paso`, `comprar` y `vender`) y `abrirRio(id)` la abre en esa parada, con las monedas, la bodega y las llaves del mercado; el animal
+  dice «Te esperé aquí, en …» (voces `anclada`) y bajo la parada está «Empezar de nuevo desde la fuente», que es `abrirRio(id, 1)` y
+  levanta el ancla (también «Bajar otra vez ›», tras una ronda mala). `abrirRio(id, fuente, tab)` abre además en otra pestaña (Recitar
+  o Trazar, desde Hoy). Las pruebas abren con `abrirRio(id, 1)`, desde la fuente, salvo las de la barca.
 - Interruptor Niño/Adulto (`P.modo`: `mercader` = Niño, `historia` = Adulto; `esNino()`): gobierna la economía
   (mercado o carga fija), la densidad del texto (en Niño la ruta antigua, la moderna y el dato de cada ciudad van
   plegados en `<details class="mas">` «Contame más» vía `mas()`) y la voz (`P.voz`: `auto` lee sola en Niño,
@@ -718,7 +739,10 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   ×2 en el puerto `m` ("se paga mejor en"), ×1,25 en el último puerto, 0 si `d` puertos ya pasaron (se pudre).
   El mercado de un puerto solo permite comprar si se acertó "¿cuál es la próxima parada?" al zarpar
   (`S.llaves`). Ganancia → `P.tesoro`; rangos en `RANGOS`. `fantasma(r)` simula un mercader que vende todo al
-  final e ignora los mejores puertos: es el número a batir.
+  final e ignora los mejores puertos. Desde el 2026-10-29 (lote 3) el rival de una bajada es la anterior (`P.bajadas[id]`: las monedas con
+  que llegaste) y el mercader de la ruta se suma solo cuando ya la completaste (`completo(r)` al zarpar; `iniciarEco(r)` guarda los
+  dos en `S.eco.antes` y `S.eco.fantasma`): el nacimiento dice a quién hay que ganarle (`rival`) y el mar, cómo te fue (voces
+  `vezPasada` y `fantasma`). En la primera bajada no hay rival: perder contra un mercader que ya sabe el río desanimaba.
 - Preguntas (`preguntaTipo`): ciudad (¿junto a qué río?), imagen (la mnemónica con el nombre tapado por
   `sinNombre` → ¿qué ciudad?), cerca, siguiente, frase (las tres marcan la tarjeta `orden`), antigua, moderna, mar
   y pais (sin tarjeta), y altura (¿en cuál de estas paradas pasa el río más alto?: cuatro paradas con la más alta
@@ -853,10 +877,10 @@ hecho el 2026-10-29 (ver «Enseñar antes de preguntar»). Quedan:
 - Lote 2, el teléfono: hecho el 2026-10-29 (ver «El teléfono» en «Cómo está hecho el motor»). Falta probarlo en el iPhone de Humberto:
   el alto real con las barras de Safari, la barra de inicio sobre el pie, que el dedo sobre el mapa desplace la página, la voz con el
   interruptor de silencio y que lo guardado sobreviva a los 7 días de Safari («Agregar a inicio», «guardar en un archivo»).
-- Lote 3, una idea grande, cuando Humberto haya jugado lo anterior: «Hoy» como un viaje corto (el animal llega al muelle con sus
-  preguntas; recitar lo que ya sabés, repasar lo que vence y bajar una o dos paradas nuevas; si faltás, la barca espera anclada), el
-  dorado a la vista (Nilo 5/6 · falta Jinja; tus sellos en el mapa; el animal se suma a un álbum cuando el río se dora), los retos
-  sobre el mapa (pendiente 3) y una economía que no desanime (el rival es tu bajada anterior; el mercader llega cuando ya sabés el río).
+- Lote 3: hecho el 2026-10-29 (ver «Hoy», «La barca anclada», «Pasaporte» y «Economía» en «Cómo está hecho el motor»): «Hoy» como un
+  viaje corto, la barca anclada, el dorado a la vista (los sellos en puntitos en cada tarjeta, lo que falta en el pasaporte y la
+  tripulación) y el rival que es tu bajada anterior. Quedan los retos sobre el mapa (pendiente 3) y los sellos sobre el mapa de la ruta.
+  Falta que Humberto lo juegue unos días: si el viaje de hoy se siente corto o largo, si el álbum da ganas y si la vez pasada anima.
 - De las preguntas de imagen quedan 20 pistas que se parecen al nombre, casi todas juegos de sonido a propósito (santo → Santarém,
   kínder → Kindu); tres lo dan casi entero: Shanghái («Shang = sobre, hai = mar»), Budapest y Montevideo.
 
@@ -888,7 +912,7 @@ una franja; ver «El teléfono»); queda probarlo en el iPhone de Humberto.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
   2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; desde el 2026-10-29, con los trazos relativos,
-  Cauces ≈ 446 KB y Exploradores ≈ 395 KB, y las amplias ≈ 4 567 KB y ≈ 832 KB, con los animales, las barcas, las mercancías del Nilo
+  Cauces ≈ 446 KB y Exploradores ≈ 395 KB; con el lote 3, ≈ 456 KB y ≈ 404 KB, y las amplias ≈ 4 577 KB y ≈ 842 KB, con los animales, las barcas, las mercancías del Nilo
   y las postales de los 25 ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
