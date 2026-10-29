@@ -475,7 +475,8 @@ function lanzarEvento(r,def){const p=S.paso,q=def.reto==='imagen'?preguntaTipo('
   S.evento={def,q,resp:null,ok:null,delta:0,tramo:def.tramo,medio:puntoMedio(r,idxParada(r,p),idxParada(r,def.tramo)),dicho:azar(VZ().eventoAviso)};audio.ping(392);render()}
 function responderEvento(i){const E=S.evento;if(!E||E.resp!=null)return;const q=E.q,e=S.eco;E.resp=i;E.ok=i===q.correcta;if(q.cardId)marcar(q.cardId,E.ok);
   if(e&&!e.cerrado){E.delta=E.ok?2:-Math.min(2,e.monedas);e.monedas+=E.delta}
-  E.dicho=azar(E.ok?VZ().eventoBien:VZ().eventoMal);if(E.ok)audio.ping(1319);render(false)}
+  E.dicho=azar(E.ok?VZ().eventoBien:VZ().eventoMal);if(E.ok)audio.ping(1319);render(false);verNota()}
+const verNota=()=>{const n=document.querySelector('#panel .nota'),pie=document.getElementById('pie');if(!n||!n.getBoundingClientRect)return;const abajo=innerHeight-(pie&&!pie.hidden?pie.offsetHeight:0)-12,b=n.getBoundingClientRect().bottom;if(b>abajo)window.scrollBy({top:b-abajo,behavior:'smooth'})};/* el resultado entero, sobre el pie */
 function continuarEvento(){const E=S.evento;if(!E||E.resp==null)return;S.evento=null;paso(1,E)}
 const modo=()=>P.modo==='historia'?'historia':'mercader';
 function setModo(m){P.modo=m;guardar();render(false)}
@@ -501,12 +502,12 @@ function tocarChip(i){const o=S.orden,r=rioPor(S.rio);if(o.listo)return;
   else{o.errores++;o.fallo=i;o.dicho=o.errores>1?`Pista: empieza con «${unidades(r)[o.seq.length].nombre[0]}».`:azar(VZ().ordenMal);setTimeout(()=>{if(S.orden===o&&o.fallo===i){o.fallo=null;render(false)}},600)}
   render(false)}
 function responder(i){const Q=S.quiz,q=Q.qs[Q.i];if(Q.resp!=null)return;Q.resp=i;const ok=i===q.correcta;Q.dicho=azar(ok?VZ().quizBien:VZ().quizMal);(Q.res=Q.res||[])[Q.i]=ok;if(ok)Q.aciertos++;if(q.cardId)marcar(q.cardId,ok);
-  if(ok&&q.cardId&&q.cardId.startsWith('ciudad:')){const [,id,k]=q.cardId.split(':'),rr=rioPor(id);if(rr&&sellar(rr,+k))Q.dicho+=` ¡Sello de ${rr.paradas[+k].nombre} para el pasaporte!`}render(false)}
+  if(ok&&q.cardId&&q.cardId.startsWith('ciudad:')){const [,id,k]=q.cardId.split(':'),rr=rioPor(id);if(rr&&sellar(rr,+k))Q.dicho+=` ¡Sello de ${rr.paradas[+k].nombre} para el pasaporte!`}render(false);verNota()}
 function siguiente(){const Q=S.quiz;Q.i++;Q.resp=null;Q.dicho=azar(VZ().pregunta);if(Q.i>=Q.qs.length&&Q.modo==='rio'&&S.rio&&nivelQuiz(Q)<=1)hecha(rioPor(S.rio),'preguntar');render()}
 function otraRonda(){if(S.quiz.modo==='rio'){iniciarQuiz(rioPor(S.rio));render()}else if(S.quiz.modo==='repaso')iniciarRepaso();else iniciarReto()}
 
 /* ---------- render ---------- */
-function cabecera(t,sub,volver){return `${volver?`<button class="volver" onclick="irInicio()" aria-label="${VJ().volver}">‹ ${VJ().Tipos}</button>`:''}<div><h1>${esc(t)}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div><button class="son${audio.on?' on':''}" onclick="audio.toggle()" aria-pressed="${audio.on}" title="${VJ().sonido}">≈</button>`}
+function cabecera(t,sub,volver){return `${volver?`<button class="volver" onclick="irInicio()" aria-label="${VJ().volver}">‹ ${VJ().Tipos}</button>`:''}<div><h1>${esc(t)}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div><button class="son${audio.on?' on':''}" onclick="audio.toggle()" aria-pressed="${audio.on}" title="${VJ().sonido}">≈<span class="rot">sonido</span></button>`}
 function globoNeutro(texto){GLOBO=true;return `<div class="globo neutro"><span class="emo" aria-hidden="true"><svg class="barca" viewBox="-15 -16 30 22">${glifo('cuadrada')}</svg></span><div class="dice"><b>Cauces:</b> ${esc(texto||azar(VZ().pregunta))} ${htmlVoz()}</div></div>`}
 function globo(r,texto,extra,animo){const m=r&&r.companero;if(!m||!texto)return '';GLOBO=true;const pj=typeof ilustracion==='function'&&ilustracion(m,animo||S.animo||'normal','cabeza');/* la ilustración con su ánimo, en primer plano, si la edición la trae */
   return `<div class="globo${extra?' '+extra:''}"><span class="emo${pj?' retrato':''}" aria-hidden="true">${pj||animal(m)}</span><div class="dice"><b>${esc(m.nombre)}:</b> ${esc(texto)} ${htmlVoz()}</div></div>`}
@@ -562,7 +563,7 @@ function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;c
   if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2>${bloqueFrase(r,!S.zarpo)}<div class="ficha recuerdo">/*@amplia*/${postal(r.id,0)||`/*@fin:amplia*/${escena(r.inicio.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><p>${esc(r.inicio.nota)}</p></div></div>${r.vehiculo?`<div class="nave">/*@amplia*/${laminaNave(r)||`/*@fin:amplia*/<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>/*@amplia*/`}/*@fin:amplia*/<div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${typeof fichaAnimal==='function'?fichaAnimal(r):''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}`;
   if(p<=n){const c=r.paradas[p-1];
     const prev=p>1?r.paradas[p-2]:null;
-    return `${globo(r,S.dicho||(r.companero&&r.companero.paradas[p-1]))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div><div class="ficha recuerdo">/*@amplia*/${postal(r.id,p)||`/*@fin:amplia*/${escena(c.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}
+    return `${globo(r,S.dicho||((S.selloNuevo===claveSello(r,p-1)?`¡Sello de ${c.nombre}! `:'')+(r.companero?r.companero.paradas[p-1]:'')))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div><div class="ficha recuerdo">/*@amplia*/${postal(r.id,p)||`/*@fin:amplia*/${escena(c.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}
   const f=S.eco&&S.eco.final;
   return `${globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido')}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">/*@amplia*/${postal(r.id,n+1)||`/*@fin:amplia*/${escena(r.fin.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave">/*@amplia*/${laminaNave(r)||`/*@fin:amplia*/<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>/*@amplia*/`}/*@fin:amplia*/<div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
 /* lo que dice cada ficha de la guía: en los viajes, el rumbo («por mar, al sur…»), que es la memoria de la forma del viaje; en los ríos, el nombre de la ciudad */
@@ -612,7 +613,7 @@ function renderQuiz(){const Q=S.quiz,n=Q.qs.length;
   const nota=resp!=null?`<div class="nota${resp===q.correcta?'':' no'}">${esc(q.nota)}</div>`:'';
   const rq=Q.modo==='rio'?rioPor(S.rio):(resp!=null?rioPor(q.rio):null);
   return `${rq?globo(rq,Q.dicho):globoNeutro(Q.dicho)}<p class="kicker">${botonVoz()}Pregunta ${Q.i+1} de ${n} · ${esc(Q.titulo)}</p>${q.escena?/*@amplia*/(postal(q.rio,q.ciudad+1,'quiz')||/*@fin:amplia*/escena(q.escena,'quiz')/*@amplia*/)/*@fin:amplia*/:''}<p class="pregunta">${esc(q.texto)}</p><div class="opciones">${ops}</div>${nota}`}
-function render(scroll){voz.callar();GLOBO=false;const pie=document.getElementById('pie'),hPie=renderPie();if(pie){pie.hidden=!hPie;pie.innerHTML=hPie}if(document.body&&document.body.classList)document.body.classList.toggle('con-pie',!!hPie);const arriba=document.getElementById('arriba');if(arriba)arriba.classList.toggle('portada',S.pantalla==='inicio'||S.pantalla==='pasaporte');if(document.body&&document.body.classList)document.body.classList.toggle('nino',esNino());
+function render(scroll){voz.callar();GLOBO=false;const pie=document.getElementById('pie'),hPie=renderPie();if(pie){pie.hidden=!hPie;pie.innerHTML=hPie}const ra=document.getElementById('rielArriba');if(ra){ra.hidden=!RIEL;ra.innerHTML=RIEL}if(document.body&&document.body.classList)document.body.classList.toggle('con-pie',!!(hPie||RIEL));const arriba=document.getElementById('arriba');if(arriba)arriba.classList.toggle('portada',S.pantalla==='inicio'||S.pantalla==='pasaporte');if(document.body&&document.body.classList)document.body.classList.toggle('nino',esNino());
   const cab=$('#cab'),panel=$('#panel');
   if(S.pantalla==='inicio'){cab.innerHTML=cabecera(JUEGO.nombre,JUEGO.sub);panel.innerHTML=renderInicio();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
   else if(S.pantalla==='pasaporte'){cab.innerHTML=cabecera('Pasaporte',`${num(totalSellos())} sellos · ${num(RUTAS.filter(completo).length)} ${VJ().completos}`,true);panel.innerHTML=renderPasaporte();renderMapa(S.zona?{modo:'zona',zona:S.zona,tocar:true}:{modo:'mundo',tocar:true})}
@@ -632,7 +633,8 @@ function pieQuiz(){const Q=S.quiz;if(!Q)return '';const n=Q.qs.length;
   if(Q.i>=n){const r=Q.modo==='rio'&&S.rio&&nivelQuiz(Q)===2?rioPor(S.rio):null;return r?botones(`<button class="btn sec" onclick="otraRonda()">Otra ronda</button>`,`<button class="btn" onclick="abrirRio('${r.id}')">${r.vocab.bajar} otra vez ›</button>`):botones(`<button class="btn sec" onclick="irInicio()">${VJ().volver}</button>`,`<button class="btn" onclick="otraRonda()">Otra ronda</button>`)}
   if(Q.resp!=null)return botones('',`<button class="btn" onclick="siguiente()">${Q.i+1===n?'Ver resultado ›':'Siguiente ›'}</button>`);
   return ''}
-function renderPie(){if(S.pantalla==='inicio'||S.pantalla==='pasaporte')return '';let acto='',riel='';
+let RIEL='';const telefono=()=>!!(window.matchMedia&&window.matchMedia('(max-width:759px),(max-height:520px)').matches);
+function renderPie(){RIEL='';if(S.pantalla==='inicio'||S.pantalla==='pasaporte')return '';let acto='',riel='';
   if(S.pantalla==='rio'){const r=rioPor(S.rio),V=r.vocab,n=r.paradas.length,p=S.paso;riel=renderRiel(r);
     const atras=`<button class="btn sec" onclick="paso(-1)">‹ Atrás</button>`,atrasEnlace=`<button class="enlace" onclick="paso(-1)">‹ Atrás</button>`;
     if(S.tab==='descender'){const E=S.evento;
@@ -651,8 +653,10 @@ function renderPie(){if(S.pantalla==='inicio'||S.pantalla==='pasaporte')return '
     else if(S.tab==='trazar'){if(S.tra.listo)acto=botones(`<button class="btn sec" onclick="setTab('trazar')">Otra vez</button>`,`<button class="btn" onclick="setTab('preguntar')">Preguntar ›</button>`)}
     else acto=pieQuiz()}
   else acto=pieQuiz();
+  if(riel&&telefono()){RIEL=riel;riel=''}
   return acto||riel?`<div class="dentro">${acto?`<div class="acto">${acto}</div>`:''}${riel}</div>`:''}
-function acomodarPie(){const pie=document.getElementById('pie'),panel=document.getElementById('panel');if(!pie||!panel||!panel.style)return;panel.style.paddingBottom=pie.hidden?'':((pie.offsetHeight||0)+16)+'px'}
+function acomodarPie(){const a=document.getElementById('arriba'),pf=document.getElementById('perfil'),ra=document.getElementById('rielArriba');
+  if(a&&a.style&&a.offsetHeight)a.style.top=-(a.offsetHeight-(pf&&!pf.hidden?pf.offsetHeight:0)-(ra&&!ra.hidden?ra.offsetHeight:0))+'px';const pie=document.getElementById('pie'),panel=document.getElementById('panel');if(!pie||!panel||!panel.style)return;panel.style.paddingBottom=pie.hidden?'':((pie.offsetHeight||0)+16)+'px'}
 
 /* ---------- foco del mapa ---------- */
 function focoRio(r){const n=r.paradas.length,f={modo:'rio',rio:r,tocar:false,etiquetas:new Set(),actual:null,halo:null};
@@ -895,6 +899,9 @@ function olear(){const o=document.getElementById('olas');if(!o||!o.classList)ret
 
 /* ---------- arranque ---------- */
 (function init(){cargarPerfiles();if(voz.soporte())window.speechSynthesis.getVoices();render(true)})();
-window.addEventListener('resize',()=>{acomodarPie();if(S.foco)renderMapa(S.foco,true);const pf=document.getElementById('perfil');if(pf&&!pf.hidden&&S.pantalla==='rio')pf.innerHTML=perfilSVG(rioPor(S.rio))});
-function plegarMapa(){const a=document.getElementById('arriba');a.classList.toggle('compacto');const b=document.querySelector('.plegar');b.textContent=a.classList.contains('compacto')?'▴':'▾';
+let TEL=telefono();
+window.addEventListener('scroll',()=>{const a=document.getElementById('arriba');if(!a)return;const c=getComputedStyle(a),t=-parseFloat(c.top)||0;document.body.classList.toggle('pegado',t>0&&c.position==='sticky'&&window.scrollY>=t-2)},{passive:true});
+{const m=document.getElementById('mapa');if(m&&m.addEventListener)m.addEventListener('transitionend',acomodarPie)}
+window.addEventListener('resize',()=>{if(telefono()!==TEL){TEL=telefono();render(false)}acomodarPie();if(S.foco)renderMapa(S.foco,true);const pf=document.getElementById('perfil');if(pf&&!pf.hidden&&S.pantalla==='rio')pf.innerHTML=perfilSVG(rioPor(S.rio))});
+function plegarMapa(){const a=document.getElementById('arriba');a.classList.toggle('compacto');const b=document.querySelector('.plegar');b.textContent=a.classList.contains('compacto')?'▴ agrandar':'▾ achicar';
   if(S.foco)renderMapa(S.foco,!a.classList.contains('compacto'))/* al plegar, la caja se anima (el alto del CSS va más rápido y manda); al desplegar salta ya, y el mapa solo destapa */}
