@@ -575,7 +575,7 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   `primero` (con años), todas sobre la tarjeta `ruta:ID:escala`. Ordenar y la pregunta de orden usan `unidades(r)`: los
   `tramos` con nombre si el viaje los trae. El riel de un viaje lleva Trazar en vez de Recitar (`iniciarTrazar`,
   `trazarEn`, `renderTrazar`, `focoTrazar`): el mapa muestra solo el camino trazado y todas las etapas como puntos sin
-  nombre (`hitz` con `trazarEn(i)`, `ocultarResto`), tocar la siguiente a la primera cuenta como recuerdo con pista
+  nombre (`foco.toca = 'trazarEn'`: un toque va a la etapa más cercana, ver «Retos sobre el mapa»; `ocultarResto`), tocar la siguiente a la primera cuenta como recuerdo con pista
   (`marcar(…, 'recordar', 1)`), hasta dos errores dejan la etapa hecha (`P.etapas[id].trazar`) y en Mercader dan monedas.
   La portada de Exploradores cierra con «Los viajes, en escala» (`renderComparar`): kilómetros y años por viaje.
 - Navegación (rediseño del 2026-09-06): en las pantallas de ruta y de reto hay una barra fija al pie, `#pie`, que `render()`
@@ -610,8 +610,8 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   vuelve arriba. En el teléfono (`telefono()`: ancho ≤ 759 px o alto ≤ 520) el riel sube a esa franja (`#rielArriba`, con `RIEL`, que
   arma `renderPie`) y el pie lleva solo la acción del momento. En la portada y el pasaporte el mapa no queda fijo (`top:0!important`
   gana al tope del motor). En horizontal (alto ≤ 520 y ancho ≥ 560), dos columnas: el encabezado, el mapa, el perfil y el riel a la
-  izquierda, pegados a todo el alto; el contenido y el pie a la derecha. Con alto ≤ 700 el mapa baja a 24 % del alto. Los altos del
-  mapa van también en `svh` (el alto con las barras de Safari a la vista). Al responder un evento o una pregunta, la página baja lo
+  izquierda, pegados a todo el alto; el contenido y el pie a la derecha. Con alto ≤ 700 el mapa baja a 24 % del alto. Mientras se pregunta por
+  el mapa o se traza, crece (`body.pide-mapa`: 46 % del alto, 40 % con alto ≤ 700). Los altos del mapa van también en `svh` (el alto con las barras de Safari a la vista). Al responder un evento o una pregunta, la página baja lo
   justo para dejar el resultado entero sobre el pie (`verNota`), y el sello nuevo lo dice el animal en el globo al llegar. Los botones
   dicen lo que hacen («≈ sonido», «▾ achicar») y el subtítulo del encabezado va en un renglón. Medidas, en 375 × 812: arriba de todo, el
   bloque mide 417 px y el pie 102; al bajar quedan pegados 114 y el contenido tiene 596 px (73 %; antes, 305-340); en 360 × 640, 471
@@ -729,6 +729,18 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   dice «Te esperé aquí, en …» (voces `anclada`) y bajo la parada está «Empezar de nuevo desde la fuente», que es `abrirRio(id, 1)` y
   levanta el ancla (también «Bajar otra vez ›», tras una ronda mala). `abrirRio(id, fuente, tab)` abre además en otra pestaña (Recitar
   o Trazar, desde Hoy). Las pruebas abren con `abrirRio(id, 1)`, desde la fuente, salvo las de la barca.
+- Retos sobre el mapa (2026-10-29; el pendiente 3 de la evaluación del 2026-09-04): la pregunta `mapa` («¿Dónde queda Jartum?») se
+  responde tocando el punto de la parada; no tiene opciones (`correcta` es el índice de la parada) y marca la tarjeta `ciudad:ID:i`.
+  Antes de responder, el mapa de la ruta muestra las paradas como puntos sin nombre, un poco más grandes; la barca espera en la fuente
+  (estacionada en una parada, delataba la respuesta) y el animal pide que se toque (voces `preguntaMapa`, `vozPregunta`); «No me
+  acuerdo» es `responder(-1)`. Al responder, todos los nombres, el halo en la que era y un aro rojo teja en la que se tocó (`foco.mal`);
+  la nota dice el lugar («Jartum es la tercera parada desde la fuente») y la imagen, y el cierre de la ronda lista el lugar de las que
+  se fallaron (`q.lugar`). Un toque sobre el mapa va a la parada más cercana, a 44 px como mucho (`tocarMapa`, con un rectángulo
+  transparente encima de todo, la barca incluida; `foco.toca` dice a qué función: `responder` o `trazarEn`): con un círculo por parada,
+  las que quedan juntas en el teléfono (Luxor y Asuán, a 9 px) se tapaban y se tocaba la otra. Con el teclado, cada parada es un botón
+  (`parada-foco`, «Parada 3»). La pregunta está en las de cada río (siempre una, de otra parada que la de la imagen y que la que sigue;
+  `mar` y `frase` pasaron a turnarse), en el repaso de cada parada (río, imagen o mapa), en el reto mundial y en el «Reto del mapa» de la
+  portada (`iniciarRetoMapa`: diez lugares de las rutas que ya bajaste, de a pocos por ruta, o de todas si no bajaste ninguna).
 - Interruptor Niño/Adulto (`P.modo`: `mercader` = Niño, `historia` = Adulto; `esNino()`): gobierna la economía
   (mercado o carga fija), la densidad del texto (en Niño la ruta antigua, la moderna y el dato de cada ciudad van
   plegados en `<details class="mas">` «Contame más» vía `mas()`) y la voz (`P.voz`: `auto` lee sola en Niño,
@@ -747,7 +759,7 @@ si no lo trae, su `glifo`: Boto lleva `ilus:"inia"`, Bulán `ilus:"platanista"` 
   `sinNombre` → ¿qué ciudad?), cerca, siguiente, frase (las tres marcan la tarjeta `orden`), antigua, moderna, mar
   y pais (sin tarjeta), y altura (¿en cuál de estas paradas pasa el río más alto?: cuatro paradas con la más alta
   al menos 25 m y un 15 % por encima de la segunda; si no hay diferencia clara, cae a `cerca`; sin tarjeta; entra
-  al reto mundial y alterna con `cerca` en el reto del río). El repaso alterna ciudad/imagen para la misma tarjeta `ciudad:ID:i`.
+  al reto mundial y alterna con `cerca` en el reto del río). El repaso alterna ciudad/imagen/mapa para la misma tarjeta `ciudad:ID:i` (mapa: ver «Retos sobre el mapa»).
 - Eventos entre puertos (ambos modos): al zarpar hacia la parada `tramo` (`paso(1)`) salta el evento de
   `EVENTOS[id]` si no se vio en este descenso (`S.eventosVistos`); la barca se detiene a mitad del tramo
   (`S.evento.medio = puntoMedio(...)`: `{k, pt}`, el punto interpolado sobre `curso` a mitad de los km del tramo, para
@@ -879,7 +891,8 @@ hecho el 2026-10-29 (ver «Enseñar antes de preguntar»). Quedan:
   interruptor de silencio y que lo guardado sobreviva a los 7 días de Safari («Agregar a inicio», «guardar en un archivo»).
 - Lote 3: hecho el 2026-10-29 (ver «Hoy», «La barca anclada», «Pasaporte» y «Economía» en «Cómo está hecho el motor»): «Hoy» como un
   viaje corto, la barca anclada, el dorado a la vista (los sellos en puntitos en cada tarjeta, lo que falta en el pasaporte y la
-  tripulación) y el rival que es tu bajada anterior. Quedan los retos sobre el mapa (pendiente 3) y los sellos sobre el mapa de la ruta.
+  tripulación) y el rival que es tu bajada anterior. Los retos sobre el mapa quedaron hechos el mismo día (ver «Retos sobre el mapa»);
+  quedan los sellos sobre el mapa de la ruta.
   Falta que Humberto lo juegue unos días: si el viaje de hoy se siente corto o largo, si el álbum da ganas y si la vez pasada anima.
 - De las preguntas de imagen quedan 20 pistas que se parecen al nombre, casi todas juegos de sonido a propósito (santo → Santarém,
   kínder → Kindu); tres lo dan casi entero: Shanghái («Shang = sobre, hai = mar»), Budapest y Montevideo.
@@ -896,8 +909,8 @@ una franja; ver «El teléfono»); queda probarlo en el iPhone de Humberto.
    revisar las líneas nuevas de docs/verificacion.md y que ninguna parada se repita entre rutas.
 2. Motor de rutas, lo que falta: partir la animación del vehículo en los `cortes`. (El antimeridiano y la línea de tiempo
    con meses quedaron hechos el 2026-09-07 con Cook y Napoleón.)
-3. Inmersión, lo que queda de la evaluación del 2026-09-04: retos sobre el mapa («tocá dónde queda…», que pagan
-   memoria espacial) y paisaje sonoro por tramo sintetizado. (La bitácora imprimible se descartó.)
+3. Inmersión, lo que queda de la evaluación del 2026-09-04: paisaje sonoro por tramo sintetizado. (Los retos sobre el mapa quedaron
+   hechos el 2026-10-29; la bitácora imprimible se descartó.)
 4. Más ríos de Costa Rica: Pacuare y Sixaola están en Natural Earth 10 m Norteamérica (`capa:'ne10na'`) pero casi
    no tienen pueblos a la orilla (Tres Equis y la barra; Suretka, Bribri y Sixaola): habría que armar paradas con
    sitios (rápidos, reservas, puentes) y verificarlos. Los demás ríos saldrían de OpenStreetMap ampliando `OSM_Q`.
@@ -912,7 +925,7 @@ una franja; ver «El teléfono»); queda probarlo en el iPhone de Humberto.
 - No agregar dependencias de ejecución. Herramientas de desarrollo (shapely, node) sí.
 - Mantener la edición económica (`dist/cauces.html`, `dist/exploradores.html`) por debajo de ~500 KB (tope subido de 400 a 500 el
   2026-09-04 para el relieve; el 2026-09-14 Cauces ≈ 498 KB y Exploradores ≈ 455 KB; desde el 2026-10-29, con los trazos relativos,
-  Cauces ≈ 446 KB y Exploradores ≈ 395 KB; con el lote 3, ≈ 456 KB y ≈ 404 KB, y las amplias ≈ 4 577 KB y ≈ 842 KB, con los animales, las barcas, las mercancías del Nilo
+  Cauces ≈ 446 KB y Exploradores ≈ 395 KB; con el lote 3 y los retos sobre el mapa, ≈ 459 KB y ≈ 408 KB, y las amplias ≈ 4 580 KB y ≈ 845 KB, con los animales, las barcas, las mercancías del Nilo
   y las postales de los 25 ríos pintados). La edición amplia
   (`-amplia.html`) tiene un tope más holgado, 5 MB (Humberto, 2026-10-26; test/dist.js falla si una lo pasa y dice cuánto queda): lo que
   no cabe en la económica va marcado `/*@amplia*/` (ver «Ediciones»), y lo que más engorda la amplia son las postales (ver «Postales» y
