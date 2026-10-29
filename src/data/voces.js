@@ -4,7 +4,7 @@ const VOCES={
   ordenInicio:["Yo ya me la sé. ¿Y vos?","Tocá con calma; yo te miro.","Si te trabás, acordate de la frase."],
   ordenBien:["¡Esa es!","¡Sí! Seguí.","Yo también me la sabía.","¡Vamos bien!","Esa la vi pasar."],
   ordenMal:["Mmm, esa viene más adelante.","Todavía no llegamos ahí.","Casi. Pensá en la frase.","Nop. ¿Cuál venía primero?"],
-  ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y me gano un pescado.","Volvamos a bajar el río juntos, con la frase en la mano."],
+  ordenFin:["¡Perfecto! ¡Te lo sabés como yo!","¡Casi perfecto! Uno más y te la sabés como yo.","Volvamos a bajar el río juntos, con la frase en la mano."],
   pregunta:["¿Vos qué decís?","Pensá con calma.","Yo sé la respuesta, pero no digo nada.","Esta es fácil... ¿o no?","Mirá bien las opciones."],
   quizBien:["¡Sí! ¡Te lo sabías!","¡Eso! Yo estaba seguro.","¡Bravo! Otra más.","¡Claro que sí!","¡Ese es mi río!"],
   quizMal:["Uy. Esa se nos escapó.","No pasa nada: ahora ya la sabemos.","Yo también me habría confundido.","Mmm, esa la repasamos."],

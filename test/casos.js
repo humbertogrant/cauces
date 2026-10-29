@@ -122,8 +122,10 @@ abrirRio('nilo');ph=todo();if(ph.indexOf('¿Cuál es la próxima parada?')<0||ph
 if(S.guias[0].opciones.length!==3||!S.guias[0].opciones.includes(0))throw 'opciones guía mal';
 responderGuia(0);ph=todo();if(ph.indexOf('Zarpar a Jinja')<0||!VOCES.guiaBien.some(v=>S.dicho.startsWith(v.split('{c}')[0])))throw 'guía bien mal '+S.dicho;
 paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Se vende aquí')<0)throw 'mercado no abrió tras acierto';
-const mal=S.guias[1].opciones.find(i=>i!==1);responderGuia(mal);if(S.llaves[1]!==false)throw 'llave no cerrada';
-paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('solo podés vender')<0||ph.indexOf('Se vende aquí')>=0)throw 'mercado no se cerró';
+comprar(rioPor('nilo').carga.findIndex(g=>g.o===0));if(S.eco.bodega.length!==1)throw 'no compró en Jinja';
+if(S.guias[1].opciones.includes(0))throw 'la guía ofrece la parada actual';
+const mal=S.guias[1].opciones.find(i=>i!==1);responderGuia(mal);if(S.llaves[1]!==false)throw 'llave no cerrada';if(!/^(Era|Casi: era) Juba[:.] /.test(S.dicho)||!/jinete|bebé|país/.test(S.dicho))throw 'la guía, al fallar, no trae la imagen: '+S.dicho;
+paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('solo vendés')<0||ph.indexOf('Se vende aquí')>=0)throw 'mercado no se cerró';
 // pista con hueco
 abrirRio('niger');paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('se paga mejor en T_______')<0)throw 'pista sin hueco: '+ph.match(/se paga mejor en [^<]*/);
 // ordenar premia
@@ -136,7 +138,7 @@ ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('7 de 7 reco
 abrirRio('niger');bajar(8);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('El mercader de la ruta llegó con')<0)throw 'sin fantasma en cuentas';
 if(!/mercader de la ruta/.test(S.dicho))throw 'dicho sin fantasma';
 // historia: guía sin mercado
-setModo('historia');abrirRio('rin');responderGuia(S.guias[0].opciones.find(i=>i!==0));if(!VOCES.guiaMalH.some(v=>S.dicho.startsWith(v.split('{c}')[0])))throw 'guiaMalH';
+setModo('historia');abrirRio('rin');responderGuia(S.guias[0].opciones.find(i=>i!==0));if(!/^(Era|Casi: era) Basilea[:.] /.test(S.dicho)||/vender/.test(S.dicho))throw 'guía mal en Adulto: '+S.dicho;
 setModo('mercader');
 console.log('uno y dos OK');
 
@@ -255,7 +257,7 @@ console.log('perfiles OK');
  if(!JSON.parse(window.localStorage.getItem(store.clave(PERFILES.activo))).sellos['rin:0'])throw 'sello no persistido';
  if(!lectura().some(t=>/Sello de Rotterdam/.test(t)))throw 'la voz no lee el sello';
  abrirRio('volga');responderGuia(S.guias[0].opciones.find(i=>i!==0));paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}
- if(sellosDe(rioPor('volga'))!==0)throw 'sello sin acertar la guía';ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Sin sello esta vez')<0)throw 'sin nota de sello perdido';
+ if(sellosDe(rioPor('volga'))!==0)throw 'sello sin acertar la guía';ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('te espera')<0)throw 'sin nota de sello pendiente';
  paso(-1);paso(1);if(sellosDe(rioPor('volga'))!==0)throw 'sello al ir y volver';
  irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(!/Pasaporte \(\d+\)/.test(ph)||ph.indexOf('class="listo"')<0)throw 'inicio sin pasaporte';
  let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('class="rio hecho"')<0||(capa.match(/class="rio hecho"/g)||[]).length!==1)throw 'mapa sin el río dorado (o con más de uno)';
