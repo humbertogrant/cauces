@@ -37,6 +37,9 @@ Object.assign(VOCES,{
   recitarMal:["Esa se nos escapó.","La próxima vez sale.","Mirá la imagen otra vez."],
   recitarFin:["¡Todas! Ya podés bajar con menos pista.","Casi todas. Otra vuelta y sale.","Volvamos a bajar el río juntos."],
   fantasma:["¡Le ganaste al mercader de la ruta!","El mercader de la ruta llegó con {n}; la próxima le ganás.","Empataste con el mercader de la ruta."],
+  vezPasada:["¡Más que la vez pasada!","La vez pasada llegaste con {n}; otra vuelta, otra suerte.","Igual que la vez pasada."],
+  anclada:["Te esperé aquí, en {c}. ¿Seguimos?","Aquí te esperé, en {c}. ¡Sigamos!"],
+  unido:["¡Todo dorado! Me sumo a tu tripulación.","¡Todo en dorado! Ya soy de tu tripulación."],
   eventoAviso:["¡Ojo! El río nos puso una prueba.","¡Alto ahí! Esto se pasa recordando.","Tranquilo: esto lo sabemos."],
   eventoBien:["¡Eso era! Seguimos.","¡Bien ahí! El río nos deja pasar.","¡Lo sabías! Adelante."],
   eventoMal:["No pasa nada: ya viste la respuesta y seguimos.","Casi. Guardá la respuesta para la próxima.","Otro día nos sale. ¡A seguir!"]
@@ -285,7 +288,18 @@ const sellosDe=r=>r.paradas.filter((c,i)=>sellos()[claveSello(r,i)]).length;
 const completo=r=>sellosDe(r)===r.paradas.length;
 const totalSellos=()=>RUTAS.reduce((a,r)=>a+sellosDe(r),0);
 const selloOro=(r,i)=>{const c=P.cards['ciudad:'+r.id+':'+i];return !!(c&&c.box>=3&&c.rec)};/* caja ≥ 3 y recitada de memoria alguna vez */
-function sellar(r,i){const k=claveSello(r,i);if(sellos()[k])return false;sellos()[k]=Date.now();guardar();return true}
+function sellar(r,i){const k=claveSello(r,i);if(sellos()[k])return false;sellos()[k]=Date.now();dorar(r);guardar();return true}
+/* lo dorado a la vista: `oro` es un sello ganado y dorado; cuando todas las paradas de una ruta lo tienen, su animal se suma a la
+   tripulación (`P.tripu`) y se queda aunque después se olvide alguna; `falta` dice lo que falta para completarla o para dorarla */
+const oro=(r,i)=>!!sellos()[claveSello(r,i)]&&selloOro(r,i),orosDe=r=>r.paradas.filter((c,i)=>oro(r,i)).length,tripu=()=>P.tripu||(P.tripu={});
+function dorar(r){if(r&&r.companero&&!tripu()[r.id]&&orosDe(r)===r.paradas.length){tripu()[r.id]=Date.now();S.unido=r.id}}
+const unido=()=>{const u=S.unido;S.unido=null;return u?' '+azar(VZ().unido):''};
+const yLista=l=>l.length>1?l.slice(0,-1).join(', ')+' y '+l[l.length-1]:l[0];
+function falta(r){const sin=[],gris=[];r.paradas.forEach((c,i)=>{if(!sellos()[claveSello(r,i)])sin.push(c.nombre);else if(!selloOro(r,i))gris.push(c.nombre)});
+  const f=l=>l.length>2?`faltan ${l.length}`:`falta${l.length>1?'n':''} ${yLista(l)}`;return sin.length?f(sin):gris.length?'para el dorado '+f(gris):'todo dorado'}
+const puntos=r=>`<span class="puntos" role="img" aria-label="${sellosDe(r)} de ${r.paradas.length} sellos, ${orosDe(r)} dorados">${r.paradas.map((c,i)=>`<i${sellos()[claveSello(r,i)]?` class="${oro(r,i)?'o':'v'}"`:''}></i>`).join('')}</span>`;/* los sellos de una ruta en puntitos: vacío, verde o dorado */
+function renderTripu(){const rs=RUTAS.filter(r=>r.companero),t=tripu(),k=rs.filter(r=>t[r.id]).length;
+  return `<div class="tripu"><div class="fkicker">Tu tripulación · ${num(k+' de '+rs.length)}</div><div class="album">${rs.map(r=>`<span class="miembro${t[r.id]?'':' falta'}" role="img" aria-label="${esc(t[r.id]?r.companero.nombre+', de '+r.nombre:'Todavía no: el animal de '+r.nombre)}"><span class="cara">${animal(r.companero)}</span>${t[r.id]?`<small>${esc(r.companero.nombre)}</small>`:''}</span>`).join('')}</div><p class="fnota">Cuando todas las ${VJ().Parada.toLowerCase()}s de un ${VJ().tipo} quedan en dorado, su animal se suma a tu tripulación.</p></div>`}
 const fechaSello=ts=>{try{return new Date(ts).toLocaleDateString('es-CR',{day:'numeric',month:'short'})}catch(e){return ''}};
 function verPasaporte(){S.pantalla='pasaporte';S.aviso=null;render()}
 /* sellos con carácter: forma, inclinación, desgaste y tinta salen de un hash de río:parada, así cada sello es siempre el mismo */
@@ -304,8 +318,9 @@ function renderSello(r,i){const k=claveSello(r,i),c=r.paradas[i];
   return ''}
 function renderPasaporte(){const grupos=JUEGO.grupos.map(g=>[g.titulo,RUTAS.filter(g.filtro)]);
   const total=RUTAS.reduce((a,r)=>a+r.paradas.length,0),hechos=RUTAS.filter(completo).length;
-  return `<p class="kicker">Pasaporte de ${esc(PERFILES.activo)}</p><h2>${totalSellos()} de ${total} sellos</h2><p>${hechos===1?'Un '+VJ().completo:hechos+' '+VJ().completos} de ${RUTAS.length}. ${VJ().selloNota} ${VJ().hechoNota}</p>
-${grupos.map(([t,rs])=>`<div class="fkicker">${t}</div>`+rs.map(r=>`<div class="pas-rio"><button class="pas-cab" onclick="abrirRio('${r.id}')">${r.companero?`<span class="emo" aria-hidden="true">${animal(r.companero)}</span>`:''}<b>${esc(r.nombre)}</b><span class="fmeta">${sellosDe(r)} de ${r.paradas.length} sellos${completo(r)?' · completo':''}</span></button><div class="sellos">${r.paradas.map((c,i)=>sello(r,i)).join('')}</div></div>`).join('')).join('')}
+  const oros=RUTAS.reduce((a,r)=>a+orosDe(r),0);
+  return `<p class="kicker">Pasaporte de ${esc(PERFILES.activo)}</p><h2>${totalSellos()} de ${total} sellos</h2><p><b>${oros} ${oros===1?'dorado':'dorados'}</b> de memoria. ${hechos===1?'Un '+VJ().completo:hechos+' '+VJ().completos} de ${RUTAS.length}. ${VJ().selloNota} ${VJ().hechoNota}</p>${renderTripu()}
+${grupos.map(([t,rs])=>`<div class="fkicker">${t}</div>`+rs.map(r=>`<div class="pas-rio"><button class="pas-cab" onclick="abrirRio('${r.id}')">${r.companero?`<span class="emo" aria-hidden="true">${animal(r.companero)}</span>`:''}<b>${esc(r.nombre)}</b><span class="fmeta">${sellosDe(r)} de ${r.paradas.length} sellos${sellosDe(r)?' · '+esc(falta(r)):''}</span></button><div class="sellos">${r.paradas.map((c,i)=>sello(r,i)).join('')}</div></div>`).join('')).join('')}
 <div class="acciones"><button class="btn sec" onclick="irInicio()">${VJ().volver}</button></div>`}
 const guardarPerfiles=()=>store.escribir(JUEGO.clave+':perfiles',PERFILES);
 function cargarPerfiles(){const g=store.leer(JUEGO.clave+':perfiles');
@@ -326,7 +341,7 @@ function importarTexto(txt){let d=null;try{d=JSON.parse(txt)}catch(e){}
   const p=d&&d.progreso&&d.progreso.cards?d.progreso:(d&&d.cards?d:null);if(!p){S.aviso='Ese archivo no tiene un progreso de Cauces.';render(false);return false}
   const n=(d.perfil&&String(d.perfil).trim().slice(0,20))||PERFILES.activo,hay=store.leer(store.clave(n));
   if(hay&&Object.keys(hay.cards||{}).length&&!preguntar(`Ya hay progreso de ${n} en este navegador. ¿Reemplazarlo con el del archivo?`))return false;
-  if(!PERFILES.lista.includes(n))PERFILES.lista.push(n);PERFILES.activo=n;guardarPerfiles();P={cards:p.cards||{},vistos:p.vistos||{},tesoro:p.tesoro||0,modo:p.modo,voz:p.voz,sellos:p.sellos||{},etapas:p.etapas||{},dia:p.dia};guardar();S.perfilNuevo=false;S.aviso=`Progreso de ${n} cargado.`;render(false);return true}
+  if(!PERFILES.lista.includes(n))PERFILES.lista.push(n);PERFILES.activo=n;guardarPerfiles();P={cards:p.cards||{},vistos:p.vistos||{},tesoro:p.tesoro||0,modo:p.modo,voz:p.voz,sellos:p.sellos||{},etapas:p.etapas||{},dia:p.dia,anclas:p.anclas||{},tripu:p.tripu||{},bajadas:p.bajadas||{}};guardar();S.perfilNuevo=false;S.aviso=`Progreso de ${n} cargado.`;render(false);return true}
 function importarArchivo(input){const f=input.files&&input.files[0];if(!f)return;const r=new FileReader();r.onload=()=>importarTexto(r.result);r.readAsText(f);input.value=''}
 function renderPerfiles(){const on=PERFILES.activo;return `<div class="fkicker">¿Quién juega?</div><div class="chips perfiles">${PERFILES.lista.map((n,i)=>`<button class="chip${n===on?' bien':''}" onclick="elegirPerfil(${i})" aria-pressed="${n===on}">${esc(n)}</button>`).join('')}<button class="chip" onclick="nuevoPerfil()" aria-expanded="${S.perfilNuevo}">＋ Otro</button></div>${S.perfilNuevo?`<form class="acciones" onsubmit="crearPerfil();return false"><input class="campo" id="nombrePerfil" maxlength="20" placeholder="¿Cómo te llamás?" aria-label="Nombre del perfil" autocomplete="off"><button class="btn" type="submit">Listo</button></form>`:''}`}
 function renderProgreso(){return `<div class="progreso"><div class="fkicker">Progreso</div><p class="fnota">Se guarda en este navegador, un progreso por perfil. Para tener una copia o llevarlo a otro aparato: <button class="enlace" onclick="exportar()">guardar en un archivo</button> · <label class="enlace">cargar de un archivo<input type="file" accept=".json,application/json" hidden onchange="importarArchivo(this)"></label> · <button class="enlace" onclick="quitarPerfil()">quitar este perfil</button></p></div>`}
@@ -342,7 +357,7 @@ const guardar=()=>store.escribir(store.clave(PERFILES.activo),P);
 function marcar(id,ok,via,nivel){const c=P.cards[id]||{box:0,due:0},t=Date.now();if(c.nuevo){delete c.nuevo;diaHoy().nuevas++}
   if(!ok){c.box=0;c.rec=0;c.due=t}
   else{if(via==='recordar')c.rec=Math.max(c.rec||0,nivel||1);const tope=c.rec?5:3;if(c.due<=t){if(c.box<tope)c.box++;c.due=t+INTERVALOS[c.box]*DIA}}
-  P.cards[id]=c;guardar()}
+  P.cards[id]=c;if(id.startsWith('ciudad:'))dorar(rutaPor(id.split(':')[1]));guardar()}
 function idsDe(r){const ids=['orden',...r.contexto.map(c=>c.clave),r.tipo==='rio'?'mar':'fin',...(r.tipo!=='rio'?['escala']:[])].map(k=>r.pref+k);r.paradas.forEach((c,i)=>ids.push('ciudad:'+r.id+':'+i));return ids}
 function dominio(r){const ids=idsDe(r);let s=0;ids.forEach(id=>{const c=P.cards[id];if(c)s+=c.box});return s/(ids.length*5)}
 function sembrar(r){idsDe(r).forEach(id=>{if(!P.cards[id])P.cards[id]={box:0,due:Date.now(),nuevo:true}});guardar()}
@@ -355,10 +370,37 @@ function colaHoy(){const t=Date.now(),porRio={};Object.keys(P.cards).forEach(id=
   let cupo=NUEVAS_POR_DIA-diaHoy().nuevas;return mezcla.filter(id=>!P.cards[id].nuevo||cupo-->0)}
 function nuevasEnEspera(){const t=Date.now(),cola=colaHoy();return Object.keys(P.cards).filter(id=>rutaPor(id.split(':')[1])&&P.cards[id].nuevo&&P.cards[id].due<=t&&!cola.includes(id)).length}
 const pendientes=()=>colaHoy();
-function renderHoy(){const cola=colaHoy(),n=cola.length,min=Math.max(1,Math.round(n*15/60)),espera=nuevasEnEspera(),r0=RUTAS[0];
+/* Hoy, un viaje corto: el animal trae hasta tres pasos, en orden: recitar de memoria una ruta ya bajada que no esté dorada (la de la
+   parada más vencida), repasar lo que vence (de a 10, sin las paradas de esa ruta, que el recitado repasa) y bajar dos paradas nuevas
+   (donde espera anclada la barca, o en la primera ruta sin bajar). `P.dia` guarda lo hecho hoy (`rec`: la ruta recitada, `rep`: las
+   preguntas repasadas, `paradas`: las nuevas). Sin rachas ni castigos: si faltás, el viaje no crece y la barca espera */
+function viajeHoy(){const d=diaHoy(),A=anclas(),pasos=[];let rec=d.rec&&rutaPor(d.rec),v=Infinity;
+  if(!rec)RUTAS.forEach(r=>{if(!P.vistos[r.id]||r.paradas.every((c,i)=>selloOro(r,i)))return;const u=Math.min(...r.paradas.map((c,i)=>(P.cards['ciudad:'+r.id+':'+i]||{due:0}).due));if(u<v){v=u;rec=r}});
+  if(rec)pasos.push({k:'rec',r:rec,hecho:!!d.rec});
+  const ids=colaHoy().filter(id=>d.rec||!rec||!id.startsWith('ciudad:'+rec.id+':')).slice(0,10);if(d.rep||ids.length)pasos.push({k:'rep',ids,hecho:!!d.rep});
+  const an=Object.keys(A).map(rutaPor).filter(Boolean).sort((a,b)=>A[b.id].t-A[a.id].t)[0],baj=an||RUTAS.find(r=>!P.vistos[r.id]);
+  if(baj||d.paradas>=2)pasos.push({k:'baj',r:baj,ancla:an&&A[an.id],hecho:d.paradas>=2});
+  return pasos}
+function textoPaso(s){const r=s.r,V=r?r.vocab:VJ(),pp=V.Parada.toLowerCase()+'s',n=r&&esc(r.nombre),con=r&&(r.tipo==='rio'?'el ':'con ')+n;
+  if(s.k==='rec')return [r.tipo==='rio'?`Recitar el ${n} de memoria`:`${V.trazar} el viaje de ${n}`,orosDe(r)?`${orosDe(r)} de ${r.paradas.length} en dorado`:`${r.paradas.length} ${pp}${r.tipo==='rio'?', sin mirar':' en el mapa'}`];
+  if(s.k==='rep'){const k=s.hecho?diaHoy().rep:s.ids.length,rs=[...new Set(s.ids.map(id=>id.split(':')[1]))].map(rutaPor).filter(Boolean).map(x=>esc(x.nombre));return [`Repasar ${k} pregunta${k>1?'s':''}`,rs.slice(0,3).join(', ')+(rs.length>3?' y más':'')]}
+  const c=!s.hecho&&s.ancla&&r.paradas[s.ancla.paso-1];
+  return s.hecho||!r?[`${V.bajar} dos ${pp} nuevas`,'']:c?[`Seguir ${V.bajar.toLowerCase().replace(/r$/,'ndo')} ${con}`,`${r.tipo==='rio'?'la barca ':''}te espera en ${esc(c.nombre)}`]:[`${V.bajar} ${con}`,`dos ${pp} nuevas`]}
+function hoyPaso(j){const s=viajeHoy()[j];if(!s||s.hecho)return;S.hoy=true;if(s.k==='rec')abrirRio(s.r.id,0,s.r.tipo==='rio'?'recitar':'trazar');else if(s.k==='rep')iniciarRepaso(s.ids);else abrirRio(s.r.id)}
+function seguirHoy(){const j=viajeHoy().findIndex(s=>!s.hecho);if(j<0)irInicio();else hoyPaso(j)}
+const botonHoy=()=>`<button class="btn" onclick="seguirHoy()">${viajeHoy().some(s=>!s.hecho)?'Seguir el viaje':'Listo por hoy'} ›</button>`;
+/* lo que vuelve mañana: lo que vence hasta el fin de mañana, con las nuevas de a NUEVAS_POR_DIA y no más de un repaso (10) */
+function manana(){const f=new Date();f.setHours(48,0,0,0);const fin=f.getTime();let k=0,nu=0;
+  Object.keys(P.cards).forEach(id=>{const c=P.cards[id];if(!rutaPor(id.split(':')[1])||c.due>=fin)return;if(c.nuevo)nu++;else k++});return Math.min(10,k+Math.min(nu,NUEVAS_POR_DIA))}
+function renderHoy(){const r0=RUTAS[0],otros=`<button class="btn sec" onclick="iniciarReto()">Reto mundial</button><button class="btn sec" onclick="verPasaporte()">Pasaporte${totalSellos()?` (${totalSellos()})`:''}</button>`;
   if(r0&&!Object.keys(P.vistos).length&&!Object.keys(P.cards).length){const a=r0.companero?r0.companero.nombre:'';return `<div class="hoy"><div class="fkicker">Empezá aquí</div><div class="htit">${r0.tipo==='rio'?`Bajá el ${esc(r0.nombre)} con ${esc(a)}`:`Viajá con ${esc(r0.nombre)}`}</div><p class="fnota">${num(r0.paradas.length)} ${r0.tipo==='rio'?'paradas, de la fuente al mar':'etapas'}. Después, los que querás.</p><div class="acciones"><button class="btn" onclick="abrirRio('${r0.id}')">${r0.vocab.bajar} ›</button></div><div class="tabs modo"><button class="${esNino()?'on':''}" onclick="setModo('mercader')">Niño</button><button class="${esNino()?'':'on'}" onclick="setModo('historia')">Adulto</button></div></div>`}
-  const rios=[...new Set(cola.map(id=>id.split(':')[1]))].map(rioPor).filter(Boolean).map(r=>r.nombre),cuales=rios.slice(0,3).join(', ')+(rios.length>3?' y más':'');
-  return `<div class="hoy"><div class="fkicker">Hoy</div>${n?`<div class="htit">${n} tarjeta${n>1?'s':''} por repasar · unos ${min} min</div><p class="fnota">${esc(cuales)}${rios.length>1?', intercalados':''}.${espera?` Hay ${espera} tarjeta${espera>1?'s':''} nueva${espera>1?'s':''} esperando turno: entran de a ${NUEVAS_POR_DIA} por día.`:''}</p>`:`<div class="htit">Nada pendiente hoy</div><p class="fnota">${espera?`Hay ${espera} tarjeta${espera>1?'s':''} nueva${espera>1?'s':''} esperando turno: mañana entran ${Math.min(espera,NUEVAS_POR_DIA)} más.`:VJ().recorre}</p>`}<div class="acciones">${n?`<button class="btn" onclick="iniciarRepaso()">Repasar (${n})</button>`:''}<button class="btn sec" onclick="iniciarReto()">Reto mundial</button><button class="btn sec" onclick="verPasaporte()">Pasaporte${totalSellos()?` (${totalSellos()})`:''}</button></div></div>`}
+  const pasos=viajeHoy(),j=pasos.findIndex(s=>!s.hecho);
+  if(!pasos.length)return `<div class="hoy"><div class="fkicker">Hoy</div><div class="htit">Nada pendiente hoy</div><p class="fnota">${VJ().recorre}</p><div class="acciones">${otros}</div></div>`;
+  const lista=`<ol class="pasos-hoy">${pasos.map((s,i)=>{const [t,sub]=textoPaso(s);return `<li class="${s.hecho?'hecho':i===j?'aqui':''}"><button onclick="hoyPaso(${i})"${s.hecho?' disabled':''}><i aria-hidden="true">${s.hecho?ico('ok'):''}</i><span><b>${t}</b>${sub&&!s.hecho?`<small>${sub}</small>`:''}</span></button></li>`}).join('')}</ol>`;
+  if(j<0){const k=manana(),b=pasos.find(s=>s.k==='baj'&&s.ancla),c=b&&b.r.paradas[b.ancla.paso-1];
+    return `<div class="hoy listo"><div class="fkicker">Hoy</div><div class="htit">Viaje de hoy, hecho</div>${lista}<p class="fnota">${k?`Mañana ${k>1?'vuelven':'vuelve'} ${k} pregunta${k>1?'s':''}.`:'Mañana no vence nada.'}${c?` ${b.r.tipo==='rio'?'La barca del '+esc(b.r.nombre):esc(b.r.nombre)} te espera en ${esc(c.nombre)}.`:''}</p><div class="acciones">${colaHoy().length?`<button class="btn sec" onclick="iniciarRepaso()">Repasar más</button>`:''}${otros}</div></div>`}
+  const s0=pasos[j],r1=s0.r||rutaPor(s0.ids[0].split(':')[1]),m=r1&&r1.companero,seg=pasos.filter(s=>!s.hecho).reduce((a,s)=>a+(s.k==='rec'?s.r.paradas.length*8:s.k==='rep'?s.ids.length*15:90),0);
+  return `<div class="hoy"><div class="fkicker">Hoy · unos ${Math.max(1,Math.round(seg/60))} min</div><div class="htit">${m?`<span class="emo" aria-hidden="true">${animal(m)}</span>`:''}${m&&esNino()?`${esc(m.nombre)} te espera`:'El viaje de hoy'}</div>${lista}<div class="acciones"><button class="btn" onclick="seguirHoy()">${pasos.some(s=>s.hecho)?'Seguir':'Empezar'} ›</button>${otros}</div></div>`}
 
 /* ---------- preguntas ---------- */
 function otrosRios(r,n){const z=zonaDe(r);return mezclar(RUTAS.filter(x=>x.id!==r.id&&zonaDe(x)===z)).concat(mezclar(RUTAS.filter(x=>x.id!==r.id&&zonaDe(x)!==z))).slice(0,n)}
@@ -432,7 +474,7 @@ function preguntaViaje(tipo,r){const V=r.vocab,card=r.pref+'escala';
 function iniciarTrazar(r){S.tra={i:0,errores:0,malos:0,fallo:null,listo:false,viaje:false,dicho:azar(VZ().recitarInicio),premio:0,ok:[]}}
 function trazarEn(i){const r=rioPor(S.rio),T=S.tra;if(!T||T.listo||S.tab!=='trazar')return;const n=r.paradas.length;
   if(i===T.i){const bien=T.malos===0;T.ok.push(bien);marcar('ciudad:'+r.id+':'+i,bien,'recordar',1);T.i++;T.malos=0;T.fallo=null;T.viaje=true;T.dicho=azar(VZ().ordenBien);audio.ping(1046);
-    if(T.i>=n){T.listo=true;T.dicho=VZ().ordenFin[T.errores===0?0:T.errores<=2?1:2];if(S.eco&&T.errores<=2){T.premio=T.errores===0?5:2;P.tesoro=(P.tesoro||0)+T.premio;T.dicho+=` +${T.premio} monedas al tesoro.`}if(T.errores<=2)hecha(r,'trazar');guardar()}}
+    if(T.i>=n){T.listo=true;T.dicho=VZ().ordenFin[T.errores===0?0:T.errores<=2?1:2];if(S.eco&&T.errores<=2){T.premio=T.errores===0?5:2;P.tesoro=(P.tesoro||0)+T.premio;T.dicho+=` +${T.premio} monedas al tesoro.`}if(T.errores<=2)hecha(r,'trazar');diaHoy().rec=r.id;guardar()}T.dicho+=unido()}
   else{T.errores++;T.malos++;T.fallo=i;T.dicho=azar(VZ().ordenMal);setTimeout(()=>{if(S.tra===T&&T.fallo===i){T.fallo=null;render(false)}},600)}
   render(false)}
 function renderTrazar(r){const V=r.vocab,T=S.tra,n=r.paradas.length,prev=T.i?r.paradas[T.i-1].nombre:r.inicio.nombre;
@@ -456,7 +498,7 @@ function iniciarQuiz(r){const n=r.paradas.length,a=Math.floor(Math.random()*n);l
     :[preguntaTipo(azar(['ciudad','imagen']),r,a),preguntaTipo(de('lejos','cruza'),r),preguntaTipo(de('duracion','primero','fecha'),r),preguntaTipo(azar(r.contexto.map(c=>c.clave)),r),preguntaTipo('fin',r),preguntaTipo(azar(['frase','orden']),r)])
     :[preguntaTipo('imagen',r,a),preguntaTipo('siguiente',r,b),preguntaTipo(azar(['cerca','fecha']),r),preguntaTipo('orden',r),preguntaTipo('fin',r),preguntaTipo(azar(['pais','fecha']),r)]);/* con una sola ruta no hay distractores de otras rutas */
   S.quiz={qs,i:0,aciertos:0,resp:null,titulo:r.nombre,modo:'rio',dicho:azar(VZ().pregunta)}}
-function iniciarRepaso(){const ids=colaHoy().slice(0,10);
+function iniciarRepaso(lista){const ids=lista||colaHoy().slice(0,10);
   if(!ids.length){S.pantalla='inicio';S.aviso=VJ().recorreFin;render();return}
   S.pantalla='quiz';S.aviso=null;S.quiz={qs:ids.map(preguntaDeCard).filter(Boolean),i:0,aciertos:0,resp:null,titulo:'Repaso',modo:'repaso'};render()}
 function iniciarReto(){const qs=[],claves=new Set();let tries=0;
@@ -466,44 +508,56 @@ function iniciarReto(){const qs=[],claves=new Set();let tries=0;
 /* ---------- estado y navegación ---------- */
 const S={pantalla:'inicio',rio:null,tab:'descender',paso:0,orden:null,quiz:null,aviso:null,foco:null,viaje:null,guias:{},llaves:{},dicho:null,rec:null,evento:null,eventosVistos:{},viajeEv:false,perfilNuevo:false,zona:null,selloNuevo:null,dichoLeido:null,bamboleo:false};
 function verZona(z){S.zona=z;render(false)}
-function abrirRio(id){S.pantalla='rio';S.rio=id;S.tab='descender';S.paso=0;S.zarpo=!!P.vistos[id];S.aviso=null;S.guias={};S.llaves={};S.dicho=null;S.animo=null;S.evento=null;S.eventosVistos={};S.viajeEv=false;iniciarEco();audio.modo=rioPor(id).vocab.sonidoTipo||'agua';prepararGuia(rioPor(id));render()}
+/* la barca anclada: si dejás una bajada a medias, la ruta se abre en esa parada, con las monedas, la bodega y las llaves (`P.anclas`);
+   `fuente` la abre desde el principio y levanta el ancla; `tab`, en otra pestaña (Recitar o Trazar, desde Hoy) */
+const anclas=()=>P.anclas||(P.anclas={});
+function anclar(r){const A=anclas(),p=S.paso;if(p>0&&p<=r.paradas.length)A[r.id]={paso:p,t:Date.now(),llaves:S.llaves,eco:S.eco&&!S.eco.cerrado?{monedas:S.eco.monedas,bodega:S.eco.bodega.slice()}:null};else delete A[r.id];guardar()}
+function abrirRio(id,fuente,tab){const r=rioPor(id);let a=anclas()[id];if(a&&(fuente||!(a.paso>=1&&a.paso<=r.paradas.length))){delete anclas()[id];a=null;guardar()}
+  S.pantalla='rio';S.rio=id;S.tab='descender';S.paso=a?a.paso:0;S.alcanzado=S.paso;S.zarpo=!!(a||P.vistos[id]);S.anclada=!!a;S.hoyListo=false;S.aviso=null;S.guias={};S.llaves=a&&a.llaves||{};S.dicho=a?azar(VZ().anclada).replace('{c}',r.paradas[a.paso-1].nombre):null;S.animo=null;S.evento=null;S.eventosVistos={};S.viajeEv=false;
+  iniciarEco(r);if(a&&a.eco&&S.eco){S.eco.monedas=a.eco.monedas;S.eco.bodega=a.eco.bodega.slice()}audio.modo=r.vocab.sonidoTipo||'agua';prepararGuia(r);if(tab)setTab(tab);else render()}
 function prepararGuia(r){const n=r.paradas.length,p=S.paso;if(p>=n||S.guias[p])return;const ii=r.paradas.map((c,i)=>i),otras=mezclar(ii.filter(i=>i>p)).concat(mezclar(ii.filter(i=>i<p-1))).slice(0,2);S.guias[p]={objetivo:p,opciones:mezclar([p,...otras]),resp:null,ok:null}}
 function responderGuia(i){const r=rioPor(S.rio),g=S.guias[S.paso];if(!g||g.resp!=null)return;g.resp=i;g.ok=i===g.objetivo;S.bamboleo=!g.ok;S.llaves[g.objetivo]=g.ok;marcar('ciudad:'+r.id+':'+g.objetivo,g.ok);
-  S.animo=g.ok?'alegre':'pensativo';S.dicho=azar(g.ok?VZ().guiaBien:VZ().guiaMal).replace('{c}',r.paradas[g.objetivo].nombre).replace('{pista}',escenaDe(r.paradas[g.objetivo]));if(g.ok)audio.ping(1046);render(false)}
+  S.animo=g.ok?'alegre':'pensativo';S.dicho=azar(g.ok?VZ().guiaBien:VZ().guiaMal).replace('{c}',r.paradas[g.objetivo].nombre).replace('{pista}',escenaDe(r.paradas[g.objetivo]))+unido();if(g.ok)audio.ping(1046);render(false)}
 function lanzarEvento(r,def){const p=S.paso,q=def.reto==='imagen'?preguntaTipo('imagen',r,Math.floor(Math.random()*p)):def.reto==='pais'?preguntaTipo('pais',r,def.tramo-1):def.reto==='ruta'?preguntaTipo('siguiente',r,def.tramo-1):preguntaTipo(def.reto,r);
   S.eventosVistos[def.tramo]=true;S.dicho=null;S.viajeEv=true;
   S.evento={def,q,resp:null,ok:null,delta:0,tramo:def.tramo,medio:puntoMedio(r,idxParada(r,p),idxParada(r,def.tramo)),dicho:azar(VZ().eventoAviso)};audio.ping(392);render()}
 function responderEvento(i){const E=S.evento;if(!E||E.resp!=null)return;const q=E.q,e=S.eco;E.resp=i;E.ok=i===q.correcta;if(q.cardId)marcar(q.cardId,E.ok);
   if(e&&!e.cerrado){E.delta=E.ok?2:-Math.min(2,e.monedas);e.monedas+=E.delta}
-  E.dicho=azar(E.ok?VZ().eventoBien:VZ().eventoMal);if(E.ok)audio.ping(1319);render(false);verNota()}
+  E.dicho=azar(E.ok?VZ().eventoBien:VZ().eventoMal)+unido();if(E.ok)audio.ping(1319);render(false);verNota()}
 const verNota=()=>{const n=document.querySelector('#panel .nota'),pie=document.getElementById('pie');if(!n||!n.getBoundingClientRect)return;const abajo=innerHeight-(pie&&!pie.hidden?pie.offsetHeight:0)-12,b=n.getBoundingClientRect().bottom;if(b>abajo)window.scrollBy({top:b-abajo,behavior:'smooth'})};/* el resultado entero, sobre el pie */
 function continuarEvento(){const E=S.evento;if(!E||E.resp==null)return;S.evento=null;paso(1,E)}
 const modo=()=>P.modo==='historia'?'historia':'mercader';
 function setModo(m){P.modo=m;guardar();render(false)}
-function iniciarEco(){S.eco=modo()==='mercader'?{monedas:10,bodega:[],dicho:null,cerrado:false,final:null}:null}
+/* el rival de una bajada: la anterior (`P.bajadas`: las monedas con que llegaste) y, cuando ya completaste la ruta, su mercader */
+function iniciarEco(r){S.eco=modo()==='mercader'?{monedas:10,bodega:[],dicho:null,cerrado:false,final:null,antes:(P.bajadas||{})[r.id],fantasma:completo(r)?r.fantasma:null}:null}
+function rival(V,e){const a=e.antes,f=e.fantasma,m=`el ${V.mercader} suele llegar con ${f}`;
+  return a!=null&&f!=null?` La vez pasada llegaste con ${a} y ${m}: a ver si les ganás.`:a!=null?` La vez pasada llegaste con ${a}: a ver si le ganás.`:f!=null?` ${cap(m)}: a ver si le ganás.`:''}
 function precio(r,g,j){if(j<g.o)return null;const k=j-g.o;if(g.d&&k>g.d)return 0;let p=g.b*(1+0.5*k);if(g.m===j)p*=2;else if(j===r.paradas.length-1&&k>0)p*=1.25;return Math.round(p)}
 function comprar(gi){const r=rioPor(S.rio),g=r.carga[gi],e=S.eco;if(!e||e.cerrado)return;
   if(e.bodega.length>=3){S.dicho=azar(VZ().sinEspacio);S.animo='pensativo'}else if(e.monedas<g.b){S.dicho=azar(VZ().sinMonedas);S.animo='pensativo'}else{S.animo='alegre';e.monedas-=g.b;e.bodega.push(gi);S.dicho=azar(VZ().compra).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));audio.ping(660)}
-  render(false)}
+  anclar(r);render(false)}
 function vender(bi){const r=rioPor(S.rio),e=S.eco;if(!e||e.cerrado)return;const g=r.carga[e.bodega[bi]],p=precio(r,g,S.paso-1);e.bodega.splice(bi,1);
   if(p>0){e.monedas+=p;S.dicho=azar(VZ().venta).replace('{n}',p);S.animo='alegre';audio.ping(1046)}else{S.animo='pensativo';S.dicho=azar(VZ().podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1))}
-  render(false)}
+  anclar(r);render(false)}
 function cerrarEco(r){const e=S.eco;if(!e||e.cerrado)return;const j=r.paradas.length-1,vend=[];e.bodega.forEach(gi=>{const g=r.carga[gi],p=precio(r,g,j)||0;e.monedas+=p;vend.push(g.n+' · '+p)});e.bodega=[];
-  const gan=e.monedas-10;P.tesoro=(P.tesoro||0)+Math.max(0,gan);e.cerrado=true;e.final={fin:e.monedas,gan,vend};S.dicho=VZ().ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+(r.fantasma!=null?' '+(e.monedas>r.fantasma?VZ().fantasma[0]:e.monedas<r.fantasma?VZ().fantasma[1].replace('{n}',r.fantasma):VZ().fantasma[2]):'');guardar()}
+  const gan=e.monedas-10,cmp=(x,v)=>x==null?'':' '+v[e.monedas>x?0:e.monedas<x?1:2].replace('{n}',x);P.tesoro=(P.tesoro||0)+Math.max(0,gan);(P.bajadas||(P.bajadas={}))[r.id]=e.monedas;e.cerrado=true;e.final={fin:e.monedas,gan,vend};
+  S.dicho=VZ().ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+cmp(e.antes,VZ().vezPasada)+cmp(e.fantasma,VZ().fantasma);guardar()}
 function zarpar(){S.zarpo=true;render(false)}
-function irInicio(){S.pantalla='inicio';S.aviso=null;render()}
+function irInicio(){S.pantalla='inicio';S.aviso=null;S.hoy=false;render()}
 function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='trazar')iniciarTrazar(r);if(t==='preguntar')iniciarQuiz(r);render()}
 function paso(d,tras){const r=rioPor(S.rio),fin=r.paradas.length+1,antes=S.paso;
   if(d>0&&!tras&&!S.evento&&antes<fin){const def=r.eventos.find(e=>e.tramo===antes+1&&!S.eventosVistos[e.tramo]);if(def){lanzarEvento(r,def);return}}
-  S.paso=Math.max(0,Math.min(fin,antes+d));if(d>0)S.zarpo=true;S.viaje={de:antes,a:S.paso};S.olas=d>0&&S.paso===fin;if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;S.animo=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}render()}
+  S.paso=Math.max(0,Math.min(fin,antes+d));if(d>0)S.zarpo=true;S.viaje={de:antes,a:S.paso};S.olas=d>0&&S.paso===fin;if(tras&&tras.medio!=null)S.viaje.medio=tras.medio;audio.remar();S.dicho=null;S.animo=null;prepararGuia(r);S.selloNuevo=null;if(d>0&&S.paso>=1&&S.paso<fin&&S.llaves[S.paso-1]===true&&sellar(r,S.paso-1)){S.selloNuevo=claveSello(r,S.paso-1);audio.ping(1318)}if(S.paso===fin){cerrarEco(r);if(!P.vistos[r.id]){P.vistos[r.id]=true;sembrar(r)}}
+  S.anclada=false;S.hoyListo=false;if(S.paso>(S.alcanzado||0)){S.alcanzado=S.paso;const h=diaHoy();h.paradas=(h.paradas||0)+1;S.hoyListo=!!S.hoy&&h.paradas===2&&S.paso<fin}anclar(r);render()}
 function reiniciarOrden(r){S.orden={pool:mezclar(unidades(r).map((u,i)=>i)),seq:[],errores:0,listo:false,fallo:null,dicho:azar(VZ().ordenInicio)}}
 function tocarChip(i){const o=S.orden,r=rioPor(S.rio);if(o.listo)return;
   if(i===o.seq.length){o.seq.push(i);o.pool=o.pool.filter(x=>x!==i);o.fallo=null;o.dicho=azar(VZ().ordenBien);if(!o.pool.length){o.listo=true;o.dicho=VZ().ordenFin[o.errores===0?0:o.errores===1?1:2];if(S.eco&&o.errores<=1){o.premio=o.errores===0?5:2;P.tesoro=(P.tesoro||0)+o.premio;o.dicho+=` +${o.premio} monedas al tesoro.`}marcar(r.pref+'orden',!o.errores);if(o.errores<=1)hecha(r,'ordenar')}}
   else{o.errores++;o.fallo=i;o.dicho=o.errores>1?`Pista: empieza con «${unidades(r)[o.seq.length].nombre[0]}».`:azar(VZ().ordenMal);setTimeout(()=>{if(S.orden===o&&o.fallo===i){o.fallo=null;render(false)}},600)}
   render(false)}
 function responder(i){const Q=S.quiz,q=Q.qs[Q.i];if(Q.resp!=null)return;Q.resp=i;const ok=i===q.correcta;Q.dicho=azar(ok?VZ().quizBien:VZ().quizMal);(Q.res=Q.res||[])[Q.i]=ok;if(ok)Q.aciertos++;if(q.cardId)marcar(q.cardId,ok);
-  if(ok&&q.cardId&&q.cardId.startsWith('ciudad:')){const [,id,k]=q.cardId.split(':'),rr=rioPor(id);if(rr&&sellar(rr,+k))Q.dicho+=` ¡Sello de ${rr.paradas[+k].nombre} para el pasaporte!`}render(false);verNota()}
-function siguiente(){const Q=S.quiz;Q.i++;Q.resp=null;Q.dicho=azar(VZ().pregunta);if(Q.i>=Q.qs.length&&Q.modo==='rio'&&S.rio&&nivelQuiz(Q)<=1)hecha(rioPor(S.rio),'preguntar');render()}
+  if(ok&&q.cardId&&q.cardId.startsWith('ciudad:')){const [,id,k]=q.cardId.split(':'),rr=rioPor(id);if(rr&&sellar(rr,+k))Q.dicho+=` ¡Sello de ${rr.paradas[+k].nombre} para el pasaporte!`}Q.dicho+=unido();render(false);verNota()}
+function siguiente(){const Q=S.quiz;Q.i++;Q.resp=null;Q.dicho=azar(VZ().pregunta);if(Q.i>=Q.qs.length&&Q.modo==='rio'&&S.rio&&nivelQuiz(Q)<=1)hecha(rioPor(S.rio),'preguntar');
+  if(Q.i===Q.qs.length&&Q.modo==='repaso'){const d=diaHoy();d.rep=(d.rep||0)+Q.qs.length;guardar()}render()}
 function otraRonda(){if(S.quiz.modo==='rio'){iniciarQuiz(rioPor(S.rio));render()}else if(S.quiz.modo==='repaso')iniciarRepaso();else iniciarReto()}
 
 /* ---------- render ---------- */
@@ -546,7 +600,7 @@ function fichaAnimal(r){const m=r.companero,il=m&&ilustracion(m,'normal');if(!il
 /*@fin:amplia*/
 function bloqueFrase(r,conLista){return `<div class="frase"><div class="fkicker">Frase para el orden</div><div class="ftexto">${marcarFrase(r.frase)}</div>${r.fraseNota?`<div class="fnota">${esc(r.fraseNota)}</div>`:''}${conLista?`<div class="flista">${esc(lista(r))}</div>`:''}</div>`}
 function renderInicio(){
-  const tarjeta=r=>`<button class="tarjeta" onclick="abrirRio('${r.id}')"><span class="emo" aria-hidden="true">${r.companero?animal(r.companero):''}</span><span class="tn">${esc(r.nombre)}</span><span class="tm">${r.vocab.tarjeta(r)}${completo(r)?` <span class="listo" title="completo">${ico('ok')}</span>`:''}</span><span class="barra"><i style="width:${Math.round(dominio(r)*100)}%"></i></span></button>`;
+  const tarjeta=r=>`<button class="tarjeta" onclick="abrirRio('${r.id}')"><span class="emo${tripu()[r.id]?' unido':''}" aria-hidden="true">${r.companero?animal(r.companero):''}</span><span class="tn">${esc(r.nombre)}</span><span class="tm">${r.vocab.tarjeta(r)}${completo(r)?` <span class="listo" title="completo">${ico('ok')}</span>`:''}</span>${puntos(r)}</button>`;
   const porLargo=(a,b)=>(b.longitud||0)-(a.longitud||0),cuadricula=rs=>`<div class="cuadricula">${rs.map(tarjeta).join('')}</div>`;
   const grupos=JUEGO.grupos.map(g=>{const rs=RUTAS.filter(g.filtro).sort(porLargo);let cuerpo=cuadricula(rs);
     if(g.porRegion){const regs=[];rs.forEach(r=>{if(!regs.includes(r.region))regs.push(r.region)});cuerpo=regs.map(reg=>{const rr=rs.filter(r=>r.region===reg);return `<div class="fkicker">${esc(reg)}<span class="cuenta">${rr.length}</span></div>${cuadricula(rr)}`}).join('')}
@@ -560,12 +614,12 @@ ${typeof renderComparar==='function'?renderComparar():''}
 <details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}<p class="fnota">${VJ().toca}</p>${JUEGO.edicion?`<p class="fnota edicion">Edición ${esc(JUEGO.edicion.nombre)} · ${num(JUEGO.edicion.kb+' KB')} · un solo archivo, sin internet.</p>`:''}</details>
 <details class="mas ajustes"><summary>Ajustes: modo, voz y progreso</summary><div class="fkicker">Modo de juego</div><div class="tabs modo"><button class="${esNino()?'on':''}" onclick="setModo('mercader')">Niño</button><button class="${esNino()?'':'on'}" onclick="setModo('historia')">Adulto</button></div><p class="fnota">${esNino()?VJ().ajustesNino:VJ().ajustesAdulto}</p>${esNino()&&voz.soporte()?`<div class="tabs modo"><button class="${P.voz!=='boton'?'on':''}" onclick="setVoz('auto')">${ico('voz')} Lee sola</button><button class="${P.voz==='boton'?'on':''}" onclick="setVoz('boton')">Solo con el botón</button></div><p class="fnota">Con «Lee sola», el animal lee cada pantalla al abrirla y lo que dice al responder.</p>`:''}${renderProgreso()}</details>`}
 function renderDescender(r){if(S.evento)return renderEvento(r);const V=r.vocab;const n=r.paradas.length,p=S.paso;
-  if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2>${bloqueFrase(r,!S.zarpo)}<div class="ficha recuerdo">/*@amplia*/${postal(r.id,0)||`/*@fin:amplia*/${escena(r.inicio.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><p>${esc(r.inicio.nota)}</p></div></div>${r.vehiculo?`<div class="nave">/*@amplia*/${laminaNave(r)||`/*@fin:amplia*/<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>/*@amplia*/`}/*@fin:amplia*/<div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+(r.fantasma!=null?` El ${V.mercader} suele llegar con ${r.fantasma}; a ver si le ganás.`:''):esc(r.vehiculo.zarpe)}</div></div>`:''}${typeof fichaAnimal==='function'?fichaAnimal(r):''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}`;
+  if(p===0)return `${globo(r,S.dicho||(r.companero&&r.companero.hola))}<p class="kicker">${botonVoz()}${V.kickerInicio(r)}${r.perfil?` · ${km(r.perfil[0][1])} m sobre el mar`:''}</p><h2>${esc(r.inicio.nombre)}</h2>${bloqueFrase(r,!S.zarpo)}<div class="ficha recuerdo">/*@amplia*/${postal(r.id,0)||`/*@fin:amplia*/${escena(r.inicio.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><p>${esc(r.inicio.nota)}</p></div></div>${r.vehiculo?`<div class="nave">/*@amplia*/${laminaNave(r)||`/*@fin:amplia*/<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>/*@amplia*/`}/*@fin:amplia*/<div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+rival(V,S.eco):esc(r.vehiculo.zarpe)}</div></div>`:''}${typeof fichaAnimal==='function'?fichaAnimal(r):''}${mas(V.contame(r.contexto[0]),`<p>${esc(r.contexto[0].texto)}</p>`,r.contexto[0].titulo)}`;
   if(p<=n){const c=r.paradas[p-1];
     const prev=p>1?r.paradas[p-2]:null;
-    return `${globo(r,S.dicho||((S.selloNuevo===claveSello(r,p-1)?`¡Sello de ${c.nombre}! `:'')+(r.companero?r.companero.paradas[p-1]:'')))}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div><div class="ficha recuerdo">/*@amplia*/${postal(r.id,p)||`/*@fin:amplia*/${escena(c.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}
+    return `${globo(r,S.dicho||((S.selloNuevo===claveSello(r,p-1)?`¡Sello de ${c.nombre}! `:'')+(r.companero?r.companero.paradas[p-1]:'')))}${S.hoyListo?`<p class="aviso-hoy">${ico('ok')} ¡Dos ${V.Parada.toLowerCase()}s nuevas! ${r.tipo==='rio'?'Si querés, la barca se queda anclada aquí hasta mañana.':'Si querés, mañana seguimos desde aquí.'}</p>`:''}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div>${S.anclada?`<p class="aviso-hoy"><button class="enlace" onclick="abrirRio('${r.id}',1)">Empezar de nuevo desde ${V.entreInicio}</button></p>`:''}<div class="ficha recuerdo">/*@amplia*/${postal(r.id,p)||`/*@fin:amplia*/${escena(c.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}
   const f=S.eco&&S.eco.final;
-  return `${globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido')}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">/*@amplia*/${postal(r.id,n+1)||`/*@fin:amplia*/${escena(r.fin.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${r.fantasma!=null?` El ${V.mercader} llegó con ${r.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave">/*@amplia*/${laminaNave(r)||`/*@fin:amplia*/<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>/*@amplia*/`}/*@fin:amplia*/<div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
+  return `${globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido')}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">/*@amplia*/${postal(r.id,n+1)||`/*@fin:amplia*/${escena(r.fin.escena)}/*@amplia*/`}/*@fin:amplia*/<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${S.eco.antes!=null?` La vez pasada llegaste con ${S.eco.antes}.`:''}${S.eco.fantasma!=null?` El ${V.mercader} llegó con ${S.eco.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave">/*@amplia*/${laminaNave(r)||`/*@fin:amplia*/<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>/*@amplia*/`}/*@fin:amplia*/<div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
 /* lo que dice cada ficha de la guía: en los viajes, el rumbo («por mar, al sur…»), que es la memoria de la forma del viaje; en los ríos, el nombre de la ciudad */
 const rotuloGuia=(r,i)=>r.paradas[i].rumbo||r.paradas[i].nombre;
 function renderGuia(r){const g=S.guias[S.paso];if(!g||S.paso>=r.paradas.length)return '';
@@ -586,14 +640,14 @@ function iniciarRecitar(r){const d=dominio(r);S.rec={i:0,revelada:false,pista:d<
 function setPista(p){S.rec.pista=p;render(false)}
 function revelar(){S.rec.revelada=true;render(false)}
 function recordada(ok){const r=rioPor(S.rio),R=S.rec,n=r.paradas.length;if(R.i>=n||!R.revelada)return;marcar('ciudad:'+r.id+':'+R.i,ok,'recordar',R.pista==='nada'?2:1);R.ok.push(ok);R.dicho=azar(ok?VZ().recitarBien:VZ().recitarMal);R.i++;R.revelada=false;
-  if(R.i>=n){const todas=R.ok.every(Boolean);if(R.ok.filter(Boolean).length>=n-1)hecha(r,'recitar');R.dicho=VZ().recitarFin[todas?0:R.ok.filter(Boolean).length>=n-1?1:2];if(S.eco&&todas){R.premio=R.pista==='nada'?5:R.pista==='iniciales'?3:1;P.tesoro=(P.tesoro||0)+R.premio;R.dicho+=` +${R.premio} monedas al tesoro.`;guardar()}}
-  render(false)}
+  if(R.i>=n){diaHoy().rec=r.id;guardar();const todas=R.ok.every(Boolean);if(R.ok.filter(Boolean).length>=n-1)hecha(r,'recitar');R.dicho=VZ().recitarFin[todas?0:R.ok.filter(Boolean).length>=n-1?1:2];if(S.eco&&todas){R.premio=R.pista==='nada'?5:R.pista==='iniciales'?3:1;P.tesoro=(P.tesoro||0)+R.premio;R.dicho+=` +${R.premio} moneda${R.premio>1?'s':''} al tesoro.`;guardar()}}
+  R.dicho+=unido();render(false)}
 function renderRecitar(r){const V=r.vocab,R=S.rec,n=r.paradas.length;
   const sel=`<div class="tabs modo"><button class="${R.pista==='frase'?'on':''}" onclick="setPista('frase')">Frase</button><button class="${R.pista==='iniciales'?'on':''}" onclick="setPista('iniciales')">Iniciales</button><button class="${R.pista==='nada'?'on':''}" onclick="setPista('nada')">Sin pista</button></div>`;
   const pista=R.pista==='frase'?`<div class="frase"><div class="ftexto">${marcarFrase(r.frase)}</div></div>`:R.pista==='iniciales'?`<div class="frase"><div class="ftexto">${r.paradas.map(c=>esc(c.nombre[0])).join(' · ')}</div></div>`:'';
   const seq=`<div class="secuencia"><span class="extremo">${V.extremoInicio}</span>${r.paradas.map((c,i)=>i<R.i?`<span class="puesto${R.ok[i]?'':' no'}">${esc(c.nombre)}</span>`:i===R.i&&R.revelada?`<span class="puesto actual">${esc(c.nombre)}</span>`:'<span class="hueco">—</span>').join('')}<span class="extremo">${V.extremoFin}</span></div>`;
   let cuerpo;
-  if(R.i>=n){const ok=R.ok.filter(Boolean).length;cuerpo=`<div class="nota${ok===n?'':' no'}">${ok} de ${n} recordadas${R.premio?` · +${R.premio} monedas al tesoro`:''}.${ok===n&&R.pista!=='nada'?' Probá con menos pista.':''}</div>`}
+  if(R.i>=n){const ok=R.ok.filter(Boolean).length;cuerpo=`<div class="nota${ok===n?'':' no'}">${ok} de ${n} recordadas${R.premio?` · +${R.premio} moneda${R.premio>1?'s':''} al tesoro`:''}.${ok===n&&R.pista!=='nada'?' Probá con menos pista.':''}</div>`}
   else if(!R.revelada)cuerpo=`<p class="pregunta">${V.Parada} ${R.i+1} de ${n}: decila en voz alta, o en tu cabeza, y después revelá.</p>`;
   else cuerpo=`<h2>${esc(r.paradas[R.i].nombre)}</h2><div class="pais">${esc(r.paradas[R.i].pais)}</div>`;
   return `${globo(r,R.dicho,'',R.ok&&R.ok.length?(R.ok[R.ok.length-1]?'alegre':'pensativo'):null)}<p class="kicker">${botonVoz()}Recitar · el palacio, habitación por habitación</p>${sel}${pista}${seq}${cuerpo}`}
@@ -630,7 +684,8 @@ function etapasHechas(r){const e=(P.etapas||{})[r.id]||{};return{descender:!!P.v
 function hecha(r,k){P.etapas=P.etapas||{};(P.etapas[r.id]=P.etapas[r.id]||{})[k]=true;guardar()}
 function renderRiel(r){const h=etapasHechas(r),V=r.vocab;return `<nav class="riel" aria-label="Etapas">${[['descender',V.bajar],['ordenar','Ordenar'],r.tipo==='rio'?['recitar','Recitar']:['trazar',V.trazar],['preguntar','Preguntar']].map(([k,t])=>`<button class="paso${S.tab===k?' aqui':''}${h[k]?' hecho':''}" onclick="setTab('${k}')"${S.tab===k?' aria-current="step"':''}><i aria-hidden="true">${h[k]?ico('ok'):''}</i><span>${t}</span></button>`).join('')}</nav>`}
 function pieQuiz(){const Q=S.quiz;if(!Q)return '';const n=Q.qs.length;
-  if(Q.i>=n){const r=Q.modo==='rio'&&S.rio&&nivelQuiz(Q)===2?rioPor(S.rio):null;return r?botones(`<button class="btn sec" onclick="otraRonda()">Otra ronda</button>`,`<button class="btn" onclick="abrirRio('${r.id}')">${r.vocab.bajar} otra vez ›</button>`):botones(`<button class="btn sec" onclick="irInicio()">${VJ().volver}</button>`,`<button class="btn" onclick="otraRonda()">Otra ronda</button>`)}
+  if(Q.i>=n){if(S.hoy&&Q.modo==='repaso')return botones(`<button class="btn sec" onclick="irInicio()">${VJ().volver}</button>`,botonHoy());
+    const r=Q.modo==='rio'&&S.rio&&nivelQuiz(Q)===2?rioPor(S.rio):null;return r?botones(`<button class="btn sec" onclick="otraRonda()">Otra ronda</button>`,`<button class="btn" onclick="abrirRio('${r.id}',1)">${r.vocab.bajar} otra vez ›</button>`):botones(`<button class="btn sec" onclick="irInicio()">${VJ().volver}</button>`,`<button class="btn" onclick="otraRonda()">Otra ronda</button>`)}
   if(Q.resp!=null)return botones('',`<button class="btn" onclick="siguiente()">${Q.i+1===n?'Ver resultado ›':'Siguiente ›'}</button>`);
   return ''}
 let RIEL='';const telefono=()=>!!(window.matchMedia&&window.matchMedia('(max-width:759px),(max-height:520px)').matches);
@@ -647,10 +702,10 @@ function renderPie(){RIEL='';if(S.pantalla==='inicio'||S.pantalla==='pasaporte')
         else acto=botones(p>0?atrasEnlace:'',`<button class="btn" onclick="paso(1)">${V.avanzar} ${esc(r.paradas[g.objetivo].nombre)} ›</button>`)+renderGuia(r)}}
     else if(S.tab==='ordenar'){if(S.orden.listo)acto=botones(`<button class="btn sec" onclick="setTab('ordenar')">Otra vez</button>`,r.tipo==='rio'?`<button class="btn" onclick="setTab('recitar')">Recitar ›</button>`:`<button class="btn" onclick="setTab('trazar')">${V.trazar} ›</button>`)}
     else if(S.tab==='recitar'){const R=S.rec;
-      if(R.i>=n)acto=botones(`<button class="btn sec" onclick="setTab('recitar')">Otra vez</button>`,`<button class="btn" onclick="setTab('preguntar')">Preguntar ›</button>`);
+      if(R.i>=n)acto=botones(`<button class="btn sec" onclick="setTab('recitar')">Otra vez</button>`,S.hoy?botonHoy():`<button class="btn" onclick="setTab('preguntar')">Preguntar ›</button>`);
       else if(!R.revelada)acto=botones('',`<button class="btn" onclick="revelar()">Revelar</button>`);
       else acto=botones(`<button class="btn sec" onclick="recordada(false)">No la sabía</button>`,`<button class="btn" onclick="recordada(true)">La sabía</button>`)}
-    else if(S.tab==='trazar'){if(S.tra.listo)acto=botones(`<button class="btn sec" onclick="setTab('trazar')">Otra vez</button>`,`<button class="btn" onclick="setTab('preguntar')">Preguntar ›</button>`)}
+    else if(S.tab==='trazar'){if(S.tra.listo)acto=botones(`<button class="btn sec" onclick="setTab('trazar')">Otra vez</button>`,S.hoy?botonHoy():`<button class="btn" onclick="setTab('preguntar')">Preguntar ›</button>`)}
     else acto=pieQuiz()}
   else acto=pieQuiz();
   if(riel&&telefono()){RIEL=riel;riel=''}

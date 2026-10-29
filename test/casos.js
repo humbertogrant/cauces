@@ -37,7 +37,7 @@ for(const r of RIVERS)for(const t of ['ciudad','cerca','siguiente','antigua','mo
 // flujo completo
 setTimeout(()=>{
 for(const r of RIVERS){
-  abrirRio(r.id);
+  abrirRio(r.id,1);
   bajar(r.ciudades.length+1);
   if(!P.vistos[r.id])throw 'no visto '+r.id;
   setTab('ordenar');
@@ -53,14 +53,14 @@ iniciarReto();for(let i=0;i<10;i++){responder(0);siguiente()}
 irInicio();
 iniciarRepaso();console.log('repaso qs',S.quiz.qs.length,'pendientes',pendientes().length);
 const svg=document.querySelector('#capa').innerHTML;console.log('capa ok',svg.length>1000, 'dominio nilo',dominio(rioPor('nilo')).toFixed(2));
-abrirRio('danubio');bajar(7);
+abrirRio('danubio',1);bajar(7);
 console.log(document.querySelector('#capa').innerHTML.match(/<text[^>]*>[^<]*<\/text>/g));
 
 for(const r of RIVERS){const n=NAVES[r.id];if(!n)throw 'sin nave '+r.id;if(n.puertos.length!==r.ciudades.length)throw 'puertos '+r.id+' '+n.puertos.length+' vs '+r.ciudades.length;
   for(const c of r.ciudades)if(!c.puerto||!c.carga)throw 'puerto vacío '+r.id+' '+c.nombre;
   for(const k of ['nombre','tipo','desc','zarpe','llegada'])if(!n[k])throw 'nave '+r.id+' falta '+k;
   if(r.ciudades[r.ciudades.length-1].carga!=='vendida')throw 'no vendida '+r.id}
-abrirRio('tigris');let ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="nave"')<0)throw 'sin bloque nave';
+abrirRio('tigris',1);let ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="nave"')<0)throw 'sin bloque nave';
 paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="mercado"')<0)throw 'sin mercado tigris';
 if(document.querySelector('#capa').innerHTML.indexOf('<g id="barca" class="barca"><g class="mece"><g transform="scale(')<0)throw 'sin glifo';
 bajar(6);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('odres vuelven a Mosul')<0)throw 'sin llegada';
@@ -68,14 +68,14 @@ console.log('naves OK', document.getElementById('barca')._transform);
 
 for(const r of RIVERS){const m=MASCOTAS[r.id];if(!m)throw 'sin mascota '+r.id;if(m.paradas.length!==r.ciudades.length)throw 'paradas mascota '+r.id+' '+m.paradas.length+' vs '+r.ciudades.length;
   for(const k of ['nombre','especie','emoji','hola','mar'])if(!m[k])throw 'mascota '+r.id+' falta '+k}
-abrirRio('volga');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="globo"')<0||ph.indexOf('Soy Belu')<0)throw 'sin globo hola';
+abrirRio('volga',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="globo"')<0||ph.indexOf('Soy Belu')<0)throw 'sin globo hola';
 paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('tan angosto')<0)throw 'sin globo parada';
 if(document.querySelector('#capa').innerHTML.indexOf('id="masc"')<0)throw 'sin mascota en mapa';
 console.log('masc transform',document.getElementById('masc')._transform);
 setTab('ordenar');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="globo"')<0)throw 'sin globo orden';
 tocarChip(S.orden.pool.find(i=>i!==0));if(!VOCES.ordenMal.includes(S.orden.dicho))throw 'voz mal';
 setTab('preguntar');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="globo"')<0)throw 'sin globo quiz';
-responder(S.quiz.qs[0].correcta);if(!VOCES.quizBien.includes(S.quiz.dicho))throw 'voz bien';
+responder(S.quiz.qs[0].correcta);if(!VOCES.quizBien.some(v=>S.quiz.dicho===v||S.quiz.dicho.startsWith(v+' ¡Sello de ')))throw 'voz bien: '+S.quiz.dicho;/* acertar una ciudad sin sello lo gana y el animal lo dice */
 irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="emo"')<0)throw 'sin emoji lista';
 iniciarReto();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="globo"')>=0)throw 'globo antes de responder en reto';
 responder(0);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="globo"')<0)throw 'sin globo tras responder en reto';
@@ -87,7 +87,7 @@ for(const r of RIVERS){const M=MERCADOS[r.id];if(!M||!M.length)throw 'sin mercad
     const pf=precio(r,g,r.ciudades.length-1);if(pf==null)throw 'precio null '+r.id+' '+g.n}
   // oferta en cada puerto salvo el último
   for(let j=0;j<r.ciudades.length-1;j++)if(!M.some(g=>g.o===j))console.log('AVISO sin oferta',r.id,r.ciudades[j].nombre)}
-abrirRio('niger');paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="mercado"')<0||sinHtml(ph).indexOf('comprar · 5')<0)throw 'sin mercado';
+abrirRio('niger',1);paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="mercado"')<0||sinHtml(ph).indexOf('comprar · 5')<0)throw 'sin mercado';
 comprar(0);comprar(0);if(S.eco.monedas!==0||S.eco.bodega.length!==2)throw 'compra mal '+S.eco.monedas;
 comprar(0);if(!VOCES.sinMonedas.includes(S.dicho))throw 'voz sin monedas';
 bajar(2);/* Tombuctú (el harmatán salta en el tramo 3 y bajar lo resuelve) */ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('vender · 20')<0)throw 'precio oro Tombuctú: '+ph.match(/vender · \d+/g);
@@ -99,26 +99,26 @@ ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Cuentas del
 paso(-1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Cerrado: ya llegaste')<0)throw 'mercado no cerrado al volver';
 const tAntes=P.tesoro;paso(1);if(P.tesoro!==tAntes)throw 'doble tesoro';
 // perecedero
-abrirRio('tigris');paso(1);comprar(0);bajar(3);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('podrido · tirar')<0)throw 'sandía no se pudrió';vender(0);if(!VOCES.podrido.includes(S.dicho.replace('Sandías','{g}')))console.log('voz podrido',S.dicho);
+abrirRio('tigris',1);paso(1);comprar(0);bajar(3);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('podrido · tirar')<0)throw 'sandía no se pudrió';vender(0);if(!VOCES.podrido.includes(S.dicho.replace('Sandías','{g}')))console.log('voz podrido',S.dicho);
 irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Tesoro:')<0)throw 'sin tesoro en inicio';
 console.log('economía OK');
 
 // interruptor
 irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="tabs modo"')<0||ph.indexOf('Tesoro:')<0)throw 'sin interruptor';
-abrirRio('nilo');paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="mercado"')<0||ph.indexOf('class="puerto"')>=0)throw 'mercader: debe haber mercado y no narración';
+abrirRio('nilo',1);paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="mercado"')<0||ph.indexOf('class="puerto"')>=0)throw 'mercader: debe haber mercado y no narración';
 irInicio();setModo('historia');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Tesoro:')>=0||ph.indexOf('sin monedas')<0)throw 'historia inicio mal';
-abrirRio('nilo');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('bodega vacía')<0||ph.indexOf('Zarpás del lago Victoria')<0)throw 'historia zarpe mal';
+abrirRio('nilo',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('bodega vacía')<0||ph.indexOf('Zarpás del lago Victoria')<0)throw 'historia zarpe mal';
 paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="mercado"')>=0||ph.indexOf('El mercader llevaba: café')<0)throw 'historia: debe haber narración y no mercado';
 if(S.eco!==null)throw 'eco no nulo';
 bajar(6);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Cuentas del viaje')>=0||ph.indexOf('falúa no sale al mar')<0)throw 'historia mar mal';
 if(JSON.parse(window.localStorage.getItem(store.clave(PERFILES.activo))).modo!=='historia')throw 'modo no persistido';
-setModo('mercader');abrirRio('nilo');paso(1);if(!S.eco||S.eco.monedas!==10)throw 'vuelta a mercader mal';
+setModo('mercader');abrirRio('nilo',1);paso(1);if(!S.eco||S.eco.monedas!==10)throw 'vuelta a mercader mal';
 console.log('interruptor OK');
 
 setModo('mercader');
 console.log('fantasma',RIVERS.map(r=>r.nombre+' '+r.fantasma).join(' | '));
 // guía: respuesta correcta abre el mercado; incorrecta lo cierra a compras
-abrirRio('nilo');ph=todo();if(ph.indexOf('¿Cuál es la próxima parada?')<0||ph.indexOf('Zarpar a')>=0)throw 'guía inicial mal';
+abrirRio('nilo',1);ph=todo();if(ph.indexOf('¿Cuál es la próxima parada?')<0||ph.indexOf('Zarpar a')>=0)throw 'guía inicial mal';
 if(S.guias[0].opciones.length!==3||!S.guias[0].opciones.includes(0))throw 'opciones guía mal';
 responderGuia(0);ph=todo();if(ph.indexOf('Zarpar a Jinja')<0||!VOCES.guiaBien.some(v=>S.dicho.startsWith(v.split('{c}')[0])))throw 'guía bien mal '+S.dicho;
 paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Se vende aquí')<0)throw 'mercado no abrió tras acierto';
@@ -127,24 +127,31 @@ if(S.guias[1].opciones.includes(0))throw 'la guía ofrece la parada actual';
 const mal=S.guias[1].opciones.find(i=>i!==1);responderGuia(mal);if(S.llaves[1]!==false)throw 'llave no cerrada';if(!/^(Era|Casi: era) Juba[:.] /.test(S.dicho)||!/jinete|bebé|país/.test(S.dicho))throw 'la guía, al fallar, no trae la imagen: '+S.dicho;
 paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('solo vendés')<0||ph.indexOf('Se vende aquí')>=0)throw 'mercado no se cerró';
 // pista con hueco
-abrirRio('niger');paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('se paga mejor en T_______')<0)throw 'pista sin hueco: '+ph.match(/se paga mejor en [^<]*/);
+abrirRio('niger',1);paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('se paga mejor en T_______')<0)throw 'pista sin hueco: '+ph.match(/se paga mejor en [^<]*/);
 // ordenar premia
 setTab('ordenar');for(let i=0;i<7;i++)tocarChip(i);if(S.orden.premio!==5||!/\+5 monedas/.test(S.orden.dicho))throw 'premio orden mal';
 // recitar
 setTab('recitar');ph=todo();if(ph.indexOf('Recitar')<0||ph.indexOf('Revelar')<0)throw 'recitar mal';
 setPista('nada');for(let i=0;i<7;i++){revelar();recordada(true)}if(S.rec.i!==7||S.rec.premio!==5)throw 'recitar fin mal '+S.rec.premio;
 ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('7 de 7 recordadas')<0)throw 'sin resumen recitar';
-// fantasma en cuentas
-abrirRio('niger');bajar(8);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('El mercader de la ruta llegó con')<0)throw 'sin fantasma en cuentas';
-if(!/mercader de la ruta/.test(S.dicho))throw 'dicho sin fantasma';
+// el rival: la bajada anterior y, cuando ya completaste la ruta, el mercader de la ruta (el Níger ya se bajó una vez, sin sellos)
+{const nb=rioPor('niger'),antes=P.bajadas.niger;if(antes==null)throw 'la bajada no guardó con cuánto llegaste';
+ abrirRio('niger',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf(`La vez pasada llegaste con ${antes}: a ver si le ganás.`)<0||ph.indexOf('suele llegar con')>=0)throw 'el rival de la segunda bajada: '+(ph.match(/Zarpás[^<]*/)||[''])[0];
+ bajar(8);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf(`La vez pasada llegaste con ${antes}.`)<0||ph.indexOf('El mercader de la ruta llegó con')>=0)throw 'cuentas con la vez pasada';
+ if(!VOCES.vezPasada.some(v=>S.dicho.indexOf(v.replace('{n}',antes))>=0)||/mercader de la ruta/.test(S.dicho))throw 'dicho con la vez pasada: '+S.dicho;
+ if(P.bajadas.niger!==S.eco.monedas)throw 'la bajada nueva no quedó guardada';
+ nb.paradas.forEach((c,i)=>sellos()[claveSello(nb,i)]=Date.now());const ultima=P.bajadas.niger;
+ abrirRio('niger',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf(`La vez pasada llegaste con ${ultima} y el mercader de la ruta suele llegar con ${nb.fantasma}: a ver si les ganás.`)<0)throw 'el mercader no llegó con la ruta completa: '+(ph.match(/Zarpás[^<]*/)||[''])[0];
+ bajar(8);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('El mercader de la ruta llegó con')<0)throw 'sin fantasma en cuentas';
+ if(!/mercader de la ruta/.test(S.dicho))throw 'dicho sin fantasma'}
 // historia: guía sin mercado
-setModo('historia');abrirRio('rin');responderGuia(S.guias[0].opciones.find(i=>i!==0));if(!/^(Era|Casi: era) Basilea[:.] /.test(S.dicho)||/vender/.test(S.dicho))throw 'guía mal en Adulto: '+S.dicho;
+setModo('historia');abrirRio('rin',1);responderGuia(S.guias[0].opciones.find(i=>i!==0));if(!/^(Era|Casi: era) Basilea[:.] /.test(S.dicho)||/vender/.test(S.dicho))throw 'guía mal en Adulto: '+S.dicho;
 setModo('mercader');
 console.log('uno y dos OK');
 
 if(document.getElementById('lagos')._d.length<5000||document.getElementById('fronteras')._d.length<5000)throw 'capas vacías';
 irInicio();if(document.getElementById('fronteras').style.display!=='none')throw 'fronteras visibles en mundo';
-abrirRio('rin');if(document.getElementById('fronteras').style.display!=='')throw 'fronteras ocultas en río';
+abrirRio('rin',1);if(document.getElementById('fronteras').style.display!=='')throw 'fronteras ocultas en río';
 plegarMapa();
 console.log('mapa OK');
 
@@ -159,7 +166,7 @@ for(const r of RIVERS){const E=EVENTOS[r.id],n=r.ciudades.length;if(!E||!E.lengt
 for(const id in EVENTOS)if(!rioPor(id))throw 'evento de río inexistente '+id;
 console.log('eventos',nEv);
 // eventos: flujo en Mercader (Nilo: cocodrilo en el tramo 3, cataratas en el 4)
-setModo('mercader');abrirRio('nilo');bajar(2);const mAntes=S.eco.monedas;
+setModo('mercader');abrirRio('nilo',1);bajar(2);const mAntes=S.eco.monedas;
 paso(1);if(!S.evento||S.paso!==2)throw 'evento no saltó o el paso avanzó';
 ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="evento"')<0||ph.indexOf('Cocodrilos del Sudd')<0||ph.indexOf('Entre Juba y Jartum')<0||ph.indexOf('Seguir hacia')>=0||ph.indexOf('class="globo')<0)throw 'pantalla de evento';
 if(document.querySelector('#capa').innerHTML.indexOf('id="barca"')<0)throw 'evento sin barca';
@@ -176,7 +183,7 @@ responderEvento(q.correcta);if(S.evento.ok!==true||S.eco.monedas!==m2+2)throw 'p
 if(!P.cards['rio:nilo:orden']||P.cards['rio:nilo:orden'].box<1)throw 'ruta no marcó orden';
 continuarEvento();if(S.paso!==4)throw 'no llegó a Asuán';
 // eventos: Historia sin monedas; la aduana pregunta el país de la próxima parada
-setModo('historia');abrirRio('danubio');bajar(3);paso(1);if(!S.evento||S.evento.def.reto!=='pais')throw 'aduana no saltó';
+setModo('historia');abrirRio('danubio',1);bajar(3);paso(1);if(!S.evento||S.evento.def.reto!=='pais')throw 'aduana no saltó';
 q=S.evento.q;if(q.texto.indexOf('Linz')<0||q.opciones[q.correcta]!=='Austria'||q.cardId)throw 'pregunta aduana '+q.texto;
 {const r=rioPor('danubio'),m=S.evento.medio,a=r.ciudades[2].idx,b=r.ciudades[3].idx;/* el punto medio entre Passau y Linz debe quedar entre ambos, nunca encima de una parada */
   if(m.k<a||m.k>=b||m.pt.join()===r.curso[a].join()||m.pt.join()===r.curso[b].join())throw 'punto medio aduana '+JSON.stringify(m)+' '+a+'-'+b;
@@ -185,7 +192,7 @@ responderEvento(q.correcta);if(S.eco!==null||S.evento.delta!==0)throw 'historia 
 ph=sinNum(document.querySelector('#panel').innerHTML);if(/[+−]2 monedas/.test(ph))throw 'historia menciona monedas';
 continuarEvento();if(S.paso!==4)throw 'no llegó a Linz';
 // eventos: último tramo (Amazonas: pororoca) llega al mar
-abrirRio('amazonas');bajar(5);paso(1);if(!S.evento||S.evento.tramo!==6)throw 'pororoca no saltó';
+abrirRio('amazonas',1);bajar(5);paso(1);if(!S.evento||S.evento.tramo!==6)throw 'pororoca no saltó';
 ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Entre Belém y el mar')<0)throw 'kicker del mar';
 responderEvento(S.evento.q.correcta);ph=todo();if(ph.indexOf('Seguir hacia el mar')<0)throw 'sin seguir al mar';
 continuarEvento();if(S.paso!==6||S.evento)throw 'no llegó al mar';
@@ -203,14 +210,14 @@ console.log('eventos OK');
 // voz: limpieza del texto para el sintetizador
 {const t=paraVoz('<b>M</b>i [S]obrino &amp; 6 650 km, siglo XV, siglos I-VI, c. 1550 a. C., 161 m, 11 km³, (___ suena a jinete) «hola»'),e='Mi Sobrino & 6650 kilómetros, siglo 15, siglos 1-6, hacia 1550 antes de Cristo, 161 metros, 11 kilómetros cúbicos, (esta ciudad suena a jinete) hola';if(t!==e)throw 'paraVoz: '+t}
 // voz: botón en el globo y lectura por pantalla
-const ss=window.speechSynthesis;setModo('mercader');setVoz('boton');abrirRio('nilo');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="voz"')<0)throw 'sin botón de voz';
+const ss=window.speechSynthesis;setModo('mercader');setVoz('boton');abrirRio('nilo',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="voz"')<0)throw 'sin botón de voz';
 let lec=lectura();if(!/^¡Soy Hipo!/.test(lec[0])||lec[1]!=='Nacimiento: Lago Victoria y lago Tana.'||lec[2]!=='¿Cuál es la próxima parada?'||!/^primera: /.test(lec[3])||lec.length!==6)throw 'lectura fuente '+JSON.stringify(lec);
 voz.leer();if(!voz.hablando||ss.cola.length!==6||ss.cola[0].voice.lang!=='es-CR'||ss.cola[0].text!==paraVoz(lec[0]))throw 'voz.leer '+ss.cola.length;
 voz.leer();if(voz.hablando||ss.cola.length)throw 'la voz no se calla';
 paso(1);lec=lectura();if(lec[1]!=='Parada 1 de 6: Jinja, Uganda.'||!/^Imagen para recordar: Un jinete/.test(lec[2])||lec.some(t=>/Ripon/.test(t)))throw 'lectura parada '+JSON.stringify(lec);
-setModo('historia');abrirRio('nilo');paso(1);if(!lectura().some(t=>/Ripon/.test(t)))throw 'Historia debe leer el dato';setModo('mercader');
+setModo('historia');abrirRio('nilo',1);paso(1);if(!lectura().some(t=>/Ripon/.test(t)))throw 'Historia debe leer el dato';setModo('mercader');
 // voz: evento, ordenar y quiz leen las opciones numeradas
-abrirRio('nilo');bajar(2);paso(1);lec=lectura();if(!/^Cocodrilos del Sudd\. En el pantano/.test(lec[1])||!/^¿De qué ciudad del Nilo/.test(lec[2])||!/^cuarta: /.test(lec[6])||lec.length!==7)throw 'lectura evento '+JSON.stringify(lec);
+abrirRio('nilo',1);bajar(2);paso(1);lec=lectura();if(!/^Cocodrilos del Sudd\. En el pantano/.test(lec[1])||!/^¿De qué ciudad del Nilo/.test(lec[2])||!/^cuarta: /.test(lec[6])||lec.length!==7)throw 'lectura evento '+JSON.stringify(lec);
 responderEvento(S.evento.q.correcta);lec=lectura();if(lec.length!==4||!/ Ganás 2 monedas\.$/.test(lec[3]))throw 'lectura evento resuelto '+JSON.stringify(lec);
 setTab('ordenar');lec=lectura();if(lec.length!==8||!/^Tocá las 6 ciudades/.test(lec[1]))throw 'lectura ordenar '+JSON.stringify(lec);
 setTab('preguntar');lec=lectura();if(lec.length!==2+S.quiz.qs[0].opciones.length||!/^primera: /.test(lec[2]))throw 'lectura quiz '+JSON.stringify(lec);
@@ -219,7 +226,7 @@ console.log('voz OK');
 
 // fuera de Claude: sin llamadas a ningún servicio, progreso por perfil en localStorage, copia en JSON
 if(typeof otraImagen!=='undefined')throw 'otraImagen sigue existiendo';
-abrirRio('nilo');paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(/Claude|otraImagen|class="ia"/.test(ph))throw 'quedó un resto de Claude en la parada';
+abrirRio('nilo',1);paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(/Claude|otraImagen|class="ia"/.test(ph))throw 'quedó un resto de Claude en la parada';
 irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(/dentro de Claude/.test(ph)||ph.indexOf('¿Quién juega?')<0||ph.indexOf('>Capitán<')<0||ph.indexOf('guardar en un archivo')<0||ph.indexOf('type="file"')<0)throw 'inicio sin perfiles o con restos de Claude';
 const cardsCap=Object.keys(P.cards).length;if(!cardsCap||PERFILES.activo!=='Capitán')throw 'Capitán sin progreso';
 crearPerfil('  Ana  ');if(PERFILES.activo!=='Ana'||Object.keys(P.cards).length)throw 'perfil nuevo mal';
@@ -245,18 +252,18 @@ console.log('perfiles OK');
  let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('class="zona"')<0||capa.indexOf('Costa Rica')<0||capa.indexOf("abrirRio('tempisque')")>=0||capa.indexOf("abrirRio('nilo')")<0)throw 'mundo: marcador de zona o ríos tocables mal';
  verZona('cr');capa=document.querySelector('#capa').innerHTML;if(capa.indexOf("abrirRio('tempisque')")<0||capa.indexOf("abrirRio('nilo')")>=0||capa.indexOf('>Sarapiquí<')<0)throw 'zona: ríos tocables o etiquetas mal';
  if(document.querySelector('.mundo').hidden!==false)throw 'botón Mundo oculto en zona';
- abrirRio('sanjuan');bajar(3);paso(1);if(!S.evento||S.evento.def.reto!=='pais'||S.evento.q.opciones[S.evento.q.correcta]!=='Costa Rica')throw 'frontera del San Juan';
+ abrirRio('sanjuan',1);bajar(3);paso(1);if(!S.evento||S.evento.def.reto!=='pais'||S.evento.q.opciones[S.evento.q.correcta]!=='Costa Rica')throw 'frontera del San Juan';
  responderEvento(S.evento.q.correcta);continuarEvento();if(document.querySelector('.mundo').hidden!==true)throw 'botón Mundo visible en un río';
  irInicio();if(S.zona!=='cr')throw 'volver debe conservar la zona';verZona(null);if(document.querySelector('.mundo').hidden!==true)throw 'botón Mundo visible en el mundo';
  console.log('Costa Rica OK')}
 // pasaporte: el sello se gana llegando con la guía acertada; dorado con caja ≥ 3; el río completo se pinta en el mapa
-{setModo('mercader');abrirRio('rin');const r=rioPor('rin'),n=r.ciudades.length;
+{setModo('mercader');abrirRio('rin',1);const r=rioPor('rin'),n=r.ciudades.length;
  for(let i=0;i<n;i++){responderGuia(i);paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}}
  if(sellosDe(r)!==n||!completo(r))throw 'sellos del Rin '+sellosDe(r);
  ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="sello-nuevo"')<0||ph.indexOf('Sello de Rotterdam')<0)throw 'sin aviso de sello nuevo';
  if(!JSON.parse(window.localStorage.getItem(store.clave(PERFILES.activo))).sellos['rin:0'])throw 'sello no persistido';
  if(!lectura().some(t=>/Sello de Rotterdam/.test(t)))throw 'la voz no lee el sello';
- abrirRio('volga');responderGuia(S.guias[0].opciones.find(i=>i!==0));paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}
+ abrirRio('volga',1);responderGuia(S.guias[0].opciones.find(i=>i!==0));paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}
  if(sellosDe(rioPor('volga'))!==0)throw 'sello sin acertar la guía';ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('te espera')<0)throw 'sin nota de sello pendiente';
  paso(-1);paso(1);if(sellosDe(rioPor('volga'))!==0)throw 'sello al ir y volver';
  irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(!/Pasaporte \(\d+\)/.test(ph)||ph.indexOf('class="listo"')<0)throw 'inicio sin pasaporte';
@@ -267,12 +274,12 @@ console.log('perfiles OK');
  irInicio();console.log('pasaporte OK')}
 // interruptor Niño/Adulto: el niño ve textos plegados, animal y lectura automática; el adulto, todo el texto, animal solo para reaccionar, sin lectura sola
 {setModo('mercader');setVoz('auto');irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('>Niño<')<0||ph.indexOf('>Adulto<')<0||ph.indexOf('Lee sola')<0)throw 'sin interruptor Niño/Adulto';
- const ss=window.speechSynthesis;abrirRio('nilo');if(!voz.hablando||!ss.cola.length||!/Soy Hipo/.test(ss.cola[0].text))throw 'niño: no leyó sola al abrir el río';
+ const ss=window.speechSynthesis;abrirRio('nilo',1);if(!voz.hablando||!ss.cola.length||!/Soy Hipo/.test(ss.cola[0].text))throw 'niño: no leyó sola al abrir el río';
  ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<details class="mas">')<0||ph.indexOf('Contame más')<0||ph.indexOf('<h3>Ruta antigua</h3>')>=0)throw 'niño: ruta antigua sin plegar';
  const antes=ss.cola.length;responderGuia(0);if(!(ss.cola.length>0&&ss.cola.length<antes)||!/Zarpamos|acordaba|Rumbo/.test(ss.cola[0].text))throw 'niño: no leyó la reacción de la guía '+ss.cola.length;
  paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<details class="mas">')<0||document.querySelector('#capa').innerHTML.indexOf('id="masc"')<0)throw 'niño: dato sin plegar o sin mascota en la barca';
- setVoz('boton');abrirRio('nilo');if(voz.hablando)throw 'con el botón no debe leer sola';
- setModo('historia');setVoz('auto');abrirRio('nilo');ph=sinNum(document.querySelector('#panel').innerHTML);if(voz.hablando||ph.indexOf('class="globo"')<0||ph.indexOf('<details')>=0||ph.indexOf('<h3>Ruta antigua</h3>')<0||(ph.match(/class="voz/g)||[]).length!==1)throw 'adulto: leyó sola, escondió al animal, plegó texto o no tiene un solo botón de voz';
+ setVoz('boton');abrirRio('nilo',1);if(voz.hablando)throw 'con el botón no debe leer sola';
+ setModo('historia');setVoz('auto');abrirRio('nilo',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(voz.hablando||ph.indexOf('class="globo"')<0||ph.indexOf('<details')>=0||ph.indexOf('<h3>Ruta antigua</h3>')<0||(ph.match(/class="voz/g)||[]).length!==1)throw 'adulto: leyó sola, escondió al animal, plegó texto o no tiene un solo botón de voz';
  responderGuia(0);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="globo"')<0)throw 'adulto: la reacción de la guía debe verse';
  paso(1);if(document.querySelector('#capa').innerHTML.indexOf('id="masc"')<0)throw 'adulto: el animal debe ir en la barca también';
  if(!lectura().some(t=>/Ripon/.test(t)))throw 'adulto: la voz debe leer el dato';
@@ -281,22 +288,54 @@ console.log('perfiles OK');
  const d=JSON.parse(progresoJSON());if(d.progreso.voz!=='auto')throw 'voz fuera del json';
  setModo('mercader');setVoz('boton');irInicio();console.log('interruptor Niño/Adulto OK')}
 // Hoy: las nuevas entran con tope diario e intercalando ríos; las vencidas ya repasadas entran siempre; el día reinicia el tope
-{crearPerfil('Hoy');abrirRio('nilo');bajar(7);abrirRio('rin');bajar(8);irInicio();
+{crearPerfil('Hoy');abrirRio('nilo',1);bajar(7);abrirRio('rin',1);bajar(8);irInicio();
  const nuevas=Object.keys(P.cards).filter(id=>P.cards[id].nuevo).length;if(nuevas<15)throw 'sembrar no marca nuevas '+nuevas;
  const cola=colaHoy();if(cola.length!==NUEVAS_POR_DIA)throw 'tope diario '+cola.length;
  if(cola[0].split(':')[1]===cola[1].split(':')[1])throw 'no intercala ríos '+cola.slice(0,2);
- ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="hoy"')<0||ph.indexOf('10 tarjetas por repasar')<0||ph.indexOf('unos 3 min')<0||ph.indexOf('esperando turno')<0||ph.indexOf('intercalados')<0)throw 'bloque Hoy: '+(ph.match(/class="hoy".{0,260}/)||[''])[0];
+ {const v=viajeHoy(),h=document.querySelector('#panel').innerHTML;ph=sinHtml(sinNum(h));if(v.map(s=>s.k+(s.hecho?'✓':'')).join()!=='rec,rep,baj✓'||h.indexOf('class="pasos-hoy"')<0||ph.indexOf(`Recitar el ${v[0].r.nombre} de memoria`)<0||!/Repasar \d+ preguntas/.test(ph)||!/Hoy · unos \d+ min/.test(ph))throw 'bloque Hoy: '+ph.slice(0,300)}
  iniciarRepaso();if(S.quiz.qs.length!==10)throw 'repaso de hoy '+S.quiz.qs.length;for(let i=0;i<10;i++){responder(S.quiz.qs[S.quiz.i].correcta);siguiente()}
  if(P.dia.nuevas!==10||colaHoy().length!==0)throw 'tope no se agota '+P.dia.nuevas+' '+colaHoy().length;
  const espera=nuevasEnEspera();if(espera<5)throw 'nuevas en espera '+espera;
- irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Nada pendiente hoy')<0||!/mañana entran \d+ más/.test(ph))throw 'Hoy sin nada: '+(ph.match(/class="hoy".{0,300}/)||[''])[0];
+ irInicio();ph=sinHtml(sinNum(document.querySelector('#panel').innerHTML));if(!viajeHoy().find(s=>s.k==='rep').hecho||ph.indexOf('Repasar 10 preguntas')<0||ph.indexOf('Seguir ›')<0)throw 'Hoy tras el repaso: '+ph.slice(0,300);
  P.cards['rio:nilo:mar']={box:1,due:0};if(colaHoy().length!==1)throw 'la vencida repasada no entra';
  {const e0=nuevasEnEspera();P.cards['ciudad:ninguno:1']={box:1,due:0};P.cards['ciudad:ninguno:2']={box:0,due:0,nuevo:true};if(colaHoy().length!==1||nuevasEnEspera()!==e0)throw 'las tarjetas de una ruta que esta edición no trae no se repasan';delete P.cards['ciudad:ninguno:1'];delete P.cards['ciudad:ninguno:2']}/* pasaporte compartido entre ediciones */
  const espera2=nuevasEnEspera();P.dia.fecha='2000-01-01';if(colaHoy().length!==1+Math.min(espera2,NUEVAS_POR_DIA))throw 'no reinicia el día '+colaHoy().length+' vs '+(1+Math.min(espera2,NUEVAS_POR_DIA));
  const d=JSON.parse(progresoJSON());if(!d.progreso.dia)throw 'día fuera del json';
  quitarPerfil();console.log('Hoy OK')}
+// Hoy, un viaje corto: recitar, repasar y bajar; lo hecho queda en P.dia; la barca anclada espera con sus monedas y su bodega
+{crearPerfil('Viaje');abrirRio('nilo',1);bajar(7);irInicio();const nilo=rioPor('nilo');
+ let v=viajeHoy();if(v.map(s=>s.k+(s.hecho?'✓':'')).join()!=='rec,rep,baj✓'||v[0].r!==nilo||v[1].ids.some(id=>id.startsWith('ciudad:nilo:')))throw 'viaje de hoy: '+v.map(s=>s.k+(s.hecho?'✓':'')).join();
+ ph=sinHtml(sinNum(document.querySelector('#panel').innerHTML));if(ph.indexOf('Recitar el Nilo de memoria')<0||!/Repasar \d preguntas/.test(ph)||ph.indexOf('Hipo te espera')<0||ph.indexOf('Seguir ›')<0)throw 'bloque Hoy: '+ph.slice(0,300);
+ seguirHoy();if(S.pantalla!=='rio'||S.tab!=='recitar'||!S.hoy)throw 'Hoy no empieza por recitar';
+ for(let i=0;i<nilo.paradas.length;i++){revelar();recordada(true)}
+ if(P.dia.rec!=='nilo'||document.getElementById('pie').innerHTML.indexOf('Seguir el viaje ›')<0)throw 'recitar no cuenta en Hoy';
+ seguirHoy();if(S.pantalla!=='quiz'||S.quiz.modo!=='repaso')throw 'Hoy no sigue con el repaso';const k=S.quiz.qs.length;for(let i=0;i<k;i++){responder(S.quiz.qs[S.quiz.i].correcta);siguiente()}
+ if(P.dia.rep!==k||document.getElementById('pie').innerHTML.indexOf('Listo por hoy ›')<0)throw 'el repaso no cuenta en Hoy';
+ seguirHoy();if(S.pantalla!=='inicio'||S.hoy)throw 'Hoy no vuelve al inicio';
+ ph=sinHtml(sinNum(document.querySelector('#panel').innerHTML));if(ph.indexOf('Viaje de hoy, hecho')<0||!/Mañana vuelven \d+ preguntas\./.test(ph))throw 'Hoy hecho: '+ph.slice(0,300);
+ abrirRio('rin');if(S.paso!==0)throw 'sin ancla, desde la fuente';const rin=rioPor('rin');paso(1);comprar(rin.carga.findIndex(g=>g.o===0));bajar(1);const m=S.eco.monedas,b=S.eco.bodega.slice();irInicio();
+ if(!P.anclas.rin||P.anclas.rin.paso!==2)throw 'no ancló';ph=sinHtml(sinNum(document.querySelector('#panel').innerHTML));if(ph.indexOf(`La barca del Rin te espera en ${rin.paradas[1].nombre}.`)<0)throw 'Hoy no dice dónde espera la barca: '+ph.slice(0,400);
+ abrirRio('rin');if(S.paso!==2||S.eco.monedas!==m||S.eco.bodega.join()!==b.join()||!VOCES.anclada.some(x=>S.dicho===x.replace('{c}',rin.paradas[1].nombre)))throw 'la barca no esperaba anclada: '+S.paso+' '+S.dicho;
+ if(todo().indexOf("abrirRio('rin',1)")<0)throw 'sin empezar de nuevo';abrirRio('rin',1);if(S.paso!==0||P.anclas.rin)throw 'desde la fuente no levanta el ancla';
+ P.dia.fecha='2000-01-01';v=viajeHoy();if(v.some(s=>s.hecho))throw 'el día nuevo trae pasos hechos';
+ S.hoy=true;abrirRio('rin');zarpar();bajar(1);if(S.hoyListo)throw 'aviso antes de tiempo';bajar(1);if(!S.hoyListo||todo().indexOf('¡Dos paradas nuevas!')<0)throw 'sin aviso de las dos paradas';
+ irInicio();if(!viajeHoy().find(s=>s.k==='baj').hecho)throw 'las dos paradas no cuentan';
+ const d=JSON.parse(progresoJSON());if(!d.progreso.anclas||!d.progreso.anclas.rin||!d.progreso.bajadas)throw 'anclas y bajadas fuera del json';
+ quitarPerfil();console.log('viaje de hoy OK')}
+// lo dorado a la vista: puntitos en la portada, lo que falta en el pasaporte y la tripulación
+{crearPerfil('Oro');const r=rioPor('rin'),n=r.paradas.length,t=Date.now();
+ r.paradas.forEach((c,i)=>{if(i<n-1)sellos()[claveSello(r,i)]=t;P.cards['ciudad:rin:'+i]={box:3,due:t+DIA,rec:1}});
+ irInicio();let ph=document.querySelector('#panel').innerHTML;const tar=ph.slice(ph.indexOf("abrirRio('rin')"));
+ if((tar.slice(0,tar.indexOf('</button>')).match(/<i class="o">/g)||[]).length!==n-1)throw 'puntitos dorados del Rin';
+ verPasaporte();ph=sinHtml(sinNum(document.querySelector('#panel').innerHTML));if(ph.indexOf(`${n-1} de ${n} sellos · falta ${r.paradas[n-1].nombre}`)<0||ph.indexOf('Tu tripulación · 0 de')<0)throw 'pasaporte: '+ph.slice(0,400);
+ P.cards['ciudad:rin:'+(n-1)]={box:2,due:0,rec:1};abrirRio('rin',1);setTab('preguntar');S.quiz.qs=[preguntaTipo('ciudad',r,n-1)];S.quiz.i=0;responder(S.quiz.qs[0].correcta);
+ if(!P.tripu.rin||!VOCES.unido.some(u=>S.quiz.dicho.indexOf(u)>=0))throw 'el animal no se sumó: '+S.quiz.dicho;
+ marcar('ciudad:rin:0',false);if(!P.tripu.rin)throw 'se fue de la tripulación al olvidar una';
+ verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Tu tripulación · 1 de')<0||ph.indexOf(`<small>${r.companero.nombre}</small>`)<0)throw 'el álbum sin el animal';
+ irInicio();if(document.querySelector('#panel').innerHTML.indexOf('emo unido')<0)throw 'la tarjeta sin el aro';
+ quitarPerfil();console.log('dorado a la vista OK')}
 // luz y clima: amanecer en la fuente, atardecer y oleaje en el mar; el clima sale del icono del evento y dura hasta continuar; inicio liviano
-{setModo('mercader');abrirRio('misisipi');const luz=document.getElementById('luz'),cl=document.getElementById('clima'),mapa=document.getElementById('mapa');
+{setModo('mercader');abrirRio('misisipi',1);const luz=document.getElementById('luz'),cl=document.getElementById('clima'),mapa=document.getElementById('mapa');
  if(luz['_data-luz']!=='amanecer'||!(parseFloat(luz.style.opacity)>0.3))throw 'sin amanecer en la fuente '+luz['_data-luz']+' '+luz.style.opacity;
  bajar(2);paso(1);if(!S.evento||cl['_data-clima']!=='niebla')throw 'la niebla del Misisipi no se ve: '+cl['_data-clima'];
  responderEvento(S.evento.q.correcta);if(cl['_data-clima']!=='niebla')throw 'el clima debe quedarse hasta continuar';continuarEvento();if(cl['_data-clima']!=='')throw 'el clima no se fue';
@@ -309,7 +348,7 @@ console.log('perfiles OK');
 {const tipos=['latina','junco','vapor','balsa','canoa','barcaza','cuadrada'],gl=tipos.map(glifo);
  if(new Set(gl).size!==7||gl.some(g=>g.indexOf('class="casco"')<0)||gl.some(g=>g.length>760)||glifo('otro')!==glifo('cuadrada'))throw 'glifos: '+gl.map(g=>g.length);
  if(glifo('vapor').indexOf('class="humo"')<0||glifo('junco').indexOf('class="vela"')<0||glifo('canoa').indexOf('class="fig"')<0)throw 'glifos sin sus partes';
- setModo('mercader');abrirRio('misisipi');let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('<g id="barca" class="barca"><g class="mece">')<0||capa.indexOf('<path id="estela"')<0)throw 'barca sin mece o sin estela';
+ setModo('mercader');abrirRio('misisipi',1);let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('<g id="barca" class="barca"><g class="mece">')<0||capa.indexOf('<path id="estela"')<0)throw 'barca sin mece o sin estela';
  /* en la edición amplia, la barca pintada de la ruta reemplaza al glifo chico en el bloque de la embarcación; en la económica, el glifo */
  const pintada=typeof BARCAS!=='undefined'&&!!BARCAS.misisipi,barcaBloque=pintada?'<svg class="barca-pintada"':'<svg class="barca mini"';
  ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf(barcaBloque)<0||(pintada?ph.indexOf('<svg class="barca mini"')>=0:ph.indexOf('class="humo"')<0))throw 'sin la barca en el bloque de la embarcación';
@@ -321,12 +360,12 @@ console.log('perfiles OK');
 {if(Object.keys(ANIMALES).length<17)throw 'faltan glifos de animales';
  for(const r of RIVERS){const m=MASCOTAS[r.id];if(!m.glifo||!ANIMALES[m.glifo])throw 'mascota sin glifo '+r.id;const g=ANIMALES[m.glifo];if(g.length>800||(g.indexOf('class="cuerpo"')<0&&g.indexOf('class="claro"')<0))throw 'glifo raro '+m.glifo+' '+g.length}
  if(animal({emoji:'x'})!=='x')throw 'sin glifo debe caer al emoji';
- setModo('mercader');abrirRio('nilo');ph=sinNum(document.querySelector('#panel').innerHTML);if(!/<div class="globo"><span class="emo( retrato)?" aria-hidden="true"><svg class="animal/.test(ph))throw 'globo sin animal';/* glifo o ilustración (class="animal ilus") */
+ setModo('mercader');abrirRio('nilo',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(!/<div class="globo"><span class="emo( retrato)?" aria-hidden="true"><svg class="animal/.test(ph))throw 'globo sin animal';/* glifo o ilustración (class="animal ilus") */
  let capa=document.querySelector('#capa').innerHTML;if(capa.indexOf('<g id="masc"><g class="animal" transform="translate(-9 -9) scale(.6)">')<0)throw 'barca sin animal';
  bajar(2);paso(1);ph=sinNum(document.querySelector('#panel').innerHTML);if(!S.evento||ph.indexOf('<div class="globo salta">')<0)throw 'el animal no salta en el evento';
  irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if((ph.match(/<svg class="animal"/g)||[]).length<RIVERS.length)throw 'lista sin animales';
  verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if((ph.match(/<svg class="animal"/g)||[]).length<RIVERS.length)throw 'pasaporte sin animales';
- setModo('historia');abrirRio('nilo');if(document.querySelector('#capa').innerHTML.indexOf('id="masc"')<0)throw 'adulto: sin animal en la barca';setModo('mercader');
+ setModo('historia');abrirRio('nilo',1);if(document.querySelector('#capa').innerHTML.indexOf('id="masc"')<0)throw 'adulto: sin animal en la barca';setModo('mercader');
  irInicio();console.log('animales OK')}
 // escenas: todas las ciudades y extremos con pictogramas válidos; postal en la parada, la fuente y el mar; pista en el reto de imagen; sello con pictograma
 // (en la amplia todos los ríos tienen postales pintadas, que prueba test/dist.js: para probar las de pictogramas, que son las de la
@@ -336,16 +375,16 @@ console.log('perfiles OK');
    r.ciudades.forEach(c=>{if(!c.escena||c.escena.length<3||c.escena.length>4||c.escena.some(x=>!picto(x)))throw r.id+' '+c.nombre+' escena inválida'})}
  for(const k in PICTOS)if(PICTOS[k].length>620)throw 'pictograma pesado '+k+' '+PICTOS[k].length;
  const prestadas=typeof POSTALES!=='undefined'?{terraba:POSTALES.terraba,tarcoles:POSTALES.tarcoles}:null;if(prestadas){delete POSTALES.terraba;delete POSTALES.tarcoles}
- setModo('mercader');abrirRio('terraba');ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena"')<0)throw 'fuente sin postal';
+ setModo('mercader');abrirRio('terraba',1);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena"')<0)throw 'fuente sin postal';
  bajar(4);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena"')<0||ph.indexOf(PICTOS.mascara)<0)throw 'Rey Curré sin su máscara';
  bajar(3);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena"')<0)throw 'mar sin postal';
  const q=preguntaTipo('imagen',rioPor('tarcoles'),4);if(!q.escena||q.escena.indexOf('animal:cocodrilo')<0)throw 'reto de imagen sin escena';
  S.pantalla='rio';S.rio='tarcoles';setTab('preguntar');S.quiz.qs=[q];S.quiz.i=0;render();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena quiz"')<0||ph.indexOf('<g class="animal"')<0)throw 'el reto no muestra la escena';
- abrirRio('tarcoles');responderGuia(0);paso(1);verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena pic"')<0)throw 'sello sin pictograma';
+ abrirRio('tarcoles',1);responderGuia(0);paso(1);verPasaporte();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('<svg class="escena pic"')<0)throw 'sello sin pictograma';
  if(prestadas)Object.assign(POSTALES,prestadas);
  irInicio();console.log('escenas OK')}
 // sellos con carácter: forma, inclinación y aro propios por ciudad, estables, y el vacío con su forma
-{crearPerfil('Sellos');const r=rioPor('rin'),n=r.ciudades.length;setModo('mercader');abrirRio('rin');for(let i=0;i<n;i++){responderGuia(i);paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}}
+{crearPerfil('Sellos');const r=rioPor('rin'),n=r.ciudades.length;setModo('mercader');abrirRio('rin',1);for(let i=0;i<n;i++){responderGuia(i);paso(1);if(S.evento){responderEvento(S.evento.q.correcta);continuarEvento()}}
  const s=r.ciudades.map((c,i)=>sello(r,i));if(s.some(x=>x.indexOf('<svg class="sello')<0||x.indexOf('<textPath')<0||x.indexOf('RIN · ')<0))throw 'sello sin aro o sin svg';
  const formas=new Set(s.map(x=>(x.match(/<g class="forma">(<\w+)/)||[])[1])),rots=new Set(s.map(x=>(x.match(/--rot:(-?\d+)deg/)||[])[1]));
  if(formas.size<3||rots.size<4)throw 'sellos demasiado iguales: formas '+formas.size+' giros '+rots.size;
@@ -359,7 +398,7 @@ console.log('perfiles OK');
  const revisa=(modo,rio,donde)=>{if(panel().indexOf('class="globo')<0)faltas.push(modo+' '+rio+' '+donde+': globo');if(S.pantalla==='rio'&&capa().indexOf('rio activo')>=0&&capa().indexOf('id="masc"')<0)faltas.push(modo+' '+rio+' '+donde+': barca')};
  crearPerfil('Auditoría');setVoz('boton');
  for(const modo of ['mercader','historia']){setModo(modo);
-  for(const r of RIVERS){abrirRio(r.id);const n=r.ciudades.length;revisa(modo,r.id,'fuente');
+  for(const r of RIVERS){abrirRio(r.id,1);const n=r.ciudades.length;revisa(modo,r.id,'fuente');
    for(let p=0;p<=n;p++){responderGuia(S.guias[p]?S.guias[p].objetivo:0);revisa(modo,r.id,'guía '+p);paso(1);
     if(S.evento){revisa(modo,r.id,'evento '+S.evento.tramo);responderEvento(S.evento.q.correcta);revisa(modo,r.id,'evento resuelto');continuarEvento()}
     revisa(modo,r.id,S.paso<=n?'parada '+S.paso:'mar')}
@@ -378,12 +417,12 @@ console.log('perfiles OK');
    if(L.z==='mundo'){if(!L.v||!Object.keys(L.v).length)throw 'etiqueta sin vistas '+L.n;for(const k in L.v){if(!rioPor(k))throw 'vista de río inexistente '+k;vistas[k]=(vistas[k]||0)+1}}
    else{if(!L.p)throw 'etiqueta sin posición '+L.n;if(L.t==='pico'&&!(L.e>0))throw 'pico sin altura '+L.n;vistas[L.z]=(vistas[L.z]||0)+1}}
  for(const r of RIVERS)if(!r.zona&&!(vistas[r.id]>=3&&vistas[r.id]<=14))throw 'nombres de relieve en '+r.id+': '+vistas[r.id];if(!(vistas.cr>=10))throw 'pocos nombres en cr';
- abrirRio('indo');let cp=document.querySelector('#capa').innerHTML;if((cp.match(/class="etq relieve/g)||[]).length<4)throw 'sin nombres de relieve en el mapa del Indo';if(cp.indexOf('Himalaya')<0)throw 'sin Himalaya';
+ abrirRio('indo',1);let cp=document.querySelector('#capa').innerHTML;if((cp.match(/class="etq relieve/g)||[]).length<4)throw 'sin nombres de relieve en el mapa del Indo';if(cp.indexOf('Himalaya')<0)throw 'sin Himalaya';
  const rel=document.getElementById('relieve');if(!rel.innerHTML||rel.innerHTML.indexOf('class="a2000"')<0)throw 'sin franjas en la vista del río';
  const pf=document.getElementById('perfil');if(pf.hidden||pf.innerHTML.indexOf('<svg')<0||pf.innerHTML.indexOf('class="perfil-aqui"')<0)throw 'sin perfil';
  const xa=()=>+pf.innerHTML.match(/class="perfil-aqui" cx="([\d.]+)"/)[1];const xa0=xa();bajar(2);if(!(xa()>xa0))throw 'el marcador del perfil no avanza';
  if(sinNum(document.querySelector('#panel').innerHTML).indexOf('m sobre el mar')<0)throw 'sin altura en la parada';
- abrirRio('sarapiqui');cp=document.querySelector('#capa').innerHTML;if(cp.indexOf('class="pico"')<0||cp.indexOf('Poás')<0)throw 'sin volcanes en la vista del Sarapiquí';if(rel.innerHTML.indexOf('class="a1500"')<0)throw 'sin franjas de cr';
+ abrirRio('sarapiqui',1);cp=document.querySelector('#capa').innerHTML;if(cp.indexOf('class="pico"')<0||cp.indexOf('Poás')<0)throw 'sin volcanes en la vista del Sarapiquí';if(rel.innerHTML.indexOf('class="a1500"')<0)throw 'sin franjas de cr';
  irInicio();if(rel.innerHTML!=='')throw 'franjas en el mundo';if(!pf.hidden)throw 'perfil visible en el inicio';
  verZona('cr');cp=document.querySelector('#capa').innerHTML;if(cp.indexOf('Talamanca')<0)throw 'sin cordilleras en la zona';verZona(null);
  let conAltura=0;for(const r of RIVERS){const q=preguntaTipo('altura',r);if(q.tipo!=='altura')continue;conAltura++;if(q.opciones.length!==4||new Set(q.opciones).size!==4||q.correcta<0)throw 'pregunta altura mala '+r.id;
