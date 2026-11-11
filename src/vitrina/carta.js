@@ -6,6 +6,8 @@ if(typeof CAPA==='undefined'||typeof CARTA==='undefined')return;
 const NS='http://www.w3.org/2000/svg';
 const pr=p=>[(p[1]+180)/360*1000,(90-p[0])/180*500];           /* la proyección del motor */
 const txt=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const T=11.3;/* el cuerpo de los rótulos, en px de pantalla: un pelo más de 11 para que el redondeo del navegador no los deje en 10,9 */
+const PILDORA=84;/* alto de la píldora del encabezado que flota arriba del mapa (navega, evento, parada, mar) */
 const ANCHO_LETRA={agua:8.2,pais:10.2,'rio-n':6.2,linea:9.2,hito:5.9,bajo:5.7,escala:7.2};   /* px por letra a 11 px, con su espaciado */
 /* cuántos px del borde de abajo del mapa tapa la hoja de la bitácora (#panel), para no poner nada debajo; sin medidas, 26 */
 function solapa(){const m=document.getElementById('mapa'),p=document.getElementById('panel');if(!m||!p||!m.getBoundingClientRect||!p.getBoundingClientRect)return 26;
@@ -76,6 +78,7 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
 
   /* lo que un rótulo no puede pisar: el río (muestras cada 3 px del cauce a la vista), las paradas y sus nombres, la barca */
   const rio=[],puestos=[{x0:vb.x,x1:vb.x+64*px,y0:vb.y,y1:vb.y+64*px},{x0:vb.x+vb.w-64*px,x1:vb.x+vb.w,y0:vb.y,y1:vb.y+64*px}];/* las esquinas de arriba (64 × 64 px) son de los botones redondos: volver y sonido */
+  if(momento!=='portada')puestos.push({x0:vb.x+70*px,x1:vb.x+vb.w-70*px,y0:vb.y,y1:vb.y+PILDORA*px});/* la píldora del encabezado, arriba al centro */
   if(momento==='portada')puestos.push({x0:vb.x,x1:vb.x+220*px,y0:vb.y+64*px,y1:vb.y+352*px});/* y en la portada, arriba a la izquierda, va el título (hasta la firma de la cita) */
   const muestrear=P=>{for(let i=0;i+1<P.length;i++){const p=pr(P[i]),q=pr(P[i+1]);
     if(Math.max(p[0],q[0])<vb.x-vb.w*.2||Math.min(p[0],q[0])>vb.x+vb.w*1.2||Math.max(p[1],q[1])<vb.y-vb.h*.2||Math.min(p[1],q[1])>vb.y+vb.h*1.2)continue;
@@ -98,14 +101,16 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
   if(capa.querySelectorAll)capa.querySelectorAll('text.etq').forEach(t=>{if(!t.getAttribute||!t.classList||t.classList.contains('relieve'))return;
     const x=parseFloat(t.getAttribute('x')),y=parseFloat(t.getAttribute('y')),w=((t.textContent||'').length*9.2+4)*px,an=t.getAttribute('text-anchor');if(!isFinite(x)||!isFinite(y))return;
     const x0=an==='end'?x-w:an==='middle'?x-w/2:x;puestos.push({x0,x1:x0+w,y0:y-13*px,y1:y+4*px})});
-  if(qb)puestos.push(conArte?{x0:qb[0]-54*px,x1:qb[0]+54*px,y0:qb[1]-38*px,y1:qb[1]+16*px}:{x0:qb[0]-24*px,x1:qb[0]+22*px,y0:qb[1]-32*px,y1:qb[1]+14*px});
+  const qp=qb||(momento==='portada'&&r.curso&&r.curso.length?pr(r.curso[0]):null);
+  if(qp)puestos.push(conArte||momento==='portada'?{x0:qp[0]-54*px,x1:qp[0]+54*px,y0:qp[1]-38*px,y1:qp[1]+16*px}:{x0:qp[0]-24*px,x1:qp[0]+22*px,y0:qp[1]-32*px,y1:qp[1]+14*px});
+  if(false)puestos.push(conArte?{x0:qb[0]-54*px,x1:qb[0]+54*px,y0:qb[1]-38*px,y1:qb[1]+16*px}:{x0:qb[0]-24*px,x1:qb[0]+22*px,y0:qb[1]-32*px,y1:qb[1]+14*px});
   const libre=c=>c.x0>vb.x+M&&c.x1<vb.x+vb.w-M&&c.y0>vb.y+M&&c.y1<vb.y+vb.h-borde*px&&!puestos.some(o=>c.x0<o.x1+M&&c.x1>o.x0-M&&c.y0<o.y1+M&&c.y1>o.y0-M)&&!rio.some(p=>p[0]>c.x0-M&&p[0]<c.x1+M&&p[1]>c.y0-M&&p[1]<c.y1+M);
   /* la caja de un rótulo de 11 px (renglones partidos con |), con su ancla y su giro */
   const caja=(t,x,y,anc,cls,giro)=>{const rs=t.split('|'),w=Math.max.apply(null,rs.map(s=>s.length))*ANCHO_LETRA[cls]*px,h=(13+(rs.length-1)*15)*px;
     if(giro){const g=giro*Math.PI/180,c=Math.abs(Math.cos(g)),s=Math.abs(Math.sin(g)),bw=c*w+s*h,bh=s*w+c*h;return{x0:x-bw/2,x1:x+bw/2,y0:y-bh/2,y1:y+bh/2}}
     const x0=anc==='end'?x-w:anc==='middle'?x-w/2:x;return{x0,x1:x0+w,y0:y-10*px,y1:y-10*px+h}};
   const texto=(t,x,y,anc,cls,giro)=>{const rs=t.split('|'),X=x.toFixed(2),Y=y.toFixed(2);
-    return`<text class="v-rot ${cls}" x="${X}" y="${Y}" font-size="${f(11)}" text-anchor="${anc}"${giro?` transform="rotate(${giro} ${X} ${Y})"`:''}>${rs.length>1?rs.map((s,i)=>`<tspan x="${X}" dy="${i?f(15):0}">${txt(s)}</tspan>`).join(''):txt(t)}</text>`};
+    return`<text class="v-rot ${cls}" x="${X}" y="${Y}" font-size="${f(T)}" stroke-width="${f(2.6)}" text-anchor="${anc}"${giro?` transform="rotate(${giro} ${X} ${Y})"`:''}>${rs.length>1?rs.map((s,i)=>`<tspan x="${X}" dy="${i?f(15):0}">${txt(s)}</tspan>`).join(''):txt(t)}</text>`};
   let H='';
   if(renglon){const c=caja(renglon.t,renglon.x,renglon.y,renglon.anc,'bajo');puestos.push(c);H+=texto(renglon.t,renglon.x,renglon.y,renglon.anc,'bajo')}
 
@@ -116,9 +121,9 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
       km=([1000,500,250,200,100,50,25,20,10,5,2,1].map(k=>[k,k/kmPx]).filter(v=>v[1]>=64&&v[1]<=136).sort((u,v)=>Math.abs(u[1]-100)-Math.abs(v[1]-100))[0]||[0])[0];/* 70 a 130 px, con un poco de holgura para que siempre haya un número redondo */
     if(km){const largo=km/kmPx*px,yb=vb.y+vb.h-(borde+14)*px;
       for(const x0 of [vb.x+16*px,vb.x+vb.w-16*px-largo]){const c={x0:x0-3*px,x1:x0+Math.max(largo,56*px)+3*px,y0:yb-24*px,y1:yb+4*px};if(!libre(c))continue;puestos.push(c);
-        H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/><text class="v-rot escala" x="${x0.toFixed(2)}" y="${(yb-10*px).toFixed(2)}" font-size="${f(11)}">${km} km</text>`;break}}
+        H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/><text class="v-rot escala" x="${x0.toFixed(2)}" y="${(yb-10*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}">${km} km</text>`;break}}
     const xn=vb.x+vb.w-37*px,yn=vb.y+74*px,cn={x0:xn-10*px,x1:xn+10*px,y0:yn-3*px,y1:yn+40*px};
-    if(libre(cn)){puestos.push(cn);H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${xn.toFixed(2)} ${(yn+22*px).toFixed(2)}V${yn.toFixed(2)}m${f(-4)} ${f(6)}l${f(4)} ${f(-6)}l${f(4)} ${f(6)}"/><text class="v-rot escala" x="${xn.toFixed(2)}" y="${(yn+37*px).toFixed(2)}" font-size="${f(11)}" text-anchor="middle">N</text>`}}
+    if(libre(cn)){puestos.push(cn);H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${xn.toFixed(2)} ${(yn+22*px).toFixed(2)}V${yn.toFixed(2)}m${f(-4)} ${f(6)}l${f(4)} ${f(-6)}l${f(4)} ${f(6)}"/><text class="v-rot escala" x="${xn.toFixed(2)}" y="${(yn+37*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}" text-anchor="middle" style="stroke-width:${f(4)}">N</text>`}}
 
   /* la próxima parada: anillo punteado con un signo de pregunta, sin nombre (memoria primero) */
   if(prox>=0){const p0=pr(r.paradas[prox].pos);let q=p0;
@@ -162,7 +167,17 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
 CAPA.mapa=function(foco,vb,px){try{fondo();cerca(px);dibujar(foco,vb,px)}catch(e){if(typeof console!=='undefined'&&console.warn)console.warn('carta:',e)}};
 
 /* el encuadre de cada momento: {pts, minW, margen} para vbPara del motor (minW en unidades del SVG: 1 unidad = 0,36°) */
-CAPA.vista=function(r,foco){if(!r||r.id!==CAPA.rio||typeof CAPA.momento!=='function'||!r.curso||!r.paradas)return null;
+/* reserva arriba los px reales de la píldora: un punto al norte de lo encuadrado, tal que vbPara (mismo cálculo) deje PILDORA+8 px libres */
+function reservar(v,dims,cuida){if(!v||!dims||!dims.ancho)return v;cuida=(cuida||[]).map(c=>pr(c).concat([c[2]||0]));/* [lat, lon, px de más]: en Jinja el anillo se corre unos 64 px de la barca */const an=dims.ancho,des=dims.des||dims.alto||260,asp=an/des,base=v.pts.map(pr);
+  const y0=Math.min.apply(null,base.map(q=>q[1]));let extra=null;
+  for(let k=0;k<8;k++){const P=extra?base.concat([extra]):base;let x0=1e9,x1=-1e9,ya=1e9,yb=-1e9;P.forEach(q=>{x0=Math.min(x0,q[0]);x1=Math.max(x1,q[0]);ya=Math.min(ya,q[1]);yb=Math.max(yb,q[1])});
+    let w=(x1-x0)*v.margen,h=(yb-ya)*v.margen;w=Math.max(w,v.minW);h=Math.max(h,v.minW/asp);if(w/h<asp)w=h*asp;else h=w/asp;
+    const top=(ya+yb)/2-h/2,s=w/an,cx=(x0+x1)/2;let falta=(PILDORA+8)*s-(y0-top);
+    cuida.forEach(q=>{if(Math.abs(q[0]-cx)<w/2&&q[1]>top&&q[1]<top+h)falta=Math.max(falta,(PILDORA+18+(q[2]||0))*s-(q[1]-top))});/* el anillo de la próxima parada, si cae en la vista */if(falta<=s*.5)break;extra=[(x0+x1)/2,(extra?extra[1]:y0)-falta]}
+  if(extra)v.pts=v.pts.concat([[90-extra[1]/500*180,extra[0]/1000*360-180]]);return v}
+CAPA.vista=function(r,foco,dims){const v=vista0(r,foco),p=paso(),m=CAPA.momento();
+  return v&&m!=='portada'?reservar(v,dims,m!=='mar'&&p>=0&&p<r.paradas.length?[r.paradas[p].pos.concat([p===0?66:0])]:[]):v};
+function vista0(r,foco){if(!r||r.id!==CAPA.rio||typeof CAPA.momento!=='function'||!r.curso||!r.paradas)return null;
   const m=CAPA.momento(),n=r.paradas.length,p=Math.max(0,Math.min(n+1,paso()));
   if(m==='portada')return{pts:r.curso.concat(r.paradas.map(c=>c.pos),[[33.4,31.2],[16.9,21.0],[-3.6,33.2]]),minW:20,margen:1.1};   /* el río entero, con un poco de mar arriba para su rótulo, aire al oeste (el título va arriba a la izquierda y el río pasa por los dos tercios del ancho) y aire al sur del nacimiento: la barca, Hipo y la orilla norte del lago Victoria quedan enteros por encima del borde de la hoja */
   if(m==='navega'||m==='evento'){/* en un evento la barca está detenida a mitad del tramo: el mismo encuadre, de la parada anterior a la de llegada (S.evento.tramo, 1…n+1) */
@@ -170,5 +185,5 @@ CAPA.vista=function(r,foco){if(!r||r.id!==CAPA.rio||typeof CAPA.momento!=='funct
     return{pts:t.concat([[alto[0]+Math.max(.5,(alto[0]-bajo)*.14),alto[1]]]),minW:17,margen:1.42}}/* un punto más al norte: arriba va la cabecera de la vitrina y no tiene que tapar la próxima parada */   /* de la parada actual a la próxima, con aire */
   if(m==='parada'){const c=p>=1&&p<=n?r.paradas[p-1].pos:r.curso[idx(r,p)];return{pts:[[c[0]-2.6,c[1]],[c[0]+3.6,c[1]]],minW:9,margen:1}}   /* la parada, cerca (unos 6° de alto) y un poco abajo del centro: arriba va la cabecera */
   if(m==='mar')return{pts:[[29.6,29.5],[32.6,32.6]],minW:8,margen:1.15};                                     /* el delta, de El Cairo a la costa, con mar arriba para la cabecera */
-  return null};
+  return null}
 })();

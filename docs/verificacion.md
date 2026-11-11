@@ -936,5 +936,8 @@ Volcanes y cerros de Costa Rica (posición de OpenStreetMap; altura publicada, f
 
 - Relieve sombreado: ETOPO1 Global Relief Model, NOAA NCEI (Amante y Eakins, 2009), dominio público; lo genera tools/carta.py (ventana lat −6…36, lon 18…46), el mismo ráster de tools/relieve.py.
 - Costas, lagos, fronteras y cauce: los de Cauces (Natural Earth, dominio público). El curso del Nilo no cambia.
-- Rótulos puestos a mano (geografía, no datos del juego): Mar Mediterráneo, Mar Rojo, Lago Victoria, Lago Nasser, Nilo Blanco, Nilo Azul, Sudd, Egipto, Sudán, Sudán del Sur, Uganda, Etiopía, Desierto de Nubia, Ecuador, Trópico de Cáncer (23,44° N) ⚠
-- Hitos, con coordenadas puestas de memoria: Abu Simbel (22,34° N, 31,63° E), Pirámides de Meroe (16,94° N, 33,75° E), Pirámides de Guiza (29,98° N, 31,13° E), Alejandría (31,20° N, 29,92° E) ⚠
+- Rótulos puestos a mano (geografía, no datos del juego): Mar Mediterráneo, Mar Rojo, Lago Victoria, Lago Nasser, Nilo Blanco, Nilo Azul, Sudd, Egipto, Sudán, Sudán del Sur, Uganda, Etiopía, Desierto de Nubia, Ecuador, Trópico de Cáncer (23,44° N), brazo de Rosetta, brazo de Damieta, desembocadura ⚠
+- Hitos, con coordenadas puestas de memoria: Abu Simbel (22,34° N, 31,63° E), Pirámides de Meroe (16,94° N, 33,75° E), Pirámides de Guiza (29,98° N, 31,13° E), Alejandría (31,20° N, 29,92° E), Port Said (31,26° N, 32,30° E), Suez (29,97° N, 32,55° E) ⚠
+- Cauce fino y afluentes (Nilo Azul, Atbara, Sobat, Bahr el Zeraf, brazo de Damieta): Natural Earth 10 m, dominio público; los kilómetros y las alturas de las paradas son los de Cauces (src/juegos/nilo.js los deja fijos y test/vitrina.js lo comprueba).
+- Relieve fino del corredor del río: el mosaico de elevación de NOAA NCEI que ya usa el perfil de altura (tools/relieve.py). ⚠ términos de uso sin revisar en esta corrida
+- Bajo el nombre de dos paradas, un renglón tomado letra por letra de los datos del juego: «primera catarata» (Asuán) y «puerto de Bulaq» (El Cairo). La latitud de cada sello sale de la posición de la ciudad.

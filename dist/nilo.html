@@ -491,16 +491,17 @@ body.vitrina .v-par{fill:none;stroke:var(--v-claro,#64C8AA);stroke-opacity:.42;s
 body.vitrina #v-lineas,body.vitrina #v-rotulos{pointer-events:none}
 
 /* rótulos con jerarquía de atlas (nada por debajo de 11 px: el tamaño lo pone carta.js en píxeles de pantalla) */
-body.vitrina .v-rot{font-family:var(--v-txt,'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif);stroke:none;pointer-events:none}
-body.vitrina .v-rot.agua{font-style:italic;text-transform:uppercase;letter-spacing:.22em;fill:var(--v-claro,#64C8AA);fill-opacity:.82}
-body.vitrina .v-rot.rio-n{font-style:italic;letter-spacing:.06em;fill:var(--v-claro,#64C8AA);fill-opacity:.88}
-body.vitrina .v-rot.pais{text-transform:uppercase;font-weight:600;letter-spacing:.32em;fill:var(--v-crema,#FBF8F2);fill-opacity:.6}
-body.vitrina .v-rot.linea{text-transform:uppercase;font-weight:600;letter-spacing:.22em;fill:var(--v-claro,#64C8AA);fill-opacity:.72}
+body.vitrina .v-rot{font-family:var(--v-txt,'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif);pointer-events:none;
+  stroke:var(--v-mar,#0C3A33);stroke-opacity:.7;stroke-linejoin:round;paint-order:stroke}/* halo oscuro fino (el ancho lo pone carta.js): se lee también sobre relieve claro */
+body.vitrina .v-rot.agua{font-style:italic;text-transform:uppercase;letter-spacing:.22em;fill:#A8E4D2;fill-opacity:1}
+body.vitrina .v-rot.rio-n{font-style:italic;letter-spacing:.06em;fill:#A8E4D2;fill-opacity:1}
+body.vitrina .v-rot.pais{text-transform:uppercase;font-weight:600;letter-spacing:.32em;fill:var(--v-crema,#FBF8F2);fill-opacity:.85}
+body.vitrina .v-rot.linea{text-transform:uppercase;font-weight:600;letter-spacing:.22em;fill:var(--v-crema,#FBF8F2);fill-opacity:.85}
 body.vitrina .v-rot.hito{fill:var(--v-crema,#FBF8F2);fill-opacity:.92}
 body.vitrina .v-rot.bajo{font-style:italic;fill:var(--v-crema,#FBF8F2);fill-opacity:.92}/* el renglón bajo el nombre de la parada donde está la barca */
-/* escala gráfica y norte: crema al 80 % */
+/* escala gráfica y norte: crema al 85 % (contraste ≥ 4,5 a 1) */
 body.vitrina .v-escala{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-opacity:.8;stroke-linecap:round;stroke-linejoin:round}
-body.vitrina .v-rot.escala{fill:var(--v-crema,#FBF8F2);fill-opacity:.8;font-weight:600;letter-spacing:.06em}
+body.vitrina .v-rot.escala{fill:var(--v-crema,#FBF8F2);fill-opacity:.95;font-weight:700;letter-spacing:.06em;stroke-opacity:.9}/* la N cae a veces sobre relieve claro */
 body.vitrina .v-boca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2)}/* la boca del río */
 body.vitrina .v-marca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2);stroke-opacity:.92;stroke-linejoin:round}
 
@@ -651,11 +652,13 @@ body.vitrina #panel .v-perfil .perfil-tierra{fill:var(--v-tinte1);stroke:var(--v
 body.vitrina #panel .v-perfil .perfil-base{stroke:var(--v-tinta);stroke-opacity:.25}
 body.vitrina #panel .v-perfil .perfil-tick{fill:var(--v-tinta);fill-opacity:1}
 body.vitrina #panel .v-perfil .perfil-aqui{fill:#fff;stroke:var(--v-tinta);stroke-width:2.5}
-/* los rótulos del perfil: el dibujo mide 380 de ancho y se achica con la hoja, así que 13 da 11 px o más en un teléfono;
-   un halo de papel para que la línea del cauce no los tache */
-body.vitrina #panel .v-perfil .perfil-txt{fill:var(--v-sec);font:600 13px var(--v-txt);paint-order:stroke;stroke:var(--v-crema);stroke-width:5px;stroke-linejoin:round}
+/* los rótulos del perfil: el dibujo se escala con la hoja; panel.js mide cuánto y pone en --v-pfs la letra que da 12 px en
+   pantalla (en teléfono y en tableta por igual: ese es el tope); sin medir, 13. Un halo de papel para que el cauce no los tache.
+   El de la altura de la fuente va encima del arranque de la línea (y="-3"): la caja del dibujo deja aire arriba para él */
+body.vitrina #panel .v-perfil-svg{padding-top:12px}
+body.vitrina #panel .v-perfil .perfil-txt{fill:var(--v-sec);font:600 var(--v-pfs,13px) var(--v-txt);paint-order:stroke;stroke:var(--v-crema);stroke-width:5px;stroke-linejoin:round}
 /* «Altura del cauce» baja un renglón, fuera de la caja del dibujo, para no pisar la línea de base */
-body.vitrina #panel .v-perfil .perfil-txt.k{font-size:13px;letter-spacing:.06em;stroke:none;transform:translateY(11px)}
+body.vitrina #panel .v-perfil .perfil-txt.k{font-size:var(--v-pfs,13px);letter-spacing:.06em;stroke:none;transform:translateY(calc(var(--v-pfs,13px)*.85))}
 
 /* ---------- parada: la ciudad con su sello ---------- */
 body.vitrina #panel .v-cabeza{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 14px}
@@ -666,6 +669,7 @@ body.vitrina #panel .v-sello .borde{fill:#fff;stroke:var(--v-sello);stroke-width
 body.vitrina #panel .v-sello .aro{fill:none;stroke:var(--v-sello);stroke-width:1.3;stroke-dasharray:.1 3.3;stroke-linecap:round}
 body.vitrina #panel .v-sello .nom{font:600 13px var(--v-tit);letter-spacing:.05em;fill:var(--v-sello)}
 body.vitrina #panel .v-sello .lat{font:500 11px var(--v-tit);letter-spacing:.1em;fill:var(--v-sello)}
+body.vitrina #panel .v-sello .lat.min{letter-spacing:.02em}/* con minutos («0° 25′ N») el rótulo es más largo: sin aire entre letras, para no tocar el aro */
 body.vitrina #panel .v-sello .raya{stroke:var(--v-sello);stroke-width:1.2;stroke-linecap:round}
 body.vitrina #panel .v-sello .pic{overflow:visible}
 body.vitrina #panel .v-sello .pic .p{fill:var(--v-sello)}
@@ -763,8 +767,6 @@ body.vitrina #panel .v-ancho .v-zarpe{margin:0}
 @media (max-height:719px) and (max-width:819px){body.vitrina #panel .v-cita{display:none}}
 /* en un teléfono angosto, el rótulo del perfil va solo: la nota a su derecha se partía en dos renglones */
 @media (max-width:379px){body.vitrina #panel .v-perfil-cab .v-nota{display:none}}
-/* más angosto todavía, el dibujo del perfil se achica más: letras más grandes para que no bajen de 11 px */
-@media (max-width:359px){body.vitrina #panel .v-perfil .perfil-txt,body.vitrina #panel .v-perfil .perfil-txt.k{font-size:15px}}
 
 /* con menos movimiento: solo fundidos */
 @media (prefers-reduced-motion:reduce){
@@ -902,7 +904,7 @@ ALTURAS[r.id]=pts.map(p=>[g(p[0]),p[1]])}
 r.ciudades.forEach((c,i)=>Object.defineProperty(c,'km',{get:()=>antes[i].km,set(){},enumerable:true,configurable:true}));
 r.curso=C;if(CARTA.brazos&&CARTA.brazos.length)r.brazos=CARTA.brazos;r._fino=true;return r}
 
-JUEGO.edicion={nombre:'amplia',kb:610};</script>
+JUEGO.edicion={nombre:'amplia',kb:613};</script>
 <script>
 const CAPA={rio:'nilo',fase:'parada',_oyentes:{},_pend:null,_toque:false,
 oir(nombre,fn){(CAPA._oyentes[nombre]=CAPA._oyentes[nombre]||[]).push(fn)},
@@ -1004,6 +1006,8 @@ if(typeof CAPA==='undefined'||typeof CARTA==='undefined')return;
 const NS='http://www.w3.org/2000/svg';
 const pr=p=>[(p[1]+180)/360*1000,(90-p[0])/180*500];
 const txt=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const T=11.3;
+const PILDORA=84;
 const ANCHO_LETRA={agua:8.2,pais:10.2,'rio-n':6.2,linea:9.2,hito:5.9,bajo:5.7,escala:7.2};
 function solapa(){const m=document.getElementById('mapa'),p=document.getElementById('panel');if(!m||!p||!m.getBoundingClientRect||!p.getBoundingClientRect)return 26;
 const a=m.getBoundingClientRect(),b=p.getBoundingClientRect();if(!a||!b||!a.height)return 26;
@@ -1053,6 +1057,7 @@ for(let lo=R.lon[0];lo<=R.lon[1];lo+=R.paso)L+=`<path class="v-ret" d="M${pr([0,
 CARTA.lineas.forEach(l=>{L+=`<path class="v-par" d="M${a[0].toFixed(2)} ${pr([l.lat,0])[1].toFixed(2)}H${b[0].toFixed(2)}"/>`});
 grupo(capa,'v-lineas',L,capa.firstChild);
 const rio=[],puestos=[{x0:vb.x,x1:vb.x+64*px,y0:vb.y,y1:vb.y+64*px},{x0:vb.x+vb.w-64*px,x1:vb.x+vb.w,y0:vb.y,y1:vb.y+64*px}];
+if(momento!=='portada')puestos.push({x0:vb.x+70*px,x1:vb.x+vb.w-70*px,y0:vb.y,y1:vb.y+PILDORA*px});
 if(momento==='portada')puestos.push({x0:vb.x,x1:vb.x+220*px,y0:vb.y+64*px,y1:vb.y+352*px});
 const muestrear=P=>{for(let i=0;i+1<P.length;i++){const p=pr(P[i]),q=pr(P[i+1]);
 if(Math.max(p[0],q[0])<vb.x-vb.w*.2||Math.min(p[0],q[0])>vb.x+vb.w*1.2||Math.max(p[1],q[1])<vb.y-vb.h*.2||Math.min(p[1],q[1])>vb.y+vb.h*1.2)continue;
@@ -1072,22 +1077,24 @@ r.paradas.forEach((c,i)=>{const q=pr(c.pos),d=(i===prox?15:7)*px;puestos.push({x
 if(capa.querySelectorAll)capa.querySelectorAll('text.etq').forEach(t=>{if(!t.getAttribute||!t.classList||t.classList.contains('relieve'))return;
 const x=parseFloat(t.getAttribute('x')),y=parseFloat(t.getAttribute('y')),w=((t.textContent||'').length*9.2+4)*px,an=t.getAttribute('text-anchor');if(!isFinite(x)||!isFinite(y))return;
 const x0=an==='end'?x-w:an==='middle'?x-w/2:x;puestos.push({x0,x1:x0+w,y0:y-13*px,y1:y+4*px})});
-if(qb)puestos.push(conArte?{x0:qb[0]-54*px,x1:qb[0]+54*px,y0:qb[1]-38*px,y1:qb[1]+16*px}:{x0:qb[0]-24*px,x1:qb[0]+22*px,y0:qb[1]-32*px,y1:qb[1]+14*px});
+const qp=qb||(momento==='portada'&&r.curso&&r.curso.length?pr(r.curso[0]):null);
+if(qp)puestos.push(conArte||momento==='portada'?{x0:qp[0]-54*px,x1:qp[0]+54*px,y0:qp[1]-38*px,y1:qp[1]+16*px}:{x0:qp[0]-24*px,x1:qp[0]+22*px,y0:qp[1]-32*px,y1:qp[1]+14*px});
+if(false)puestos.push(conArte?{x0:qb[0]-54*px,x1:qb[0]+54*px,y0:qb[1]-38*px,y1:qb[1]+16*px}:{x0:qb[0]-24*px,x1:qb[0]+22*px,y0:qb[1]-32*px,y1:qb[1]+14*px});
 const libre=c=>c.x0>vb.x+M&&c.x1<vb.x+vb.w-M&&c.y0>vb.y+M&&c.y1<vb.y+vb.h-borde*px&&!puestos.some(o=>c.x0<o.x1+M&&c.x1>o.x0-M&&c.y0<o.y1+M&&c.y1>o.y0-M)&&!rio.some(p=>p[0]>c.x0-M&&p[0]<c.x1+M&&p[1]>c.y0-M&&p[1]<c.y1+M);
 const caja=(t,x,y,anc,cls,giro)=>{const rs=t.split('|'),w=Math.max.apply(null,rs.map(s=>s.length))*ANCHO_LETRA[cls]*px,h=(13+(rs.length-1)*15)*px;
 if(giro){const g=giro*Math.PI/180,c=Math.abs(Math.cos(g)),s=Math.abs(Math.sin(g)),bw=c*w+s*h,bh=s*w+c*h;return{x0:x-bw/2,x1:x+bw/2,y0:y-bh/2,y1:y+bh/2}}
 const x0=anc==='end'?x-w:anc==='middle'?x-w/2:x;return{x0,x1:x0+w,y0:y-10*px,y1:y-10*px+h}};
 const texto=(t,x,y,anc,cls,giro)=>{const rs=t.split('|'),X=x.toFixed(2),Y=y.toFixed(2);
-return`<text class="v-rot ${cls}" x="${X}" y="${Y}" font-size="${f(11)}" text-anchor="${anc}"${giro?` transform="rotate(${giro} ${X} ${Y})"`:''}>${rs.length>1?rs.map((s,i)=>`<tspan x="${X}" dy="${i?f(15):0}">${txt(s)}</tspan>`).join(''):txt(t)}</text>`};
+return`<text class="v-rot ${cls}" x="${X}" y="${Y}" font-size="${f(T)}" stroke-width="${f(2.6)}" text-anchor="${anc}"${giro?` transform="rotate(${giro} ${X} ${Y})"`:''}>${rs.length>1?rs.map((s,i)=>`<tspan x="${X}" dy="${i?f(15):0}">${txt(s)}</tspan>`).join(''):txt(t)}</text>`};
 let H='';
 if(renglon){const c=caja(renglon.t,renglon.x,renglon.y,renglon.anc,'bajo');puestos.push(c);H+=texto(renglon.t,renglon.x,renglon.y,renglon.anc,'bajo')}
 if(momento!=='portada'){const latC=90-(vb.y+vb.h/2)/500*180,kmPx=0.36*111.32*Math.cos(latC*Math.PI/180)*px,
 km=([1000,500,250,200,100,50,25,20,10,5,2,1].map(k=>[k,k/kmPx]).filter(v=>v[1]>=64&&v[1]<=136).sort((u,v)=>Math.abs(u[1]-100)-Math.abs(v[1]-100))[0]||[0])[0];
 if(km){const largo=km/kmPx*px,yb=vb.y+vb.h-(borde+14)*px;
 for(const x0 of [vb.x+16*px,vb.x+vb.w-16*px-largo]){const c={x0:x0-3*px,x1:x0+Math.max(largo,56*px)+3*px,y0:yb-24*px,y1:yb+4*px};if(!libre(c))continue;puestos.push(c);
-H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/><text class="v-rot escala" x="${x0.toFixed(2)}" y="${(yb-10*px).toFixed(2)}" font-size="${f(11)}">${km} km</text>`;break}}
+H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/><text class="v-rot escala" x="${x0.toFixed(2)}" y="${(yb-10*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}">${km} km</text>`;break}}
 const xn=vb.x+vb.w-37*px,yn=vb.y+74*px,cn={x0:xn-10*px,x1:xn+10*px,y0:yn-3*px,y1:yn+40*px};
-if(libre(cn)){puestos.push(cn);H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${xn.toFixed(2)} ${(yn+22*px).toFixed(2)}V${yn.toFixed(2)}m${f(-4)} ${f(6)}l${f(4)} ${f(-6)}l${f(4)} ${f(6)}"/><text class="v-rot escala" x="${xn.toFixed(2)}" y="${(yn+37*px).toFixed(2)}" font-size="${f(11)}" text-anchor="middle">N</text>`}}
+if(libre(cn)){puestos.push(cn);H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${xn.toFixed(2)} ${(yn+22*px).toFixed(2)}V${yn.toFixed(2)}m${f(-4)} ${f(6)}l${f(4)} ${f(-6)}l${f(4)} ${f(6)}"/><text class="v-rot escala" x="${xn.toFixed(2)}" y="${(yn+37*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}" text-anchor="middle" style="stroke-width:${f(4)}">N</text>`}}
 if(prox>=0){const p0=pr(r.paradas[prox].pos);let q=p0;
 if(qb){const dx=p0[0]-qb[0],dy=p0[1]-qb[1],d=Math.hypot(dx,dy);if(d<(conArte?50:24)*px){const s=pr(r.curso[Math.min(r.curso.length-1,(r.paradas[prox].idx|0)+8)]),ux=d>px?dx:s[0]-p0[0],uy=d>px?dy:s[1]-p0[1],nu=Math.hypot(ux,uy)||1,lejos=(conArte?64:38)*px;
 q=[qb[0]+ux/nu*lejos,qb[1]+uy/nu*lejos];puestos.push({x0:q[0]-15*px,x1:q[0]+15*px,y0:q[1]-15*px,y1:q[1]+15*px});H+=`<path class="v-guia" d="M${p0[0].toFixed(2)} ${p0[1].toFixed(2)}L${q[0].toFixed(2)} ${q[1].toFixed(2)}" stroke-width="${f(1)}"/>`}}
@@ -1111,7 +1118,16 @@ H+=(tri?`<path class="v-marca" stroke-width="${f(1.1)}" d="M${mx.toFixed(2)} ${(
 if(CAPA.depurarCarta)H+=puestos.map(o=>`<rect x="${o.x0.toFixed(2)}" y="${o.y0.toFixed(2)}" width="${(o.x1-o.x0).toFixed(2)}" height="${(o.y1-o.y0).toFixed(2)}" fill="none" stroke="#A6472E" stroke-width="${f(1)}"/>`).join('');
 grupo(capa,'v-rotulos',H,capa.querySelector('#estela')||capa.querySelector('rect.hitz'))}
 CAPA.mapa=function(foco,vb,px){try{fondo();cerca(px);dibujar(foco,vb,px)}catch(e){if(typeof console!=='undefined'&&console.warn)console.warn('carta:',e)}};
-CAPA.vista=function(r,foco){if(!r||r.id!==CAPA.rio||typeof CAPA.momento!=='function'||!r.curso||!r.paradas)return null;
+function reservar(v,dims,cuida){if(!v||!dims||!dims.ancho)return v;cuida=(cuida||[]).map(c=>pr(c).concat([c[2]||0]));/* [lat, lon, px de más]: en Jinja el anillo se corre unos 64 px de la barca */const an=dims.ancho,des=dims.des||dims.alto||260,asp=an/des,base=v.pts.map(pr);
+const y0=Math.min.apply(null,base.map(q=>q[1]));let extra=null;
+for(let k=0;k<8;k++){const P=extra?base.concat([extra]):base;let x0=1e9,x1=-1e9,ya=1e9,yb=-1e9;P.forEach(q=>{x0=Math.min(x0,q[0]);x1=Math.max(x1,q[0]);ya=Math.min(ya,q[1]);yb=Math.max(yb,q[1])});
+let w=(x1-x0)*v.margen,h=(yb-ya)*v.margen;w=Math.max(w,v.minW);h=Math.max(h,v.minW/asp);if(w/h<asp)w=h*asp;else h=w/asp;
+const top=(ya+yb)/2-h/2,s=w/an,cx=(x0+x1)/2;let falta=(PILDORA+8)*s-(y0-top);
+cuida.forEach(q=>{if(Math.abs(q[0]-cx)<w/2&&q[1]>top&&q[1]<top+h)falta=Math.max(falta,(PILDORA+18+(q[2]||0))*s-(q[1]-top))});/* el anillo de la próxima parada, si cae en la vista */if(falta<=s*.5)break;extra=[(x0+x1)/2,(extra?extra[1]:y0)-falta]}
+if(extra)v.pts=v.pts.concat([[90-extra[1]/500*180,extra[0]/1000*360-180]]);return v}
+CAPA.vista=function(r,foco,dims){const v=vista0(r,foco),p=paso(),m=CAPA.momento();
+return v&&m!=='portada'?reservar(v,dims,m!=='mar'&&p>=0&&p<r.paradas.length?[r.paradas[p].pos.concat([p===0?66:0])]:[]):v};
+function vista0(r,foco){if(!r||r.id!==CAPA.rio||typeof CAPA.momento!=='function'||!r.curso||!r.paradas)return null;
 const m=CAPA.momento(),n=r.paradas.length,p=Math.max(0,Math.min(n+1,paso()));
 if(m==='portada')return{pts:r.curso.concat(r.paradas.map(c=>c.pos),[[33.4,31.2],[16.9,21.0],[-3.6,33.2]]),minW:20,margen:1.1};
 if(m==='navega'||m==='evento'){
@@ -1119,7 +1135,7 @@ const ev=m==='evento'&&typeof S!=='undefined'&&S&&S.evento&&S.evento.tramo?Math.
 return{pts:t.concat([[alto[0]+Math.max(.5,(alto[0]-bajo)*.14),alto[1]]]),minW:17,margen:1.42}}
 if(m==='parada'){const c=p>=1&&p<=n?r.paradas[p-1].pos:r.curso[idx(r,p)];return{pts:[[c[0]-2.6,c[1]],[c[0]+3.6,c[1]]],minW:9,margen:1}}
 if(m==='mar')return{pts:[[29.6,29.5],[32.6,32.6]],minW:8,margen:1.15};
-return null};
+return null}
 })();
 </script>
 <script>
@@ -1127,7 +1143,7 @@ return null};
 if(typeof CAPA==='undefined'||!CAPA)return;
 const ROT={marca:'Cauces',nave:'Nave',companero:'Compañero',paradas:'Paradas',proxima:'próxima',perfil:'Perfil del río',
 mar:'Llegaste al mar',ganancia:'Ganancia',antes:'La vez pasada',mercader:'El mercader',tesoro:'Tu tesoro',zarpar:'Zarpar',
-norte:'N',sur:'S'};
+norte:'N',sur:'S',miraFrase:'Mirá la frase: así van las paradas, en orden.'};
 let ultima='';
 const momento=()=>typeof CAPA.momento==='function'?CAPA.momento():'otro';
 const TILDES=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0x36f)+']','g');
@@ -1152,7 +1168,7 @@ else if(i===a&&conProxima)h+=`<span class="v-ficha proxima" data-i="${i}" role="
 else h+=`<span class="v-ficha vacia" data-i="${i}" role="listitem" aria-hidden="true"><b></b><small></small></span>`}
 return h+'</div>'}
 function perfil(r){if(!r.perfil||typeof perfilSVG!=='function')return '';const A=r.perfil;
-return `<div class="v-perfil"><div class="v-perfil-cab"><span class="v-rotulo">${ROT.perfil}</span><span class="v-nota">de ${num(km(A[0][1])+' m')} en la fuente a ${num(km(A[A.length-1][1])+' m')} en el mar</span></div><div class="v-perfil-svg">${perfilSVG(r).replace(/<title>[^<]*<\/title>/g,'')}</div></div>`}
+return `<div class="v-perfil"><div class="v-perfil-cab"><span class="v-rotulo">${ROT.perfil}</span><span class="v-nota">de ${num(km(A[0][1])+' m')} en la fuente a ${num(km(A[A.length-1][1])+' m')} en el mar</span></div><div class="v-perfil-svg">${perfilSVG(r).replace(/<title>[^<]*<\/title>/g,'').replace(/(<text class="perfil-txt" x="[0-9.]+") y="[0-9.]+">/,'$1 y="-3">').replace(/(class="perfil-aqui" cx="[0-9.]+" cy="([0-9.]+)"[^>]*>)(<text class="perfil-txt" x="[0-9.]+") y="([0-9.]+)"/,(t,c,cy,tx,y)=>+y>+cy?`${c}${tx} y="${(+cy-8).toFixed(1)}"`:t)}</div></div>`}
 const pintada=(r,i,pictos)=>(typeof postal==='function'&&postal(r.id,i))||(typeof escena==='function'&&pictos?escena(pictos):'');
 function cita(r){const t=r.contexto&&r.contexto[0]&&r.contexto[0].texto,m=t&&/^«([^»]+)»,\s*escribió\s+([^:.,;]+)/.exec(t);return m?{texto:m[1],autor:m[2].trim()}:null}
 const riel=r=>typeof renderRiel==='function'&&typeof telefono==='function'&&telefono()?`<div class="v-riel">${renderRiel(r)}</div>`:'';
@@ -1168,14 +1184,14 @@ const zarpe=r=>r.vehiculo?`<p class="v-zarpe">${S.eco?r.vocab.zarpas+rival(r.voc
 function selloV(r,i,cae){const c=r.paradas[i],ts=sellos()[claveSello(r,i)];
 if(!ts)return `<svg class="v-sello pendiente" viewBox="0 0 84 84" role="img" aria-label="Sin sello"><circle class="aro" cx="42" cy="42" r="38"/></svg>`;
 const oro=selloOro(r,i),pc=c.escena&&typeof picto==='function'&&picto(c.escena[0]),nom=String(c.nombre).toUpperCase(),la=Array.isArray(c.pos)?+c.pos[0]:NaN;
-const lat=isFinite(la)?`${Math.round(Math.abs(la))}° ${la<0?ROT.sur:ROT.norte}`:'',giro=((i*5)%11)-5;
-return `<svg class="v-sello${oro?' oro':''}${cae?' nuevo':''}" viewBox="0 0 84 84" style="--v-giro:${giro}deg" role="img" aria-label="Sello de ${esc(c.nombre)}"><circle class="borde" cx="42" cy="42" r="40"/><circle class="aro" cx="42" cy="42" r="35"/>${pc?`<svg class="pic" x="30" y="10" width="24" height="24" viewBox="${pc.vb}">${pc.svg}</svg>`:''}<text class="nom" x="42" y="50" text-anchor="middle"${nom.length>8?' textLength="60" lengthAdjust="spacingAndGlyphs"':''}>${esc(nom)}</text><line class="raya" x1="27" y1="55.5" x2="57" y2="55.5"/><text class="lat" x="42" y="69" text-anchor="middle">${lat}</text></svg>`}
+const gr=Math.round(Math.abs(la)),lat=isFinite(la)?`${gr?gr+'°':'0° '+Math.round(Math.abs(la)*60)+'′'} ${la<0?ROT.sur:ROT.norte}`:'',giro=((i*5)%11)-5;
+return `<svg class="v-sello${oro?' oro':''}${cae?' nuevo':''}" viewBox="0 0 84 84" style="--v-giro:${giro}deg" role="img" aria-label="Sello de ${esc(c.nombre)}"><circle class="borde" cx="42" cy="42" r="40"/><circle class="aro" cx="42" cy="42" r="35"/>${pc?`<svg class="pic" x="30" y="10" width="24" height="24" viewBox="${pc.vb}">${pc.svg}</svg>`:''}<text class="nom" x="42" y="50" text-anchor="middle"${nom.length>8?' textLength="60" lengthAdjust="spacingAndGlyphs"':''}>${esc(nom)}</text><line class="raya" x1="27" y1="55.5" x2="57" y2="55.5"/><text class="lat${gr?"":" min"}" x="42" y="69" text-anchor="middle">${lat}</text></svg>`}
 function portada(r,entra){const V=r.vocab,n=r.paradas.length,g=globo(r,S.dicho||(r.companero&&r.companero.hola)),q=cita(r);
 const ancho=holgada()?`${r.vehiculo?`<div class="nave">${(typeof laminaNave==='function'&&laminaNave(r))||`<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>`}<div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+rival(V,S.eco):esc(r.vehiculo.zarpe)}</div></div>`:''}${typeof fichaAnimal==='function'?fichaAnimal(r):''}`:zarpe(r);
 return resto(`<div class="v-portada"><div class="v-marca">${ROT.marca}</div><h2 class="v-rio">${esc(r.nombre)}</h2><p class="v-cab">${V.cabecera(r)}</p>${q?`<blockquote class="v-cita"><p>«${esc(q.texto)}»</p><cite>${esc(q.autor)}</cite></blockquote>`:''}</div>
 <div class="v-bit${entra}" data-v="portada">${g}${g?'':botonVoz()}<dl class="v-datos">${r.vehiculo?`<div class="v-dato"><dt>${ROT.nave}</dt><dd>${esc(r.vehiculo.nombre)}</dd></div>`:''}${r.companero?`<div class="v-dato"><dt>${ROT.companero}</dt><dd>${esc(r.companero.nombre)}</dd></div>`:''}<div class="v-dato"><dt>${ROT.paradas}</dt><dd>${n}</dd></div></dl><div class="v-ancho">${ancho}</div>${riel(r)}</div>`)}
 function navega(r,entra){const V=r.vocab,a=S.paso,g0=S.guias&&S.guias[a],primera=!S.zarpo&&a===0;
-const g=globo(r,(g0&&g0.resp!=null&&S.dicho)||V.proxima);
+const g=globo(r,primera?ROT.miraFrase:((g0&&g0.resp!=null&&S.dicho)||V.proxima));
 const arriba=primera?bloqueFrase(r,true):`<div class="v-avance"><div class="v-frase">${fraseHasta(r,a)}</div><div class="v-rotulo">${botonVoz()}${cuenta(r,a)}</div></div>${fichas(r,a,true,!!entra)}`;
 return resto(`<div class="v-bit${entra}" data-v="navega">${arriba}${g}${a===0?zarpe(r):''}${perfil(r)}</div>`)}
 function parada(r,entra){const V=r.vocab,n=r.paradas.length,p=S.paso,c=r.paradas[p-1],prev=p>1?r.paradas[p-2]:null,k=claveSello(r,p-1);
@@ -1183,7 +1199,7 @@ const g=globo(r,S.dicho||((S.selloNuevo===k?`¡Sello de ${c.nombre}! `:'')+(r.co
 const ns=renderSello(r,p-1),nota=(/<\/svg><div>([\s\S]*)<\/div><\/div>\s*$/.exec(ns)||[])[1]||'';
 const kp=String(V.kickerParada(r,p,n,c)),ik=kp.indexOf(' · '),rotulo=ik>=0?kp.slice(0,ik):kp;
 return `<div class="v-bit${entra}" data-v="parada"><div class="v-cabeza"><div><p class="kicker">${botonVoz()}${rotulo}</p><h2 class="v-ciudad">${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div></div>${selloV(r,p-1,!!entra&&S.selloNuevo===k)}</div>${g}${S.hoyListo?`<p class="aviso-hoy">${ico('ok')} ¡Dos ${V.Parada.toLowerCase()}s nuevas! ${r.tipo==='rio'?'Si querés, la barca se queda anclada aquí hasta mañana.':'Si querés, mañana seguimos desde aquí.'}</p>`:''}${S.anclada?`<p class="aviso-hoy"><button class="enlace" onclick="abrirRio('${r.id}',1)">Empezar de nuevo desde ${V.entreInicio}</button></p>`:''}<div class="ficha recuerdo v-recuerdo">${pintada(r,p,c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div></div></div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}${nota?`<p class="v-sello-nota">${nota}</p>`:''}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}</div>`}
-function mar(r,entra){const V=r.vocab,n=r.paradas.length,f=S.eco&&S.eco.final,g=globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido');
+function mar(r,entra){const V=r.vocab,n=r.paradas.length,f=S.eco&&S.eco.final,g=globo(r,S.dicho||(r.companero&&r.companero.fin),'',S.dicho?(S.animo||'alegre'):'dormido');
 const cifra=(t,v)=>`<div class="v-cifra"><dt>${t}</dt><dd>${v}</dd></div>`;
 const cuentas=f?`<div class="v-cuentas"><div class="fkicker">Cuentas del viaje</div><dl class="v-cifras">${f.gan>0?cifra(ROT.ganancia,'+'+f.gan):''}${S.eco.antes!=null?cifra(ROT.antes,S.eco.antes):''}${S.eco.fantasma!=null?cifra(ROT.mercader,S.eco.fantasma):''}${cifra(ROT.tesoro,km(P.tesoro||0))}</dl><p class="v-cuenta">${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[n-1].nombre)}: ${esc(f.vend.join(', '))}.`:''}${f.gan>0?'':' Sin ganancia esta vez.'}</p><div class="bolsa">${ico('moneda')} ${rango(P.tesoro||0)}</div></div>`:'';
 return `<div class="v-bit${entra}" data-v="mar"><p class="kicker">${botonVoz()}${ROT.mar} · ${cuenta(r,n)}</p><h2 class="v-titulo">${marcarFrase(r.frase)}</h2>${fichas(r,n,false,false)}${g}${r.vehiculo?`<p class="v-llegada">${esc(r.vehiculo.llegada)}</p>`:''}${cuentas}<div class="ficha recuerdo v-recuerdo">${pintada(r,n+1,r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${r.contexto&&r.contexto[1]?mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo):''}${riel(r)}</div>`}
@@ -1204,7 +1220,9 @@ if(m==='parada'&&p>=1&&p<n)return botones(`<button class="enlace" onclick="paso(
 if(m==='navega'&&p>=1&&typeof porDefecto==='string')return porDefecto.split('onclick="paso(-1)"').join('onclick="CAPA.aParada()"')}
 catch(e){}
 return porDefecto};
-function dibujado(){if(typeof document==='undefined'||!document.getElementById||typeof S==='undefined')return;
+function ajustarPerfil(){try{const p=document.getElementById('panel'),sv=p&&typeof p.querySelector==='function'&&p.querySelector('.v-perfil svg');if(!sv||!sv.viewBox||!sv.viewBox.baseVal)return;
+const w=sv.getBoundingClientRect().width,W=sv.viewBox.baseVal.width;if(w>0&&W>0)sv.style.setProperty('--v-pfs',(12*W/w).toFixed(2)+'px')}catch(e){}}
+function dibujado(){if(typeof document==='undefined'||!document.getElementById||typeof S==='undefined')return;ajustarPerfil();
 const cab=document.getElementById('cab');if(!cab||typeof cab.querySelector!=='function')return;
 const son=cab.querySelector('.son');if(son&&son.setAttribute&&typeof VJ==='function')son.setAttribute('aria-label',VJ().sonido);
 const m=momento();if(m!=='navega'&&m!=='parada'&&m!=='mar'&&m!=='evento')return;
@@ -1212,7 +1230,7 @@ const r=typeof rioPor==='function'&&rioPor(S.rio),sub=cab.querySelector('.sub');
 const V=r.vocab,n=r.paradas.length,p=S.paso,k=String(p>n?V.kickerFin(r):p>=1?V.kickerParada(r,p,n,r.paradas[p-1]):V.kickerInicio(r)),i=k.indexOf(' · ');
 if(i>=0)sub.innerHTML=k.slice(i+3)}
 CAPA.remedir=function(){try{const m=momento();if(m!=='portada'&&m!=='navega')return;
-if(typeof document==='undefined'||!document.getElementById)return;
+if(typeof document==='undefined'||!document.getElementById)return;ajustarPerfil();
 const b=document.body,p=document.getElementById('panel'),pie=document.getElementById('pie');
 if(!b||!b.style||typeof b.style.setProperty!=='function'||!p||typeof p.querySelector!=='function')return;
 const el=p.querySelector('.v-bit'),h=el?(el.offsetHeight||0):0,hp=pie&&!pie.hidden?(pie.offsetHeight||0):0;if(!h)return;

@@ -142,11 +142,13 @@ body.vitrina #panel .v-perfil .perfil-tierra{fill:var(--v-tinte1);stroke:var(--v
 body.vitrina #panel .v-perfil .perfil-base{stroke:var(--v-tinta);stroke-opacity:.25}
 body.vitrina #panel .v-perfil .perfil-tick{fill:var(--v-tinta);fill-opacity:1}
 body.vitrina #panel .v-perfil .perfil-aqui{fill:#fff;stroke:var(--v-tinta);stroke-width:2.5}
-/* los rótulos del perfil: el dibujo mide 380 de ancho y se achica con la hoja, así que 13 da 11 px o más en un teléfono;
-   un halo de papel para que la línea del cauce no los tache */
-body.vitrina #panel .v-perfil .perfil-txt{fill:var(--v-sec);font:600 13px var(--v-txt);paint-order:stroke;stroke:var(--v-crema);stroke-width:5px;stroke-linejoin:round}
+/* los rótulos del perfil: el dibujo se escala con la hoja; panel.js mide cuánto y pone en --v-pfs la letra que da 12 px en
+   pantalla (en teléfono y en tableta por igual: ese es el tope); sin medir, 13. Un halo de papel para que el cauce no los tache.
+   El de la altura de la fuente va encima del arranque de la línea (y="-3"): la caja del dibujo deja aire arriba para él */
+body.vitrina #panel .v-perfil-svg{padding-top:12px}
+body.vitrina #panel .v-perfil .perfil-txt{fill:var(--v-sec);font:600 var(--v-pfs,13px) var(--v-txt);paint-order:stroke;stroke:var(--v-crema);stroke-width:5px;stroke-linejoin:round}
 /* «Altura del cauce» baja un renglón, fuera de la caja del dibujo, para no pisar la línea de base */
-body.vitrina #panel .v-perfil .perfil-txt.k{font-size:13px;letter-spacing:.06em;stroke:none;transform:translateY(11px)}
+body.vitrina #panel .v-perfil .perfil-txt.k{font-size:var(--v-pfs,13px);letter-spacing:.06em;stroke:none;transform:translateY(calc(var(--v-pfs,13px)*.85))}
 
 /* ---------- parada: la ciudad con su sello ---------- */
 body.vitrina #panel .v-cabeza{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 14px}
@@ -157,6 +159,7 @@ body.vitrina #panel .v-sello .borde{fill:#fff;stroke:var(--v-sello);stroke-width
 body.vitrina #panel .v-sello .aro{fill:none;stroke:var(--v-sello);stroke-width:1.3;stroke-dasharray:.1 3.3;stroke-linecap:round}
 body.vitrina #panel .v-sello .nom{font:600 13px var(--v-tit);letter-spacing:.05em;fill:var(--v-sello)}
 body.vitrina #panel .v-sello .lat{font:500 11px var(--v-tit);letter-spacing:.1em;fill:var(--v-sello)}
+body.vitrina #panel .v-sello .lat.min{letter-spacing:.02em}/* con minutos («0° 25′ N») el rótulo es más largo: sin aire entre letras, para no tocar el aro */
 body.vitrina #panel .v-sello .raya{stroke:var(--v-sello);stroke-width:1.2;stroke-linecap:round}
 body.vitrina #panel .v-sello .pic{overflow:visible}
 body.vitrina #panel .v-sello .pic .p{fill:var(--v-sello)}
@@ -254,8 +257,6 @@ body.vitrina #panel .v-ancho .v-zarpe{margin:0}
 @media (max-height:719px) and (max-width:819px){body.vitrina #panel .v-cita{display:none}}
 /* en un teléfono angosto, el rótulo del perfil va solo: la nota a su derecha se partía en dos renglones */
 @media (max-width:379px){body.vitrina #panel .v-perfil-cab .v-nota{display:none}}
-/* más angosto todavía, el dibujo del perfil se achica más: letras más grandes para que no bajen de 11 px */
-@media (max-width:359px){body.vitrina #panel .v-perfil .perfil-txt,body.vitrina #panel .v-perfil .perfil-txt.k{font-size:15px}}
 
 /* con menos movimiento: solo fundidos */
 @media (prefers-reduced-motion:reduce){

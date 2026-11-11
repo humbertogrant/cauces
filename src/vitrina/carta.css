@@ -53,16 +53,17 @@ body.vitrina .v-par{fill:none;stroke:var(--v-claro,#64C8AA);stroke-opacity:.42;s
 body.vitrina #v-lineas,body.vitrina #v-rotulos{pointer-events:none}
 
 /* rótulos con jerarquía de atlas (nada por debajo de 11 px: el tamaño lo pone carta.js en píxeles de pantalla) */
-body.vitrina .v-rot{font-family:var(--v-txt,'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif);stroke:none;pointer-events:none}
-body.vitrina .v-rot.agua{font-style:italic;text-transform:uppercase;letter-spacing:.22em;fill:var(--v-claro,#64C8AA);fill-opacity:.82}
-body.vitrina .v-rot.rio-n{font-style:italic;letter-spacing:.06em;fill:var(--v-claro,#64C8AA);fill-opacity:.88}
-body.vitrina .v-rot.pais{text-transform:uppercase;font-weight:600;letter-spacing:.32em;fill:var(--v-crema,#FBF8F2);fill-opacity:.6}
-body.vitrina .v-rot.linea{text-transform:uppercase;font-weight:600;letter-spacing:.22em;fill:var(--v-claro,#64C8AA);fill-opacity:.72}
+body.vitrina .v-rot{font-family:var(--v-txt,'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif);pointer-events:none;
+  stroke:var(--v-mar,#0C3A33);stroke-opacity:.7;stroke-linejoin:round;paint-order:stroke}/* halo oscuro fino (el ancho lo pone carta.js): se lee también sobre relieve claro */
+body.vitrina .v-rot.agua{font-style:italic;text-transform:uppercase;letter-spacing:.22em;fill:#A8E4D2;fill-opacity:1}
+body.vitrina .v-rot.rio-n{font-style:italic;letter-spacing:.06em;fill:#A8E4D2;fill-opacity:1}
+body.vitrina .v-rot.pais{text-transform:uppercase;font-weight:600;letter-spacing:.32em;fill:var(--v-crema,#FBF8F2);fill-opacity:.85}
+body.vitrina .v-rot.linea{text-transform:uppercase;font-weight:600;letter-spacing:.22em;fill:var(--v-crema,#FBF8F2);fill-opacity:.85}
 body.vitrina .v-rot.hito{fill:var(--v-crema,#FBF8F2);fill-opacity:.92}
 body.vitrina .v-rot.bajo{font-style:italic;fill:var(--v-crema,#FBF8F2);fill-opacity:.92}/* el renglón bajo el nombre de la parada donde está la barca */
-/* escala gráfica y norte: crema al 80 % */
+/* escala gráfica y norte: crema al 85 % (contraste ≥ 4,5 a 1) */
 body.vitrina .v-escala{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-opacity:.8;stroke-linecap:round;stroke-linejoin:round}
-body.vitrina .v-rot.escala{fill:var(--v-crema,#FBF8F2);fill-opacity:.8;font-weight:600;letter-spacing:.06em}
+body.vitrina .v-rot.escala{fill:var(--v-crema,#FBF8F2);fill-opacity:.95;font-weight:700;letter-spacing:.06em;stroke-opacity:.9}/* la N cae a veces sobre relieve claro */
 body.vitrina .v-boca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2)}/* la boca del río */
 body.vitrina .v-marca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2);stroke-opacity:.92;stroke-linejoin:round}
 

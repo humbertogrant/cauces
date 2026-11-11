@@ -47,3 +47,26 @@ de la falúa); lo nuevo son sus posiciones en la carta.
 ETOPO1 Global Relief Model, de NOAA NCEI (Amante y Eakins, 2009), dominio público: el mismo ráster que ya usa `tools/relieve.py`.
 `python tools/carta.py` lo recorta a la ventana lat −6…36, lon 18…46, lo sombrea con luz del noroeste y lo guarda como una imagen
 WebP de 400 × 600 dentro de `src/vitrina/carta-datos.js` (95 KB). No se bajó nada en la corrida.
+
+# Corrida larga (2026-11-11): textos que se suman
+
+## De la bitácora
+
+| Dónde | Texto |
+|---|---|
+| Globo de Hipo, en la primera bajada, antes de zarpar (con la frase y la lista a la vista) | Mirá la frase: así van las paradas, en orden. |
+| Sello de cada parada | la latitud de la ciudad, redondeada, con «N» o «S»: «24° N», «5° N», y «0° 25′ N» en Jinja |
+
+El texto de Hipo es el único renglón nuevo dicho por el compañero. Reemplaza, solo en ese momento, a «¿Cuál es la próxima
+parada?», que no tenía sentido con la lista a la vista y sin fichas para responder.
+
+## De la carta
+
+| Clase | Rótulos |
+|---|---|
+| El delta (solo cuando El Cairo ya se alcanzó) | brazo de Rosetta · brazo de Damieta · desembocadura · Port Said (31,26° N, 32,30° E) · Suez (29,97° N, 32,55° E) |
+| Bajo el nombre de la parada donde está la barca, tomado letra por letra de los datos | primera catarata (Asuán; está en su imagen para recordar) · puerto de Bulaq (El Cairo; está en el texto del puerto) |
+| Mobiliario de la carta | la escala gráfica («500 km», «250 km», «100 km»… según la vista) · «N» en la flecha del norte |
+
+Los afluentes nuevos (Atbara, Sobat, Bahr el Zeraf) se dibujan sin nombre. El cauce fino es de Natural Earth 10 m y el relieve
+fino del corredor, del mismo mosaico de NOAA que ya usa el perfil de altura; las cifras del juego no cambian.

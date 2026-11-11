@@ -249,3 +249,51 @@ pregunta de Hipo antes de zarpar); A-03 ya no se ve en el build de las 08:55. De
 tres (A-06, A-08 y A-10) y siguen siete. De las 9 menores abiertas de la primera corrida, cinco ya no se ven en los builds de la
 vuelta A (V1-09, V2-01, V2-04, V2-06 y, en la portada, V2-05) y cuatro siguen (V1-10, V1-11, V2-02 y V2-08). Las capturas de
 `estados-390/`, `estados-360/` y `estados-acostado/` son las del build de las 08:55.**
+
+## Corrida larga, vuelta B (2026-11-11, de 09:11 a 09:21; build de las 09:11, 610 KB)
+
+Capturas en `docs/vitrina/capturas/vueltaB/` (fuera de git), con hojas de contacto `hoja-estados-390.png`, `hoja-estados-360.png`,
+`hoja-estados-1440.png`, `hoja-recorrido-historia-a.png` y `-b.png` (las arma `hojas.py`, en la misma carpeta).
+
+- **Recorridos a 390 × 844** (`mercader/` y `historia/`): 27 capturas cada uno, 40,8 y 40,9 s, los dos llegaron al mar, sin errores
+  de consola.
+- **Estados** a 390 × 844, 360 × 640 y 1440 × 900 @1 (`estados-390/`, `estados-360/`, `estados-1440/`): 16 cada uno, sin errores de
+  consola.
+- **Auditoría** (`aud-390.json`, `aud-360.json`): en los 16 estados y en los dos tamaños, texto más chico 11 px, 0 textos de menos de
+  11 px (el perfil ya no baja de 11: A-04 no aparece), 0 tocables de menos de 44 px, 0 contrastes HTML de menos de 4,5, página sin
+  ensanchar, sin nombres futuros ni emojis. Textos cortados: solo los que asoman bajo el pie (la imagen para recordar en 5 estados a 390;
+  el texto de la llegada en el mar a 360). Rótulos tapados, solo a 360 × 640: el anillo «?» por la píldora (navegar-primera 6 de 9,
+  guía sin responder 3 de 9, guía bien 6 de 9, evento 6 de 9), SUDD por la píldora (cuatro estados de parada, 6 de 9) y JUBA por la
+  hoja con la guía mal (3 de 9). Sobre el mapa, contraste medido en la captura por debajo de 4,5 a 1 (aparte, no hace fallar): a 360,
+  8 rótulos (ECUADOR 2,73; brazo de Damieta 3,13; brazo de Rosetta 3,24; Nilo Blanco 3,52; la N del norte 3,6; UGANDA 3,66; SUDD 3,8;
+  «250 km» 4,47); a 390, los mismos más LAGO VICTORIA 3,26, Nilo Azul 3,26, ETIOPÍA 3,43, SUDÁN 3,8, SUDÁN DEL SUR 3,84 y «200 km» 4,4.
+
+| N.º | Gravedad | Pantalla y tamaño | Captura | Qué se ve |
+|---|---|---|---|---|
+| B-01 | media | evento entre Jartum y Asuán, resuelto (Adulto), 390 × 844 | `historia/17-evento-tramo-4-resuelto.png` | La nota del acierto dice el orden entero, «Jinja → Juba → Jartum → Asuán → Luxor → El Cairo», con Luxor y El Cairo todavía por llegar: nombres de paradas futuras fuera de las fichas de la guía y de la lista de la primera bajada. Lo mismo en el evento de Luxor a El Cairo (`historia/25-evento-tramo-6-resuelto.png`), donde falta solo El Cairo. |
+| B-02 | media | guía mal, 360 × 640 | `estados-360/05-guia-mal.png` | La hoja corta por la mitad la falúa, a Hipo y el rótulo JUBA; no se ven ni el anillo «?» ni el hilo de oro: el mapa queda sin lo que importa. (Es A-01 en su peor caso; la auditoría lo da como JUBA tapado 3 de 9.) |
+| B-03 | media | navegar y evento, 360 × 640 | `estados-360/09-evento.png`, `estados-360/02-navegar-primera.png` | El anillo «?» de la próxima parada queda bajo la píldora NILO (6 de 9 puntos); en las paradas, SUDD también (`estados-360/06-parada-sello-nuevo.png`). Sigue A-01. |
+| B-04 | media | llegada al mar, 390 × 844 y 360 × 640 | `estados-390/15-mar-nino.png` | La falúa queda dibujada en la desembocadura, sobre la costa del Mediterráneo, mientras el texto de abajo dice «La falúa no sale al mar: en el delta la carga sigue en gabarra hasta Alejandría». El hilo de oro también llega hasta la costa. |
+| B-05 | menor | evento entre Luxor y El Cairo, 390 × 844 | `historia/24-evento-tramo-6.png`, `historia/25-evento-tramo-6-resuelto.png` | El rótulo «Alejandría» queda cortado por la píldora NILO («Alejandr…»). |
+| B-06 | menor | portada, 390 × 844 | `estados-390/01-portada.png` | Sigue A-13: la falúa e Hipo quedan encima del rótulo LAGO VICTORIA; la sombra de la barca pisa «VICTORIA». |
+| B-07 | menor | parada y navegar, 390 × 844 | `estados-390/06-parada-sello-nuevo.png`, `estados-390/05-guia-mal.png` | Hipo nadando queda pegado al rótulo de la parada (JUBA empieza a 4-5 px de su hocico): no lo tapa, pero se leen como una sola pieza. |
+| B-08 | menor | navegar con la guía mal, 390 × 844 | `estados-390/05-guia-mal.png` | El rótulo «Nilo Azul» va encima del trazo del afluente (la «l» final cruza la línea). |
+| B-09 | menor | navegar (Adulto), 390 × 844 | `historia/19-parada-4-navega.png` | La escala gráfica «200 km» va a la derecha, sobre la línea punteada de la frontera de los 22° N; en las demás pantallas va a la izquierda: salta de lado entre pantallas seguidas (`historia/18-parada-4.png` la tiene a la derecha, `historia/21-parada-5.png` a la izquierda). |
+| B-10 | menor | navegar al empezar (Adulto), 390 × 844 | `historia/03-navega.png`, `historia/04-navega-respondida.png` | Antes de la primera parada, la cabecera de las fichas no tiene título: solo «0 DE 6 PARADAS» a la derecha y un hueco a la izquierda, donde en las demás va «Tres Jotas…». |
+| B-11 | menor | todos los estados, 1440 × 900 | `estados-1440/04-guia-bien.png` | En el ancho, la falúa e Hipo miden unos 50 y 20 px y quedan pegados al borde de abajo del mapa (guía, evento); la columna de papel deja más de la mitad vacía bajo el perfil. La píldora NILO tapa el trazo blanco del río en la parte de arriba. |
+| B-12 | menor | evento, 390 × 844 | `estados-390/09-evento.png` | La cabecera dice «km ≈1 006» (Juba) mientras la falúa está ya a mitad del tramo, pasado el Sudd. |
+| B-13 | menor | perfil, todos los tamaños | `estados-390/02-navegar-primera.png` | Sigue A-05: «1 149 m» pisado por la línea que baja de la fuente. |
+| B-14 | menor | mar en Niño, 390 y 360 | `estados-390/15-mar-nino.png` | Sigue V2-08: Hipo dormido («z z») en el retrato mientras habla. |
+| B-15 | menor, para Humberto | mercado (Niño), 390 × 844 | `estados-390/08-mercado-lleno.png` | Sigue A-11: «1 monedas». |
+
+Revisado y sin hallazgo: el río (hilo de oro) y la vela de la falúa son lo único dorado en la carta en las 16 + 27 pantallas (el oro de las
+postales queda en su ficha); un solo título dominante por pantalla (nombre de la parada, «Tres Jotas…» o NILO en la portada); sin
+emojis ni dibujos de otro trazo (el cocodrilo del evento es un icono de línea del motor, como los demás); márgenes de 18 px y
+separaciones parejas en la hoja a 390 y 360; la falúa con su carga (en Adulto, la carga se ve en cubierta) e Hipo se leen a 390 y 360;
+la flecha del norte, siempre arriba a la derecha bajo el botón de sonido, sin pisar nada.
+
+**Ya no se ven de la vuelta A:** A-04 (la auditoría no encuentra textos de menos de 11 px, a 390 ni a 360), A-03, A-06, A-08 y A-10
+(como ya se había anotado). Siguen: A-01 (B-02, B-03), A-05 (B-13), A-11 (B-15), A-12 (los contrastes de arriba), A-13 (B-06) y
+V2-08 (B-14); A-02 cambió: en la primera bajada el pie dice «Zarpar ›» con la lista a la vista y la pregunta de Hipo ya está en el globo
+(`estados-390/02-navegar-primera.png`), igual que en la vuelta A. A-07 y A-09 no se volvieron a mirar (Jinja y acostado no se
+capturaron en esta vuelta).

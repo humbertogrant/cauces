@@ -6,7 +6,7 @@
   if(typeof CAPA==='undefined'||!CAPA)return;
   const ROT={marca:'Cauces',nave:'Nave',companero:'Compañero',paradas:'Paradas',proxima:'próxima',perfil:'Perfil del río',
     mar:'Llegaste al mar',ganancia:'Ganancia',antes:'La vez pasada',mercader:'El mercader',tesoro:'Tu tesoro',zarpar:'Zarpar',
-    norte:'N',sur:'S'};
+    norte:'N',sur:'S',miraFrase:'Mirá la frase: así van las paradas, en orden.'};
   let ultima='';/* momento y paso del último panel: la hoja solo entra con movimiento cuando cambian */
   const momento=()=>typeof CAPA.momento==='function'?CAPA.momento():'otro';
   const TILDES=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0x36f)+']','g');/* los acentos sueltos, tras normalizar */
@@ -35,9 +35,11 @@
       else if(i===a&&conProxima)h+=`<span class="v-ficha proxima" data-i="${i}" role="listitem"><b>?</b><small>${ROT.proxima}</small></span>`;
       else h+=`<span class="v-ficha vacia" data-i="${i}" role="listitem" aria-hidden="true"><b></b><small></small></span>`}
     return h+'</div>'}
-  /* el perfil del motor en un contenedor propio; sin los <title> de cada punto, que nombran paradas futuras */
+  /* el perfil del motor en un contenedor propio; sin los <title> de cada punto, que nombran paradas futuras. Los rótulos de
+     altura van siempre encima de la línea (la de la fuente y la de «aquí», que el motor ponía debajo cerca de la fuente):
+     la línea baja hacia la derecha y los tachaba */
   function perfil(r){if(!r.perfil||typeof perfilSVG!=='function')return '';const A=r.perfil;
-    return `<div class="v-perfil"><div class="v-perfil-cab"><span class="v-rotulo">${ROT.perfil}</span><span class="v-nota">de ${num(km(A[0][1])+' m')} en la fuente a ${num(km(A[A.length-1][1])+' m')} en el mar</span></div><div class="v-perfil-svg">${perfilSVG(r).replace(/<title>[^<]*<\/title>/g,'')}</div></div>`}
+    return `<div class="v-perfil"><div class="v-perfil-cab"><span class="v-rotulo">${ROT.perfil}</span><span class="v-nota">de ${num(km(A[0][1])+' m')} en la fuente a ${num(km(A[A.length-1][1])+' m')} en el mar</span></div><div class="v-perfil-svg">${perfilSVG(r).replace(/<title>[^<]*<\/title>/g,'').replace(/(<text class="perfil-txt" x="[0-9.]+") y="[0-9.]+">/,'$1 y="-3">').replace(/(class="perfil-aqui" cx="[0-9.]+" cy="([0-9.]+)"[^>]*>)(<text class="perfil-txt" x="[0-9.]+") y="([0-9.]+)"/,(t,c,cy,tx,y)=>+y>+cy?`${c}${tx} y="${(+cy-8).toFixed(1)}"`:t)}</div></div>`}
   const pintada=(r,i,pictos)=>(typeof postal==='function'&&postal(r.id,i))||(typeof escena==='function'&&pictos?escena(pictos):'');
   /* la cita con que abre el texto de la primera capa de contexto («…», escribió Fulano: …); si no abre así, no hay cita */
   function cita(r){const t=r.contexto&&r.contexto[0]&&r.contexto[0].texto,m=t&&/^«([^»]+)»,\s*escribió\s+([^:.,;]+)/.exec(t);return m?{texto:m[1],autor:m[2].trim()}:null}
@@ -65,8 +67,9 @@
   function selloV(r,i,cae){const c=r.paradas[i],ts=sellos()[claveSello(r,i)];
     if(!ts)return `<svg class="v-sello pendiente" viewBox="0 0 84 84" role="img" aria-label="Sin sello"><circle class="aro" cx="42" cy="42" r="38"/></svg>`;
     const oro=selloOro(r,i),pc=c.escena&&typeof picto==='function'&&picto(c.escena[0]),nom=String(c.nombre).toUpperCase(),la=Array.isArray(c.pos)?+c.pos[0]:NaN;
-    const lat=isFinite(la)?`${Math.round(Math.abs(la))}° ${la<0?ROT.sur:ROT.norte}`:'',giro=((i*5)%11)-5;
-    return `<svg class="v-sello${oro?' oro':''}${cae?' nuevo':''}" viewBox="0 0 84 84" style="--v-giro:${giro}deg" role="img" aria-label="Sello de ${esc(c.nombre)}"><circle class="borde" cx="42" cy="42" r="40"/><circle class="aro" cx="42" cy="42" r="35"/>${pc?`<svg class="pic" x="30" y="10" width="24" height="24" viewBox="${pc.vb}">${pc.svg}</svg>`:''}<text class="nom" x="42" y="50" text-anchor="middle"${nom.length>8?' textLength="60" lengthAdjust="spacingAndGlyphs"':''}>${esc(nom)}</text><line class="raya" x1="27" y1="55.5" x2="57" y2="55.5"/><text class="lat" x="42" y="69" text-anchor="middle">${lat}</text></svg>`}
+    /* cerca del ecuador los grados redondeados dan 0: ahí van grados y minutos (Jinja, 0,42°: «0° 25′ N») */
+    const gr=Math.round(Math.abs(la)),lat=isFinite(la)?`${gr?gr+'°':'0° '+Math.round(Math.abs(la)*60)+'′'} ${la<0?ROT.sur:ROT.norte}`:'',giro=((i*5)%11)-5;
+    return `<svg class="v-sello${oro?' oro':''}${cae?' nuevo':''}" viewBox="0 0 84 84" style="--v-giro:${giro}deg" role="img" aria-label="Sello de ${esc(c.nombre)}"><circle class="borde" cx="42" cy="42" r="40"/><circle class="aro" cx="42" cy="42" r="35"/>${pc?`<svg class="pic" x="30" y="10" width="24" height="24" viewBox="${pc.vb}">${pc.svg}</svg>`:''}<text class="nom" x="42" y="50" text-anchor="middle"${nom.length>8?' textLength="60" lengthAdjust="spacingAndGlyphs"':''}>${esc(nom)}</text><line class="raya" x1="27" y1="55.5" x2="57" y2="55.5"/><text class="lat${gr?"":" min"}" x="42" y="69" text-anchor="middle">${lat}</text></svg>`}
 
   function portada(r,entra){const V=r.vocab,n=r.paradas.length,g=globo(r,S.dicho||(r.companero&&r.companero.hola)),q=cita(r);
     /* donde hay columna holgada, lo que el motor cuenta en el nacimiento sin nombrar paradas: la embarcación (con con qué
@@ -76,8 +79,9 @@
 <div class="v-bit${entra}" data-v="portada">${g}${g?'':botonVoz()}<dl class="v-datos">${r.vehiculo?`<div class="v-dato"><dt>${ROT.nave}</dt><dd>${esc(r.vehiculo.nombre)}</dd></div>`:''}${r.companero?`<div class="v-dato"><dt>${ROT.companero}</dt><dd>${esc(r.companero.nombre)}</dd></div>`:''}<div class="v-dato"><dt>${ROT.paradas}</dt><dd>${n}</dd></div></dl><div class="v-ancho">${ancho}</div>${riel(r)}</div>`)}
 
   function navega(r,entra){const V=r.vocab,a=S.paso,g0=S.guias&&S.guias[a],primera=!S.zarpo&&a===0;
-    /* antes de responder, Hipo pregunta; después, dice lo que el motor le hace decir (acierto, o «Era …: …») */
-    const g=globo(r,(g0&&g0.resp!=null&&S.dicho)||V.proxima);
+    /* antes de zarpar en la primera bajada, Hipo señala la frase con la lista (todavía no hay fichas para responder); luego,
+       antes de responder, pregunta; después, dice lo que el motor le hace decir (acierto, o «Era …: …») */
+    const g=globo(r,primera?ROT.miraFrase:((g0&&g0.resp!=null&&S.dicho)||V.proxima));
     /* en la primera bajada, antes de zarpar, la frase con la lista (enseñar antes de preguntar) en lugar de las fichas */
     const arriba=primera?bloqueFrase(r,true):`<div class="v-avance"><div class="v-frase">${fraseHasta(r,a)}</div><div class="v-rotulo">${botonVoz()}${cuenta(r,a)}</div></div>${fichas(r,a,true,!!entra)}`;
     /* la hoja se mide: con la guía respondida el pie crece y, si salió mal, Hipo explica en varios renglones («Era …: …») */
@@ -91,7 +95,7 @@
     const kp=String(V.kickerParada(r,p,n,c)),ik=kp.indexOf(' · '),rotulo=ik>=0?kp.slice(0,ik):kp;
     return `<div class="v-bit${entra}" data-v="parada"><div class="v-cabeza"><div><p class="kicker">${botonVoz()}${rotulo}</p><h2 class="v-ciudad">${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div></div>${selloV(r,p-1,!!entra&&S.selloNuevo===k)}</div>${g}${S.hoyListo?`<p class="aviso-hoy">${ico('ok')} ¡Dos ${V.Parada.toLowerCase()}s nuevas! ${r.tipo==='rio'?'Si querés, la barca se queda anclada aquí hasta mañana.':'Si querés, mañana seguimos desde aquí.'}</p>`:''}${S.anclada?`<p class="aviso-hoy"><button class="enlace" onclick="abrirRio('${r.id}',1)">Empezar de nuevo desde ${V.entreInicio}</button></p>`:''}<div class="ficha recuerdo v-recuerdo">${pintada(r,p,c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div></div></div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}${nota?`<p class="v-sello-nota">${nota}</p>`:''}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}</div>`}
 
-  function mar(r,entra){const V=r.vocab,n=r.paradas.length,f=S.eco&&S.eco.final,g=globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido');
+  function mar(r,entra){const V=r.vocab,n=r.paradas.length,f=S.eco&&S.eco.final,g=globo(r,S.dicho||(r.companero&&r.companero.fin),'',S.dicho?(S.animo||'alegre'):'dormido');/* dormido solo si no tiene nada que contar de la bajada */
     const cifra=(t,v)=>`<div class="v-cifra"><dt>${t}</dt><dd>${v}</dd></div>`;
     const cuentas=f?`<div class="v-cuentas"><div class="fkicker">Cuentas del viaje</div><dl class="v-cifras">${f.gan>0?cifra(ROT.ganancia,'+'+f.gan):''}${S.eco.antes!=null?cifra(ROT.antes,S.eco.antes):''}${S.eco.fantasma!=null?cifra(ROT.mercader,S.eco.fantasma):''}${cifra(ROT.tesoro,km(P.tesoro||0))}</dl><p class="v-cuenta">${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[n-1].nombre)}: ${esc(f.vend.join(', '))}.`:''}${f.gan>0?'':' Sin ganancia esta vez.'}</p><div class="bolsa">${ico('moneda')} ${rango(P.tesoro||0)}</div></div>`:'';
     return `<div class="v-bit${entra}" data-v="mar"><p class="kicker">${botonVoz()}${ROT.mar} · ${cuenta(r,n)}</p><h2 class="v-titulo">${marcarFrase(r.frase)}</h2>${fichas(r,n,false,false)}${g}${r.vehiculo?`<p class="v-llegada">${esc(r.vehiculo.llegada)}</p>`:''}${cuentas}<div class="ficha recuerdo v-recuerdo">${pintada(r,n+1,r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${r.contexto&&r.contexto[1]?mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo):''}${riel(r)}</div>`}
@@ -123,7 +127,11 @@
 
   /* al final de cada render (evento «dibujado»): en la píldora, el kilómetro del rótulo del motor en lugar de la cabecera
      larga, y un nombre accesible para el botón de sonido. Con el DOM simulado de las pruebas no hace nada */
-  function dibujado(){if(typeof document==='undefined'||!document.getElementById||typeof S==='undefined')return;
+  /* los rótulos del perfil: el dibujo se escala con la hoja (y su ancho de dibujo cambia con la pantalla), así que se mide
+     cuánto mide en pantalla y se pasa a --v-pfs la letra que da 12 px de verdad, en cualquier ancho */
+  function ajustarPerfil(){try{const p=document.getElementById('panel'),sv=p&&typeof p.querySelector==='function'&&p.querySelector('.v-perfil svg');if(!sv||!sv.viewBox||!sv.viewBox.baseVal)return;
+      const w=sv.getBoundingClientRect().width,W=sv.viewBox.baseVal.width;if(w>0&&W>0)sv.style.setProperty('--v-pfs',(12*W/w).toFixed(2)+'px')}catch(e){}}
+  function dibujado(){if(typeof document==='undefined'||!document.getElementById||typeof S==='undefined')return;ajustarPerfil();
     const cab=document.getElementById('cab');if(!cab||typeof cab.querySelector!=='function')return;
     const son=cab.querySelector('.son');if(son&&son.setAttribute&&typeof VJ==='function')son.setAttribute('aria-label',VJ().sonido);
     const m=momento();if(m!=='navega'&&m!=='parada'&&m!=='mar'&&m!=='evento')return;/* en un evento queda el kilómetro de la parada de donde se zarpó */
@@ -134,7 +142,7 @@
   /* vuelve a medir la hoja que ya está en pantalla y le pide al motor que reencuadre el mapa: cuando llegan las fuentes
      (la primera pantalla se mide con las del sistema y el texto puede partirse distinto) o cuando cambia el ancho */
   CAPA.remedir=function(){try{const m=momento();if(m!=='portada'&&m!=='navega')return;
-      if(typeof document==='undefined'||!document.getElementById)return;
+      if(typeof document==='undefined'||!document.getElementById)return;ajustarPerfil();
       const b=document.body,p=document.getElementById('panel'),pie=document.getElementById('pie');
       if(!b||!b.style||typeof b.style.setProperty!=='function'||!p||typeof p.querySelector!=='function')return;
       const el=p.querySelector('.v-bit'),h=el?(el.offsetHeight||0):0,hp=pie&&!pie.hidden?(pie.offsetHeight||0):0;if(!h)return;

@@ -131,3 +131,21 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
   próxima parada con la lista a la vista: dirá un texto nuevo y corto que explica la frase (va a `textos-nuevos.md`); los rótulos
   secundarios de la carta suben a 4,5 a 1 de contraste aunque la instrucción los pedía al 60 % (se lee o no se lee); «1 monedas»
   en el mercado es un texto del motor de Cauces y no se toca aquí: queda avisado.
+- **09:07-09:10** Carta cerró la segunda pasada (escala gráfica y norte, el delta rotulado, «primera catarata» y «puerto de Bulaq»
+  bajo sus paradas, el relieve fino sin franja visible) y Bitácora la vuelta A (riel en la portada y el mar del teléfono, sello
+  circular propio con la latitud, el alto del mapa medido, portada ancha con «Tu embarcación» y «Conocé a Hipo»). **Decisiones de
+  Bitácora, aprobadas:** «‹ Atrás» en la guía vuelve a la hoja de la parada (antes se llevaba la barca a la parada anterior); el
+  rótulo dice «Parada 4 de 6» y el kilómetro queda en la píldora.
+- **09:11** Vuelta A integrada: `npm test` 9 de 9, `dist/nilo.html` 610 KB, commit fe8391d.
+- **09:14** Vuelta B con tres agentes nuevos de contexto chico (los de la vuelta A cargaban entre 380 y 680 mil tokens y cada
+  llamada suya salía cara): uno verifica y arma hojas de contacto; dos aplican los arreglos decididos. **Decisión de orden:** cada
+  uno arma su propia copia del juego con `ensamblar('nilo','amplia')`, sin tocar `dist/`, para no pisar las capturas del que mira.
+- **09:20** Verificación B, sobre el build de la vuelta A: los dos recorridos al mar sin errores; auditoría sin letra de menos de
+  11 px, sin toques chicos y sin contrastes bajos en la bitácora; ningún hallazgo grave, 4 medios y 11 menores. Miré la hoja de
+  contacto de los 16 estados a 390 × 844: el conjunto ya se lee como un solo producto. **Decisiones:** la nota del evento que
+  muestra el orden entero (B-01) y la falúa dibujada en la boca del río mientras el texto dice que no sale al mar (B-04) son del
+  motor de Cauces y se quedan; van anotadas para Humberto junto con «1 monedas».
+- **09:21** Vuelta B integrada: Hipo ya no pregunta antes de zarpar (dice el texto nuevo, que va a `textos-nuevos.md`), el perfil
+  con rótulos de 12 px que la línea no tacha, el sello de Jinja con «0° 25′ N», Hipo despierto si habla en el mar; la carta
+  reserva los 84 px reales de la píldora, todos sus rótulos dan 4,5 a 1 o más (salvo la «N» sobre relieve claro en algunas
+  paradas, pendiente) y ninguno baja de 11 px. `npm test` 9 de 9; `dist/nilo.html`, 614 KB.
