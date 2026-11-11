@@ -65,6 +65,7 @@ ROTULOS=[
  dict(t='Nilo Azul',p=[14.45,33.9],a='start',c='rio-n',max=40),
  dict(t='SUDD',p=[7.75,29.75],a='end',c='pais',max=130),
  dict(t='EGIPTO',p=[22.3,27.9],a='start',c='pais',max=60),
+ dict(t='EGIPTO',p=[26.6,28.0],a='middle',c='pais',max=60),
  dict(t='EGIPTO',p=[28.0,29.3],a='start',c='pais',max=20),
  dict(t='SUDÁN',p=[21.5,27.9],a='start',c='pais',max=60),
  dict(t='SUDÁN',p=[12.2,27.6],a='start',c='pais',max=60),

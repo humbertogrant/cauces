@@ -38,7 +38,7 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
   grupo(capa,'v-lineas',L,capa.firstChild);
 
   /* lo que un rótulo no puede pisar: el río (muestras cada 3 px del cauce a la vista), las paradas y sus nombres, la barca */
-  const rio=[],puestos=[];
+  const rio=[],puestos=[{x0:vb.x,x1:vb.x+64*px,y0:vb.y,y1:vb.y+64*px},{x0:vb.x+vb.w-64*px,x1:vb.x+vb.w,y0:vb.y,y1:vb.y+64*px}];/* las esquinas de arriba (64 × 64 px) son de los botones redondos: volver y sonido */
   for(let i=0;i+1<r.curso.length;i++){const p=pr(r.curso[i]),q=pr(r.curso[i+1]);
     if(Math.max(p[0],q[0])<vb.x-vb.w*.2||Math.min(p[0],q[0])>vb.x+vb.w*1.2||Math.max(p[1],q[1])<vb.y-vb.h*.2||Math.min(p[1],q[1])>vb.y+vb.h*1.2)continue;
     const m=Math.min(400,Math.max(1,Math.ceil(Math.hypot(q[0]-p[0],q[1]-p[1])/(3*px))));for(let k=0;k<=m;k++)rio.push([p[0]+(q[0]-p[0])*k/m,p[1]+(q[1]-p[1])*k/m])}
@@ -76,7 +76,8 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
     for(const [t,anc] of ops){const x=anc==='start'?vb.x+12*px:vb.x+vb.w-12*px,yy=t.indexOf('|')>=0?y-15*px:y,c=caja(t,x,yy,anc,'linea');if(libre(c)){puestos.push(c);H+=texto(t,x,yy,anc,'linea');break}}});
 
   /* rótulos de atlas, en orden de jerarquía: el que no cabe entero, pisa el río o pisa a otro, no sale */
-  CARTA.rotulos.forEach(o=>{if(ancho>o.max||(o.min&&ancho<=o.min))return;const q=pr(o.p),c=caja(o.t,q[0],q[1],o.a,o.c,o.g);if(!libre(c))return;puestos.push(c);H+=texto(o.t,q[0],q[1],o.a,o.c,o.g)});
+  const vistos={};/* de cada nombre, una sola versión por vista: la primera que cabe */
+  CARTA.rotulos.forEach(o=>{const nom=o.t.replace('|',' ');if(vistos[nom]||ancho>o.max||(o.min&&ancho<=o.min))return;const q=pr(o.p),c=caja(o.t,q[0],q[1],o.a,o.c,o.g);if(!libre(c))return;vistos[nom]=1;puestos.push(c);H+=texto(o.t,q[0],q[1],o.a,o.c,o.g)});
 
   /* hitos: una marca (cuadrito o dos triángulos) y su nombre a 11 px; ninguno es una parada */
   CARTA.hitos.forEach(o=>{if(ancho>o.max||(o.tras!=null&&!(foco.etiquetas&&foco.etiquetas.has(o.tras))))return;const q=pr(o.p);if(!dentro(q))return;

@@ -2,13 +2,13 @@
    Todo selector empieza por body.vitrina; las variables --v-… vienen de capa.css. El dorado no entra aquí. */
 
 /* ---------- alto de la carta según el momento ---------- */
-body.vitrina[data-momento="portada"]{--v-mapa:61vh}
+body.vitrina[data-momento="portada"]{--v-mapa:67vh}
 body.vitrina[data-momento="navega"]{--v-mapa:47vh}
 body.vitrina[data-momento="parada"],body.vitrina[data-momento="evento"]{--v-mapa:38vh}
 body.vitrina[data-momento="mar"]{--v-mapa:50vh}
 body.vitrina{--v-col:clamp(380px,34vw,420px);--v-alto:100vh;--v-sombra:rgba(6,32,28,.28)}
 @supports (height:1svh){body.vitrina{--v-alto:100svh}
-body.vitrina[data-momento="portada"]{--v-mapa:61svh}
+body.vitrina[data-momento="portada"]{--v-mapa:67svh}
 body.vitrina[data-momento="navega"]{--v-mapa:47svh}
 body.vitrina[data-momento="parada"],body.vitrina[data-momento="evento"]{--v-mapa:38svh}
 body.vitrina[data-momento="mar"]{--v-mapa:50svh}}
@@ -157,7 +157,7 @@ body.vitrina[data-momento]:not([data-momento="otro"]) #pie .botones{gap:12px}
 body.vitrina[data-momento]:not([data-momento="otro"]) #pie .botones>span:empty{display:none}
 body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn{flex:1 1 auto;min-height:52px;padding:0 18px;border-radius:14px;border:1px solid var(--v-tinta);background:var(--v-tinta);color:#fff;font:500 17px/1.1 var(--v-tit);letter-spacing:.1em;text-transform:uppercase;transition:background-color .2s ease,transform .2s ease}
 body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn:active{transform:scale(.985)}
-body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn.sec{flex:0 0 auto;background:#fff;color:var(--v-tinta);border-color:var(--v-filete);font-size:15px;letter-spacing:.06em}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn.sec{flex:none;min-height:44px;padding:0 10px;margin:0 0 0 -10px;border:0;background:none;color:var(--v-tinta);font:600 14px/20px var(--v-txt);letter-spacing:0;text-transform:none}
 body.vitrina[data-momento]:not([data-momento="otro"]) #pie .enlace{flex:none;min-height:44px;padding:0 10px;margin:0 0 0 -10px;color:var(--v-tinta);font:600 14px/20px var(--v-txt);text-decoration:none}
 body.vitrina[data-momento]:not([data-momento="otro"]) #pie .fkicker{font:500 12px/16px var(--v-tit);letter-spacing:.14em;text-transform:uppercase;color:var(--v-tinta);margin:0}
 body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chips{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:10px;margin:0}

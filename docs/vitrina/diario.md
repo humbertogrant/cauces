@@ -76,3 +76,19 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
   corta. Medido otra vez: 390 px y el botón de 294.
 - **08:10** Vuelta final de Verificación en marcha: recorridos en los dos modos, las doce capturas de antes y después (390 × 844,
   820 × 1180 y 1440 × 900) y las mediciones sobre el build final.
+- **08:13** Build completo y `npm test` sobre el estado final: 9 de 9; los cuatro HTML de Cauces y Exploradores, sin cambios.
+  Miré yo las dos pantallas que faltaban: el mercado de Juba con la bodega y las cuentas del viaje en el mar. Bien las dos.
+- **08:15** Verificación cerró: dos recorridos de 27 pantallas (mercader e historia), los dos al mar, sin errores de consola y con
+  la página en 390 px en las 54 pantallas; 59,9 cuadros por segundo con la CPU frenada 4×, cuadro más largo de 16,9 ms, la barca a
+  0,12 px del curso; seis efectos de sonido sin muestras inválidas. Hallazgos: ningún grave ni medio pendiente; quedan 12 menores.
+- **08:16** Sobraban unos minutos. **Decisión:** en vez de agregar algo, un último retoque de tres minutos sobre la pantalla más
+  débil, la portada: el papel en blanco bajo los tres datos (Bitácora) y, en pantalla ancha, un rótulo repetido y otro bajo el
+  botón de volver (Carta). Si no entra limpio, se descarta.
+- **08:18** El retoque entró limpio: la portada del teléfono con el mapa a 67svh (menos papel en blanco), «‹ Atrás» igual en todas
+  las pantallas, «EGIPTO» y «SUDÁN» una vez cada uno en pantalla ancha y las esquinas de los botones libres de rótulos. Lo miré en
+  capturas a 390 × 844, 820 × 1180 y 1440 × 900.
+- **08:19** Build completo y `npm test` sobre el estado final: 9 de 9. `dist/nilo.html`, 647 KB. Los otros cuatro HTML, sin cambios.
+- **08:20** Retomé las nueve capturas de «después» que cambiaron con el retoque (portada, navegando y mar, en los tres tamaños),
+  para que las versionadas sean las del build final. `hallazgos.md` se cerró a las 08:15 y no recoge el retoque: el informe lo dice.
+- **08:22** Cierre: informe escrito, todo con commit en `vitrina-nilo`, sin push. Quedan 9 hallazgos menores y la pieza 4 (la falúa
+  con la carga a la vista e Hipo nadando al lado) a medias.
