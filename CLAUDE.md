@@ -883,14 +883,18 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
 Un experimento a pedido de Humberto (`instruccion-un-rio.md`): un solo río, el Nilo, llevado al acabado que tendría el juego
 terminado, para medir cuánto compra una corrida corta y autónoma. Todo lo de la corrida está en `docs/vitrina/` (plan, contrato,
 diario, hallazgos, textos nuevos, capturas e informe).
-- **El build**: `node build.js` arma además `dist/nilo.html` (juego `nilo` en `JUEGOS`: una sola edición, tope de 900 KB): los datos
+- **El build**: `node build.js` arma además `dist/nilo.html` (juego `nilo` en `JUEGOS`: una sola edición, tope de 900 KB; `node
+  build.js nilo` arma solo la vitrina, y `npm test` termina además con «VITRINA OK»): los datos
   de Cauces amplia recortados al Nilo (`soloRutas`, que filtra RIVERS, NAVES, MASCOTAS, MERCADOS y EVENTOS; las postales, la barca,
   las mercancías y la ilustración salen solas por el recorte de siempre), `src/juegos/nilo.js` (guarda aparte, clave `cauces-nilo`),
   los módulos de `src/vitrina/` que existan y el motor; el CSS de la capa va después del de `cabeza.html`. Las franjas de relieve
   no viajan (`RELIEVE={}`): la vitrina trae su sombreado.
 - **La capa** (`src/vitrina/`, se carga antes que el motor): `capa.js` define `CAPA` (eventos con `oir`/`emitir`, la fase de la
   parada, el momento de la pantalla, el arranque directo en el río) y `capa.css` las variables `--v-…`; `carta.js`, `carta.css` y
-  `carta-datos.js` (lo genera `tools/carta.py` desde ETOPO1) son la carta: relieve sombreado, hilo de oro, rótulos y encuadres;
+  `carta-datos.js` (lo genera `python tools/carta.py` desde ETOPO1, de NOAA, dominio público: un WebP de 400 × 600 con el sombreado
+  ya en la paleta, ≈ 95 KB) son la carta: relieve sombreado recortado por la tierra, hilo de oro (lo recorrido; en la portada, el río
+  entero), la próxima parada como anillo con signo de pregunta, rótulos con jerarquía de atlas que no pisan el cauce y un encuadre
+  por momento (`CAPA.vista`); las franjas, los nombres de relieve y la luz del motor se ocultan;
   `panel.js` y `panel.css`, la bitácora en papel: portada, navegando, parada y llegada al mar, con las fichas del acróstico;
   `sonido.js`, los efectos sintetizados. Todo selector empieza por `body.vitrina`.
 - **Los ganchos** (en `src/motor.js`, entre `/*@vitrina*/ … /*@fin:vitrina*/`; `capaV()` devuelve `CAPA` o `null`): `render` pone

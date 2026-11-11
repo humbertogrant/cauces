@@ -56,7 +56,7 @@ ROTULOS=[
  dict(t='MAR MEDITERRÁNEO',p=[31.85,31.95],a='middle',c='agua',max=14),
  dict(t='MAR ROJO',p=[20.0,38.3],a='middle',c='agua',g=59,max=130,min=40),
  dict(t='MAR|ROJO',p=[23.2,36.95],a='middle',c='agua',max=40),
- dict(t='LAGO VICTORIA',p=[-1.55,34.6],a='start',c='agua',max=130,min=40),
+ dict(t='LAGO VICTORIA',p=[-2.2,33.0],a='middle',c='agua',max=130,min=40),
  dict(t='LAGO VICTORIA',p=[-1.3,33.0],a='middle',c='agua',max=40),
  dict(t='LAGO NASSER',p=[23.0,31.75],a='end',c='agua',max=60),
  dict(t='Nilo Blanco',p=[11.1,31.7],a='end',c='rio-n',max=130,min=40),

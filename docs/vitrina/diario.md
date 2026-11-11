@@ -52,3 +52,27 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
 - **07:59** Bitácora entregó la vuelta 1. **Decisiones:** el sello dorado del motor (tinta ocre) se queda en la bitácora; la
   pregunta de la guía va una sola vez (en el globo); el texto de zarpe y el rival, que la portada nueva dejó fuera, vuelven en
   «navegando» antes de la primera parada.
+- **08:00** Mirando las pantallas de evento: en mitad de la bajada la prueba entre puertos volvía de golpe al diseño viejo del
+  motor. **Decisión:** `CAPA.momento()` devuelve `evento` y la bitácora lo trata como una parada: el panel del motor dentro de la
+  misma hoja. No es mecánica nueva; es no dejar una pantalla a medias en el recorrido de Bajar.
+- **08:01** Tres roles reconstruyendo a la vez chocaron al escribir `dist/` (un error de Windows al abrir `cauces-amplia.html`).
+  `node build.js nilo` arma solo la vitrina.
+- **08:03** `test/vitrina.js` pasa en los dos modos y entra en `npm test`: 9 de 9 (TODO OK × 3, INSTANTÁNEA OK, DIST OK × 4,
+  VITRINA OK). Medición con la CPU frenada 4×: 59,9 cuadros por segundo de mediana, cuadro más largo de 50 ms, la barca a 0,13 px
+  del curso.
+- **08:04** Vuelta 2 de mirar (segundo recorrido completo, 27 capturas): entraron los arreglos de Carta y Bitácora (el dorado
+  solo en el cauce, la portada con el río entero en dorado y a la derecha del título, el anillo de la próxima parada a la vista,
+  la píldora con el kilómetro, la pregunta una sola vez, el perfil entero, los eventos dentro de la hoja). Quedaban dos retoques
+  de la portada (el rótulo del trópico detrás del título y la barca cortada por la hoja): hechos a las 08:07.
+- **08:06** **Decisión:** las carpetas de recorridos completos (unas 27 capturas cada una) no se versionan; sí los cuatro momentos
+  de antes y los de después en tres tamaños, sueltos en `docs/vitrina/capturas/`. `tools/verificacion.py` agrega al final de
+  `docs/verificacion.md` la fuente del relieve y los rótulos de la carta, marcados para revisión.
+- **08:06** **Decisión (Carta, confirmada):** «Pirámides de Guiza» solo aparece en la carta cuando El Cairo ya se alcanzó: al lado
+  del anillo de la próxima parada, la delataba.
+- **08:08** Hallazgo grave de Verificación: al llegar a una parada después de un evento, el encabezado desaparecía y ZARPAR salía
+  cortado. Lo reproduje y medí: la página pasaba de 390 a 462 px de ancho. Causa: el sello nuevo del motor cae con una animación
+  que empieza agrandada 2,4 veces y girada; en la bitácora va pegado al borde derecho y se salía 72 px, y el teléfono agrandaba
+  la página entera. Arreglo en `capa.css` (es de Dirección): la página no puede ensancharse y el sello entra con una animación
+  corta. Medido otra vez: 390 px y el botón de 294.
+- **08:10** Vuelta final de Verificación en marcha: recorridos en los dos modos, las doce capturas de antes y después (390 × 844,
+  820 × 1180 y 1440 × 900) y las mediciones sobre el build final.
