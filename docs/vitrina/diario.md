@@ -161,6 +161,6 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
 - **09:45** Verificación final (agente nuevo): los dos recorridos al mar sin errores; auditoría limpia en cuatro tamaños; 55,6
   cuadros por segundo con la CPU frenada, la barca a 0,09 px del curso; seis efectos de sonido válidos. Ningún hallazgo grave; dos
   medios, los dos del motor de Cauces; trece menores. Miré la hoja de comparación (antes, 60 minutos, corrida larga).
-- **09:50** **Decisión de cierre:** paro a los 85 minutos de los 180. Solo quedan hallazgos menores (la condición de parada de la
+- **09:46** **Decisión de cierre:** paro a los 80 minutos de los 180. Solo quedan hallazgos menores (la condición de parada de la
   instrucción) y la sesión que dirige está por llenar su ventana de contexto; seguir sería gastar cuota en retoques chicos. Informe
   en `informe.md`; el de la primera corrida pasa a `informe-60-min.md`.

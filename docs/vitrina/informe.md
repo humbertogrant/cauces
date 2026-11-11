@@ -1,6 +1,6 @@
 # Informe de la corrida larga: vitrina del Nilo
 
-Segunda corrida autónoma del 2026-11-11, de 08:27 a 09:55 (unos 90 de los 180 minutos que tomé como presupuesto), sobre la misma
+Segunda corrida autónoma del 2026-11-11, de 08:27 a 09:47 (80 de los 180 minutos que tomé como presupuesto), sobre la misma
 rama y con el mismo alcance que la de 60 minutos (su informe quedó en `informe-60-min.md`).
 
 1. `dist/nilo.html` (617 KB; tope 900) subió de nivel en lo que había quedado a medias: la falúa lleva la carga a la vista (el
@@ -10,7 +10,7 @@ rama y con el mismo alcance que la de 60 minutos (su informe quedó en `informe-
    prueba lo compara contra `dist/cauces-amplia.html`. Cauces y Exploradores siguen byte a byte iguales; `npm test`, 9 de 9.
 3. Hubo cuatro vueltas (construir, dos de arreglos y la verificación final) y una auditoría automática nueva sobre 16 estados:
    ninguna letra de menos de 11 px, ningún toque de menos de 44 px, ningún contraste bajo, la página nunca se ensancha.
-4. Cerré a los 90 minutos y no a los 180: ya solo quedaban hallazgos menores, que es la condición de parada de la instrucción, y
+4. Cerré a los 80 minutos y no a los 180: ya solo quedaban hallazgos menores, que es la condición de parada de la instrucción, y
    el consumo iba más rápido de lo que supuse (ver «Tiempo y consumo»).
 5. Sigue sin verificarse lo mismo que antes: cómo suena y cómo lo juega un niño en un teléfono de verdad.
 
@@ -22,7 +22,7 @@ rama y con el mismo alcance que la de 60 minutos (su informe quedó en `informe-
 | Vuelta A (construir) | 08:30 – 09:11 | Trazo, Carta (dos pasadas), Bitácora y Verificación, en paralelo |
 | Vuelta B (arreglar) | 09:11 – 09:22 | Verificación integrada con hojas de contacto, y los arreglos de bitácora y carta |
 | Vuelta C (retocar) | 09:22 – 09:30 | Retoques de carta y de hoja |
-| Verificación final e informe | 09:30 – 09:55 | Recorridos, auditoría en cuatro tamaños, mediciones, capturas, este informe |
+| Verificación final e informe | 09:30 – 09:47 | Recorridos, auditoría en cuatro tamaños, mediciones, capturas, este informe |
 
 - **Plan de consumo** (lo que marca la cuenta): el límite semanal del modelo de la corrida pasó de 27 % a 45 % (18 puntos) y el
   general, de 24 % a 33 % (9 puntos), medido al empezar y a las 09:31; falta sumar la verificación final y el cierre.

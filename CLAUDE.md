@@ -909,7 +909,7 @@ diario, hallazgos, textos nuevos, capturas e informe).
   Recitar, Preguntar y el inicio, que solo heredan papel y tipografía).
 - **Verificación**: `tools/captura.js` maneja el Edge o el Chrome del sistema por CDP, sin dependencias (`foto`, `recorrido` con
   clics reales, `medir`), y `test/vitrina.js` prueba `dist/nilo.html` en el DOM simulado.
-- **Corrida larga** (el mismo día, 08:27-09:55; `docs/vitrina/plan-larga.md` e `informe.md`; el de la primera es `informe-60-min.md`):
+- **Corrida larga** (el mismo día, 08:27-09:47; `docs/vitrina/plan-larga.md` e `informe.md`; el de la primera es `informe-60-min.md`):
   `src/vitrina/arte.js` y `arte.css` (`CAPA.arte`: la falúa con hasta tres cargas a la vista, las cargas y la cabeza de Hipo
   nadando, en SVG de línea; `carta.js` los pone en `#barca` y `#masc`, la falúa siempre derecha y mirando según el rumbo del tramo);
   `tools/carta.py` entrega además el cauce fino de Natural Earth 10 m (`CARTA.curso`, `CARTA.brazos`), las costas, lagos y fronteras
