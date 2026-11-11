@@ -1,0 +1,7 @@
+/* Vitrina del Nilo: variables compartidas por la carta y la bitácora (docs/vitrina/contrato.md). Todo selector de la vitrina
+   empieza por body.vitrina; sin la capa, el juego se ve como siempre. */
+body.vitrina{--v-mar:#0C3A33;--v-tierra:#215A4F;--v-tierra-baja:#174A3F;--v-tierra-alta:#2B6E5E;--v-oro:#E8B952;--v-crema:#FBF8F2;
+  --v-claro:#64C8AA;--v-tinta:#0F423A;--v-cuerpo:#2D2D2D;--v-sec:#6B6B6B;--v-tinte1:#E9F5F0;--v-tinte2:#B7E3D3;--v-calido:#D89B85;
+  --v-teja:#A6472E;--v-filete:rgba(15,66,58,.2);--v-tit:'Oswald','Arial Narrow',sans-serif;
+  --v-txt:'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif;
+  --papel:#FBF8F2;--verde:#0F423A;--gris:#2D2D2D;--gris2:#6B6B6B;--linea:rgba(15,66,58,.2);background:var(--v-crema)}
