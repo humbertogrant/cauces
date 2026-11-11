@@ -5,3 +5,6 @@ node_modules/
 __pycache__/
 tools/ilustraciones/revision.js
 tools/dibujos/salida/
+
+# vitrina: los recorridos completos de capturas no se versionan; sí los momentos elegidos, sueltos en docs/vitrina/capturas/
+docs/vitrina/capturas/*/
