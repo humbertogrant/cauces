@@ -93,7 +93,8 @@ function ensamblar(id,edicion){
   return{archivo:j.salida||id+e.sufijo+'.html',html,kb,quitado,tope:j.tope||e.tope}}
 function construir(){
   fs.mkdirSync(path.join(__dirname,'dist'),{recursive:true});
-  for(const id of Object.keys(JUEGOS))for(const ed of JUEGOS[id].ediciones||Object.keys(EDICIONES)){const {archivo,html,kb,quitado,tope}=ensamblar(id,ed);
+  const solo=process.argv[2];if(solo&&!JUEGOS[solo])throw 'uso: node build.js [juego]: '+Object.keys(JUEGOS).join(' | ');/* con un juego, solo ese: `node build.js nilo` */
+  for(const id of Object.keys(JUEGOS).filter(k=>!solo||k===solo))for(const ed of JUEGOS[id].ediciones||Object.keys(EDICIONES)){const {archivo,html,kb,quitado,tope}=ensamblar(id,ed);
     fs.writeFileSync(path.join(__dirname,'dist',archivo),html);
     console.log(`dist/${archivo}`,kb,'KB','· recortado del motor:',`${quitado.vocab} vocabularios, ${quitado.animales} animales, ${quitado.pictos} pictogramas, ${quitado.glifos} glifos, ${quitado.iconos} iconos`);
     if(tope&&html.length>tope*1024)console.warn(`AVISO: dist/${archivo} pasa de ${tope} KB`)}}

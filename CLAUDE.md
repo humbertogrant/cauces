@@ -878,6 +878,37 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
    ruta también a ±360°, y tools/rutas.py parte en dos las vistas que cruzan la línea para el mapa y el relieve. Una ruta
    corta puede pedir vértices más seguidos en `PASO_RUTA` de tools/itinerarios.py (el test exige 40 vértices o más).
 
+## La vitrina del Nilo (rama `vitrina-nilo`, 2026-11-11)
+
+Un experimento a pedido de Humberto (`instruccion-un-rio.md`): un solo río, el Nilo, llevado al acabado que tendría el juego
+terminado, para medir cuánto compra una corrida corta y autónoma. Todo lo de la corrida está en `docs/vitrina/` (plan, contrato,
+diario, hallazgos, textos nuevos, capturas e informe).
+- **El build**: `node build.js` arma además `dist/nilo.html` (juego `nilo` en `JUEGOS`: una sola edición, tope de 900 KB): los datos
+  de Cauces amplia recortados al Nilo (`soloRutas`, que filtra RIVERS, NAVES, MASCOTAS, MERCADOS y EVENTOS; las postales, la barca,
+  las mercancías y la ilustración salen solas por el recorte de siempre), `src/juegos/nilo.js` (guarda aparte, clave `cauces-nilo`),
+  los módulos de `src/vitrina/` que existan y el motor; el CSS de la capa va después del de `cabeza.html`. Las franjas de relieve
+  no viajan (`RELIEVE={}`): la vitrina trae su sombreado.
+- **La capa** (`src/vitrina/`, se carga antes que el motor): `capa.js` define `CAPA` (eventos con `oir`/`emitir`, la fase de la
+  parada, el momento de la pantalla, el arranque directo en el río) y `capa.css` las variables `--v-…`; `carta.js`, `carta.css` y
+  `carta-datos.js` (lo genera `tools/carta.py` desde ETOPO1) son la carta: relieve sombreado, hilo de oro, rótulos y encuadres;
+  `panel.js` y `panel.css`, la bitácora en papel: portada, navegando, parada y llegada al mar, con las fichas del acróstico;
+  `sonido.js`, los efectos sintetizados. Todo selector empieza por `body.vitrina`.
+- **Los ganchos** (en `src/motor.js`, entre `/*@vitrina*/ … /*@fin:vitrina*/`; `capaV()` devuelve `CAPA` o `null`): `render` pone
+  `data-momento` y la clase `vitrina` en `body`; `renderDescender` usa `CAPA.descender(r)` si devuelve HTML; `renderPie`,
+  `CAPA.pie(r, acto)`; `renderMapa`, el encuadre de `CAPA.vista(r, foco)` y, al final, `CAPA.mapa(foco, vb, px)`; `paso`, `comprar`,
+  `vender` y `animarBarca` emiten `zarpar`, `sello`, `moneda`, `avanza`, `parada` y `mar`, y `render`, al final, `dibujado`; `abrirRio` devuelve la fase a `parada`, y
+  al cargar corre `CAPA.arranque()`. build.js recorta esos bloques de Cauces y de Exploradores (`cortarVitrina`): sus cuatro HTML
+  quedan byte a byte como antes. Las pruebas de Cauces cargan `src` con los ganchos a la vista y sin `CAPA`: no hacen nada.
+- **Las fases**: cada parada se ve en dos pantallas sin cambiar la mecánica: la parada (`CAPA.fase='parada'`, con ZARPAR) y la guía
+  (`'navega'`: las fichas del acróstico, la pregunta y el perfil; el pie es el del motor). `CAPA.momento()` dice cuál es: `portada`,
+  `navega`, `parada`, `evento` (la prueba entre puertos: el panel del motor dentro de la misma hoja), `mar` u `otro` (Ordenar,
+  Recitar, Preguntar y el inicio, que solo heredan papel y tipografía).
+- **Verificación**: `tools/captura.js` maneja el Edge o el Chrome del sistema por CDP, sin dependencias (`foto`, `recorrido` con
+  clics reales, `medir`), y `test/vitrina.js` prueba `dist/nilo.html` en el DOM simulado.
+- Decisiones de la corrida que se apartan de la instrucción (están en `docs/vitrina/diario.md`): se usa lo pintado (Hipo, la falúa,
+  las mercancías, las postales) en vez de redibujar en línea; se respeta «enseñar antes de preguntar»; el curso sigue siendo el de
+  Natural Earth 50 m; sin descargas ni fuentes embebidas.
+
 ## Pendientes, en orden de valor
 
 De la revisión integral del 2026-10-27 no queda nada: los mares que contradecían su barca, las protagonistas sin dorado, las alturas

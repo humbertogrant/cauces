@@ -57,7 +57,10 @@ Cada módulo agrega lo suyo con asignaciones (`CAPA.mapa=function(…){…}`):
 5. Eventos (`CAPA.emitir`): `zarpar {r, de, a}` al salir hacia la parada `a` (1…n+1, n+1 es el mar); `avanza {k, x, y}` en cada
    cuadro del viaje de la barca (`k` de 0 a 1; `x`, `y` en unidades del SVG); `parada {r, i}` al llegar a la parada `i` (0…n−1);
    `mar {r}` al llegar al mar; `moneda {}` al comprar o vender; `sello {r, i}` al ganar un sello; `toque {}` en el primer toque
-   o tecla del jugador (para arrancar el sonido).
+   o tecla del jugador (para arrancar el sonido); `dibujado {}` al final de cada `render()` (para retocar lo que el motor acaba de
+   poner, como el subtítulo del encabezado).
+6. Durante una prueba entre puertos (`S.evento`), `CAPA.momento()` devuelve `'evento'`: el panel y el pie son los del motor
+   (`renderEvento`), dentro de la misma hoja; `CAPA.descender` y `CAPA.pie` no se llaman.
 
 Las fases: al llegar a una parada, `CAPA.fase='parada'` (la bitácora muestra la parada y un botón ZARPAR que llama
 `CAPA.navegar()`); en `'navega'` la bitácora muestra las fichas del acróstico, la pregunta de Hipo y el perfil, y el pie es el del

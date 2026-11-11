@@ -34,3 +34,21 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
   byte iguales (git no los ve cambiados). **Decisión:** la vitrina guarda aparte (`cauces-nilo`) y abre directo en su río.
 - **07:50** Humo en el DOM simulado: solo el Nilo, los dos modos llegan al mar, los eventos salen en orden (zarpar → sello →
   parada … → mar).
+- **07:53-07:56** La otra sesión (la del trabajo de la voz, sin commit en `cauces-proyecto`) avisó que cambia la línea de `init` y la
+  última de `renderInicio`. **Decisión:** el gancho de arranque va al final de `motor.js` y el de `renderDescender`, una línea más
+  abajo: así los dos cambios no quedan pegados y la mezcla futura sale sola.
+- **07:56** Primer recorrido completo de `dist/nilo.html` (639 KB) con clics reales en el Edge del sistema: 27 capturas, llegó al
+  mar, sin errores de consola. Vuelta 1 de mirar: la portada, navegando en Jartum, Asuán y el mar ya se parecen a la referencia.
+  Lo más grave: un afluente con resplandor dorado, los tres datos de la portada cortados por el pie y el anillo de la próxima
+  parada tapado por el encabezado. Lista completa en `hallazgos.md`; cada arreglo fue a su dueño.
+- **07:57** Gancho nuevo, `dibujado`, al final de `render()`: la bitácora lo usa para acortar el subtítulo del encabezado.
+- **07:58** Verificación entregó la vuelta 0: `tools/captura.js` (foto, recorrido, medir), el «antes» y `test/vitrina.js`. La prueba
+  falla en Adulto: en Juba, la carga narrativa del juego nombra a Jartum («…el comercio que hizo rica a Jartum…»). **Decisión:**
+  ese texto es de los datos de Cauces de siempre y la corrida no toca datos; la regla «ningún nombre futuro» se prueba sobre lo
+  que agrega la vitrina, y el caso queda anotado para Humberto.
+- **07:58** Sonido entregó: cinco efectos sintetizados, con pico entre −7,9 y −9,8 dBFS, medidos con `OfflineAudioContext` (nadie
+  los oyó). **Decisión:** acertar la guía no puede sonar a moneda (en Adulto no hay monedas): pedí un golpe de madera corto para
+  los aciertos. El primer toque se escucha ahora en `pointerup`, `click` o `keydown`.
+- **07:59** Bitácora entregó la vuelta 1. **Decisiones:** el sello dorado del motor (tinta ocre) se queda en la bitácora; la
+  pregunta de la guía va una sola vez (en el globo); el texto de zarpe y el rival, que la portada nueva dejó fuera, vuelven en
+  «navegando» antes de la primera parada.
