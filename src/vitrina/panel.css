@@ -1,0 +1,268 @@
+/* Bitácora de la vitrina (rol Bitácora): la hoja de papel, el encuadre general, el pie y las plantillas de Bajar.
+   Todo selector empieza por body.vitrina; las variables --v-… vienen de capa.css. El dorado no entra aquí. */
+
+/* ---------- alto de la carta según el momento ----------
+   En la portada y navegando todo tiene que verse sin desplazar: el mapa se queda con lo que no piden la hoja y el pie
+   (--v-resto, en px: lo pone panel.js en body según lo que la hoja lleva; aquí, lo de un teléfono si faltara), con un
+   tope arriba y otro abajo; navegando, el mapa guarda al menos 294 px (la píldora del encabezado, 84, y 210 de río) y lo
+   que no cabe de la hoja se ve desplazando la página. En la parada y en el mar la hoja es larga y se desplaza: una parte fija del alto. */
+body.vitrina{--v-col:clamp(380px,34vw,420px);--v-alto:100vh;--v-sombra:rgba(6,32,28,.28)}
+@supports (height:1svh){body.vitrina{--v-alto:100svh}}
+body.vitrina[data-momento="portada"]{--v-mapa:max(calc(var(--v-alto)*.34),min(calc(var(--v-alto)*.72),calc(var(--v-alto) - var(--v-resto,356px))))}
+body.vitrina[data-momento="navega"]{--v-mapa:max(calc(var(--v-alto)*.26),294px,min(calc(var(--v-alto)*.58),calc(var(--v-alto) - var(--v-resto,372px))))}
+body.vitrina[data-momento="parada"],body.vitrina[data-momento="evento"]{--v-mapa:calc(var(--v-alto)*.38)}
+body.vitrina[data-momento="mar"]{--v-mapa:calc(var(--v-alto)*.5)}
+
+/* ---------- en lo que no es Bajar: solo papel, tipografía y colores ---------- */
+body.vitrina{background-color:var(--v-crema);color:var(--v-cuerpo);font-family:var(--v-txt)}
+body.vitrina #panel h2,body.vitrina #panel h3{color:var(--v-tinta);font-family:var(--v-tit)}
+body.vitrina #panel .ficha,body.vitrina #panel .mercado,body.vitrina #panel .puerto,body.vitrina #panel .frase,body.vitrina #panel .nave,body.vitrina #panel .sello-nota,body.vitrina #panel .sello-nuevo{background:#fff;border:1px solid var(--v-filete);border-radius:16px}
+body.vitrina #panel .ftexto b,body.vitrina #panel .op b{color:var(--v-tinta);font-weight:700;box-shadow:inset 0 -.32em 0 var(--v-tinte2)}
+body.vitrina .btn{background:var(--v-tinta);border-color:var(--v-tinta);border-radius:12px}
+body.vitrina .btn.sec{background:#fff;color:var(--v-tinta);border-color:var(--v-filete)}
+body.vitrina .enlace{color:var(--v-tinta)}
+body.vitrina .btn:focus-visible,body.vitrina .enlace:focus-visible,body.vitrina .chip:focus-visible,body.vitrina .item:focus-visible,body.vitrina .voz:focus-visible,body.vitrina .volver:focus-visible,body.vitrina .son:focus-visible,body.vitrina .mas summary:focus-visible{outline:3px solid var(--v-claro);outline-offset:2px}
+
+/* ---------- Bajar: la carta fija arriba ---------- */
+body.vitrina[data-momento]:not([data-momento="otro"]) #arriba{position:fixed;top:0!important;left:0;right:0;z-index:1;background:var(--v-mar)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #arriba #mapa{height:var(--v-mapa);min-height:0;max-height:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #perfil,body.vitrina[data-momento]:not([data-momento="otro"]) #rielArriba,body.vitrina[data-momento]:not([data-momento="otro"]) #mapa .plegar{display:none!important}
+
+/* el encabezado del motor, hecho píldora flotante con un botón redondo a cada lado */
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab{position:absolute;top:0;left:0;right:0;z-index:6;min-height:0;padding:max(12px,env(safe-area-inset-top)) 14px 0;gap:10px;align-items:center;justify-content:space-between;background:none;pointer-events:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab>*{pointer-events:auto}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab>div{flex:0 1 auto;min-width:0;max-width:calc(100% - 124px);margin:0 auto;padding:5px 18px 6px;border-radius:24px;background:rgba(12,58,51,.88);border:1px solid rgba(183,227,211,.3);box-shadow:0 2px 10px rgba(0,0,0,.25);text-align:center}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab h1{font:500 17px/1.15 var(--v-tit);letter-spacing:.22em;padding-left:.22em;text-transform:uppercase;color:var(--v-crema);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .sub{font:400 13px/16px var(--v-txt);color:var(--v-crema);margin:0;white-space:normal;text-wrap:balance}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .sub .num{font:inherit;letter-spacing:0}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .volver,body.vitrina[data-momento]:not([data-momento="otro"]) #cab .son{flex:none;position:relative;width:44px;height:44px;padding:0;margin:0;border-radius:50%;border:1px solid rgba(183,227,211,.3);background:rgba(12,58,51,.88);color:var(--v-crema);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.25);cursor:pointer;transition:background-color .2s ease,color .2s ease}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .volver{font-size:0}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .volver::before{content:"‹";font:400 30px/1 var(--v-tit);margin-top:-5px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .son{font:400 22px/1 var(--v-tit)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .son .rot{position:absolute;width:1px;height:1px;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body.vitrina[data-momento]:not([data-momento="otro"]) #cab .son.on{background:var(--v-crema);color:var(--v-tinta)}
+body.vitrina[data-momento="portada"] #cab>div{visibility:hidden}
+
+/* ---------- Bajar: la hoja de papel ---------- */
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel{position:relative;z-index:2;box-sizing:border-box;max-width:none;margin:calc(var(--v-mapa) - 22px) 0 0;padding:18px max(18px,calc(50% - 280px)) 64px;min-height:calc(var(--v-alto) - var(--v-mapa) + 22px);background:none;color:var(--v-cuerpo);font:400 15px/21px var(--v-txt);transition:margin-top .3s ease}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px 22px 0 0;background:var(--v-crema) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .06 0 0 0 0 .26 0 0 0 0 .23 0 0 0 .07 0'/></filter><rect width='180' height='180' filter='url(%23g)'/></svg>");box-shadow:0 -10px 28px var(--v-sombra)}
+body.vitrina #panel .v-bit.v-entra{animation:v-sube .3s ease-out both}
+@keyframes v-sube{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes v-funde{from{opacity:0}to{opacity:1}}
+@keyframes v-cae{0%{transform:scale(1.25);opacity:.2}100%{transform:none;opacity:1}}
+
+/* tipografía de la hoja */
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .kicker,body.vitrina #panel .v-rotulo{display:flex;align-items:center;flex-wrap:wrap;gap:0 .35em;font:500 12px/16px var(--v-tit);letter-spacing:.14em;text-transform:uppercase;color:var(--v-sec);margin:0 0 4px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .kicker .num{font:inherit;letter-spacing:inherit}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel h2{font:700 42px/1.05 var(--v-tit);color:var(--v-tinta);margin:0 0 4px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel h2.v-titulo{font-size:34px;line-height:1.1;margin:0 0 12px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel h2 b{font-weight:700;color:inherit}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .pais{font:400 14px/20px var(--v-txt);color:var(--v-sec);margin:0}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .num{font-family:var(--v-tit);font-weight:500;white-space:nowrap}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .pais .num{font-family:inherit;font-weight:600}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel p{margin:0 0 12px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .fkicker{font:500 12px/16px var(--v-tit);letter-spacing:.14em;text-transform:uppercase;color:var(--v-tinta);margin:0 0 6px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .fnota,body.vitrina[data-momento]:not([data-momento="otro"]) #panel .flista,body.vitrina #panel .v-nota,body.vitrina #panel .v-sello-nota,body.vitrina #panel .v-cuenta{font:400 14px/20px var(--v-txt);color:var(--v-sec)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .ftexto{font:700 24px/1.15 var(--v-tit);color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .ftexto b{box-shadow:none}
+
+/* la voz: el globo del compañero */
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo{gap:12px;align-items:flex-start;margin:0 0 16px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo .emo{width:48px;height:48px;background:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo .emo.retrato{width:56px;height:56px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo .dice{flex:1;min-width:0;background:#fff;border:1px solid var(--v-filete);border-radius:16px;padding:12px 14px;font:400 15px/21px var(--v-txt);color:var(--v-cuerpo)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo .dice:before{display:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo .dice b{font-weight:600;color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo .dice{position:relative;padding-right:54px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .globo .dice .voz{position:absolute;right:5px;top:50%;width:44px;height:44px;margin:-22px 0 0;padding:0;display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .kicker .voz{min-width:44px;min-height:44px;margin:-8px 4px -8px -10px;color:var(--v-tinta)}
+
+/* la ficha: tarjetas blancas con un filete */
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .ficha,body.vitrina[data-momento]:not([data-momento="otro"]) #panel .mercado,body.vitrina[data-momento]:not([data-momento="otro"]) #panel .puerto,body.vitrina[data-momento]:not([data-momento="otro"]) #panel .frase,body.vitrina #panel .v-cuentas{background:#fff;border:1px solid var(--v-filete);border-radius:16px;padding:14px 16px;margin:0 0 16px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .ficha.recuerdo{padding:0;overflow:hidden}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .recuerdo .cuerpo{padding:12px 16px 14px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .recuerdo .cuerpo>p{margin:0}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .imagen{padding:0;font:400 15px/21px var(--v-txt);color:var(--v-cuerpo)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .mas{margin:-6px 0 12px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .mas summary{display:flex;align-items:center;min-height:44px;padding:0;font:600 14px/20px var(--v-txt);color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .mas h3,body.vitrina[data-momento]:not([data-momento="otro"]) #panel .v-bit>h3{font:500 12px/16px var(--v-tit);letter-spacing:.14em;text-transform:uppercase;color:var(--v-tinta);margin:0 0 6px}/* en Adulto el «Contame más» va abierto, con su título: un rótulo, no otro título */
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .aviso-hoy{font:400 14px/20px var(--v-txt);color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .aviso-hoy .ico{color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .aviso-hoy .enlace{min-height:44px;font:600 14px/20px var(--v-txt)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .bodega,body.vitrina[data-momento]:not([data-momento="otro"]) #panel .bolsa{font:600 15px/21px var(--v-txt);color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .item{min-height:48px;background:var(--v-crema);border:1px solid var(--v-filete);border-radius:12px;font:400 14px/18px var(--v-txt);color:var(--v-cuerpo);transition:background-color .2s ease,border-color .2s ease}
+/* la bodega y lo que se vende: tres columnas parejas (en la columna angosta, tres casillas de 100 px no cabían y la tercera bajaba) */
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 12px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .slots .item{min-width:0;overflow-wrap:anywhere}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .mercado .slots:last-child{margin-bottom:0}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel button.item:hover{background:var(--v-tinte1)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .item .ip{font:600 13px/18px var(--v-txt);color:var(--v-tinta)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .item small,body.vitrina[data-momento]:not([data-momento="otro"]) #panel .mercado small{font:400 12px/16px var(--v-txt);color:var(--v-sec)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .item.vacio{background:none;border:1.5px dashed rgba(15,66,58,.35);color:var(--v-sec)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .item.no{opacity:1;background:none;color:var(--v-sec)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel .item.no .ip{color:var(--v-sec)}
+
+/* ---------- portada: el título sobre la carta y tres datos en la hoja ---------- */
+body.vitrina #panel .v-portada{position:fixed;z-index:-2;top:calc(max(12px,env(safe-area-inset-top)) + 64px);left:22px;right:22px;color:var(--v-crema);pointer-events:none;text-shadow:0 1px 10px rgba(6,32,28,.55);animation:v-funde .35s ease-out both}
+body.vitrina #panel .v-marca{font:500 13px/16px var(--v-tit);letter-spacing:.32em;text-transform:uppercase;color:var(--v-tinte2)}
+body.vitrina[data-momento] #panel .v-portada h2.v-rio{font:700 96px/.96 var(--v-tit);letter-spacing:.01em;text-transform:uppercase;color:var(--v-crema);margin:6px 0 12px;overflow-wrap:anywhere}
+body.vitrina #panel .v-cab{font:400 15px/21px var(--v-txt);margin:0;max-width:200px;color:var(--v-crema)}
+body.vitrina #panel .v-cab .num{font:inherit}
+body.vitrina #panel .v-cita{position:relative;margin:16px 0 0;padding:14px 0 0;max-width:150px}
+body.vitrina #panel .v-cita::before{content:"";position:absolute;top:0;left:0;width:28px;height:2px;background:var(--v-tinte2)}
+body.vitrina #panel .v-cita p{font:italic 400 15px/21px var(--v-txt);margin:0 0 6px;color:var(--v-crema)}
+body.vitrina #panel .v-cita cite{display:block;font:500 11px/14px var(--v-tit);font-style:normal;letter-spacing:.24em;text-transform:uppercase;color:var(--v-tinte2)}
+body.vitrina #panel .v-datos,body.vitrina #panel .v-cifras{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);margin:0 0 8px}
+body.vitrina #panel .v-dato,body.vitrina #panel .v-cifra{display:flex;flex-direction:column;justify-content:space-between;min-width:0;padding:0 12px;border-left:1px solid var(--v-filete)}
+body.vitrina #panel .v-dato:first-child,body.vitrina #panel .v-cifra:first-child{padding-left:0;border-left:0}
+body.vitrina #panel .v-dato dt,body.vitrina #panel .v-cifra dt{font:500 11px/14px var(--v-tit);letter-spacing:.16em;text-transform:uppercase;color:var(--v-sec)}
+body.vitrina #panel .v-dato dd{font:500 20px/1.2 var(--v-tit);color:var(--v-tinta);margin:4px 0 0}
+body.vitrina #panel .v-cifra dd{font:500 30px/1.1 var(--v-tit);color:var(--v-tinta);margin:4px 0 0;font-variant-numeric:tabular-nums}
+
+/* ---------- navegando: la frase, las fichas del acróstico y el perfil ---------- */
+body.vitrina #panel .v-avance{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px}
+body.vitrina #panel .v-avance .v-rotulo{flex:none;margin:0}
+body.vitrina #panel .v-frase{min-width:0;min-height:28px;font:700 24px/28px var(--v-tit);color:var(--v-tinta)}
+body.vitrina #panel .v-frase b{font-weight:700;color:inherit}
+body.vitrina #panel .v-fichas{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;margin:0 0 14px}
+body.vitrina #panel .v-ficha{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+body.vitrina #panel .v-ficha b{display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;max-width:64px;aspect-ratio:1/1;border-radius:12px;border:1.5px solid transparent;font:700 26px/1 var(--v-tit);transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+body.vitrina #panel .v-ficha small{max-width:100%;min-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:400 12px/16px var(--v-txt);color:var(--v-sec)}
+body.vitrina #panel .v-ficha.llena b{background:var(--v-tinta);border-color:var(--v-tinta);color:#fff}
+body.vitrina #panel .v-ficha.proxima b{background:var(--v-tinte1);border:2px solid var(--v-tinta);color:var(--v-tinta)}
+body.vitrina #panel .v-ficha.proxima small{font-weight:600;color:var(--v-tinta)}
+body.vitrina #panel .v-ficha.vacia b{border:1.5px dashed rgba(15,66,58,.4)}
+body.vitrina #panel .v-ficha.nueva b{animation:v-cae .35s ease-out both}
+body.vitrina #panel .v-perfil{margin:2px 0 0}
+body.vitrina #panel .v-perfil-cab{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 4px}
+body.vitrina #panel .v-perfil-cab .v-rotulo{flex:none;margin:0}
+body.vitrina #panel .v-nota{text-align:right}
+body.vitrina #panel .v-nota .num{font:inherit}
+body.vitrina #panel .v-perfil svg{display:block;width:100%;height:auto;overflow:visible;margin-bottom:10px}
+body.vitrina #panel .v-perfil .perfil-tierra{fill:var(--v-tinte1);stroke:var(--v-tinta);stroke-width:2;stroke-linejoin:round}
+body.vitrina #panel .v-perfil .perfil-base{stroke:var(--v-tinta);stroke-opacity:.25}
+body.vitrina #panel .v-perfil .perfil-tick{fill:var(--v-tinta);fill-opacity:1}
+body.vitrina #panel .v-perfil .perfil-aqui{fill:#fff;stroke:var(--v-tinta);stroke-width:2.5}
+/* los rótulos del perfil: el dibujo se escala con la hoja; panel.js mide cuánto y pone en --v-pfs la letra que da 12 px en
+   pantalla (en teléfono y en tableta por igual: ese es el tope); sin medir, 13. Un halo de papel para que el cauce no los tache.
+   El de la altura de la fuente va encima del arranque de la línea (y="-3"): la caja del dibujo deja aire arriba para él */
+body.vitrina #panel .v-perfil-svg{padding-top:12px}
+body.vitrina #panel .v-perfil .perfil-txt{fill:var(--v-sec);font:600 var(--v-pfs,13px) var(--v-txt);paint-order:stroke;stroke:var(--v-crema);stroke-width:5px;stroke-linejoin:round}
+/* «Altura del cauce» baja un renglón, fuera de la caja del dibujo, para no pisar la línea de base */
+body.vitrina #panel .v-perfil .perfil-txt.k{font-size:var(--v-pfs,13px);letter-spacing:.06em;stroke:none;transform:translateY(calc(var(--v-pfs,13px)*.85))}
+
+/* ---------- parada: la ciudad con su sello ---------- */
+body.vitrina #panel .v-cabeza{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 14px}
+body.vitrina #panel .v-cabeza>div{flex:1;min-width:0}
+/* el sello de la bitácora: circular, en tinta; ninguna letra por debajo de 11 px (el dibujo mide lo que su caja: 84 px) */
+body.vitrina #panel .v-sello{flex:none;display:block;width:84px;height:84px;margin:2px 2px 0 0;overflow:visible;--v-sello:var(--v-tinta);transform:rotate(var(--v-giro,0deg))}
+body.vitrina #panel .v-sello .borde{fill:#fff;stroke:var(--v-sello);stroke-width:2.2}
+body.vitrina #panel .v-sello .aro{fill:none;stroke:var(--v-sello);stroke-width:1.3;stroke-dasharray:.1 3.3;stroke-linecap:round}
+body.vitrina #panel .v-sello .nom{font:600 13px var(--v-tit);letter-spacing:.05em;fill:var(--v-sello)}
+body.vitrina #panel .v-sello .lat{font:500 11px var(--v-tit);letter-spacing:.1em;fill:var(--v-sello)}
+body.vitrina #panel .v-sello .lat.min{letter-spacing:.02em}/* con minutos («0° 25′ N») el rótulo es más largo: sin aire entre letras, para no tocar el aro */
+body.vitrina #panel .v-sello .raya{stroke:var(--v-sello);stroke-width:1.2;stroke-linecap:round}
+body.vitrina #panel .v-sello .pic{overflow:visible}
+body.vitrina #panel .v-sello .pic .p{fill:var(--v-sello)}
+body.vitrina #panel .v-sello .pic .d{fill:var(--v-sello);fill-opacity:.5}
+body.vitrina #panel .v-sello .pic .a{fill:var(--v-sello);fill-opacity:.35}
+body.vitrina #panel .v-sello .pic .b{fill:#fff}
+body.vitrina #panel .v-sello .pic .l,body.vitrina #panel .v-sello .pic .w{fill:none;stroke:var(--v-sello);stroke-width:1.5;stroke-linecap:round}
+body.vitrina #panel .v-sello .pic .animal .cuerpo{fill:var(--v-sello);fill-opacity:.55;stroke:var(--v-sello)}
+body.vitrina #panel .v-sello .pic .animal .oscuro,body.vitrina #panel .v-sello .pic .animal .acento{fill:var(--v-sello)}
+body.vitrina #panel .v-sello .pic .animal .bigote,body.vitrina #panel .v-sello .pic .animal .rabo,body.vitrina #panel .v-sello .pic .animal .pata{stroke:var(--v-sello)}
+body.vitrina #panel .v-sello.oro{--v-sello:#8A6A1A}
+body.vitrina #panel .v-sello.pendiente{transform:none}
+body.vitrina #panel .v-sello.pendiente .aro{stroke:#8C8C8C;stroke-width:1.6;stroke-dasharray:.1 5}
+body.vitrina #panel .v-sello.nuevo{animation:v-estampa .34s cubic-bezier(.2,.8,.3,1.2) both}
+@keyframes v-estampa{0%{transform:scale(1.22) rotate(calc(var(--v-giro,0deg) - 9deg));opacity:0}55%{opacity:1}100%{transform:scale(1) rotate(var(--v-giro,0deg));opacity:1}}
+body.vitrina #panel .v-sello-nota{margin:0 0 14px}
+body.vitrina #panel .v-llegada{font:400 15px/21px var(--v-txt);color:var(--v-cuerpo);margin:0 0 16px}
+body.vitrina #panel .v-cuenta{margin:0 0 8px}
+body.vitrina #panel .v-cuentas .bolsa{margin:0}
+
+/* ---------- el pie: la acción del momento ---------- */
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie{z-index:5;background:var(--v-crema);border-top:1px solid var(--v-filete);box-shadow:0 -6px 18px rgba(15,66,58,.08);padding:10px 18px calc(12px + env(safe-area-inset-bottom))}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .dentro{max-width:560px;gap:10px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .botones{gap:12px}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .botones>span:empty{display:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn{flex:1 1 auto;min-height:52px;padding:0 18px;border-radius:14px;border:1px solid var(--v-tinta);background:var(--v-tinta);color:#fff;font:500 17px/1.1 var(--v-tit);letter-spacing:.1em;text-transform:uppercase;transition:background-color .2s ease,transform .2s ease}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn:active{transform:scale(.985)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn.sec{flex:none;min-height:44px;padding:0 10px;margin:0 0 0 -10px;border:0;background:none;color:var(--v-tinta);font:600 14px/20px var(--v-txt);letter-spacing:0;text-transform:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .enlace{flex:none;min-height:44px;padding:0 10px;margin:0 0 0 -10px;color:var(--v-tinta);font:600 14px/20px var(--v-txt);text-decoration:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .fkicker{font:500 12px/16px var(--v-tit);letter-spacing:.14em;text-transform:uppercase;color:var(--v-tinta);margin:0}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chips{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:10px;margin:0}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chip{min-height:52px;padding:6px 8px;border-radius:14px;border:1.5px solid var(--v-tinta);background:#fff;color:var(--v-tinta);font:500 18px/1.1 var(--v-tit);letter-spacing:.02em;text-align:center;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chip.bien{background:var(--v-tinta);border-color:var(--v-tinta);color:#fff}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chip.mal{background:#F5E3DC;border-color:var(--v-teja);color:var(--v-teja)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chip[disabled]:not(.bien):not(.mal){border-color:var(--v-filete);color:var(--v-sec)}
+/* respondida la guía, las fichas ya no se tocan: más bajas, para que el pie mida lo mismo con «Zarpar a …» encima */
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chip[disabled]{min-height:40px;font-size:16px}
+
+/* navegando: la pregunta la hace el globo; en el pie queda solo «‹ Atrás», en la misma fila que las tres opciones. Con la
+   guía respondida, «Zarpar a …» no cabe en esa fila y las opciones bajan solas a la siguiente */
+body.vitrina[data-momento="navega"] #pie .botones .fkicker{display:none}
+body.vitrina[data-momento="navega"] #pie .acto{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}
+body.vitrina[data-momento="navega"] #pie .acto>.botones{flex:1 1 auto;min-width:0}
+body.vitrina[data-momento="navega"] #pie .acto>.guia{flex:1000 1 230px;min-width:0;margin:0}
+body.vitrina[data-momento="navega"] #pie .acto>.botones:not(:has(button)){display:none}
+body.vitrina #panel .v-zarpe{font:400 14px/20px var(--v-txt);color:var(--v-sec);margin:-6px 0 14px}
+body.vitrina #panel .v-zarpe .num{font:inherit}
+
+/* ---------- evento entre puertos: el panel del motor, con la tipografía y los botones de la bitácora ---------- */
+body.vitrina[data-momento="evento"] #panel .evento{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--v-filete);border-radius:16px;padding:14px 16px;margin:0 0 16px}
+body.vitrina[data-momento="evento"] #panel .evento .eicono{flex:none;color:var(--v-tinta)}
+body.vitrina[data-momento="evento"] #panel .evento .etit{font:500 20px/1.2 var(--v-tit);color:var(--v-tinta);margin:0 0 4px}
+body.vitrina[data-momento="evento"] #panel .evento p{margin:0;font:400 15px/21px var(--v-txt);color:var(--v-cuerpo)}
+body.vitrina[data-momento="evento"] #panel .pregunta{font:600 17px/23px var(--v-txt);color:var(--v-tinta);margin:0 0 12px}
+body.vitrina[data-momento="evento"] #panel .opciones{display:grid;gap:10px;margin:0 0 14px}
+body.vitrina[data-momento="evento"] #panel .op{min-height:48px;padding:10px 14px;border-radius:14px;border:1.5px solid var(--v-tinta);background:#fff;color:var(--v-tinta);font:600 15px/21px var(--v-txt);text-align:left;cursor:pointer;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
+body.vitrina[data-momento="evento"] #panel .op b{box-shadow:none;color:inherit}
+body.vitrina[data-momento="evento"] #panel .op.bien{background:var(--v-tinta);border-color:var(--v-tinta);color:#fff}
+body.vitrina[data-momento="evento"] #panel .op.mal{background:#F5E3DC;border-color:var(--v-teja);color:var(--v-teja)}
+body.vitrina[data-momento="evento"] #panel .op.apagada{opacity:1;border-color:var(--v-filete);color:var(--v-sec);cursor:default}
+body.vitrina[data-momento="evento"] #panel .op:focus-visible{outline:3px solid var(--v-claro);outline-offset:2px}
+body.vitrina[data-momento="evento"] #panel .nota{background:var(--v-tinte1);border:1px solid var(--v-filete);border-radius:16px;padding:12px 14px;margin:0 0 14px;font:400 15px/21px var(--v-txt);color:var(--v-cuerpo)}
+body.vitrina[data-momento="evento"] #panel .nota.no{background:#F5E3DC;border-color:rgba(166,71,46,.35)}
+body.vitrina[data-momento="evento"] #panel .escena.quiz{border:1px solid var(--v-filete);border-radius:16px;margin:0 0 12px}
+
+/* el riel de etapas: el paso actual, sin dorado (anillo verde oscuro sobre tinte) */
+body.vitrina .riel .paso.aqui i{background:#fff;border-color:var(--v-tinta);box-shadow:0 0 0 4px var(--v-tinte2);color:var(--v-tinta)}
+body.vitrina .riel .paso.aqui.hecho i{background:var(--v-tinta);color:#fff}
+body.vitrina .riel .paso.aqui{color:var(--v-tinta)}
+/* el riel dentro de la hoja (teléfono: portada y mar), separado por un filete */
+body.vitrina #panel .v-riel{margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--v-filete)}
+body.vitrina #panel .v-riel .riel{max-width:420px;margin:0 auto;padding-top:0}
+body.vitrina #panel .v-riel .riel:before{top:9px;background:var(--v-filete)}
+body.vitrina #panel .v-riel .paso{min-height:48px;gap:5px;font:600 14px/18px var(--v-txt);color:var(--v-sec)}
+body.vitrina #panel .v-riel .paso.aqui{color:var(--v-tinta)}
+body.vitrina #panel .v-riel .paso:focus-visible{outline:3px solid var(--v-claro);outline-offset:2px;border-radius:10px}
+/* lo que la portada lleva solo donde hay columna (820 px o más) */
+body.vitrina #panel .v-ancho{display:none}
+
+/* ---------- 820 px o más (y el teléfono acostado): la carta a la izquierda, la bitácora en su columna ---------- */
+@media (min-width:820px),(max-height:520px) and (min-width:560px){
+body.vitrina[data-momento]:not([data-momento="otro"]){display:block}
+body.vitrina[data-momento]:not([data-momento="otro"]) #arriba{right:var(--v-col);bottom:0;height:auto;display:block}
+body.vitrina[data-momento]:not([data-momento="otro"]) #arriba #mapa{height:100%!important;flex:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel{width:var(--v-col);margin:0 0 0 auto;padding:24px 20px 64px;min-height:var(--v-alto);transition:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel::before{border-radius:0;box-shadow:-10px 0 28px var(--v-sombra)}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie{left:auto;right:0;width:var(--v-col);box-sizing:border-box}
+body.vitrina #panel .v-portada{top:92px;left:36px;right:calc(var(--v-col) + 36px)}
+body.vitrina #panel .v-ancho{display:block;margin:18px 0 0}
+body.vitrina #panel .v-ancho .v-zarpe{margin:0}
+}
+@media (max-width:359px){body.vitrina[data-momento] #panel .v-portada h2.v-rio{font-size:76px}body.vitrina[data-momento]:not([data-momento="otro"]) #panel h2{font-size:36px}body.vitrina[data-momento]:not([data-momento="otro"]) #pie .chip{font-size:16px}}
+@media (max-height:640px) and (max-width:819px){body.vitrina[data-momento] #panel .v-portada h2.v-rio{font-size:72px}}
+/* la cita de la portada solo donde la carta tiene alto para ella; con menos, la taparía la hoja */
+@media (max-height:719px) and (max-width:819px){body.vitrina #panel .v-cita{display:none}}
+/* en un teléfono angosto, el rótulo del perfil va solo: la nota a su derecha se partía en dos renglones */
+@media (max-width:379px){body.vitrina #panel .v-perfil-cab .v-nota{display:none}}
+
+/* con menos movimiento: solo fundidos */
+@media (prefers-reduced-motion:reduce){
+body.vitrina #panel .v-bit.v-entra,body.vitrina #panel .v-ficha.nueva b,body.vitrina #panel .v-sello.nuevo{animation:v-funde .25s ease-out both}
+body.vitrina[data-momento]:not([data-momento="otro"]) #panel{transition:none}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn{transition:background-color .2s ease}
+body.vitrina[data-momento]:not([data-momento="otro"]) #pie .btn:active{transform:none}
+}

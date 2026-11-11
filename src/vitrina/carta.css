@@ -1,0 +1,74 @@
+/* Carta de la vitrina: carta náutica de noche con un solo hilo de oro, que es el río.
+   Todo selector empieza por body.vitrina; las variables --v-* las define capa.css (acá van con su valor de respaldo). */
+
+/* la tierra y el relieve sombreado (carta.js mete #v-fondo); las franjas del motor no van en la vitrina, ni sus nombres */
+body.vitrina #tierra{fill:var(--v-tierra,#215A4F)}
+/* el halo claro pegado a la costa, hacia el mar, de grosor constante en pantalla (carta.js mete #v-halo debajo de la tierra y le
+   pone el ancho en cada dibujo: 16, 8 y 2,2 px; de cada trazo solo se ve la mitad de afuera) */
+body.vitrina #v-halo{pointer-events:none}
+body.vitrina #v-halo use{stroke:var(--v-claro,#64C8AA);stroke-linejoin:round;stroke-linecap:round}
+body.vitrina #v-halo .a{stroke-opacity:.05}
+body.vitrina #v-halo .b{stroke-opacity:.08}
+body.vitrina #v-halo .c{stroke-opacity:.36}
+/* los lagos, con su orilla fina: así el lago Nasser, angosto y con el río encima, se lee como lago */
+body.vitrina #lagos{stroke:var(--v-claro,#64C8AA);stroke-opacity:.5;stroke-width:1.2px;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+body.vitrina #v-luz2{transition:opacity .6s ease}
+body.vitrina #relieve{display:none}
+body.vitrina .etq.relieve,body.vitrina .pico{display:none}
+body.vitrina #v-fondo{pointer-events:none}
+body.vitrina #luz{display:none}/* la luz del motor (amanecer dorado, atardecer teja) teñiría la carta */
+body.vitrina #fronteras{stroke:var(--v-crema,#FBF8F2);stroke-opacity:.22}
+
+/* el hilo de oro: lo recorrido, dorado y con un resplandor suave (dos trazos anchos y transparentes debajo, que pone carta.js);
+   lo que falta, crema y fino; los afluentes, verde claro y finos. Anchos en píxeles de pantalla, sin importar el acercamiento */
+body.vitrina .rio{vector-effect:non-scaling-stroke}
+body.vitrina .rio.activo:not(.brazo){stroke:var(--v-oro,#E8B952);stroke-opacity:1;stroke-width:3px}
+body.vitrina .rio.activo.resto{stroke:var(--v-crema,#FBF8F2);stroke-opacity:.7;stroke-width:1.4px}
+body.vitrina[data-momento="portada"] .rio.activo.resto{stroke:var(--v-oro,#E8B952);stroke-opacity:1;stroke-width:3px}/* en la portada, el río entero es el hilo de oro */
+body.vitrina .rio.brazo,body.vitrina .rio.brazo.activo,body.vitrina[data-momento="portada"] .rio.brazo.activo{stroke:var(--v-claro,#64C8AA);stroke-opacity:.6;stroke-width:1px}
+body.vitrina .v-brillo{fill:none;stroke:var(--v-oro,#E8B952);stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
+body.vitrina .v-brillo.a{stroke-width:12px;stroke-opacity:.09}
+body.vitrina .v-brillo.b{stroke-width:7px;stroke-opacity:.17}
+
+/* la barca: la vela es lo único dorado además del río; casco, palo y banderín, crema */
+body.vitrina #barca .vela{fill:var(--v-oro,#E8B952);stroke:var(--v-mar,#0C3A33)}
+body.vitrina #barca .casco{fill:var(--v-crema,#FBF8F2);stroke:var(--v-mar,#0C3A33)}
+body.vitrina #barca .palo{fill:none;stroke:var(--v-crema,#FBF8F2)}
+body.vitrina #barca .linea{fill:none;stroke:var(--v-mar,#0C3A33)}
+
+/* paradas: las visitadas, punto crema con su nombre en Oswald mayúsculas; las que faltan, punto chico hueco y sin nombre */
+body.vitrina .ciudad{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2);stroke-opacity:.8;stroke-width:1.2px;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;transform:scale(.7)}
+body.vitrina .ciudad.on{fill:var(--v-crema,#FBF8F2);stroke:var(--v-tinta,#0F423A);stroke-opacity:1;stroke-width:1.6px;transform:none}
+body.vitrina .halo{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-opacity:.85}
+body.vitrina .etq{font-family:var(--v-tit,'Oswald','Arial Narrow',sans-serif);font-weight:600;text-transform:uppercase;letter-spacing:.09em;fill:var(--v-crema,#FBF8F2)}
+
+/* la próxima parada: un anillo punteado con un signo de pregunta, sin nombre */
+body.vitrina .v-prox{fill:var(--v-mar,#0C3A33);fill-opacity:.92;stroke:var(--v-crema,#FBF8F2);stroke-linecap:round}
+body.vitrina .v-guia{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-opacity:.7;stroke-linecap:round}
+body.vitrina .v-prox-t{font-family:var(--v-tit,'Oswald','Arial Narrow',sans-serif);font-weight:700;fill:var(--v-crema,#FBF8F2);pointer-events:none}
+
+/* líneas de fondo: retícula cada 5°, ecuador y trópico */
+body.vitrina .v-ret{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-opacity:.07;stroke-width:1px;vector-effect:non-scaling-stroke}
+body.vitrina .v-par{fill:none;stroke:var(--v-claro,#64C8AA);stroke-opacity:.42;stroke-width:1px;stroke-dasharray:6 5;vector-effect:non-scaling-stroke}
+body.vitrina #v-lineas,body.vitrina #v-rotulos{pointer-events:none}
+
+/* rótulos con jerarquía de atlas (nada por debajo de 11 px: el tamaño lo pone carta.js en píxeles de pantalla) */
+body.vitrina .v-rot{font-family:var(--v-txt,'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',sans-serif);pointer-events:none;
+  stroke:var(--v-mar,#0C3A33);stroke-opacity:.7;stroke-linejoin:round;paint-order:stroke}/* halo oscuro fino (el ancho lo pone carta.js): se lee también sobre relieve claro */
+body.vitrina .v-rot.agua{font-style:italic;text-transform:uppercase;letter-spacing:.22em;fill:#A8E4D2;fill-opacity:1}
+body.vitrina .v-rot.rio-n{font-style:italic;letter-spacing:.06em;fill:#A8E4D2;fill-opacity:1}
+body.vitrina .v-rot.pais{text-transform:uppercase;font-weight:600;letter-spacing:.32em;fill:var(--v-crema,#FBF8F2);fill-opacity:.85}
+body.vitrina .v-rot.linea{text-transform:uppercase;font-weight:600;letter-spacing:.22em;fill:var(--v-crema,#FBF8F2);fill-opacity:.85}
+body.vitrina .v-rot.hito{fill:var(--v-crema,#FBF8F2);fill-opacity:.92}
+body.vitrina .v-rot.bajo{font-style:italic;fill:var(--v-crema,#FBF8F2);fill-opacity:.92}/* el renglón bajo el nombre de la parada donde está la barca */
+/* escala gráfica y norte: crema al 85 % (contraste ≥ 4,5 a 1) */
+body.vitrina .v-escala{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-opacity:.8;stroke-linecap:round;stroke-linejoin:round}
+body.vitrina .v-rot.escala{fill:var(--v-crema,#FBF8F2);fill-opacity:.95;font-weight:700;letter-spacing:.06em;stroke-opacity:.9}/* la N cae a veces sobre relieve claro */
+body.vitrina .v-boca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2)}/* la boca del río */
+body.vitrina .v-marca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2);stroke-opacity:.92;stroke-linejoin:round}
+
+/* la barrida de olas al llegar al mar, en verde claro (el dorado es solo el río y la vela): el patrón del motor, recoloreado */
+body.vitrina .olas{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'><g fill='%230C3A33' stroke='%2364C8AA' stroke-opacity='.7' stroke-width='1'><circle cx='20' cy='0' r='19'/><circle cx='20' cy='0' r='13' fill='none'/><circle cx='20' cy='0' r='7' fill='none'/><circle cx='0' cy='10' r='19'/><circle cx='0' cy='10' r='13' fill='none'/><circle cx='0' cy='10' r='7' fill='none'/><circle cx='40' cy='10' r='19'/><circle cx='40' cy='10' r='13' fill='none'/><circle cx='40' cy='10' r='7' fill='none'/><circle cx='20' cy='20' r='19'/><circle cx='20' cy='20' r='13' fill='none'/><circle cx='20' cy='20' r='7' fill='none'/><circle cx='0' cy='30' r='19'/><circle cx='0' cy='30' r='13' fill='none'/><circle cx='0' cy='30' r='7' fill='none'/><circle cx='40' cy='30' r='19'/><circle cx='40' cy='30' r='13' fill='none'/><circle cx='40' cy='30' r='7' fill='none'/></g></svg>")}
+/* el disquito oscuro detrás de la N y el halo de la escala gráfica: que el relieve claro o una frontera no les quiten contraste */
+body.vitrina .v-disco{fill:var(--v-mar,#0C3A33);fill-opacity:.84}
+body.vitrina .v-escala-h{fill:none;stroke:var(--v-mar,#0C3A33);stroke-opacity:.7;stroke-linecap:round;stroke-linejoin:round}

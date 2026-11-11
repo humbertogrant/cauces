@@ -1,0 +1,37 @@
+/* Trazo: los colores de los dibujos de CAPA.arte (src/vitrina/arte.js): la falúa, sus cargas e Hipo nadando. Trazo de 1,3 px en
+   verde muy oscuro, rellenos planos con los tintes de la capa, sin degradados. Cada regla va dos veces: suelta (la hoja de
+   contacto, la bitácora) y dentro de #barca, donde el motor pinta de dorado todo path (#barca path) y hay que ganarle. */
+body.vitrina .v-casco,body.vitrina #barca .v-casco,body.vitrina .v-vela,body.vitrina #barca .v-vela,body.vitrina .v-carga,body.vitrina #barca .v-carga,body.vitrina .v-hipo,body.vitrina #barca .v-hipo,body.vitrina .v-ojo,body.vitrina #barca .v-ojo{stroke:#0B2F29;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}
+body.vitrina .v-casco,body.vitrina #barca .v-casco{fill:var(--v-crema,#FBF8F2)}
+body.vitrina .v-panza,body.vitrina #barca .v-panza{fill:var(--v-calido,#D89B85)}
+/* la vela: la única pieza dorada */
+body.vitrina .v-vela,body.vitrina #barca .v-vela{fill:var(--v-oro,#E8B952)}
+body.vitrina .v-carga,body.vitrina #barca .v-carga{fill:var(--v-tinte1,#E9F5F0)}
+body.vitrina .v-t2,body.vitrina #barca .v-t2{fill:var(--v-tinte2,#B7E3D3)}
+body.vitrina .v-crema,body.vitrina #barca .v-crema{fill:var(--v-crema,#FBF8F2)}
+body.vitrina .v-claro,body.vitrina #barca .v-claro,body.vitrina .v-hipo,body.vitrina #barca .v-hipo{fill:var(--v-claro,#64C8AA)}
+body.vitrina .v-calido,body.vitrina #barca .v-calido{fill:var(--v-calido,#D89B85)}
+body.vitrina .v-sin,body.vitrina #barca .v-sin{stroke:none}
+body.vitrina .v-ojo,body.vitrina #barca .v-ojo{fill:var(--v-crema,#FBF8F2);stroke-width:1}
+/* tinta: ojos, ollares, marcas; el borde: la masa oscura detrás de un racimo */
+body.vitrina .v-tinta,body.vitrina #barca .v-tinta{fill:#0B2F29;stroke:none}
+body.vitrina .v-borde,body.vitrina #barca .v-borde{fill:#0B2F29;stroke:#0B2F29;stroke-width:2.6;stroke-linejoin:round}
+/* líneas: sobre un relleno claro, oscuras; contra el agua, crema (el palo, la entena, la vara) o verde claro (un tallo) */
+body.vitrina .v-linea,body.vitrina #barca .v-linea{fill:none;stroke:#0B2F29;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+body.vitrina .v-palo,body.vitrina #barca .v-palo{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+body.vitrina .v-cabo,body.vitrina #barca .v-cabo{stroke-width:1.3;stroke-opacity:.7}
+body.vitrina .v-fina,body.vitrina #barca .v-fina{stroke-width:1.1}
+body.vitrina .v-tallo,body.vitrina #barca .v-tallo{fill:none;stroke:var(--v-claro,#64C8AA);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+body.vitrina .v-agua,body.vitrina #barca .v-agua{fill:none;stroke:var(--v-tinte2,#B7E3D3);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* la hoja de contacto (CAPA.arte.hoja()): sobre el verde del mar, cada dibujo a tamaño real y a 4× */
+body.vitrina .v-hoja{background:var(--v-mar,#0C3A33);color:var(--v-crema,#FBF8F2);padding:16px;font:13px/1.3 var(--v-txt,sans-serif)}
+body.vitrina .v-hoja h3{margin:14px 0 8px;font:600 13px/1.2 var(--v-txt,sans-serif);letter-spacing:.08em;text-transform:uppercase;color:var(--v-tinte2,#B7E3D3)}
+body.vitrina .v-hoja .v-h-fila{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+body.vitrina .v-hoja .v-h-celda{margin:0;text-align:center}
+body.vitrina .v-hoja .v-h-duo{display:flex;align-items:flex-end;gap:8px;justify-content:center}
+body.vitrina .v-hoja .v-h-real{display:inline-flex;padding:3px;border:1px dashed rgba(183,227,211,.35);border-radius:3px}
+body.vitrina .v-hoja figcaption{margin-top:4px;font-size:11px;color:var(--v-tinte2,#B7E3D3);max-width:270px}
+body.vitrina .v-hoja svg{display:block;overflow:visible}
+body.vitrina .v-hoja .v-h-tierra{fill:var(--v-tierra,#215A4F)}
+body.vitrina .v-hoja .v-h-rio{fill:none;stroke:var(--v-oro,#E8B952);stroke-width:3;stroke-linecap:round}

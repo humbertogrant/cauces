@@ -1,0 +1,2988 @@
+{
+ "archivo": "dist/nilo.html",
+ "tam": "360x640",
+ "navegador": "msedge.exe",
+ "fecha": "2026-11-11T14:59:11.393Z",
+ "estados": [
+  {
+   "id": "portada",
+   "modo": "mercader",
+   "nota": "la portada del río, con el perfil limpio",
+   "ms": 2315,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 0,
+    "n": 6,
+    "parada": null,
+    "zarpo": false,
+    "evento": null,
+    "guia": {
+     "objetivo": 0,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "parada",
+    "momento": "portada",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "ZARPAR"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "portada",
+    "paso": 0,
+    "cuenta": {
+     "textos": 19,
+     "enPantalla": 19,
+     "toques": 8,
+     "contrastesMedidos": 13,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "Nave",
+     "px": 11,
+     "zona": "panel",
+     "sel": "dt",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Nave",
+     "px": 11,
+     "zona": "panel",
+     "sel": "dt",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 6,
+     "imagen": 0,
+     "dibujo": 0,
+     "ejemplos": [
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      },
+      {
+       "texto": "Cauces",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "div.v-marca",
+       "color": "#b7e3d3",
+       "px": 13
+      },
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "h2.v-rio",
+       "color": "#fbf8f2",
+       "px": 72
+      },
+      {
+       "texto": "África · hasta el Mediterráneo",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "p.v-cab",
+       "color": "#fbf8f2",
+       "px": 15
+      },
+      {
+       "texto": "6 650 km",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 15
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 640,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 11.06
+     },
+     {
+      "texto": "ECUADOR",
+      "sel": "text.v-rot.linea",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.2,
+      "bajo": 1.93
+     },
+     {
+      "texto": "África · hasta el Mediterráneo",
+      "sel": "p.v-cab",
+      "zona": "panel",
+      "px": 15,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 7.64,
+      "bajo": 7.3
+     },
+     {
+      "texto": "6 650 km",
+      "sel": "span.num",
+      "zona": "panel",
+      "px": 15,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 7.64,
+      "bajo": 6.83
+     }
+    ]
+   }
+  },
+  {
+   "id": "navegar-primera",
+   "modo": "mercader",
+   "nota": "navegar en la primera bajada: la frase con la lista, antes de zarpar",
+   "ms": 1860,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 0,
+    "n": 6,
+    "parada": null,
+    "zarpo": false,
+    "evento": null,
+    "guia": {
+     "objetivo": 0,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "navega",
+    "momento": "navega",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "ZARPAR ›"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "navega",
+    "paso": 0,
+    "cuenta": {
+     "textos": 22,
+     "enPantalla": 22,
+     "toques": 4,
+     "contrastesMedidos": 13,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "1 149 m",
+     "px": 9.4,
+     "zona": "panel",
+     "sel": "text.perfil-txt",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Frase para el orden",
+     "px": 12,
+     "zona": "panel",
+     "sel": "div.fkicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [
+     {
+      "texto": "1 149 m",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     },
+     {
+      "texto": "Altura del cauce",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt.k",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     }
+    ],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 7,
+     "imagen": 0,
+     "dibujo": 2,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "0 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 640,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "?",
+      "por": "div.sub",
+      "puntos": "6 de 9",
+      "px": 14
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.63
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 1.04
+     },
+     {
+      "texto": "0 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.19
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.54,
+      "bajo": 11.09
+     },
+     {
+      "texto": "ECUADOR",
+      "sel": "text.v-rot.linea",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 2.68,
+      "bajo": 1.71
+     },
+     {
+      "texto": "UGANDA",
+      "sel": "text.v-rot.pais",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.69,
+      "bajo": 2.65
+     }
+    ]
+   }
+  },
+  {
+   "id": "guia-sin-responder",
+   "modo": "mercader",
+   "nota": "navegar en Juba, con la guía sin responder",
+   "ms": 3888,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 2,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "navega",
+    "momento": "navega",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás El Cairo Asuán Jartum"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "navega",
+    "paso": 2,
+    "cuenta": {
+     "textos": 28,
+     "enPantalla": 28,
+     "toques": 7,
+     "contrastesMedidos": 16,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "457 m",
+     "px": 9.4,
+     "zona": "panel",
+     "sel": "text.perfil-txt",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "2 de 6 paradas",
+     "px": 12,
+     "zona": "panel",
+     "sel": "div.v-rotulo",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [
+     {
+      "texto": "457 m",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     },
+     {
+      "texto": "1 149 m",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     },
+     {
+      "texto": "Altura del cauce",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt.k",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     }
+    ],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 9,
+     "imagen": 0,
+     "dibujo": 3,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 640,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "?",
+      "por": "div",
+      "puntos": "3 de 9",
+      "px": 14
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.91
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 11.08
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.63
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.71,
+      "bajo": 11.23
+     },
+     {
+      "texto": "Juba",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 7.72,
+      "bajo": 4.79
+     },
+     {
+      "texto": "Nilo Blanco",
+      "sel": "text.v-rot.rio-n",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.52,
+      "bajo": 3.21
+     },
+     {
+      "texto": "Nilo Azul",
+      "sel": "text.v-rot.rio-n",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.21,
+      "bajo": 1.92
+     },
+     {
+      "texto": "SUDD",
+      "sel": "text.v-rot.pais",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.83,
+      "bajo": 3.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "guia-bien",
+   "modo": "mercader",
+   "nota": "la guía respondida bien",
+   "ms": 4183,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 2,
+     "resp": 2,
+     "ok": true
+    },
+    "fase": "navega",
+    "momento": "navega",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ZARPAR A JARTUM › Asuán El Cairo Jartum"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "navega",
+    "paso": 2,
+    "cuenta": {
+     "textos": 28,
+     "enPantalla": 28,
+     "toques": 5,
+     "contrastesMedidos": 17,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "457 m",
+     "px": 9.4,
+     "zona": "panel",
+     "sel": "text.perfil-txt",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "2 de 6 paradas",
+     "px": 12,
+     "zona": "panel",
+     "sel": "div.v-rotulo",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [
+     {
+      "texto": "457 m",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     },
+     {
+      "texto": "1 149 m",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     },
+     {
+      "texto": "Altura del cauce",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt.k",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     }
+    ],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 8,
+     "imagen": 0,
+     "dibujo": 3,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 640,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "?",
+      "por": "span.num",
+      "puntos": "6 de 9",
+      "px": 14
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.93
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 11.07
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.57
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.54,
+      "bajo": 10.63
+     },
+     {
+      "texto": "Juba",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 8.43,
+      "bajo": 7
+     },
+     {
+      "texto": "Nilo Blanco",
+      "sel": "text.v-rot.rio-n",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.52,
+      "bajo": 3.09
+     },
+     {
+      "texto": "Nilo Azul",
+      "sel": "text.v-rot.rio-n",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.14,
+      "bajo": 2.11
+     }
+    ]
+   }
+  },
+  {
+   "id": "guia-mal",
+   "modo": "mercader",
+   "nota": "la guía respondida mal",
+   "ms": 4115,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 2,
+     "resp": 5,
+     "ok": false
+    },
+    "fase": "navega",
+    "momento": "navega",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ZARPAR A JARTUM › Jartum El Cairo Asuán"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "navega",
+    "paso": 2,
+    "cuenta": {
+     "textos": 28,
+     "enPantalla": 28,
+     "toques": 5,
+     "contrastesMedidos": 17,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "457 m",
+     "px": 9.4,
+     "zona": "panel",
+     "sel": "text.perfil-txt",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "2 de 6 paradas",
+     "px": 12,
+     "zona": "panel",
+     "sel": "div.v-rotulo",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [
+     {
+      "texto": "457 m",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     },
+     {
+      "texto": "1 149 m",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     },
+     {
+      "texto": "Altura del cauce",
+      "px": 9.4,
+      "zona": "panel",
+      "sel": "text.perfil-txt.k",
+      "svg": true,
+      "enPantalla": true,
+      "decorativo": false
+     }
+    ],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 8,
+     "imagen": 0,
+     "dibujo": 3,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 640,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "Juba",
+      "por": "main#panel",
+      "puntos": "3 de 9",
+      "px": 12
+     },
+     {
+      "texto": "Nilo Azul",
+      "por": "div",
+      "puntos": "4 de 9",
+      "px": 11
+     }
+    ],
+    "rotulosOcultos": 1,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 8.63
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 11.07
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.28
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 10.32
+     },
+     {
+      "texto": "Nilo Blanco",
+      "sel": "text.v-rot.rio-n",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.52,
+      "bajo": 3.08
+     }
+    ]
+   }
+  },
+  {
+   "id": "parada-sello-nuevo",
+   "modo": "mercader",
+   "nota": "Juba recién llegada, con el sello nuevo",
+   "ms": 3623,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 2,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "parada",
+    "momento": "parada",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ZARPAR"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "parada",
+    "paso": 2,
+    "cuenta": {
+     "textos": 36,
+     "enPantalla": 19,
+     "toques": 7,
+     "contrastesMedidos": 28,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "5° N",
+     "px": 11,
+     "zona": "panel",
+     "sel": "text.lat",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Parada",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 6,
+     "imagen": 0,
+     "dibujo": 2,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1317,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "SUDD",
+      "por": "span.num",
+      "puntos": "6 de 9",
+      "px": 11
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 11.23
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.18
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.64
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 10.62
+     },
+     {
+      "texto": "Juba",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 5.57,
+      "bajo": 4.39
+     }
+    ]
+   }
+  },
+  {
+   "id": "parada-sello-pendiente",
+   "modo": "mercader",
+   "nota": "Juba tras fallar la guía: el sello queda pendiente",
+   "ms": 3641,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 2,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "parada",
+    "momento": "parada",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ZARPAR"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "parada",
+    "paso": 2,
+    "cuenta": {
+     "textos": 21,
+     "enPantalla": 18,
+     "toques": 6,
+     "contrastesMedidos": 15,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "SUDD",
+     "px": 11,
+     "zona": "mapa",
+     "sel": "text.v-rot.pais",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": true
+    },
+    "textoMinimoHTML": {
+     "texto": "Parada",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 6,
+     "imagen": 0,
+     "dibujo": 0,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 917,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "SUDD",
+      "por": "span.num",
+      "puntos": "6 de 9",
+      "px": 11
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 11.23
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.18
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.64
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 10.62
+     },
+     {
+      "texto": "Juba",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 5.57,
+      "bajo": 4.39
+     }
+    ]
+   }
+  },
+  {
+   "id": "mercado-lleno",
+   "modo": "mercader",
+   "nota": "el mercado con la bodega llena (la página baja hasta el mercado)",
+   "ms": 4186,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 1,
+    "n": 6,
+    "parada": "Jinja",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 1,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "parada",
+    "momento": "parada",
+    "modo": "mercader",
+    "monedas": 1,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 710,
+    "escala": 1,
+    "pie": "‹ Atrás ZARPAR"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "parada",
+    "paso": 1,
+    "cuenta": {
+     "textos": 42,
+     "enPantalla": 30,
+     "toques": 10,
+     "contrastesMedidos": 30,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "0° N",
+     "px": 11,
+     "zona": "panel",
+     "sel": "text.lat",
+     "svg": true,
+     "enPantalla": false,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Parada",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": false,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 10,
+     "imagen": 0,
+     "dibujo": 2,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈0 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      },
+      {
+       "texto": "En Jinja el Nilo Blanco sale del lago Vi",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "p",
+       "color": "#2d2d2d",
+       "px": 15
+      },
+      {
+       "texto": "¡Sello de Jinja!",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "b",
+       "color": "#6b6b6b",
+       "px": 14
+      },
+      {
+       "texto": "Llegaste sabiendo adónde ibas; ya está e",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "p.v-sello-nota",
+       "color": "#6b6b6b",
+       "px": 14
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1384,
+     "scrollY": 710,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [],
+    "rotulosOcultos": 3,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "¡Sello de Jinja!",
+      "sel": "b",
+      "zona": "panel",
+      "px": 14,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 4.83,
+      "bajo": 4.75
+     },
+     {
+      "texto": "Llegaste sabiendo adónde ibas; ya está e",
+      "sel": "p.v-sello-nota",
+      "zona": "panel",
+      "px": 14,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 4.83,
+      "bajo": 4.75
+     }
+    ]
+   }
+  },
+  {
+   "id": "evento",
+   "modo": "mercader",
+   "nota": "una prueba entre puertos, sin responder",
+   "ms": 3698,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": {
+     "tramo": 3,
+     "resp": null,
+     "correcta": 1
+    },
+    "guia": {
+     "objetivo": 2,
+     "resp": 2,
+     "ok": true
+    },
+    "fase": "parada",
+    "momento": "evento",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": ""
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "evento",
+    "paso": 2,
+    "cuenta": {
+     "textos": 18,
+     "enPantalla": 13,
+     "toques": 7,
+     "contrastesMedidos": 10,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "Nilo Azul",
+     "px": 11,
+     "zona": "mapa",
+     "sel": "text.v-rot.rio-n",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": true
+    },
+    "textoMinimoHTML": {
+     "texto": "Entre Juba y Jartum",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 8,
+     "imagen": 0,
+     "dibujo": 0,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1002,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "?",
+      "por": "span.num",
+      "puntos": "6 de 9",
+      "px": 14
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.93
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 11.08
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 10.9
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.54,
+      "bajo": 11.09
+     },
+     {
+      "texto": "Juba",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 7.21,
+      "bajo": 5.26
+     },
+     {
+      "texto": "Nilo Azul",
+      "sel": "text.v-rot.rio-n",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.22,
+      "bajo": 2.29
+     },
+     {
+      "texto": "SUDD",
+      "sel": "text.v-rot.pais",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 3.8,
+      "bajo": 2.85
+     }
+    ]
+   }
+  },
+  {
+   "id": "evento-bien",
+   "modo": "mercader",
+   "nota": "la prueba respondida bien",
+   "ms": 4380,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": {
+     "tramo": 3,
+     "resp": 0,
+     "correcta": 0
+    },
+    "guia": {
+     "objetivo": 2,
+     "resp": 2,
+     "ok": true
+    },
+    "fase": "parada",
+    "momento": "evento",
+    "modo": "mercader",
+    "monedas": 12,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 495,
+    "escala": 1,
+    "pie": "SEGUIR HACIA JARTUM ›"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "evento",
+    "paso": 2,
+    "cuenta": {
+     "textos": 20,
+     "enPantalla": 15,
+     "toques": 8,
+     "contrastesMedidos": 11,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "Nilo Azul",
+     "px": 11,
+     "zona": "mapa",
+     "sel": "text.v-rot.rio-n",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": true
+    },
+    "textoMinimoHTML": {
+     "texto": "Entre Juba y Jartum",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": false,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 9,
+     "imagen": 0,
+     "dibujo": 0,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      },
+      {
+       "texto": "¿De qué ciudad del Nilo es esta imagen? ",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "p.pregunta",
+       "color": "#0f423a",
+       "px": 17
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1153,
+     "scrollY": 495,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [],
+    "rotulosOcultos": 4,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "¿De qué ciudad del Nilo es esta imagen? ",
+      "sel": "p.pregunta",
+      "zona": "panel",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 10.22,
+      "bajo": 10.05
+     }
+    ]
+   }
+  },
+  {
+   "id": "evento-mal",
+   "modo": "mercader",
+   "nota": "la prueba respondida mal",
+   "ms": 4553,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": {
+     "tramo": 3,
+     "resp": 0,
+     "correcta": 3
+    },
+    "guia": {
+     "objetivo": 2,
+     "resp": 2,
+     "ok": true
+    },
+    "fase": "parada",
+    "momento": "evento",
+    "modo": "mercader",
+    "monedas": 8,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 495,
+    "escala": 1,
+    "pie": "SEGUIR HACIA JARTUM ›"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "evento",
+    "paso": 2,
+    "cuenta": {
+     "textos": 20,
+     "enPantalla": 15,
+     "toques": 8,
+     "contrastesMedidos": 11,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "Nilo Azul",
+     "px": 11,
+     "zona": "mapa",
+     "sel": "text.v-rot.rio-n",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": true
+    },
+    "textoMinimoHTML": {
+     "texto": "Entre Juba y Jartum",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": false,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 9,
+     "imagen": 0,
+     "dibujo": 0,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      },
+      {
+       "texto": "¿De qué ciudad del Nilo es esta imagen? ",
+       "sobre": "mapa",
+       "zona": "panel",
+       "sel": "p.pregunta",
+       "color": "#0f423a",
+       "px": 17
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1153,
+     "scrollY": 495,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [],
+    "rotulosOcultos": 4,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "¿De qué ciudad del Nilo es esta imagen? ",
+      "sel": "p.pregunta",
+      "zona": "panel",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 10.22,
+      "bajo": 10.05
+     }
+    ]
+   }
+  },
+  {
+   "id": "parada-adulto",
+   "modo": "historia",
+   "nota": "Juba en Adulto",
+   "ms": 3701,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 2,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "parada",
+    "momento": "parada",
+    "modo": "historia",
+    "monedas": null,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ZARPAR"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "parada",
+    "paso": 2,
+    "cuenta": {
+     "textos": 26,
+     "enPantalla": 19,
+     "toques": 5,
+     "contrastesMedidos": 18,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "5° N",
+     "px": 11,
+     "zona": "panel",
+     "sel": "text.lat",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Parada",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 6,
+     "imagen": 0,
+     "dibujo": 2,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1148,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "SUDD",
+      "por": "span.num",
+      "puntos": "6 de 9",
+      "px": 11
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 11.23
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.18
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.64
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 10.62
+     },
+     {
+      "texto": "Juba",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 5.57,
+      "bajo": 4.39
+     }
+    ]
+   }
+  },
+  {
+   "id": "anclada",
+   "modo": "mercader",
+   "nota": "la barca anclada: el río se reabre en Juba",
+   "ms": 4363,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 2,
+    "n": 6,
+    "parada": "Juba",
+    "zarpo": true,
+    "evento": null,
+    "guia": {
+     "objetivo": 2,
+     "resp": null,
+     "ok": null
+    },
+    "fase": "parada",
+    "momento": "parada",
+    "modo": "mercader",
+    "monedas": 10,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ZARPAR"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "parada",
+    "paso": 2,
+    "cuenta": {
+     "textos": 37,
+     "enPantalla": 20,
+     "toques": 8,
+     "contrastesMedidos": 29,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "5° N",
+     "px": 11,
+     "zona": "panel",
+     "sel": "text.lat",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Parada",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 6,
+     "imagen": 0,
+     "dibujo": 2,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈1 006 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1310,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [
+     {
+      "texto": "SUDD",
+      "por": "span.num",
+      "puntos": "6 de 9",
+      "px": 11
+     }
+    ],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 11.23
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.18
+     },
+     {
+      "texto": "≈1 006 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.23,
+      "bajo": 9.64
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.24,
+      "bajo": 10.62
+     },
+     {
+      "texto": "Juba",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 5.57,
+      "bajo": 4.39
+     }
+    ]
+   }
+  },
+  {
+   "id": "parada-ultima",
+   "modo": "mercader",
+   "nota": "El Cairo, la última parada",
+   "ms": 3882,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 6,
+    "n": 6,
+    "parada": "El Cairo",
+    "zarpo": true,
+    "evento": null,
+    "guia": null,
+    "fase": "parada",
+    "momento": "parada",
+    "modo": "mercader",
+    "monedas": 16,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás LLEGAR AL MAR ›"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "parada",
+    "paso": 6,
+    "cuenta": {
+     "textos": 24,
+     "enPantalla": 20,
+     "toques": 6,
+     "contrastesMedidos": 16,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "30° N",
+     "px": 11,
+     "zona": "panel",
+     "sel": "text.lat",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Parada",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 6,
+     "imagen": 0,
+     "dibujo": 2,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈6 394 de 6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 917,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.39
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.38
+     },
+     {
+      "texto": "≈6 394 de 6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.39
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.39,
+      "bajo": 10.63
+     },
+     {
+      "texto": "El Cairo",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 7.43,
+      "bajo": 4.02
+     },
+     {
+      "texto": "Alejandría",
+      "sel": "text.v-rot.hito",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 8.18,
+      "bajo": 5.13
+     }
+    ]
+   }
+  },
+  {
+   "id": "mar-nino",
+   "modo": "mercader",
+   "nota": "la llegada al mar en Niño",
+   "ms": 6869,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 7,
+    "n": 6,
+    "parada": null,
+    "zarpo": true,
+    "evento": null,
+    "guia": null,
+    "fase": "parada",
+    "momento": "mar",
+    "modo": "mercader",
+    "monedas": 16,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ORDENAR DE MEMORIA ›"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "mar",
+    "paso": 7,
+    "cuenta": {
+     "textos": 44,
+     "enPantalla": 31,
+     "toques": 10,
+     "contrastesMedidos": 37,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "Ganancia",
+     "px": 11,
+     "zona": "panel",
+     "sel": "dt",
+     "svg": false,
+     "enPantalla": false,
+     "decorativo": false
+    },
+    "textoMinimoHTML": {
+     "texto": "Ganancia",
+     "px": 11,
+     "zona": "panel",
+     "sel": "dt",
+     "svg": false,
+     "enPantalla": false,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 7,
+     "imagen": 0,
+     "dibujo": 0,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1205,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [
+     {
+      "texto": "La falúa no sale al mar: en el delta la carga sigue en gabar",
+      "px": 15,
+      "zona": "panel",
+      "sel": "p.v-llegada",
+      "svg": false,
+      "enPantalla": true,
+      "decorativo": false,
+      "por": "el pie (asoma a medias; se destapa al bajar)",
+      "firme": false
+     }
+    ],
+    "recortados": [],
+    "rotulosTapados": [],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.4
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 1.21
+     },
+     {
+      "texto": "6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.4
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.4
+     },
+     {
+      "texto": "El Cairo",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 5.66,
+      "bajo": 4.63
+     },
+     {
+      "texto": "MAR MEDITERRÁNEO",
+      "sel": "text.v-rot.agua",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 4.73,
+      "bajo": 3.63
+     },
+     {
+      "texto": "Pirámides de Guiza",
+      "sel": "text.v-rot.hito",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 6.05,
+      "bajo": 4.32
+     }
+    ]
+   }
+  },
+  {
+   "id": "mar-adulto",
+   "modo": "historia",
+   "nota": "la llegada al mar en Adulto",
+   "ms": 6902,
+   "fallo": null,
+   "erroresDeConsola": [],
+   "estado": {
+    "pantalla": "rio",
+    "tab": "descender",
+    "rio": "nilo",
+    "paso": 7,
+    "n": 6,
+    "parada": null,
+    "zarpo": true,
+    "evento": null,
+    "guia": null,
+    "fase": "parada",
+    "momento": "mar",
+    "modo": "historia",
+    "monedas": null,
+    "ventana": "360x640",
+    "anchoPagina": 360,
+    "scrollY": 0,
+    "escala": 1,
+    "pie": "‹ Atrás ORDENAR DE MEMORIA ›"
+   },
+   "dato": {
+    "ventana": "360x640",
+    "momento": "mar",
+    "paso": 7,
+    "cuenta": {
+     "textos": 37,
+     "enPantalla": 30,
+     "toques": 9,
+     "contrastesMedidos": 30,
+     "sinMedir": 0
+    },
+    "textoMinimo": {
+     "texto": "MAR MEDITERRÁNEO",
+     "px": 11,
+     "zona": "mapa",
+     "sel": "text.v-rot.agua",
+     "svg": true,
+     "enPantalla": true,
+     "decorativo": true
+    },
+    "textoMinimoHTML": {
+     "texto": "Llegaste al mar · 6 de 6 paradas",
+     "px": 12,
+     "zona": "panel",
+     "sel": "p.kicker",
+     "svg": false,
+     "enPantalla": true,
+     "decorativo": false
+    },
+    "textosChicos": [],
+    "toquesChicos": [],
+    "contrastesBajos": [],
+    "aparte": {
+     "mapa": 7,
+     "imagen": 0,
+     "dibujo": 0,
+     "ejemplos": [
+      {
+       "texto": "Nilo",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "h1",
+       "color": "#fbf8f2",
+       "px": 17
+      },
+      {
+       "texto": "km",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "div.sub",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "6 650",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "span.num",
+       "color": "#fbf8f2",
+       "px": 13
+      },
+      {
+       "texto": "≈",
+       "sobre": "mapa",
+       "zona": "cab",
+       "sel": "button.son",
+       "color": "#fbf8f2",
+       "px": 22
+      }
+     ]
+    },
+    "pagina": {
+     "ventana": 360,
+     "ancho": 360,
+     "alto": 1198,
+     "scrollY": 0,
+     "desborda": false
+    },
+    "nombresFuturos": [],
+    "emojis": [],
+    "cortados": [],
+    "recortados": [],
+    "rotulosTapados": [],
+    "rotulosOcultos": 0,
+    "barcaSobreRotulos": [],
+    "rotulosEncimados": [],
+    "sobreElMapa": [
+     {
+      "texto": "Nilo",
+      "sel": "h1",
+      "zona": "cab",
+      "px": 17,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.4
+     },
+     {
+      "texto": "km",
+      "sel": "div.sub",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 1.21
+     },
+     {
+      "texto": "6 650",
+      "sel": "span.num",
+      "zona": "cab",
+      "px": 13,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.4
+     },
+     {
+      "texto": "≈",
+      "sel": "button.son",
+      "zona": "cab",
+      "px": 22,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 11.87,
+      "bajo": 11.4
+     },
+     {
+      "texto": "El Cairo",
+      "sel": "text.etq",
+      "zona": "mapa",
+      "px": 12,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 5.66,
+      "bajo": 4.63
+     },
+     {
+      "texto": "MAR MEDITERRÁNEO",
+      "sel": "text.v-rot.agua",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 4.73,
+      "bajo": 3.63
+     },
+     {
+      "texto": "Pirámides de Guiza",
+      "sel": "text.v-rot.hito",
+      "zona": "mapa",
+      "px": 11,
+      "sobre": "mapa",
+      "grande": false,
+      "mediana": 6.05,
+      "bajo": 4.32
+     }
+    ]
+   }
+  }
+ ],
+ "errores": [],
+ "avisos": []
+}

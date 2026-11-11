@@ -14,12 +14,24 @@ const fs=require('fs'),path=require('path');
 const src=p=>fs.readFileSync(path.join(__dirname,'src',p),'utf8');
 const JUEGOS={
   cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/ilustraciones.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'},soloAmplia:['data/barcas.js','data/bienes.js','data/postales.js']},
+  nilo:{titulo:'Cauces · Nilo: la vitrina de un río',salida:'nilo.html',ediciones:['amplia'],tope:900,vitrina:true,soloRutas:['nilo'],estilos:['vitrina/capa.css','vitrina/arte.css','vitrina/carta.css','vitrina/panel.css'],vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/ilustraciones.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/nilo.js','vitrina/capa.js','vitrina/arte.js','vitrina/carta-datos.js','vitrina/mapa-carta.js','vitrina/carta.js','vitrina/panel.js','vitrina/sonido.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'},soloAmplia:['data/barcas.js','data/bienes.js','data/postales.js']},/* la vitrina (docs/vitrina/contrato.md): un solo río, una sola edición y la capa de src/vitrina/ antes del motor */
   exploradores:{titulo:'Exploradores: los grandes viajes, etapa por etapa',vocab:['itinerario','travesia'],archivos:['data/mapa-exploradores.js','data/itinerarios.js','data/ilustraciones.js','data/voces.js','data/relieve-exploradores.js','juegos/exploradores.js','motor.js'],soloAmplia:['data/barcas.js','data/bienes.js','data/postales.js']}
 };
 const EDICIONES={economica:{nombre:'económica',sufijo:'',tope:500},amplia:{nombre:'amplia',sufijo:'-amplia',tope:0}};
 function archivosDe(id,edicion){const j=JUEGOS[id],rep=(edicion==='amplia'&&j.amplia)||{},mas=edicion==='amplia'&&j.soloAmplia||[];
-  return j.archivos.flatMap(f=>[rep[f]||f].concat(f==='data/ilustraciones.js'?mas:[]))}// archivos del juego en una edición; `soloAmplia` (barcas y mercancías pintadas) entra tras las ilustraciones
+  /* la vitrina: si su carta trae costas, lagos y fronteras propios (CARTA.tierra…), vitrina/mapa-carta.js los entrega como LAND, LAGOS y BORDES y el mapa del mundo no viaja */
+  const mapaPropio=!!j.vitrina&&(()=>{try{return /["']?tierra["']?:\s*["'`]M/.test(src('vitrina/carta-datos.js'))}catch(e){return false}})();
+  return j.archivos.filter(f=>!f.startsWith('vitrina/')||fs.existsSync(path.join(__dirname,'src',f))).filter(f=>mapaPropio?!/^data\/mapa/.test(f):f!=='vitrina/mapa-carta.js').flatMap(f=>[rep[f]||f].concat(f==='data/ilustraciones.js'?mas:[]))}// archivos del juego en una edición; `soloAmplia` (barcas y mercancías pintadas) entra tras las ilustraciones
 const ABRE='/*@amplia*/',CIERRA='/*@fin:amplia*/';
+/* la vitrina: los ganchos del motor van entre /*@vitrina*\/ y /*@fin:vitrina*\/; un juego con `vitrina` conserva el código y pierde las marcas, y los
+   demás pierden el bloque entero (y su salto de línea, si el bloque ocupa renglones propios): quedan byte a byte como antes de los ganchos */
+const VABRE='/*@'+'vitrina*/',VCIERRA='/*@fin:'+'vitrina*/';
+function cortarVitrina(t,conservar){for(;;){const a=t.indexOf(VABRE);if(a<0)break;const b=t.indexOf(VCIERRA,a);if(b<0)throw 'marca '+VABRE+' sin cierre';const fin=b+VCIERRA.length;
+    t=conservar?t.slice(0,a)+t.slice(a+VABRE.length,b)+t.slice(fin):t.slice(0,a)+t.slice(t[fin]==='\n'&&(a===0||t[a-1]==='\n')?fin+1:fin)}return t}
+/* un juego con `soloRutas` se lleva de los datos solo sus rutas: dentro de RIVERS, NAVES, MASCOTAS, MERCADOS y EVENTOS, una entrada empieza en la
+   línea que abre con el id de una ruta y llega hasta la siguiente */
+function filtrarRutas(t,ids,todas){let dentro=false,deja=true;return t.split('\n').filter(l=>{if(/^const (RIVERS|NAVES|MASCOTAS|MERCADOS|EVENTOS)\b/.test(l)){dentro=true;deja=true;return true}
+    if(!dentro)return true;if(/^[\]}];\s*$/.test(l)){dentro=false;return true}const k=l.match(/^\{id:"([a-z]+)"/)||l.match(/^([a-z]+):[\[{]/);if(k&&todas.has(k[1]))deja=ids.has(k[1]);return deja}).join('\n')}
 function cortarEdicion(texto,edicion){// la económica quita los bloques marcados; la amplia, solo las marcas (y el salto de línea que las sigue)
   const tras=(t,i)=>t[i]==='\n'?i+1:i;
   if(edicion==='amplia'){let t=texto;for(const m of [ABRE,CIERRA])for(;;){const a=t.indexOf(m);if(a<0)break;t=t.slice(0,a)+t.slice(tras(t,a+m.length))}return t}
@@ -68,21 +80,25 @@ function recortar(motor,j,u){
     const out=lineas.filter(l=>{const k=l.match(/^\s*case '([a-z]+)':/);if(!k||u.tipos.has(k[1]))return true;quitado.glifos++;return false});m=m.slice(0,a)+out.join('\n')+m.slice(b)}
   return{motor:m,quitado}}
 function ensamblar(id,edicion){
-  const j=JUEGOS[id],e=EDICIONES[edicion],archivos=archivosDe(id,edicion),leer=f=>cortarEdicion(src(f),edicion);
+  const j=JUEGOS[id],e=EDICIONES[edicion],archivos=archivosDe(id,edicion),todas=j.soloRutas&&new Set([...src('data/rios.js').matchAll(/^\{id:"([a-z]+)"/gm)].map(m=>m[1]));
+  const leer=f=>{let t=cortarVitrina(cortarEdicion(src(f),edicion),!!j.vitrina);if(j.soloRutas&&/^data\/(rios|naves|mascotas|mercados|eventos)\.js$/.test(f))t=filtrarRutas(t,new Set(j.soloRutas),todas);
+    if(j.vitrina&&/^data\/relieve/.test(f))t=t.replace(/^const RELIEVE=.*$/m,'const RELIEVE={};');/* la vitrina trae su relieve sombreado: las franjas no viajan */return t};
   const datos=archivos.filter(f=>f!=='motor.js').map(leer).join('\n'),u=usados(datos),{motor,quitado}=recortar(leer('motor.js'),j,u);
-  const titulo=j.titulo+(e.sufijo?' · edición '+e.nombre:'');
+  const titulo=j.titulo+(e.sufijo&&!j.salida?' · edición '+e.nombre:'');
+  const estilos=(j.estilos||[]).filter(f=>fs.existsSync(path.join(__dirname,'src',f))).map(src).join('\n');/* el CSS de la capa, después del de cabeza.html */
   const ilustraciones=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-zñ]+):\{v:/);if(!k||u.ilus.has(k[1]))return true;quitado.ilustraciones=(quitado.ilustraciones||0)+1;return false}).join('\n');/* ilustraciones (data/ilustraciones.js): solo las de los animales del juego */
   const porRuta=t=>t.split('\n').filter(l=>{const k=l.match(/^([a-z]+):[{[]/);return !k||u.rutas.has(k[1])}).join('\n');/* barcas, mercancías y postales: solo las de las rutas del juego */
-  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):f==='data/barcas.js'||f==='data/bienes.js'||f==='data/postales.js'?porRuta(limpiar(leer(f))):/^data\/(mapa|relieve)/.test(f)?trazos(limpiar(leer(f))):limpiar(leer(f));
-  const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`)+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
+  const guion=f=>f==='motor.js'?motor:f.startsWith('juegos/')?limpiar(leer(f))+`\nJUEGO.edicion={nombre:'${e.nombre}',kb:__PESO__};`:f==='data/ilustraciones.js'?ilustraciones(limpiar(leer(f))):f==='data/barcas.js'||f==='data/bienes.js'||f==='data/postales.js'?porRuta(limpiar(leer(f))):/^data\/(mapa|relieve)/.test(f)||f==='vitrina/carta-datos.js'?trazos(limpiar(leer(f))):limpiar(leer(f));
+  const base=leer('cabeza.html').replace('<title>__TITULO__</title>',`<title>${titulo}</title>`).replace('content="__EDICION__"',`content="${e.nombre}"`).replace('</head>',()=>(estilos?'<style>\n'+estilos+'</style>\n':'')+'</head>')+archivos.map(f=>'<script>\n'+guion(f)+'</script>\n').join('')+leer('cola.html');
   /* el archivo dice cuánto pesa; el número entra en el mismo archivo, así que se comprueba después de escribirlo */
   let kb=Math.round(base.length/1024),html=base.replace('__PESO__',kb);const kb2=Math.round(html.length/1024);if(kb2!==kb){kb=kb2;html=base.replace('__PESO__',kb)}
-  return{archivo:id+e.sufijo+'.html',html,kb,quitado,tope:e.tope}}
+  return{archivo:j.salida||id+e.sufijo+'.html',html,kb,quitado,tope:j.tope||e.tope}}
 function construir(){
   fs.mkdirSync(path.join(__dirname,'dist'),{recursive:true});
-  for(const id of Object.keys(JUEGOS))for(const ed of Object.keys(EDICIONES)){const {archivo,html,kb,quitado,tope}=ensamblar(id,ed);
+  const solo=process.argv[2];if(solo&&!JUEGOS[solo])throw 'uso: node build.js [juego]: '+Object.keys(JUEGOS).join(' | ');/* con un juego, solo ese: `node build.js nilo` */
+  for(const id of Object.keys(JUEGOS).filter(k=>!solo||k===solo))for(const ed of JUEGOS[id].ediciones||Object.keys(EDICIONES)){const {archivo,html,kb,quitado,tope}=ensamblar(id,ed);
     fs.writeFileSync(path.join(__dirname,'dist',archivo),html);
     console.log(`dist/${archivo}`,kb,'KB','· recortado del motor:',`${quitado.vocab} vocabularios, ${quitado.animales} animales, ${quitado.pictos} pictogramas, ${quitado.glifos} glifos, ${quitado.iconos} iconos`);
     if(tope&&html.length>tope*1024)console.warn(`AVISO: dist/${archivo} pasa de ${tope} KB`)}}
-module.exports={JUEGOS,EDICIONES,archivosDe,ensamblar,cortarEdicion};
+module.exports={JUEGOS,EDICIONES,archivosDe,ensamblar,cortarEdicion,cortarVitrina};
 if(require.main===module)construir();

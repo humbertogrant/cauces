@@ -878,6 +878,58 @@ anclados a algo verificable del lugar (cataratas, frontera, niebla, hielo) y con
    ruta también a ±360°, y tools/rutas.py parte en dos las vistas que cruzan la línea para el mapa y el relieve. Una ruta
    corta puede pedir vértices más seguidos en `PASO_RUTA` de tools/itinerarios.py (el test exige 40 vértices o más).
 
+## La vitrina del Nilo (2026-11-11; en main desde la mezcla de la rama `vitrina-nilo`)
+
+Un experimento a pedido de Humberto (`instruccion-un-rio.md`): un solo río, el Nilo, llevado al acabado que tendría el juego
+terminado, para medir cuánto compra una corrida corta y autónoma. Todo lo de la corrida está en `docs/vitrina/` (plan, contrato,
+diario, hallazgos, textos nuevos, capturas e informe).
+- **En main** desde el 2026-11-11: la rama `vitrina-nilo` se mezcló (con el «1 moneda» de `0a69dcd` adentro) y Pages publica
+  `dist/nilo.html` con los demás (`dist/index.html` no lo enlaza). **Los fines de línea cuentan**: `node build.js` no arma lo mismo
+  con CRLF que con LF (con `panel.js` y `panel.css` en CRLF quedan 38 renglones vacíos de más) y la CI arma con LF. Si el árbol de
+  trabajo de Windows tiene archivos de `src/` en CRLF (`git ls-files --eol | grep w/crlf`), «dist al día» falla en la CI aunque
+  `npm test` pase acá: hay que dejarlos en LF antes de reconstruir.
+- **El build**: `node build.js` arma además `dist/nilo.html` (juego `nilo` en `JUEGOS`: una sola edición, tope de 900 KB; `node
+  build.js nilo` arma solo la vitrina, y `npm test` termina además con «VITRINA OK»): los datos
+  de Cauces amplia recortados al Nilo (`soloRutas`, que filtra RIVERS, NAVES, MASCOTAS, MERCADOS y EVENTOS; las postales, la barca,
+  las mercancías y la ilustración salen solas por el recorte de siempre), `src/juegos/nilo.js` (guarda aparte, clave `cauces-nilo`),
+  los módulos de `src/vitrina/` que existan y el motor; el CSS de la capa va después del de `cabeza.html`. Las franjas de relieve
+  no viajan (`RELIEVE={}`): la vitrina trae su sombreado.
+- **La capa** (`src/vitrina/`, se carga antes que el motor): `capa.js` define `CAPA` (eventos con `oir`/`emitir`, la fase de la
+  parada, el momento de la pantalla, el arranque directo en el río) y `capa.css` las variables `--v-…`; `carta.js`, `carta.css` y
+  `carta-datos.js` (lo genera `python tools/carta.py` desde ETOPO1, de NOAA, dominio público: un WebP de 400 × 600 con el sombreado
+  ya en la paleta, ≈ 95 KB) son la carta: relieve sombreado recortado por la tierra, hilo de oro (lo recorrido; en la portada, el río
+  entero), la próxima parada como anillo con signo de pregunta, rótulos con jerarquía de atlas que no pisan el cauce y un encuadre
+  por momento (`CAPA.vista`); las franjas, los nombres de relieve y la luz del motor se ocultan;
+  `panel.js` y `panel.css`, la bitácora en papel: portada, navegando, parada y llegada al mar, con las fichas del acróstico;
+  `sonido.js`, los efectos sintetizados. Todo selector empieza por `body.vitrina`.
+- **Los ganchos** (en `src/motor.js`, entre `/*@vitrina*/ … /*@fin:vitrina*/`; `capaV()` devuelve `CAPA` o `null`): `render` pone
+  `data-momento` y la clase `vitrina` en `body`; `renderDescender` usa `CAPA.descender(r)` si devuelve HTML; `renderPie`,
+  `CAPA.pie(r, acto)`; `renderMapa`, el encuadre de `CAPA.vista(r, foco)` y, al final, `CAPA.mapa(foco, vb, px)`; `paso`, `comprar`,
+  `vender` y `animarBarca` emiten `zarpar`, `sello`, `moneda`, `avanza`, `parada` y `mar`, y `render`, al final, `dibujado`; `abrirRio` devuelve la fase a `parada`, y
+  al cargar corre `CAPA.arranque()`. build.js recorta esos bloques de Cauces y de Exploradores (`cortarVitrina`): sus cuatro HTML
+  quedan byte a byte como antes. Las pruebas de Cauces cargan `src` con los ganchos a la vista y sin `CAPA`: no hacen nada.
+- **Las fases**: cada parada se ve en dos pantallas sin cambiar la mecánica: la parada (`CAPA.fase='parada'`, con ZARPAR) y la guía
+  (`'navega'`: las fichas del acróstico, la pregunta y el perfil; el pie es el del motor). `CAPA.momento()` dice cuál es: `portada`,
+  `navega`, `parada`, `evento` (la prueba entre puertos: el panel del motor dentro de la misma hoja), `mar` u `otro` (Ordenar,
+  Recitar, Preguntar y el inicio, que solo heredan papel y tipografía).
+- **Verificación**: `tools/captura.js` maneja el Edge o el Chrome del sistema por CDP, sin dependencias (`foto`, `recorrido` con
+  clics reales, `medir`), y `test/vitrina.js` prueba `dist/nilo.html` en el DOM simulado.
+- **Corrida larga** (el mismo día, 08:27-09:47; `docs/vitrina/plan-larga.md` e `informe.md`; el de la primera es `informe-60-min.md`):
+  `src/vitrina/arte.js` y `arte.css` (`CAPA.arte`: la falúa con hasta tres cargas a la vista, las cargas y la cabeza de Hipo
+  nadando, en SVG de línea; `carta.js` los pone en `#barca` y `#masc`, la falúa siempre derecha y mirando según el rumbo del tramo);
+  `tools/carta.py` entrega además el cauce fino de Natural Earth 10 m (`CARTA.curso`, `CARTA.brazos`), las costas, lagos y fronteras
+  de la región (`CARTA.tierra`, `lagos`, `bordes`: con ellos `src/vitrina/mapa-carta.js` da `LAND`, `LAGOS` y `BORDES` y el mapa del
+  mundo no viaja) y un segundo relieve fino (`CARTA.luz2`); **ninguna cifra cambia**: `cauceFino` en `src/juegos/nilo.js` deja fijos
+  los kilómetros de cada parada (los del curso de Cauces) y pasa el perfil de altura al cauce nuevo por tramos, y `test/vitrina.js`
+  lo compara con `dist/cauces-amplia.html`. La carta lleva escala gráfica, norte, el delta rotulado y un renglón bajo Asuán y El
+  Cairo tomado de los datos; la bitácora, sello circular propio (`selloV`) y el riel en la portada y el mar del teléfono.
+  `tools/captura.js` suma `auditar` (16 estados: letra, toques, contraste, ancho, nombres futuros, emojis) y `estados`. `CAPA.vista`
+  recibe `dims`. Lección de costo: retomar subagentes que ya cargan mucho contexto sale caro; para vueltas de arreglo, agentes nuevos
+  con encargos angostos, y cada uno arma su copia con `ensamblar('nilo','amplia')` para no pisar `dist/` mientras otro captura.
+- Decisiones de la corrida que se apartan de la instrucción (están en `docs/vitrina/diario.md`): se usa lo pintado (Hipo, la falúa,
+  las mercancías, las postales) en vez de redibujar en línea; se respeta «enseñar antes de preguntar»; el curso sigue siendo el de
+  Natural Earth 50 m; sin descargas ni fuentes embebidas.
+
 ## Pendientes, en orden de valor
 
 De la revisión integral del 2026-10-27 no queda nada: los mares que contradecían su barca, las protagonistas sin dorado, las alturas
