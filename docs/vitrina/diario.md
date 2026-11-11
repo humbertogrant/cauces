@@ -90,5 +90,6 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
 - **08:19** Build completo y `npm test` sobre el estado final: 9 de 9. `dist/nilo.html`, 647 KB. Los otros cuatro HTML, sin cambios.
 - **08:20** Retomé las nueve capturas de «después» que cambiaron con el retoque (portada, navegando y mar, en los tres tamaños),
   para que las versionadas sean las del build final. `hallazgos.md` se cerró a las 08:15 y no recoge el retoque: el informe lo dice.
-- **08:22** Cierre: informe escrito, todo con commit en `vitrina-nilo`, sin push. Quedan 9 hallazgos menores y la pieza 4 (la falúa
-  con la carga a la vista e Hipo nadando al lado) a medias.
+- **08:21** Cierre, con unos 9 minutos del presupuesto sin usar: informe escrito, todo con commit en `vitrina-nilo`, sin push.
+  Quedan 9 hallazgos menores y la pieza 4 (la falúa con la carga a la vista e Hipo nadando al lado) a medias. **Decisión:** no abrir
+  otra vuelta de arreglos que no se alcanzaría a verificar.

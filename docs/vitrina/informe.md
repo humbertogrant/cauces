@@ -1,6 +1,6 @@
 # Informe de la corrida: vitrina del Nilo
 
-Corrida autónoma del 2026-11-11, de 07:31 a 08:31 (60 minutos de reloj), según `instruccion-un-rio.md`.
+Corrida autónoma del 2026-11-11, de 07:31 a 08:22 (51 de los 60 minutos del presupuesto), según `instruccion-un-rio.md`.
 
 1. `dist/nilo.html` (647 KB; el tope era 900) baja el Nilo entero en Niño y en Adulto con clics reales y sin errores de consola:
    carta de noche con relieve sombreado real y un solo hilo de oro, bitácora en papel con las fichas del acróstico, portada,
@@ -20,8 +20,10 @@ Corrida autónoma del 2026-11-11, de 07:31 a 08:31 (60 minutos de reloj), según
 |---|---|---|
 | Leer y planear | 10 % (6 min) | 07:31 – 07:47, 16 min (27 %): el repositorio había cambiado mucho desde setiembre y hubo que reconciliar la instrucción con él |
 | Construir | 55 % (33 min) | 07:47 – 08:04, unos 17 min (28 %), en paralelo: ganchos y build (Dirección) y cuatro subagentes |
-| Mirar y corregir | 25 % (15 min) | 07:56 – 08:20, unos 22 min (37 %), solapado con el final de la construcción |
-| Informe | 10 % (6 min) | 08:20 – 08:31 |
+| Mirar y corregir | 25 % (15 min) | 07:56 – 08:20, unos 24 min, solapado con el final de la construcción y con el informe |
+| Informe | 10 % (6 min) | 08:12 – 08:22, a ratos, mientras corría la vuelta final de verificación |
+
+Sobraron unos 9 minutos del presupuesto: cerré ahí en vez de abrir otra vuelta que no iba a alcanzar a verificar.
 
 - **Subagentes:** Verificación ≈ 441 mil tokens, Carta ≈ 357 mil, Bitácora ≈ 347 mil y Sonido ≈ 264 mil: unos 1,41 millones
   entre los cuatro.
