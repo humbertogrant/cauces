@@ -102,6 +102,23 @@ const tAntes=P.tesoro;paso(1);if(P.tesoro!==tAntes)throw 'doble tesoro';
 abrirRio('tigris',1);paso(1);comprar(0);bajar(3);ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('podrido · tirar')<0)throw 'sandía no se pudrió';vender(0);if(!VOCES.podrido.includes(S.dicho.replace('Sandías','{g}')))console.log('voz podrido',S.dicho);
 irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('Tesoro:')<0)throw 'sin tesoro en inicio';
 console.log('economía OK');
+// «1 moneda» va en singular: en la bolsa del mercado, en el tesoro (portada y cuentas del viaje), en la multa de un evento (la nota y
+// la lectura) y en las voces de la venta y de la ganancia; con 0 y con 2 sigue en plural
+{crearPerfil('Moneda');setModo('mercader');const r=rioPor('nilo'),tx=()=>sinHtml(sinNum(document.querySelector('#panel').innerHTML)),casos=[[0,'0 monedas'],[1,'1 moneda'],[2,'2 monedas']];
+ for(const [k,t] of casos){P.tesoro=k;irInicio();const hay=(tx().match(/Tesoro: \d+ monedas?/)||[''])[0];if(hay!=='Tesoro: '+t)throw 'el tesoro de '+k+' en la portada: '+hay}
+ P.tesoro=0;abrirRio('nilo',1);paso(1);
+ for(const [k,t] of casos){S.eco.monedas=k;render(false);const hay=(tx().match(/\d+ monedas? · bodega/)||[''])[0];if(hay!==t+' · bodega')throw 'la bolsa del mercado con '+k+': '+hay}
+ bajar(1);S.eco.monedas=1;paso(1);if(!S.evento)throw 'el evento del Sudd no saltó';responderEvento(S.evento.q.correcta===0?1:0);
+ if(S.evento.delta!==-1||S.eco.monedas!==0)throw 'la multa con una sola moneda: '+S.evento.delta;
+ if(tx().indexOf(' −1 moneda. ')<0||!lectura().some(t=>/ Perdés 1 moneda\.$/.test(t)))throw 'la multa de una moneda, en plural: '+(tx().match(/−\d+ monedas?\./)||[''])[0]+' '+JSON.stringify(lectura());
+ continuarEvento();
+ {const gi=r.carga.findIndex(g=>g.o===S.paso-1),g=r.carga[gi],b=g.b,azar0=Math.random;g.b=1;/* hoy ningún bien vale 1; si alguno llegara a valerlo, la voz de la venta también va en singular */
+  VOCES.venta.forEach((v,i)=>{Math.random=()=>(i+.5)/VOCES.venta.length;S.eco.bodega=[gi];vender(0);if(/\{|1 monedas/.test(S.dicho)||!/(^|\D)1(\D|$)/.test(S.dicho))throw 'la venta por una moneda: '+S.dicho});
+  Math.random=azar0;g.b=b}
+ bajar(r.paradas.length-S.paso);S.eco.bodega=[];S.eco.monedas=11;paso(1);if(S.evento){responderEvento(S.evento.q.correcta);S.eco.monedas=11;continuarEvento()}
+ if(!S.eco.cerrado||S.eco.final.gan!==1||P.tesoro!==1)throw 'la ganancia de una moneda: '+JSON.stringify(S.eco.final)+' tesoro '+P.tesoro;
+ if(!/^Ganaste 1 moneda\. /.test(S.dicho)||tx().indexOf('Tesoro: 1 moneda · ')<0)throw 'la ganancia o el tesoro de una moneda, en plural: '+S.dicho+' | '+(tx().match(/Tesoro: \d+ monedas?/)||[''])[0];
+ irInicio();quitarPerfil();console.log('moneda en singular OK')}
 
 // interruptor
 irInicio();ph=sinNum(document.querySelector('#panel').innerHTML);if(ph.indexOf('class="tabs modo"')<0||ph.indexOf('Tesoro:')<0)throw 'sin interruptor';

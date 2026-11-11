@@ -893,7 +893,7 @@ if(S.tab==='ordenar'){const o=S.orden,U=unidades(r);di(o.dicho);if(!o.listo)opci
 if(S.tab==='trazar'){const T=S.tra;di(T.dicho);if(!T.listo)di(V.trazaPregunta(T.i+1,n,T.i?r.paradas[T.i-1].nombre:r.inicio.nombre));return L}
 if(S.tab==='recitar'){const R=S.rec;di(R.dicho);if(R.i>=n)di(`${R.ok.filter(Boolean).length} de ${n} recordadas.`);else if(!R.revelada)di(`${V.Parada} ${R.i+1} de ${n}: decila en voz alta y después revelá.`);else di(`${r.paradas[R.i].nombre}, ${r.paradas[R.i].pais}. ¿La sabías?`);return L}
 const E=S.evento,p=S.paso;
-if(E){di(E.dicho,E.def.titulo+'. '+E.def.texto,E.q.texto);if(E.resp==null)opciones(E.q.opciones);else di((E.ok?E.def.bien:E.def.mal)+(E.delta?` ${E.delta>0?'Ganás':'Perdés'} ${Math.abs(E.delta)} monedas.`:''),h?E.q.nota:'');return L}
+if(E){di(E.dicho,E.def.titulo+'. '+E.def.texto,E.q.texto);if(E.resp==null)opciones(E.q.opciones);else di((E.ok?E.def.bien:E.def.mal)+(E.delta?` ${E.delta>0?'Ganás':'Perdés'} ${Math.abs(E.delta)} moneda${Math.abs(E.delta)>1?'s':''}.`:''),h?E.q.nota:'');return L}
 const guia=()=>{const g=S.guias[p];if(g&&g.resp==null&&p<n)opciones(g.opciones.map(i=>rotuloGuia(r,i)),V.proxima)};
 if(p===0){di(S.dicho||(m&&m.hola),V.vozInicio(r),h?r.inicio.nota:'');guia()}
 else if(p<=n){const c=r.paradas[p-1];di(S.dicho||(m&&m.paradas[p-1]),V.vozParada(p,n,c),'Imagen para recordar: '+c.imagen,h?c.dato:'',h?fraseAltura(r,p-1):'',S.selloNuevo===claveSello(r,p-1)?`¡Sello de ${c.nombre} en el pasaporte!`:'');guia()}
@@ -1134,16 +1134,17 @@ function setModo(m){P.modo=m;guardar();render(false)}
 function iniciarEco(r){S.eco=modo()==='mercader'?{monedas:10,bodega:[],dicho:null,cerrado:false,final:null,antes:(P.bajadas||{})[r.id],fantasma:completo(r)?r.fantasma:null}:null}
 function rival(V,e){const a=e.antes,f=e.fantasma,m=`el ${V.mercader} suele llegar con ${f}`;
 return a!=null&&f!=null?` La vez pasada llegaste con ${a} y ${m}: a ver si les ganás.`:a!=null?` La vez pasada llegaste con ${a}: a ver si le ganás.`:f!=null?` ${cap(m)}: a ver si le ganás.`:''}
+const conN=(t,n)=>t.replace('{n} monedas',`${n} moneda${n!==1?'s':''}`).replace('{n}',n);
 function precio(r,g,j){if(j<g.o)return null;const k=j-g.o;if(g.d&&k>g.d)return 0;let p=g.b*(1+0.5*k);if(g.m===j)p*=2;else if(j===r.paradas.length-1&&k>0)p*=1.25;return Math.round(p)}
 function comprar(gi){const r=rioPor(S.rio),g=r.carga[gi],e=S.eco;if(!e||e.cerrado)return;
 if(e.bodega.length>=3){S.dicho=azar(VZ().sinEspacio);S.animo='pensativo'}else if(e.monedas<g.b){S.dicho=azar(VZ().sinMonedas);S.animo='pensativo'}else{S.animo='alegre';e.monedas-=g.b;e.bodega.push(gi);S.dicho=azar(VZ().compra).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1));audio.ping(660)}
 anclar(r);render(false)}
 function vender(bi){const r=rioPor(S.rio),e=S.eco;if(!e||e.cerrado)return;const g=r.carga[e.bodega[bi]],p=precio(r,g,S.paso-1);e.bodega.splice(bi,1);
-if(p>0){e.monedas+=p;S.dicho=azar(VZ().venta).replace('{n}',p);S.animo='alegre';audio.ping(1046)}else{S.animo='pensativo';S.dicho=azar(VZ().podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1))}
+if(p>0){e.monedas+=p;S.dicho=conN(azar(VZ().venta),p);S.animo='alegre';audio.ping(1046)}else{S.animo='pensativo';S.dicho=azar(VZ().podrido).replace('{g}',g.n[0].toUpperCase()+g.n.slice(1))}
 anclar(r);render(false)}
 function cerrarEco(r){const e=S.eco;if(!e||e.cerrado)return;const j=r.paradas.length-1,vend=[];e.bodega.forEach(gi=>{const g=r.carga[gi],p=precio(r,g,j)||0;e.monedas+=p;vend.push(g.n+' · '+p)});e.bodega=[];
 const gan=e.monedas-10,cmp=(x,v)=>x==null?'':' '+v[e.monedas>x?0:e.monedas<x?1:2].replace('{n}',x);P.tesoro=(P.tesoro||0)+Math.max(0,gan);(P.bajadas||(P.bajadas={}))[r.id]=e.monedas;e.cerrado=true;e.final={fin:e.monedas,gan,vend};
-S.dicho=VZ().ganancia[gan>=10?0:gan>0?1:2].replace('{n}',gan)+cmp(e.antes,VZ().vezPasada)+cmp(e.fantasma,VZ().fantasma);guardar()}
+S.dicho=conN(VZ().ganancia[gan>=10?0:gan>0?1:2],gan)+cmp(e.antes,VZ().vezPasada)+cmp(e.fantasma,VZ().fantasma);guardar()}
 function zarpar(){S.zarpo=true;render(false)}
 function irInicio(){S.pantalla='inicio';S.aviso=null;S.hoy=false;render()}
 function setTab(t){S.tab=t;const r=rioPor(S.rio);if(t==='ordenar')reiniciarOrden(r);if(t==='recitar')iniciarRecitar(r);if(t==='trazar')iniciarTrazar(r);if(t==='preguntar')iniciarQuiz(r);render()}
@@ -1175,7 +1176,7 @@ return `<div class="grupo${g.clase?' '+g.clase:''}"><h3>${g.titulo}</h3>${g.nota
 return `${renderHoy()}
 <div class="ficha quien">${renderPerfiles()}</div>
 ${S.aviso?`<div class="aviso">${esc(S.aviso)}</div>`:''}
-${modo()==='mercader'?`<div class="tesoro">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div>`:''}
+${modo()==='mercader'?`<div class="tesoro">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} moneda${P.tesoro!==1?'s':''} · ${rango(P.tesoro||0)}</div>`:''}
 ${grupos}
 ${typeof renderComparar==='function'?renderComparar():''}
 <details class="mas ajustes"><summary>¿Cómo se juega?</summary>${JUEGO.comoSeJuega}<p class="fnota">${VJ().toca}</p>${JUEGO.edicion?`<p class="fnota edicion">Edición ${esc(JUEGO.edicion.nombre)} · ${num(JUEGO.edicion.kb+' KB')} · un solo archivo, sin internet.</p>`:''}</details>
@@ -1186,7 +1187,7 @@ if(p<=n){const c=r.paradas[p-1];
 const prev=p>1?r.paradas[p-2]:null;
 return `${globo(r,S.dicho||((S.selloNuevo===claveSello(r,p-1)?`¡Sello de ${c.nombre}! `:'')+(r.companero?r.companero.paradas[p-1]:'')))}${S.hoyListo?`<p class="aviso-hoy">${ico('ok')} ¡Dos ${V.Parada.toLowerCase()}s nuevas! ${r.tipo==='rio'?'Si querés, la barca se queda anclada aquí hasta mañana.':'Si querés, mañana seguimos desde aquí.'}</p>`:''}<p class="kicker">${botonVoz()}${V.kickerParada(r,p,n,c)}</p><h2>${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div>${S.anclada?`<p class="aviso-hoy"><button class="enlace" onclick="abrirRio('${r.id}',1)">Empezar de nuevo desde ${V.entreInicio}</button></p>`:''}<div class="ficha recuerdo">${escena(c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}</div></div>${renderSello(r,p-1)}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}`}
 const f=S.eco&&S.eco.final;
-return `${globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido')}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">${escena(r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${S.eco.antes!=null?` La vez pasada llegaste con ${S.eco.antes}.`:''}${S.eco.fantasma!=null?` El ${V.mercader} llegó con ${S.eco.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} monedas · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
+return `${globo(r,S.dicho||(r.companero&&r.companero.fin),'','dormido')}<p class="kicker">${botonVoz()}${V.kickerFin(r)}</p><h2>${esc(r.fin.nombre)}</h2><div class="ficha recuerdo">${escena(r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${f?`<div class="mercado"><div class="fkicker">Cuentas del viaje</div><p>${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[r.paradas.length-1].nombre)}: ${esc(f.vend.join(', '))}.`:''} ${f.gan>0?`Ganancia: ${f.gan}.`:'Sin ganancia esta vez.'}${S.eco.antes!=null?` La vez pasada llegaste con ${S.eco.antes}.`:''}${S.eco.fantasma!=null?` El ${V.mercader} llegó con ${S.eco.fantasma}.`:''}</p><div class="bolsa">${ico('moneda')} Tesoro: ${num(P.tesoro||0)} moneda${P.tesoro!==1?'s':''} · ${rango(P.tesoro||0)}</div></div>`:''}${r.vehiculo?`<div class="nave"><svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg><div class="fkicker">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.llegada)}</p></div>`:''}${mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo)}${bloqueFrase(r,true)}`}
 const rotuloGuia=(r,i)=>r.paradas[i].rumbo||r.paradas[i].nombre;
 function renderGuia(r){const g=S.guias[S.paso];if(!g||S.paso>=r.paradas.length)return '';
 const chips=g.opciones.map(i=>{let cls='chip';if(g.resp!=null){if(i===g.objetivo)cls+=' bien';else if(i===g.resp)cls+=' mal'}return `<button class="${cls}" onclick="responderGuia(${i})"${g.resp!=null?' disabled':''}>${esc(rotuloGuia(r,i))}</button>`}).join('');
@@ -1194,14 +1195,14 @@ return `<div class="guia"><div class="chips">${chips}</div></div>`}
 function renderEvento(r){const E=S.evento,d=E.def,q=E.q,n=r.paradas.length;
 const V=r.vocab,de=S.paso===0?V.entreInicio:r.paradas[S.paso-1].nombre,hacia=E.tramo<=n?r.paradas[E.tramo-1].nombre:V.entreFin;
 const ops=q.opciones.map((o,i)=>{let cls='op';if(E.resp!=null){if(i===q.correcta)cls+=' bien';else if(i===E.resp)cls+=' mal';else cls+=' apagada'}return `<button class="${cls}" onclick="responderEvento(${i})">${o}</button>`}).join('');
-const fin=E.resp==null?'':`<div class="nota${E.ok?'':' no'}">${esc(E.ok?d.bien:d.mal)}${E.delta?` ${E.delta>0?'+':'−'}${Math.abs(E.delta)} monedas.`:''} ${esc(q.nota)}</div>`;
+const fin=E.resp==null?'':`<div class="nota${E.ok?'':' no'}">${esc(E.ok?d.bien:d.mal)}${E.delta?` ${E.delta>0?'+':'−'}${Math.abs(E.delta)} moneda${Math.abs(E.delta)>1?'s':''}.`:''} ${esc(q.nota)}</div>`;
 return `${globo(r,E.dicho,'salta',E.resp==null?'sorpresa':(E.ok?'alegre':'pensativo'))}<p class="kicker">${botonVoz()}Entre ${esc(de)} y ${esc(hacia)}</p><div class="evento"><span class="eicono" aria-hidden="true">${ico(d.icono)}</span><div><div class="etit">${esc(d.titulo)}</div><p>${esc(d.texto)}</p></div></div>${q.escena?escena(q.escena,'quiz'):''}<p class="pregunta">${esc(q.texto)}</p><div class="opciones">${ops}</div>${fin}`}
 function renderMercado(r,j){const V=r.vocab;const e=S.eco;if(!e||!r.carga.length)return '';const c=r.paradas[j];
 if(e.cerrado)return `<div class="mercado"><div class="fkicker">${V.mercado} ${esc(c.nombre)}</div><p>${V.cerrado}</p></div>`;
 const slots=e.bodega.map((gi,bi)=>{const g=r.carga[gi],p=precio(r,g,j);return `<button class="item" onclick="vender(${bi})"><span class="ie">${ico(g.i)}</span>${esc(g.n)}<span class="ip">${p>0?`vender · ${num(p)}`:'podrido · tirar'}</span></button>`}).join('')+Array(Math.max(0,3-e.bodega.length)).fill('<span class="item vacio">—</span>').join('');
 const abierto=S.llaves[j]!==false;if(!e.bodega.length&&(!abierto||!r.carga.some(g=>g.o===j)))return '';
 const oferta=!abierto?'':r.carga.map((g,gi)=>({g,gi})).filter(x=>x.g.o===j).map(({g,gi})=>{const pista=g.d?`se pasa en ${g.d} ${g.d>1?V.puertosS:V.puertoS}`:g.m!=null?`se paga mejor en ${esc(oculta(r.paradas[g.m].nombre))}`:V.masAdelante;const no=e.monedas<g.b||e.bodega.length>=3;return `<button class="item${no?' no':''}" onclick="comprar(${gi})"><span class="ie">${ico(g.i)}</span>${esc(g.n)}<span class="ip">comprar · ${num(g.b)}</span><small>${pista}</small></button>`}).join('');
-return `<div class="mercado"><div class="fkicker">${V.mercado} ${esc(c.nombre)}</div><div class="bolsa">${ico('moneda')} ${num(e.monedas)} monedas · ${V.carga} ${num(e.bodega.length+' de 3')}</div><div class="slots">${slots}</div>${!abierto?`<small>${V.soloVender}</small>`:oferta?`<div class="fkicker">${V.seVende}</div><div class="slots">${oferta}</div>`:`<small>${V.nadaQueComprar}</small>`}</div>`}
+return `<div class="mercado"><div class="fkicker">${V.mercado} ${esc(c.nombre)}</div><div class="bolsa">${ico('moneda')} ${num(e.monedas)} moneda${e.monedas!==1?'s':''} · ${V.carga} ${num(e.bodega.length+' de 3')}</div><div class="slots">${slots}</div>${!abierto?`<small>${V.soloVender}</small>`:oferta?`<div class="fkicker">${V.seVende}</div><div class="slots">${oferta}</div>`:`<small>${V.nadaQueComprar}</small>`}</div>`}
 function iniciarRecitar(r){const d=dominio(r);S.rec={i:0,revelada:false,pista:d<0.3?'frase':d<0.7?'iniciales':'nada',ok:[],dicho:azar(VZ().recitarInicio),premio:0}}
 function setPista(p){S.rec.pista=p;render(false)}
 function revelar(){S.rec.revelada=true;render(false)}
