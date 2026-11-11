@@ -909,6 +909,18 @@ diario, hallazgos, textos nuevos, capturas e informe).
   Recitar, Preguntar y el inicio, que solo heredan papel y tipografía).
 - **Verificación**: `tools/captura.js` maneja el Edge o el Chrome del sistema por CDP, sin dependencias (`foto`, `recorrido` con
   clics reales, `medir`), y `test/vitrina.js` prueba `dist/nilo.html` en el DOM simulado.
+- **Corrida larga** (el mismo día, 08:27-09:55; `docs/vitrina/plan-larga.md` e `informe.md`; el de la primera es `informe-60-min.md`):
+  `src/vitrina/arte.js` y `arte.css` (`CAPA.arte`: la falúa con hasta tres cargas a la vista, las cargas y la cabeza de Hipo
+  nadando, en SVG de línea; `carta.js` los pone en `#barca` y `#masc`, la falúa siempre derecha y mirando según el rumbo del tramo);
+  `tools/carta.py` entrega además el cauce fino de Natural Earth 10 m (`CARTA.curso`, `CARTA.brazos`), las costas, lagos y fronteras
+  de la región (`CARTA.tierra`, `lagos`, `bordes`: con ellos `src/vitrina/mapa-carta.js` da `LAND`, `LAGOS` y `BORDES` y el mapa del
+  mundo no viaja) y un segundo relieve fino (`CARTA.luz2`); **ninguna cifra cambia**: `cauceFino` en `src/juegos/nilo.js` deja fijos
+  los kilómetros de cada parada (los del curso de Cauces) y pasa el perfil de altura al cauce nuevo por tramos, y `test/vitrina.js`
+  lo compara con `dist/cauces-amplia.html`. La carta lleva escala gráfica, norte, el delta rotulado y un renglón bajo Asuán y El
+  Cairo tomado de los datos; la bitácora, sello circular propio (`selloV`) y el riel en la portada y el mar del teléfono.
+  `tools/captura.js` suma `auditar` (16 estados: letra, toques, contraste, ancho, nombres futuros, emojis) y `estados`. `CAPA.vista`
+  recibe `dims`. Lección de costo: retomar subagentes que ya cargan mucho contexto sale caro; para vueltas de arreglo, agentes nuevos
+  con encargos angostos, y cada uno arma su copia con `ensamblar('nilo','amplia')` para no pisar `dist/` mientras otro captura.
 - Decisiones de la corrida que se apartan de la instrucción (están en `docs/vitrina/diario.md`): se usa lo pintado (Hipo, la falúa,
   las mercancías, las postales) en vez de redibujar en línea; se respeta «enseñar antes de preguntar»; el curso sigue siendo el de
   Natural Earth 50 m; sin descargas ni fuentes embebidas.

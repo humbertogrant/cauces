@@ -5,51 +5,51 @@
  "navegador": "msedge.exe",
  "viaje": {
   "tramo": "de 1 a 2",
-  "cuadros": 85,
-  "duracionMs": 1400,
-  "fpsMediana": 59.9,
-  "cuadroMasLargoMs": 16.9,
+  "cuadros": 80,
+  "duracionMs": 1407,
+  "fpsMediana": 55.6,
+  "cuadroMasLargoMs": 18.7,
   "cuadrosDeMasDe50ms": 0,
   "desvioMaxSVG": 0.006,
-  "desvioMaxPx": 0.12,
-  "pxPorUnidad": 18.64,
-  "muestras": 85
+  "desvioMaxPx": 0.09,
+  "pxPorUnidad": 13.32,
+  "muestras": 80
  },
  "barcaSobreElCurso": true,
  "capturas": [
   {
    "captura": "viaje-1.png",
-   "ms": 480,
+   "ms": 472,
    "desde": 4,
-   "desvioPx": 0.08,
-   "avance": 0.21
+   "desvioPx": 0,
+   "avance": 0.19
   },
   {
    "captura": "viaje-2.png",
-   "ms": 759,
+   "ms": 735,
    "desde": 4,
-   "desvioPx": 0.02,
-   "avance": 0.55
+   "desvioPx": 0.01,
+   "avance": 0.5
   },
   {
    "captura": "viaje-3.png",
-   "ms": 1040,
+   "ms": 964,
    "desde": 4,
-   "desvioPx": 0.06,
-   "avance": 0.84
+   "desvioPx": 0.04,
+   "avance": 0.78
   },
   {
    "captura": "viaje-4.png",
-   "ms": 1313,
+   "ms": 1271,
    "desde": 4,
-   "desvioPx": 0.05,
-   "avance": 0.99
+   "desvioPx": 0.02,
+   "avance": 0.97
   },
   {
    "captura": "viaje-5.png",
-   "ms": 1604,
+   "ms": 1600,
    "desde": 4,
-   "desvioPx": 0.02,
+   "desvioPx": 0.07,
    "avance": 1
   }
  ],

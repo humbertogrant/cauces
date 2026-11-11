@@ -46,7 +46,9 @@ de la falúa); lo nuevo son sus posiciones en la carta.
 
 ETOPO1 Global Relief Model, de NOAA NCEI (Amante y Eakins, 2009), dominio público: el mismo ráster que ya usa `tools/relieve.py`.
 `python tools/carta.py` lo recorta a la ventana lat −6…36, lon 18…46, lo sombrea con luz del noroeste y lo guarda como una imagen
-WebP de 400 × 600 dentro de `src/vitrina/carta-datos.js` (95 KB). No se bajó nada en la corrida.
+WebP de 400 × 600 dentro de `src/vitrina/carta-datos.js`. No se bajó nada en la corrida. (En la corrida larga pasó a 15 KB y se
+sumó un segundo relieve, fino, del corredor del río, de 56 KB, hecho con el mosaico de elevación de NOAA que ya usa el perfil
+de altura.)
 
 # Corrida larga (2026-11-11): textos que se suman
 

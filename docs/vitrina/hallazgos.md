@@ -297,3 +297,76 @@ la flecha del norte, siempre arriba a la derecha bajo el botón de sonido, sin p
 V2-08 (B-14); A-02 cambió: en la primera bajada el pie dice «Zarpar ›» con la lista a la vista y la pregunta de Hipo ya está en el globo
 (`estados-390/02-navegar-primera.png`), igual que en la vuelta A. A-07 y A-09 no se volvieron a mirar (Jinja y acostado no se
 capturaron en esta vuelta).
+
+## Corrida larga, verificación final (2026-11-11, de 09:30 a 09:45; `dist/nilo.html` de 617 KB, sin reconstruir)
+
+Capturas en `docs/vitrina/capturas/final/` (fuera de git): `mercader/`, `historia/`, `estados-390/`, `estados-360/`, `estados-acostado/`,
+`estados-1440/`, `auditoria-*.json`, `medir/` y las hojas `hoja-estados-390.png`, `-360`, `-acostado` y `-1440` (las arma `hojas.py`).
+Versionadas: las doce `despues-*.png` (rehechas con este build), las cuatro `intermedio-390-*.png` (las `despues-390` de la corrida de
+60 minutos, sacadas de HEAD), `comparacion-390.png` (antes · 60 minutos · corrida larga) y `medicion.json`.
+
+- **Recorridos a 390 × 844**: mercader e historia, 27 capturas cada uno, 41,7 y 41,2 s, los dos llegaron al mar, sin errores de consola.
+- **Estados**: 16 por tamaño (390 × 844, 360 × 640, 844 × 390 y 1440 × 900 @1), sin errores de consola.
+- **Auditoría**, en los cuatro tamaños: texto más chico 11 px, 0 textos de menos de 11 px, 0 toques de menos de 44 px, 0 contrastes HTML
+  de menos de 4,5, página sin ensanchar, 0 nombres futuros, 0 emojis, 0 rótulos tapados en la carta. Contraste bajo sobre la carta, medido
+  en la captura: ninguno a 390, 360 ni acostado; a 1440, solo ECUADOR (3,48 de mediana). Cortados: a 360, «Jinja» recortado 9 px por el
+  borde de la carta en los tres estados del evento; a 1440, en el mar en Niño, el párrafo de la ruta moderna queda bajo el pie aun con la
+  página bajada del todo. A medias sobre el pie (se destapan al bajar): 2 textos a 390, 2 a 360, 5 acostado, 2 a 1440.
+- **`medir`** (`medicion.json`; CPU 4×, Jinja → Juba, 390 × 844): 80 cuadros en 1 407 ms, mediana de 55,6 cuadros por segundo, cuadro más
+  largo de 18,7 ms, ninguno de más de 50 ms; la barca a 0,09 px del curso como máximo (cinco capturas: 0 · 0,01 · 0,04 · 0,02 · 0,07); los
+  seis efectos (viento, puerto, moneda, sello, mar, acierto) sin muestras inválidas, picos de 0,20 a 0,40 (−13,8 a −7,9 dBFS), sin errores.
+
+| N.º | Gravedad | Pantalla y tamaño | Captura | Qué se ve |
+|---|---|---|---|---|
+| F-01 | media | llegada al mar, 390 × 844, 360 × 640 y 1440 × 900 | `despues-390-4-mar.png`, `final/estados-360/15-mar-nino.png` | Sigue B-04: la falúa con Hipo está dibujada en la desembocadura, sobre la costa, y el hilo de oro llega hasta el mar, mientras el texto dice «La falúa no sale al mar». |
+| F-02 | menor | evento, 360 × 640 | `final/estados-360/09-evento.png` | El rótulo «Jinja» queda recortado 9 px por el borde de la carta (auditoría), en los tres estados del evento. |
+| F-03 | menor | mar en Niño, 1440 × 900 | `final/estados-1440/15-mar-nino.png` | El párrafo de la ruta moderna («La Presa Alta de Asuán (1970)…») queda bajo el pie aun con la columna bajada del todo (auditoría). |
+| F-04 | menor | carta, 1440 × 900 | `final/estados-1440/08-mercado-lleno.png` | ECUADOR, a 3,48 a 1 de contraste contra el relieve (queda A-12 solo en el ancho). |
+| F-05 | menor | todos los estados, 1440 × 900 | `final/hoja-estados-1440.png` | Sigue B-11: la falúa e Hipo chicos (≈ 50 y 20 px) en una carta muy ancha; la columna de papel deja mucho vacío bajo el contenido. |
+| F-06 | menor, para Humberto | mercado (Niño) | `final/estados-360/08-mercado-lleno.png` | Sigue B-15: «1 monedas». |
+
+Revisado y sin hallazgo: el río (hilo de oro) y la vela y la carga de la falúa son lo único dorado de la carta en las hojas y la comparación;
+un solo título dominante por pantalla (NILO en la portada, la ciudad en la parada, «Tres Jotas…» navegando y en el mar); a 360 × 640 la
+píldora NILO ya no tapa el anillo «?» ni SUDD, y con la guía mal la carta muestra la falúa, Hipo, JUBA y el anillo enteros
+(`final/estados-360/05-guia-mal.png`); sin emojis; márgenes parejos en el papel; la falúa con su carga e Hipo nadando se leen a 390 y 360 y
+no tapan nombres (JUBA, JARTUM, ASUÁN y EL CAIRO quedan a su derecha); la escala abajo a la izquierda y el norte arriba a la derecha, bajo
+el botón de sonido, en todas las pantallas de 390 y 360. La comparación muestra el salto: de la pantalla del motor (mapa chico, lista y
+riel) a la carta con relieve y la bitácora de papel; entre «60 minutos» y «corrida larga» cambian la falúa (con carga) e Hipo nadando, el
+sello circular, el riel en la portada, la escala y el norte, y la carta de 10 m con el delta rotulado.
+
+### Estado de cada hallazgo de la corrida larga
+
+| N.º | Estado |
+|---|---|
+| A-01 | corregido: a 360 × 640 la auditoría no da rótulos tapados y la píldora deja ver el anillo y SUDD |
+| A-02 | queda como diseño: la pregunta de Hipo llega con la lista a la vista y «Zarpar ›» (enseñar antes de preguntar); no se volvió a cambiar |
+| A-03 | corregido (desde el build de las 08:55) |
+| A-04 | corregido: 0 textos de menos de 11 px en los cuatro tamaños |
+| A-05 | queda: «1 149 m» sigue junto a la línea de la fuente en el perfil (`final/estados-360/03-guia-sin-responder.png`) |
+| A-06 | corregido |
+| A-07 | queda sin mirar (el sello de Jinja no se capturó) |
+| A-08 | corregido |
+| A-09 | corregido: acostado, 0 textos de menos de 11 px |
+| A-10 | corregido |
+| A-11 | del motor de Cauces (`renderMercado`): queda, «1 monedas» (F-06) |
+| A-12 | corregido a 390, 360 y acostado; queda ECUADOR a 1440 (F-04) |
+| A-13 | corregido: en la portada la falúa queda sobre el lago, bajo LAGO VICTORIA, sin pisar letras |
+| B-01 | queda sin confirmar: la auditoría (que no arma los eventos de Adulto con la nota del acierto) da 0 nombres futuros; no se miró `historia/17` ni `25` |
+| B-02 | corregido |
+| B-03 | corregido |
+| B-04 | queda (F-01) |
+| B-05 | queda sin mirar (`final/historia/24-…` no se revisó a tamaño completo) |
+| B-06 | corregido (es A-13) |
+| B-07 | corregido: Hipo nada detrás de la falúa y el rótulo de la parada queda separado |
+| B-08 | queda sin mirar |
+| B-09 | queda sin mirar (la escala está a la izquierda en todas las de las hojas) |
+| B-10 | queda sin mirar |
+| B-11 | queda (F-05) |
+| B-12 | queda: en el evento la cabecera sigue diciendo «km ≈1 006» con la falúa a mitad del tramo (`final/estados-360/09-evento.png`) |
+| B-13 | queda (es A-05) |
+| B-14 | queda sin mirar (Hipo en el retrato del mar, a tamaño completo) |
+| B-15 | del motor de Cauces: queda (A-11, F-06) |
+
+**Quedan abiertos: 0 graves, 2 medios (B-04 / F-01, la falúa en el mar, y B-01, nombres futuros en la nota del evento de Adulto, sin
+confirmar) y 13 menores (A-05/B-13, A-07, A-11/B-15, A-12 en el ancho / F-04, B-05, B-08, B-09, B-10, B-11/F-05, B-12, B-14, F-02, F-03);
+A-02 queda como diseño. Los que no se volvieron a mirar no se dan por corregidos.**

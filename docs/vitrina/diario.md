@@ -156,3 +156,11 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
   accesibles, revisados sin cambios. Carta: la «N» del norte con un disco oscuro detrás (contraste de 3,6 a 8,98); el nombre de la
   parada, separado de Hipo; la escala gráfica, siempre abajo a la izquierda salvo que ahí pase el río o la barca; «Nilo Azul», fuera
   del trazo del afluente; en pantalla ancha, la falúa e Hipo a 1,4 veces; «LAGO VICTORIA» vuelve a la portada, sobre el lago.
+- **09:31** Consumo a media corrida: el límite semanal del modelo, en 45 % (había subido 15 puntos en los primeros 35 minutos y
+  solo 3 en los 29 siguientes, ya con agentes nuevos). Lejos del tope de 75 %.
+- **09:45** Verificación final (agente nuevo): los dos recorridos al mar sin errores; auditoría limpia en cuatro tamaños; 55,6
+  cuadros por segundo con la CPU frenada, la barca a 0,09 px del curso; seis efectos de sonido válidos. Ningún hallazgo grave; dos
+  medios, los dos del motor de Cauces; trece menores. Miré la hoja de comparación (antes, 60 minutos, corrida larga).
+- **09:50** **Decisión de cierre:** paro a los 85 minutos de los 180. Solo quedan hallazgos menores (la condición de parada de la
+  instrucción) y la sesión que dirige está por llenar su ventana de contexto; seguir sería gastar cuota en retoques chicos. Informe
+  en `informe.md`; el de la primera corrida pasa a `informe-60-min.md`.
