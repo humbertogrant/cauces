@@ -70,12 +70,16 @@ src/motor.js         todo el motor: estado, perfiles y guardado, Leitner, pregun
 build.js             ensambla un HTML por juego (JUEGOS: cauces y exploradores) y por edición (EDICIONES: económica y amplia; ver
                      «Ediciones»), cada uno con sus datos, su src/juegos/<id>.js y el motor; recorta del motor lo que el juego no usa:
                      los VOCAB de otros tipos (marcas /*@vocab:tipo*/ … /*@fin:tipo*/), y los animales, pictogramas y glifos de
-                     vehículo que no aparecen en sus datos; exporta JUEGOS, EDICIONES, ensamblar y cortarEdicion para las pruebas
+                     vehículo que no aparecen en sus datos; exporta JUEGOS, EDICIONES, ensamblar y cortarEdicion para las pruebas.
+                     Lee los fuentes siempre con fines de línea LF, estén como estén en el disco: con CRLF armaba otro HTML (ver «La vitrina
+                     del Nilo», «En main»).
 test/arnes.js        DOM simulado y carga de los archivos de un juego en una edición (amplia por defecto; la económica recorta como
                      build.js y carga sus generados; EDICION global); test/pruebas.js [juego] [edicion] corre test/casos.js (Cauces) o
                      test/casos-exploradores.js; test/instantanea.js compara 200 pantallas de Cauces con test/instantanea.json.gz.
                      test/dist.js [juego] [edicion] carga los <script> del HTML ensamblado y juega un poco (vigila el recorte,
-                     que cada edición diga lo que es y que la amplia no pase de 5 MB; dice cuánto le queda). `npm test` corre todo: "TODO OK" tres veces (Cauces amplia y económica, Exploradores), "INSTANTÁNEA OK" y "DIST OK" cuatro veces
+                     que cada edición diga lo que es y que la amplia no pase de 5 MB; dice cuánto le queda). `npm test` corre todo: "TODO OK" tres veces (Cauces amplia y económica, Exploradores), "INSTANTÁNEA OK" y "DIST OK" cuatro veces.
+                     test/dist.js y test/vitrina.js comprueban además, con finesDeLinea (en el arnés), que build.js arma el mismo HTML con
+                     los fuentes en CRLF que en LF, sin tocar el disco.
 tools/cauces.py      genera curso y brazos de rios.js desde Natural Earth (50 m; 10 m global y Norteamérica) u OpenStreetMap; con ids
                      como argumentos, solo esos ríos
 tools/mapa.py        regenera src/data/mapa.js (o mapa-<juego>.js; con «amplia» de segundo argumento, mapa-amplia.js) desde Natural Earth
@@ -884,10 +888,11 @@ Un experimento a pedido de Humberto (`instruccion-un-rio.md`): un solo río, el 
 terminado, para medir cuánto compra una corrida corta y autónoma. Todo lo de la corrida está en `docs/vitrina/` (plan, contrato,
 diario, hallazgos, textos nuevos, capturas e informe).
 - **En main** desde el 2026-11-11: la rama `vitrina-nilo` se mezcló (con el «1 moneda» de `0a69dcd` adentro) y Pages publica
-  `dist/nilo.html` con los demás (`dist/index.html` no lo enlaza). **Los fines de línea cuentan**: `node build.js` no arma lo mismo
-  con CRLF que con LF (con `panel.js` y `panel.css` en CRLF quedan 38 renglones vacíos de más) y la CI arma con LF. Si el árbol de
-  trabajo de Windows tiene archivos de `src/` en CRLF (`git ls-files --eol | grep w/crlf`), «dist al día» falla en la CI aunque
-  `npm test` pase acá: hay que dejarlos en LF antes de reconstruir.
+  `dist/nilo.html` con los demás (`dist/index.html` no lo enlaza). En la mezcla hubo que volver a armar `dist/nilo.html`: con
+  `panel.js` y `panel.css` en CRLF en el árbol de trabajo, el build dejaba 38 renglones vacíos de más, y la CI, que arma con LF,
+  lo habría rechazado en «dist al día» aunque `npm test` pasaba en Windows. Ya no puede pasar: `build.js` lee los fuentes siempre
+  con LF, estén como estén en el disco, y `finesDeLinea` (en `test/arnes.js`; lo corren `test/dist.js` y `test/vitrina.js`)
+  comprueba que con todos en CRLF arma los cinco HTML byte a byte iguales.
 - **El build**: `node build.js` arma además `dist/nilo.html` (juego `nilo` en `JUEGOS`: una sola edición, tope de 900 KB; `node
   build.js nilo` arma solo la vitrina, y `npm test` termina además con «VITRINA OK»): los datos
   de Cauces amplia recortados al Nilo (`soloRutas`, que filtra RIVERS, NAVES, MASCOTAS, MERCADOS y EVENTOS; las postales, la barca,

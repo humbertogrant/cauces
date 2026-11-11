@@ -11,7 +11,10 @@
 // Las pruebas cargan src/ entero (es decir, la edición amplia); test/dist.js [juego] [edicion] comprueba que cada HTML recortado
 // sigue jugando. Como módulo exporta JUEGOS, EDICIONES, ensamblar y cortarEdicion; construye solo si se corre directo.
 const fs=require('fs'),path=require('path');
-const src=p=>fs.readFileSync(path.join(__dirname,'src',p),'utf8');
+/* los fuentes se leen siempre con fines de línea LF, estén como estén en el disco: el recorte trabaja por renglones (limpiar, bloque,
+   cortarEdicion, cortarVitrina) y con CRLF armaba otro HTML (renglones vacíos de más; con el motor en CRLF, un objeto sin cerrar),
+   que la CI, que arma con LF, rechaza en «dist al día» aunque las pruebas pasen acá. finesDeLinea, en test/arnes.js, lo comprueba */
+const src=p=>fs.readFileSync(path.join(__dirname,'src',p),'utf8').replace(/\r\n?/g,'\n');
 const JUEGOS={
   cauces:{titulo:'Cauces: los grandes ríos, ciudad por ciudad',vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/ilustraciones.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/cauces.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'},soloAmplia:['data/barcas.js','data/bienes.js','data/postales.js']},
   nilo:{titulo:'Cauces · Nilo: la vitrina de un río',salida:'nilo.html',ediciones:['amplia'],tope:900,vitrina:true,soloRutas:['nilo'],estilos:['vitrina/capa.css','vitrina/arte.css','vitrina/carta.css','vitrina/panel.css'],vocab:['rio'],archivos:['data/mapa.js','data/rios.js','data/naves.js','data/mascotas.js','data/ilustraciones.js','data/mercados.js','data/eventos.js','data/voces.js','data/relieve.js','juegos/nilo.js','vitrina/capa.js','vitrina/arte.js','vitrina/carta-datos.js','vitrina/mapa-carta.js','vitrina/carta.js','vitrina/panel.js','vitrina/sonido.js','motor.js'],amplia:{'data/mapa.js':'data/mapa-amplia.js','data/relieve.js':'data/relieve-amplia.js'},soloAmplia:['data/barcas.js','data/bienes.js','data/postales.js']},/* la vitrina (docs/vitrina/contrato.md): un solo río, una sola edición y la capa de src/vitrina/ antes del motor */

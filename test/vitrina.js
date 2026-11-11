@@ -15,9 +15,10 @@
 //  (h) las cifras fijas: los kilómetros y la altura de cada parada, la longitud del río, el orden y los nombres de las paradas y
 //      lo que se lee de ellas son los mismos que en Cauces (dist/cauces-amplia.html, cargado en un proceso hijo con el mismo DOM
 //      simulado); cada parada cae a 0,25° o menos del curso y sus idx crecen.
+//  (i) build.js no depende de los fines de línea: con los fuentes en CRLF arma la misma vitrina (finesDeLinea, en el arnés).
 // Uso: node test/vitrina.js. Termina con "VITRINA OK" o lanza un error que dice qué falta. Es de Verificación.
 const fs=require('fs'),path=require('path'),vm=require('vm');
-const {montar}=require('./arnes');
+const {montar,finesDeLinea}=require('./arnes');
 const archivo=path.join(__dirname,'..','dist','nilo.html');
 const falla=m=>{throw new Error('vitrina: '+m)};
 /* las cifras fijas del Nilo en un HTML ensamblado, las que ve el jugador y las que las sostienen: nombres y orden de las paradas,
@@ -31,6 +32,8 @@ if(process.argv[2]==='--cifras'){   /* proceso hijo: las cifras de otro HTML ens
   montar([]);const h=fs.readFileSync(path.resolve(process.argv[3]),'utf8');[...h.matchAll(/<script>\n([\s\S]*?)<\/script>/g)].forEach((m,i)=>vm.runInThisContext(m[1],{filename:'cifras-script-'+i}));
   setTimeout(()=>process.stdout.write('@@CIFRAS@@'+JSON.stringify(cifrasDe())+'@@FIN@@'),50);return}
 if(!fs.existsSync(archivo))falla('falta dist/nilo.html (lo arma `node build.js`)');
+/* (i) los fines de línea: con los fuentes en CRLF, build.js arma la misma vitrina */
+{const m=finesDeLinea('nilo','amplia');if(m)falla(m)}
 montar([]);
 /* aquí las animaciones corren hasta el final (ver `drenar`), así que el nodo simulado necesita lo que el motor toca al terminar un
    viaje: classList.add/remove (las olas del mar), insertAdjacentHTML y querySelector (el salpicón) */

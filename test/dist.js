@@ -1,9 +1,10 @@
 // Prueba de humo del HTML ya ensamblado: carga los <script> de dist/<juego><sufijo>.html en el DOM simulado y juega un poco.
 // Comprueba que el recorte del motor (vocabularios, animales, pictogramas y glifos que el juego no usa) no rompió nada, y que
 // cada edición dice lo que es (meta, JUEGO.edicion, título, línea en «¿Cómo se juega?») y no arrastra marcas de edición.
+// Antes comprueba que build.js no depende de los fines de línea: con los fuentes en CRLF arma el mismo HTML (finesDeLinea, en el arnés).
 // Uso: node test/dist.js [cauces|exploradores] [economica|amplia]. Termina con "DIST OK".
 const fs=require('fs'),path=require('path'),vm=require('vm');
-const {montar}=require('./arnes'),{JUEGOS,EDICIONES,cortarEdicion}=require('../build.js');
+const {montar,finesDeLinea}=require('./arnes'),{JUEGOS,EDICIONES,cortarEdicion}=require('../build.js');
 const juego=process.argv[2]||'cauces',edicion=process.argv[3]||'economica';
 if(!JUEGOS[juego]||!EDICIONES[edicion])throw 'uso: node test/dist.js [cauces|exploradores] [economica|amplia]';
 const E=EDICIONES[edicion],archivo=juego+E.sufijo+'.html';
@@ -12,6 +13,8 @@ const TOPE_AMPLIA=5120;   // la edición amplia no tiene el tope de 500 KB de la
 if(cortarEdicion('a,/*@amplia*/b,/*@fin:amplia*/c;/*@amplia*/d/*@fin:amplia*/','economica')!=='a,c;')throw 'corte económico';
 if(cortarEdicion('a,/*@amplia*/b,/*@fin:amplia*/c','amplia')!=='a,b,c')throw 'corte amplio';
 {let fallo=false;try{cortarEdicion('/*@amplia*/x','economica')}catch(e){fallo=true}if(!fallo)throw 'una marca sin cierre debía fallar'}
+/* los fines de línea: build.js arma el mismo HTML de este juego y esta edición con los fuentes en CRLF que en LF */
+{const m=finesDeLinea(juego,edicion);if(m)throw m}
 montar([]);
 const html=fs.readFileSync(path.join(__dirname,'..','dist',archivo),'utf8');
 if(html.includes('/*@amplia*/')||html.includes('/*@fin:amplia*/')||html.includes('__EDICION__')||html.includes('__PESO__'))throw 'marcas de edición en dist/'+archivo;
