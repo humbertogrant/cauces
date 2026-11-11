@@ -507,6 +507,9 @@ body.vitrina .v-marca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2);st
 
 /* la barrida de olas al llegar al mar, en verde claro (el dorado es solo el río y la vela): el patrón del motor, recoloreado */
 body.vitrina .olas{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'><g fill='%230C3A33' stroke='%2364C8AA' stroke-opacity='.7' stroke-width='1'><circle cx='20' cy='0' r='19'/><circle cx='20' cy='0' r='13' fill='none'/><circle cx='20' cy='0' r='7' fill='none'/><circle cx='0' cy='10' r='19'/><circle cx='0' cy='10' r='13' fill='none'/><circle cx='0' cy='10' r='7' fill='none'/><circle cx='40' cy='10' r='19'/><circle cx='40' cy='10' r='13' fill='none'/><circle cx='40' cy='10' r='7' fill='none'/><circle cx='20' cy='20' r='19'/><circle cx='20' cy='20' r='13' fill='none'/><circle cx='20' cy='20' r='7' fill='none'/><circle cx='0' cy='30' r='19'/><circle cx='0' cy='30' r='13' fill='none'/><circle cx='0' cy='30' r='7' fill='none'/><circle cx='40' cy='30' r='19'/><circle cx='40' cy='30' r='13' fill='none'/><circle cx='40' cy='30' r='7' fill='none'/></g></svg>")}
+/* el disquito oscuro detrás de la N y el halo de la escala gráfica: que el relieve claro o una frontera no les quiten contraste */
+body.vitrina .v-disco{fill:var(--v-mar,#0C3A33);fill-opacity:.84}
+body.vitrina .v-escala-h{fill:none;stroke:var(--v-mar,#0C3A33);stroke-opacity:.7;stroke-linecap:round;stroke-linejoin:round}
 
 /* Bitácora de la vitrina (rol Bitácora): la hoja de papel, el encuadre general, el pie y las plantillas de Bajar.
    Todo selector empieza por body.vitrina; las variables --v-… vienen de capa.css. El dorado no entra aquí. */
@@ -514,11 +517,12 @@ body.vitrina .olas{background-image:url("data:image/svg+xml;utf8,<svg xmlns='htt
 /* ---------- alto de la carta según el momento ----------
    En la portada y navegando todo tiene que verse sin desplazar: el mapa se queda con lo que no piden la hoja y el pie
    (--v-resto, en px: lo pone panel.js en body según lo que la hoja lleva; aquí, lo de un teléfono si faltara), con un
-   tope arriba y otro abajo. En la parada y en el mar la hoja es larga y se desplaza: una parte fija del alto. */
+   tope arriba y otro abajo; navegando, el mapa guarda al menos 294 px (la píldora del encabezado, 84, y 210 de río) y lo
+   que no cabe de la hoja se ve desplazando la página. En la parada y en el mar la hoja es larga y se desplaza: una parte fija del alto. */
 body.vitrina{--v-col:clamp(380px,34vw,420px);--v-alto:100vh;--v-sombra:rgba(6,32,28,.28)}
 @supports (height:1svh){body.vitrina{--v-alto:100svh}}
 body.vitrina[data-momento="portada"]{--v-mapa:max(calc(var(--v-alto)*.34),min(calc(var(--v-alto)*.72),calc(var(--v-alto) - var(--v-resto,356px))))}
-body.vitrina[data-momento="navega"]{--v-mapa:max(calc(var(--v-alto)*.26),min(calc(var(--v-alto)*.58),calc(var(--v-alto) - var(--v-resto,372px))))}
+body.vitrina[data-momento="navega"]{--v-mapa:max(calc(var(--v-alto)*.26),294px,min(calc(var(--v-alto)*.58),calc(var(--v-alto) - var(--v-resto,372px))))}
 body.vitrina[data-momento="parada"],body.vitrina[data-momento="evento"]{--v-mapa:calc(var(--v-alto)*.38)}
 body.vitrina[data-momento="mar"]{--v-mapa:calc(var(--v-alto)*.5)}
 
@@ -904,7 +908,7 @@ ALTURAS[r.id]=pts.map(p=>[g(p[0]),p[1]])}
 r.ciudades.forEach((c,i)=>Object.defineProperty(c,'km',{get:()=>antes[i].km,set(){},enumerable:true,configurable:true}));
 r.curso=C;if(CARTA.brazos&&CARTA.brazos.length)r.brazos=CARTA.brazos;r._fino=true;return r}
 
-JUEGO.edicion={nombre:'amplia',kb:613};</script>
+JUEGO.edicion={nombre:'amplia',kb:616};</script>
 <script>
 const CAPA={rio:'nilo',fase:'parada',_oyentes:{},_pend:null,_toque:false,
 oir(nombre,fn){(CAPA._oyentes[nombre]=CAPA._oyentes[nombre]||[]).push(fn)},
@@ -1026,11 +1030,11 @@ h.innerHTML='<use href="#tierra" class="a"/><use href="#tierra" class="b"/><use 
 function cerca(px){const l=document.getElementById('v-luz2'),h=document.getElementById('v-halo');if(l&&l.style&&CARTA.luz2)l.style.opacity=px*390<=CARTA.luz2.max?'1':'0';
 if(h&&h.children)[16,8,2.2].forEach((w,i)=>{const u=h.children[i];if(u&&u.setAttribute)u.setAttribute('stroke-width',(w*px).toFixed(3))})}
 function grupo(capa,id,html,antes){const g=document.createElementNS(NS,'g');g.setAttribute('id',id);g.setAttribute('aria-hidden','true');g.innerHTML=html;capa.insertBefore(g,antes||null)}
-let MIRA=1;
+let MIRA=1,ESC=1;
 function derecha(){const m=document.getElementById('masc'),g=document.getElementById('v-falua'),b=document.getElementById('barca');if(!m||!g||!b||!m.getAttribute||!g.setAttribute)return;
 const t=m.getAttribute('transform');if(!t)return;
 const k=(/scale\(-1 /.test(b.getAttribute('transform')||'')?-1:1)*MIRA,h=document.getElementById('v-hipo');
-g.setAttribute('transform',t+(k<0?' scale(-1 1)':''));if(h&&h.setAttribute)h.setAttribute('transform',(k<0?'scale(-1 1) ':'')+'translate(-40 4)')}
+const e=ESC!==1?` scale(${ESC})`:'';g.setAttribute('transform',t+e+(k<0?' scale(-1 1)':''));if(h&&h.setAttribute)h.setAttribute('transform',(e?e.slice(1)+' ':'')+(k<0?'scale(-1 1) ':'')+'translate(-40 4)')}
 function arte(foco,momento){const A=CAPA.arte,b=document.getElementById('barca'),m=document.getElementById('masc'),B=foco.barca;
 if(!A||typeof A.falua!=='function'||typeof A.hipoNada!=='function'||!b||!b.querySelector||!m||!foco.rio||!B)return false;
 const g=b.querySelector('.mece > g');if(!g)return false;
@@ -1047,7 +1051,7 @@ if(!P||P.length<2)return 1;const a=pr(fin?P[P.length-2]:P[0]),b=pr(fin?P[P.lengt
 if(typeof CAPA.oir==='function')CAPA.oir('avanza',derecha);
 function dibujar(foco,vb,px){const capa=document.getElementById('capa');
 if(!capa||!capa.insertBefore||!capa.querySelector||!document.createElementNS||!foco||foco.modo!=='rio'||!foco.rio||foco.rio.id!==CAPA.rio)return;
-const r=foco.rio,f=v=>(v*px).toFixed(2),n=r.paradas.length,ancho=px*390,M=4*px,momento=typeof CAPA.momento==='function'?CAPA.momento():'';
+ESC=vb.w/px>900?1.4:1;const r=foco.rio,f=v=>(v*px).toFixed(2),n=r.paradas.length,ancho=px*390,M=4*px,momento=typeof CAPA.momento==='function'?CAPA.momento():'';
 const dentro=q=>q[0]>vb.x&&q[0]<vb.x+vb.w&&q[1]>vb.y&&q[1]<vb.y+vb.h;
 if(capa.querySelectorAll)capa.querySelectorAll('path.rio.activo').forEach(p=>{if(!p.classList||p.classList.contains('brazo')||(p.classList.contains('resto')&&momento!=='portada')||!p.cloneNode||!p.parentNode)return;
 ['a','b'].forEach(c=>{const k=p.cloneNode(false);k.setAttribute('class','v-brillo '+c);k.removeAttribute('stroke-width');p.parentNode.insertBefore(k,p)})});
@@ -1070,7 +1074,7 @@ let renglon=null;
 const conArte=!!B&&arte(foco,momento),mira=conArte?MIRA:B?mirada(r,B):1;
 if(qb&&capa.querySelectorAll)r.paradas.forEach((c,i)=>{const q=pr(c.pos);if(!foco.etiquetas||!foco.etiquetas.has(i)||Math.hypot(q[0]-qb[0],q[1]-qb[1])>10*px)return;
 capa.querySelectorAll('text.etq').forEach(t=>{if(!t.getAttribute||!t.classList||t.classList.contains('relieve')||t.textContent!==c.nombre)return;const x=parseFloat(t.getAttribute('x')),fin=t.getAttribute('text-anchor')==='end';
-const corre=conArte?(fin?(mira>0?-50:-26):(mira>0?26:50)):(fin?-16:14);
+const corre=conArte?(fin?(mira>0?-64:-36):(mira>0?36:64))*ESC:(fin?-16:14);
 if(!isFinite(x))return;t.setAttribute('x',(x+corre*px).toFixed(2));
 const y=parseFloat(t.getAttribute('y'));if(CARTA.renglones&&CARTA.renglones[i]&&isFinite(y))renglon={t:CARTA.renglones[i],x:x+corre*px,y:y+14*px,anc:fin?'end':'start'}})});
 r.paradas.forEach((c,i)=>{const q=pr(c.pos),d=(i===prox?15:7)*px;puestos.push({x0:q[0]-d,x1:q[0]+d,y0:q[1]-d,y1:q[1]+d})});
@@ -1078,7 +1082,7 @@ if(capa.querySelectorAll)capa.querySelectorAll('text.etq').forEach(t=>{if(!t.get
 const x=parseFloat(t.getAttribute('x')),y=parseFloat(t.getAttribute('y')),w=((t.textContent||'').length*9.2+4)*px,an=t.getAttribute('text-anchor');if(!isFinite(x)||!isFinite(y))return;
 const x0=an==='end'?x-w:an==='middle'?x-w/2:x;puestos.push({x0,x1:x0+w,y0:y-13*px,y1:y+4*px})});
 const qp=qb||(momento==='portada'&&r.curso&&r.curso.length?pr(r.curso[0]):null);
-if(qp)puestos.push(conArte||momento==='portada'?{x0:qp[0]-54*px,x1:qp[0]+54*px,y0:qp[1]-38*px,y1:qp[1]+16*px}:{x0:qp[0]-24*px,x1:qp[0]+22*px,y0:qp[1]-32*px,y1:qp[1]+14*px});
+const E=conArte?ESC:1;let cajaB=null;if(qp)puestos.push(cajaB=conArte||momento==='portada'?{x0:qp[0]-54*E*px,x1:qp[0]+54*E*px,y0:qp[1]-38*E*px,y1:qp[1]+16*E*px}:{x0:qp[0]-24*px,x1:qp[0]+22*px,y0:qp[1]-32*px,y1:qp[1]+14*px});
 if(false)puestos.push(conArte?{x0:qb[0]-54*px,x1:qb[0]+54*px,y0:qb[1]-38*px,y1:qb[1]+16*px}:{x0:qb[0]-24*px,x1:qb[0]+22*px,y0:qb[1]-32*px,y1:qb[1]+14*px});
 const libre=c=>c.x0>vb.x+M&&c.x1<vb.x+vb.w-M&&c.y0>vb.y+M&&c.y1<vb.y+vb.h-borde*px&&!puestos.some(o=>c.x0<o.x1+M&&c.x1>o.x0-M&&c.y0<o.y1+M&&c.y1>o.y0-M)&&!rio.some(p=>p[0]>c.x0-M&&p[0]<c.x1+M&&p[1]>c.y0-M&&p[1]<c.y1+M);
 const caja=(t,x,y,anc,cls,giro)=>{const rs=t.split('|'),w=Math.max.apply(null,rs.map(s=>s.length))*ANCHO_LETRA[cls]*px,h=(13+(rs.length-1)*15)*px;
@@ -1091,10 +1095,11 @@ if(renglon){const c=caja(renglon.t,renglon.x,renglon.y,renglon.anc,'bajo');puest
 if(momento!=='portada'){const latC=90-(vb.y+vb.h/2)/500*180,kmPx=0.36*111.32*Math.cos(latC*Math.PI/180)*px,
 km=([1000,500,250,200,100,50,25,20,10,5,2,1].map(k=>[k,k/kmPx]).filter(v=>v[1]>=64&&v[1]<=136).sort((u,v)=>Math.abs(u[1]-100)-Math.abs(v[1]-100))[0]||[0])[0];
 if(km){const largo=km/kmPx*px,yb=vb.y+vb.h-(borde+14)*px;
-for(const x0 of [vb.x+16*px,vb.x+vb.w-16*px-largo]){const c={x0:x0-3*px,x1:x0+Math.max(largo,56*px)+3*px,y0:yb-24*px,y1:yb+4*px};if(!libre(c))continue;puestos.push(c);
-H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/><text class="v-rot escala" x="${x0.toFixed(2)}" y="${(yb-10*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}">${km} km</text>`;break}}
+const ve=c=>c.x0>vb.x+M&&c.x1<vb.x+vb.w-M&&c.y0>vb.y+M&&c.y1<vb.y+vb.h-borde*px&&!(cajaB&&c.x0<cajaB.x1+M&&c.x1>cajaB.x0-M&&c.y0<cajaB.y1+M&&c.y1>cajaB.y0-M)&&!rio.some(p=>p[0]>c.x0-M&&p[0]<c.x1+M&&p[1]>c.y0-M&&p[1]<c.y1+M);
+for(const x0 of [vb.x+16*px,vb.x+vb.w-16*px-largo]){const c={x0:x0-3*px,x1:x0+Math.max(largo,56*px)+3*px,y0:yb-24*px,y1:yb+4*px};if(!ve(c))continue;puestos.push(c);
+H+=`<path class="v-escala-h" stroke-width="${f(4.5)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/>`+`<path class="v-escala" stroke-width="${f(1.3)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/><text class="v-rot escala" x="${x0.toFixed(2)}" y="${(yb-10*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}">${km} km</text>`;break}}
 const xn=vb.x+vb.w-37*px,yn=vb.y+74*px,cn={x0:xn-10*px,x1:xn+10*px,y0:yn-3*px,y1:yn+40*px};
-if(libre(cn)){puestos.push(cn);H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${xn.toFixed(2)} ${(yn+22*px).toFixed(2)}V${yn.toFixed(2)}m${f(-4)} ${f(6)}l${f(4)} ${f(-6)}l${f(4)} ${f(6)}"/><text class="v-rot escala" x="${xn.toFixed(2)}" y="${(yn+37*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}" text-anchor="middle" style="stroke-width:${f(4)}">N</text>`}}
+if(libre(cn)){puestos.push(cn);H+=`<circle class="v-disco" cx="${xn.toFixed(2)}" cy="${(yn+33*px).toFixed(2)}" r="${f(12)}"/>`+`<path class="v-escala" stroke-width="${f(1.3)}" d="M${xn.toFixed(2)} ${(yn+22*px).toFixed(2)}V${yn.toFixed(2)}m${f(-4)} ${f(6)}l${f(4)} ${f(-6)}l${f(4)} ${f(6)}"/><text class="v-rot escala" x="${xn.toFixed(2)}" y="${(yn+37*px).toFixed(2)}" font-size="${f(T)}" stroke-width="${f(2.6)}" text-anchor="middle" style="stroke-width:${f(4)}">N</text>`}}
 if(prox>=0){const p0=pr(r.paradas[prox].pos);let q=p0;
 if(qb){const dx=p0[0]-qb[0],dy=p0[1]-qb[1],d=Math.hypot(dx,dy);if(d<(conArte?50:24)*px){const s=pr(r.curso[Math.min(r.curso.length-1,(r.paradas[prox].idx|0)+8)]),ux=d>px?dx:s[0]-p0[0],uy=d>px?dy:s[1]-p0[1],nu=Math.hypot(ux,uy)||1,lejos=(conArte?64:38)*px;
 q=[qb[0]+ux/nu*lejos,qb[1]+uy/nu*lejos];puestos.push({x0:q[0]-15*px,x1:q[0]+15*px,y0:q[1]-15*px,y1:q[1]+15*px});H+=`<path class="v-guia" d="M${p0[0].toFixed(2)} ${p0[1].toFixed(2)}L${q[0].toFixed(2)} ${q[1].toFixed(2)}" stroke-width="${f(1)}"/>`}}
@@ -1104,7 +1109,10 @@ const der=momento==='portada'&&l.portada==='der',t2=l.t.replace(' ','|'),ops=der
 for(const [t,anc] of ops){const x=anc==='start'?vb.x+12*px:vb.x+vb.w-12*px,yy=t.indexOf('|')>=0?y-15*px:y,c=caja(t,x,yy,anc,'linea');if(libre(c)){puestos.push(c);H+=texto(t,x,yy,anc,'linea');break}}});
 const vistos={};
 const alcanzada=i=>i==null||!!(foco.etiquetas&&foco.etiquetas.has(i));
-CARTA.rotulos.forEach(o=>{const nom=o.t.replace('|',' ');if(vistos[nom]||ancho>o.max||(o.min&&ancho<=o.min)||!alcanzada(o.tras))return;const q=pr(o.p),c=caja(o.t,q[0],q[1],o.a,o.c,o.g);if(!libre(c))return;vistos[nom]=1;puestos.push(c);H+=texto(o.t,q[0],q[1],o.a,o.c,o.g)});
+CARTA.rotulos.forEach(o=>{const nom=o.t.replace('|',' ');if(vistos[nom]||ancho>o.max||(o.min&&ancho<=o.min)||!alcanzada(o.tras))return;let q=pr(o.p),c=caja(o.t,q[0],q[1],o.a,o.c,o.g);
+if(o.c==='agua'&&!o.g&&!libre(c))for(const dy of [26,40]){const c2=caja(o.t,q[0],q[1]+dy*px,o.a,o.c);if(libre(c2)){q=[q[0],q[1]+dy*px];c=c2;break}}
+const G=o.c==='rio-n'?8*px:0;
+if(!libre(c)||(G&&rio.some(p=>p[0]>c.x0-G&&p[0]<c.x1+G&&p[1]>c.y0-G&&p[1]<c.y1+G)))return;vistos[nom]=1;puestos.push(c);H+=texto(o.t,q[0],q[1],o.a,o.c,o.g)});
 const BO=CARTA.boca;if(BO&&ancho<=BO.max&&alcanzada(BO.tras)){const q=pr(r.curso[r.curso.length-1]);
 if(dentro(q)){if(!qb||Math.hypot(q[0]-qb[0],q[1]-qb[1])>30*px)H+=`<circle class="v-boca" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(4.5)}" stroke-width="${f(1.6)}"/>`;
 for(const [dx,dy,anc] of [[-12,-7,'end'],[0,-52,'middle'],[-64,-8,'end'],[64,-8,'start'],[0,34,'middle']]){const x=q[0]+dx*px,y=q[1]+dy*px,c=caja(BO.t,x,y,anc,'rio-n');if(libre(c)){puestos.push(c);H+=texto(BO.t,x,y,anc,'rio-n');break}}}}
@@ -1124,7 +1132,11 @@ for(let k=0;k<8;k++){const P=extra?base.concat([extra]):base;let x0=1e9,x1=-1e9,
 let w=(x1-x0)*v.margen,h=(yb-ya)*v.margen;w=Math.max(w,v.minW);h=Math.max(h,v.minW/asp);if(w/h<asp)w=h*asp;else h=w/asp;
 const top=(ya+yb)/2-h/2,s=w/an,cx=(x0+x1)/2;let falta=(PILDORA+8)*s-(y0-top);
 cuida.forEach(q=>{if(Math.abs(q[0]-cx)<w/2&&q[1]>top&&q[1]<top+h)falta=Math.max(falta,(PILDORA+18+(q[2]||0))*s-(q[1]-top))});/* el anillo de la próxima parada, si cae en la vista */if(falta<=s*.5)break;extra=[(x0+x1)/2,(extra?extra[1]:y0)-falta]}
-if(extra)v.pts=v.pts.concat([[90-extra[1]/500*180,extra[0]/1000*360-180]]);return v}
+if(extra)v.pts=v.pts.concat([[90-extra[1]/500*180,extra[0]/1000*360-180]]);
+if(an>900){/* pantalla ancha: 90 px libres abajo para que la falúa (a 1,4) no toque el borde */const P=v.pts.map(pr);let x0=1e9,x1=-1e9,ya=1e9,yb=-1e9;P.forEach(q=>{x0=Math.min(x0,q[0]);x1=Math.max(x1,q[0]);ya=Math.min(ya,q[1]);yb=Math.max(yb,q[1])});
+let w=(x1-x0)*v.margen,h=(yb-ya)*v.margen;w=Math.max(w,v.minW);h=Math.max(h,v.minW/asp);if(w/h<asp)w=h*asp;else h=w/asp;const s=w/an,bajo=(ya+yb)/2+h/2,falta=90*s-(bajo-yb);
+if(falta>s*.5)v.pts=v.pts.concat([[90-(yb+falta)/500*180,(x0+x1)/2/1000*360-180]])}
+return v}
 CAPA.vista=function(r,foco,dims){const v=vista0(r,foco),p=paso(),m=CAPA.momento();
 return v&&m!=='portada'?reservar(v,dims,m!=='mar'&&p>=0&&p<r.paradas.length?[r.paradas[p].pos.concat([p===0?66:0])]:[]):v};
 function vista0(r,foco){if(!r||r.id!==CAPA.rio||typeof CAPA.momento!=='function'||!r.curso||!r.paradas)return null;
@@ -1139,6 +1151,7 @@ return null}
 })();
 </script>
 <script>
+
 (function(){
 if(typeof CAPA==='undefined'||!CAPA)return;
 const ROT={marca:'Cauces',nave:'Nave',companero:'Compañero',paradas:'Paradas',proxima:'próxima',perfil:'Perfil del río',
@@ -1150,28 +1163,36 @@ const TILDES=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0
 const sinTilde=s=>String(s||'').normalize('NFD').replace(TILDES,'').toUpperCase();
 const inicial=c=>String(c.nombre||'').trim().charAt(0).toUpperCase();
 const cuenta=(r,a)=>`${a} de ${r.paradas.length} ${(r.vocab.Parada||'Parada').toLowerCase()}s`;
+
+
 function cobertura(r){const partes=String(r.frase||'').split(/\[([^\]]+)\]/),nb=(partes.length-1)/2,n=r.paradas.length,cub=[];let i=0;
 for(let b=0;b<nb;b++){const L=sinTilde(partes[2*b+1]).charAt(0),ini=i;if(i<n)i++;
 while(i<n&&(n-i)>(nb-b-1)&&sinTilde(inicial(r.paradas[i]))===L)i++;
 cub.push([ini,i-1])}
 return{partes,cub}}
+
 function fraseHasta(r,a){const n=r.paradas.length;if(!r.frase||a<=0)return '';if(a>=n)return marcarFrase(r.frase);
 const{partes,cub}=cobertura(r),k=cub.findIndex(c=>a-1>=c[0]&&a-1<=c[1]);if(k<0)return '';
 let h=esc(partes[0]);
 for(let b=0;b<=k;b++){const sig=partes[2*b+2]||'',pal=(sig.match(/^\S*/)||[''])[0];
 h+=`<b>${esc(partes[2*b+1])}</b>${esc(pal)}`;if(b<k||a-1===cub[b][1])h+=esc(sig.slice(pal.length))}
 return h.replace(/\s+$/,'')+'…'}
+
 function fichas(r,a,conProxima,nueva){const n=r.paradas.length;let h=`<div class="v-fichas" role="list" aria-label="${esc(cuenta(r,Math.min(a,n)))}">`;
 for(let i=0;i<n;i++){const c=r.paradas[i];
 if(i<a)h+=`<span class="v-ficha llena${nueva&&i===a-1?' nueva':''}" data-i="${i}" role="listitem"><b>${esc(inicial(c))}</b><small>${esc(c.nombre)}</small></span>`;
 else if(i===a&&conProxima)h+=`<span class="v-ficha proxima" data-i="${i}" role="listitem"><b>?</b><small>${ROT.proxima}</small></span>`;
 else h+=`<span class="v-ficha vacia" data-i="${i}" role="listitem" aria-hidden="true"><b></b><small></small></span>`}
 return h+'</div>'}
+
 function perfil(r){if(!r.perfil||typeof perfilSVG!=='function')return '';const A=r.perfil;
 return `<div class="v-perfil"><div class="v-perfil-cab"><span class="v-rotulo">${ROT.perfil}</span><span class="v-nota">de ${num(km(A[0][1])+' m')} en la fuente a ${num(km(A[A.length-1][1])+' m')} en el mar</span></div><div class="v-perfil-svg">${perfilSVG(r).replace(/<title>[^<]*<\/title>/g,'').replace(/(<text class="perfil-txt" x="[0-9.]+") y="[0-9.]+">/,'$1 y="-3">').replace(/(class="perfil-aqui" cx="[0-9.]+" cy="([0-9.]+)"[^>]*>)(<text class="perfil-txt" x="[0-9.]+") y="([0-9.]+)"/,(t,c,cy,tx,y)=>+y>+cy?`${c}${tx} y="${(+cy-8).toFixed(1)}"`:t)}</div></div>`}
 const pintada=(r,i,pictos)=>(typeof postal==='function'&&postal(r.id,i))||(typeof escena==='function'&&pictos?escena(pictos):'');
+
 function cita(r){const t=r.contexto&&r.contexto[0]&&r.contexto[0].texto,m=t&&/^«([^»]+)»,\s*escribió\s+([^:.,;]+)/.exec(t);return m?{texto:m[1],autor:m[2].trim()}:null}
+
 const riel=r=>typeof renderRiel==='function'&&typeof telefono==='function'&&telefono()?`<div class="v-riel">${renderRiel(r)}</div>`:'';
+
 function resto(html){try{if(typeof document==='undefined'||typeof document.createElement!=='function'||!document.getElementById)return html;
 const b=document.body,p=document.getElementById('panel'),pie=document.getElementById('pie');
 if(!b||!b.style||typeof b.style.setProperty!=='function'||!p||typeof p.appendChild!=='function'||typeof p.removeChild!=='function')return html;
@@ -1179,30 +1200,51 @@ const d=document.createElement('div');if(!d||!d.style)return html;d.style.cssTex
 const h=d.offsetHeight||0,hp=pie&&!pie.hidden?(pie.offsetHeight||0):0;p.removeChild(d);
 if(h>0)b.style.setProperty('--v-resto',Math.round(h+hp+18+16-22)+'px')}catch(e){}
 return html}
+
 const holgada=()=>typeof window!=='undefined'&&typeof window.matchMedia==='function'&&window.matchMedia('(min-width:820px) and (min-height:600px)').matches;
+
 const zarpe=r=>r.vehiculo?`<p class="v-zarpe">${S.eco?r.vocab.zarpas+rival(r.vocab,S.eco):esc(r.vehiculo.zarpe)}</p>`:'';
+
+
 function selloV(r,i,cae){const c=r.paradas[i],ts=sellos()[claveSello(r,i)];
 if(!ts)return `<svg class="v-sello pendiente" viewBox="0 0 84 84" role="img" aria-label="Sin sello"><circle class="aro" cx="42" cy="42" r="38"/></svg>`;
 const oro=selloOro(r,i),pc=c.escena&&typeof picto==='function'&&picto(c.escena[0]),nom=String(c.nombre).toUpperCase(),la=Array.isArray(c.pos)?+c.pos[0]:NaN;
+
 const gr=Math.round(Math.abs(la)),lat=isFinite(la)?`${gr?gr+'°':'0° '+Math.round(Math.abs(la)*60)+'′'} ${la<0?ROT.sur:ROT.norte}`:'',giro=((i*5)%11)-5;
 return `<svg class="v-sello${oro?' oro':''}${cae?' nuevo':''}" viewBox="0 0 84 84" style="--v-giro:${giro}deg" role="img" aria-label="Sello de ${esc(c.nombre)}"><circle class="borde" cx="42" cy="42" r="40"/><circle class="aro" cx="42" cy="42" r="35"/>${pc?`<svg class="pic" x="30" y="10" width="24" height="24" viewBox="${pc.vb}">${pc.svg}</svg>`:''}<text class="nom" x="42" y="50" text-anchor="middle"${nom.length>8?' textLength="60" lengthAdjust="spacingAndGlyphs"':''}>${esc(nom)}</text><line class="raya" x1="27" y1="55.5" x2="57" y2="55.5"/><text class="lat${gr?"":" min"}" x="42" y="69" text-anchor="middle">${lat}</text></svg>`}
+
 function portada(r,entra){const V=r.vocab,n=r.paradas.length,g=globo(r,S.dicho||(r.companero&&r.companero.hola)),q=cita(r);
+
 const ancho=holgada()?`${r.vehiculo?`<div class="nave">${(typeof laminaNave==='function'&&laminaNave(r))||`<svg class="barca mini" viewBox="-15 -15 30 20" aria-hidden="true">${glifo(r.vehiculo.tipo)}</svg>`}<div class="fkicker">${V.tuVehiculo}</div><div class="ntit">${esc(r.vehiculo.nombre)}</div><p>${esc(r.vehiculo.desc)}</p><div class="fnota">${S.eco?V.zarpas+rival(V,S.eco):esc(r.vehiculo.zarpe)}</div></div>`:''}${typeof fichaAnimal==='function'?fichaAnimal(r):''}`:zarpe(r);
 return resto(`<div class="v-portada"><div class="v-marca">${ROT.marca}</div><h2 class="v-rio">${esc(r.nombre)}</h2><p class="v-cab">${V.cabecera(r)}</p>${q?`<blockquote class="v-cita"><p>«${esc(q.texto)}»</p><cite>${esc(q.autor)}</cite></blockquote>`:''}</div>
 <div class="v-bit${entra}" data-v="portada">${g}${g?'':botonVoz()}<dl class="v-datos">${r.vehiculo?`<div class="v-dato"><dt>${ROT.nave}</dt><dd>${esc(r.vehiculo.nombre)}</dd></div>`:''}${r.companero?`<div class="v-dato"><dt>${ROT.companero}</dt><dd>${esc(r.companero.nombre)}</dd></div>`:''}<div class="v-dato"><dt>${ROT.paradas}</dt><dd>${n}</dd></div></dl><div class="v-ancho">${ancho}</div>${riel(r)}</div>`)}
+
+
+const rotuloFrase=r=>{const t=(/class="fkicker">([^<]*)</.exec(typeof bloqueFrase==='function'?bloqueFrase(r,false):'')||[])[1];return t?`<span class="v-rotulo">${t}</span>`:''};
 function navega(r,entra){const V=r.vocab,a=S.paso,g0=S.guias&&S.guias[a],primera=!S.zarpo&&a===0;
+
 const g=globo(r,primera?ROT.miraFrase:((g0&&g0.resp!=null&&S.dicho)||V.proxima));
-const arriba=primera?bloqueFrase(r,true):`<div class="v-avance"><div class="v-frase">${fraseHasta(r,a)}</div><div class="v-rotulo">${botonVoz()}${cuenta(r,a)}</div></div>${fichas(r,a,true,!!entra)}`;
-return resto(`<div class="v-bit${entra}" data-v="navega">${arriba}${g}${a===0?zarpe(r):''}${perfil(r)}</div>`)}
+
+const arriba=primera?bloqueFrase(r,true):`<div class="v-avance"><div class="v-frase">${a>0?fraseHasta(r,a):rotuloFrase(r)}</div><div class="v-rotulo">${botonVoz()}${cuenta(r,a)}</div></div>${fichas(r,a,true,!!entra)}`;
+
+
+const c=a>=1&&holgada()?r.paradas[a-1]:null,ya=c?`<div class="ficha recuerdo v-recuerdo v-ya">${pintada(r,a,c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div></div></div>`:'';
+return resto(`<div class="v-bit${entra}" data-v="navega">${arriba}${g}${a===0?zarpe(r):''}${perfil(r)}${ya}</div>`)}
+
 function parada(r,entra){const V=r.vocab,n=r.paradas.length,p=S.paso,c=r.paradas[p-1],prev=p>1?r.paradas[p-2]:null,k=claveSello(r,p-1);
 const g=globo(r,S.dicho||((S.selloNuevo===k?`¡Sello de ${c.nombre}! `:'')+(r.companero?r.companero.paradas[p-1]:'')));
+
 const ns=renderSello(r,p-1),nota=(/<\/svg><div>([\s\S]*)<\/div><\/div>\s*$/.exec(ns)||[])[1]||'';
+
 const kp=String(V.kickerParada(r,p,n,c)),ik=kp.indexOf(' · '),rotulo=ik>=0?kp.slice(0,ik):kp;
 return `<div class="v-bit${entra}" data-v="parada"><div class="v-cabeza"><div><p class="kicker">${botonVoz()}${rotulo}</p><h2 class="v-ciudad">${esc(c.nombre)}</h2><div class="pais">${esc(c.pais)} · ${V.tramo(r,c,prev)}${textoAltura(r,p-1)}</div></div>${selloV(r,p-1,!!entra&&S.selloNuevo===k)}</div>${g}${S.hoyListo?`<p class="aviso-hoy">${ico('ok')} ¡Dos ${V.Parada.toLowerCase()}s nuevas! ${r.tipo==='rio'?'Si querés, la barca se queda anclada aquí hasta mañana.':'Si querés, mañana seguimos desde aquí.'}</p>`:''}${S.anclada?`<p class="aviso-hoy"><button class="enlace" onclick="abrirRio('${r.id}',1)">Empezar de nuevo desde ${V.entreInicio}</button></p>`:''}<div class="ficha recuerdo v-recuerdo">${pintada(r,p,c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div></div></div>${mas('Contame más',`<p>${esc(c.dato)}</p>`)}${nota?`<p class="v-sello-nota">${nota}</p>`:''}${!S.eco&&c.puerto?`<div class="puerto"><div class="fkicker">${V.enPuerto}</div><p>${esc(c.puerto)}</p><div class="bodega">${V.llevaba}: ${esc(c.carga)}</div></div>`:''}${renderMercado(r,p-1)}</div>`}
+
 function mar(r,entra){const V=r.vocab,n=r.paradas.length,f=S.eco&&S.eco.final,g=globo(r,S.dicho||(r.companero&&r.companero.fin),'',S.dicho?(S.animo||'alegre'):'dormido');
 const cifra=(t,v)=>`<div class="v-cifra"><dt>${t}</dt><dd>${v}</dd></div>`;
 const cuentas=f?`<div class="v-cuentas"><div class="fkicker">Cuentas del viaje</div><dl class="v-cifras">${f.gan>0?cifra(ROT.ganancia,'+'+f.gan):''}${S.eco.antes!=null?cifra(ROT.antes,S.eco.antes):''}${S.eco.fantasma!=null?cifra(ROT.mercader,S.eco.fantasma):''}${cifra(ROT.tesoro,km(P.tesoro||0))}</dl><p class="v-cuenta">${V.cuentas} ${f.fin}.${f.vend.length?` ${V.sobrante} ${esc(r.paradas[n-1].nombre)}: ${esc(f.vend.join(', '))}.`:''}${f.gan>0?'':' Sin ganancia esta vez.'}</p><div class="bolsa">${ico('moneda')} ${rango(P.tesoro||0)}</div></div>`:'';
 return `<div class="v-bit${entra}" data-v="mar"><p class="kicker">${botonVoz()}${ROT.mar} · ${cuenta(r,n)}</p><h2 class="v-titulo">${marcarFrase(r.frase)}</h2>${fichas(r,n,false,false)}${g}${r.vehiculo?`<p class="v-llegada">${esc(r.vehiculo.llegada)}</p>`:''}${cuentas}<div class="ficha recuerdo v-recuerdo">${pintada(r,n+1,r.fin.escena)}<div class="cuerpo"><p>${esc(V.llegada(r))}</p></div></div>${r.contexto&&r.contexto[1]?mas(V.contame(r.contexto[1]),`<p>${esc(r.contexto[1].texto)}</p>`,r.contexto[1].titulo):''}${riel(r)}</div>`}
+
+
 CAPA.descender=function(r){const m=momento();if(!r||!r.paradas||m==='otro'||!m||typeof S==='undefined')return null;
 const n=r.paradas.length,p=S.paso,clave=m+':'+p,entra=clave!==ultima?' v-entra':'';
 try{let h=null;
@@ -1212,7 +1254,11 @@ else if(m==='portada'&&p===0)h=portada(r,entra);
 else if(m==='parada'&&p>=1)h=parada(r,entra);
 if(h!=null)ultima=clave;return h}
 catch(e){if(typeof console!=='undefined'&&console.warn)console.warn('Bitácora:',e);return null}};
+
+
 CAPA.aParada=function(){CAPA.fase='parada';if(typeof render==='function')render(false);if(typeof window!=='undefined'&&typeof window.scrollTo==='function')window.scrollTo(0,0)};
+
+
 CAPA.pie=function(r,porDefecto){const m=momento();if(!r||!r.paradas||typeof S==='undefined')return porDefecto;
 const n=r.paradas.length,p=S.paso,z=`<button class="btn v-zarpar" onclick="CAPA.navegar()">${ROT.zarpar}</button>`;
 try{if(m==='portada'&&p===0)return botones('',z);
@@ -1220,6 +1266,9 @@ if(m==='parada'&&p>=1&&p<n)return botones(`<button class="enlace" onclick="paso(
 if(m==='navega'&&p>=1&&typeof porDefecto==='string')return porDefecto.split('onclick="paso(-1)"').join('onclick="CAPA.aParada()"')}
 catch(e){}
 return porDefecto};
+
+
+
 function ajustarPerfil(){try{const p=document.getElementById('panel'),sv=p&&typeof p.querySelector==='function'&&p.querySelector('.v-perfil svg');if(!sv||!sv.viewBox||!sv.viewBox.baseVal)return;
 const w=sv.getBoundingClientRect().width,W=sv.viewBox.baseVal.width;if(w>0&&W>0)sv.style.setProperty('--v-pfs',(12*W/w).toFixed(2)+'px')}catch(e){}}
 function dibujado(){if(typeof document==='undefined'||!document.getElementById||typeof S==='undefined')return;ajustarPerfil();
@@ -1229,6 +1278,8 @@ const m=momento();if(m!=='navega'&&m!=='parada'&&m!=='mar'&&m!=='evento')return;
 const r=typeof rioPor==='function'&&rioPor(S.rio),sub=cab.querySelector('.sub');if(!r||!r.paradas||!sub)return;
 const V=r.vocab,n=r.paradas.length,p=S.paso,k=String(p>n?V.kickerFin(r):p>=1?V.kickerParada(r,p,n,r.paradas[p-1]):V.kickerInicio(r)),i=k.indexOf(' · ');
 if(i>=0)sub.innerHTML=k.slice(i+3)}
+
+
 CAPA.remedir=function(){try{const m=momento();if(m!=='portada'&&m!=='navega')return;
 if(typeof document==='undefined'||!document.getElementById)return;ajustarPerfil();
 const b=document.body,p=document.getElementById('panel'),pie=document.getElementById('pie');
@@ -1236,6 +1287,7 @@ if(!b||!b.style||typeof b.style.setProperty!=='function'||!p||typeof p.querySele
 const el=p.querySelector('.v-bit'),h=el?(el.offsetHeight||0):0,hp=pie&&!pie.hidden?(pie.offsetHeight||0):0;if(!h)return;
 b.style.setProperty('--v-resto',Math.round(h+hp+18+16-22)+'px');
 if(typeof renderMapa==='function'&&typeof S!=='undefined'&&S.foco)renderMapa(S.foco,true)}catch(e){}};
+
 let enganchado=false;
 function enganchar(){if(enganchado||typeof document==='undefined'||typeof window==='undefined')return;enganchado=true;
 try{const f=document.fonts;if(f&&f.ready&&typeof f.ready.then==='function')f.ready.then(function(){CAPA.remedir()})}catch(e){}

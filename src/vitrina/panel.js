@@ -78,14 +78,19 @@
     return resto(`<div class="v-portada"><div class="v-marca">${ROT.marca}</div><h2 class="v-rio">${esc(r.nombre)}</h2><p class="v-cab">${V.cabecera(r)}</p>${q?`<blockquote class="v-cita"><p>«${esc(q.texto)}»</p><cite>${esc(q.autor)}</cite></blockquote>`:''}</div>
 <div class="v-bit${entra}" data-v="portada">${g}${g?'':botonVoz()}<dl class="v-datos">${r.vehiculo?`<div class="v-dato"><dt>${ROT.nave}</dt><dd>${esc(r.vehiculo.nombre)}</dd></div>`:''}${r.companero?`<div class="v-dato"><dt>${ROT.companero}</dt><dd>${esc(r.companero.nombre)}</dd></div>`:''}<div class="v-dato"><dt>${ROT.paradas}</dt><dd>${n}</dd></div></dl><div class="v-ancho">${ancho}</div>${riel(r)}</div>`)}
 
+  /* antes de la primera parada la frase todavía no tiene palabras: va el rótulo que el motor le pone a ese bloque, tal cual */
+  const rotuloFrase=r=>{const t=(/class="fkicker">([^<]*)</.exec(typeof bloqueFrase==='function'?bloqueFrase(r,false):'')||[])[1];return t?`<span class="v-rotulo">${t}</span>`:''};
   function navega(r,entra){const V=r.vocab,a=S.paso,g0=S.guias&&S.guias[a],primera=!S.zarpo&&a===0;
     /* antes de zarpar en la primera bajada, Hipo señala la frase con la lista (todavía no hay fichas para responder); luego,
        antes de responder, pregunta; después, dice lo que el motor le hace decir (acierto, o «Era …: …») */
     const g=globo(r,primera?ROT.miraFrase:((g0&&g0.resp!=null&&S.dicho)||V.proxima));
     /* en la primera bajada, antes de zarpar, la frase con la lista (enseñar antes de preguntar) en lugar de las fichas */
-    const arriba=primera?bloqueFrase(r,true):`<div class="v-avance"><div class="v-frase">${fraseHasta(r,a)}</div><div class="v-rotulo">${botonVoz()}${cuenta(r,a)}</div></div>${fichas(r,a,true,!!entra)}`;
+    const arriba=primera?bloqueFrase(r,true):`<div class="v-avance"><div class="v-frase">${a>0?fraseHasta(r,a):rotuloFrase(r)}</div><div class="v-rotulo">${botonVoz()}${cuenta(r,a)}</div></div>${fichas(r,a,true,!!entra)}`;
     /* la hoja se mide: con la guía respondida el pie crece y, si salió mal, Hipo explica en varios renglones («Era …: …») */
-    return resto(`<div class="v-bit${entra}" data-v="navega">${arriba}${g}${a===0?zarpe(r):''}${perfil(r)}</div>`)}
+    /* en la columna holgada sobraba papel bajo el perfil: va la imagen para recordar de la última parada alcanzada (ya vista; no
+       adelanta nada de la que sigue) */
+    const c=a>=1&&holgada()?r.paradas[a-1]:null,ya=c?`<div class="ficha recuerdo v-recuerdo v-ya">${pintada(r,a,c.escena)}<div class="cuerpo"><div class="imagen"><div class="fkicker">Imagen para recordar</div>${esc(c.imagen)}</div></div></div>`:'';
+    return resto(`<div class="v-bit${entra}" data-v="navega">${arriba}${g}${a===0?zarpe(r):''}${perfil(r)}${ya}</div>`)}
 
   function parada(r,entra){const V=r.vocab,n=r.paradas.length,p=S.paso,c=r.paradas[p-1],prev=p>1?r.paradas[p-2]:null,k=claveSello(r,p-1);
     const g=globo(r,S.dicho||((S.selloNuevo===k?`¡Sello de ${c.nombre}! `:'')+(r.companero?r.companero.paradas[p-1]:'')));

@@ -149,3 +149,10 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
   con rótulos de 12 px que la línea no tacha, el sello de Jinja con «0° 25′ N», Hipo despierto si habla en el mar; la carta
   reserva los 84 px reales de la píldora, todos sus rótulos dan 4,5 a 1 o más (salvo la «N» sobre relieve claro en algunas
   paradas, pendiente) y ninguno baja de 11 px. `npm test` 9 de 9; `dist/nilo.html`, 614 KB.
+- **09:24** Vuelta C con dos agentes nuevos. **09:27-09:31** entregaron. Bitácora: en `navega` el mapa conserva un mínimo visible
+  (los 84 px de la píldora más 210 de río) y lo que no cabe se ve desplazando la hoja; con cero paradas, la cabecera de las fichas
+  lleva el rótulo del motor «Frase para el orden»; en pantalla ancha, navegando, el papel vacío lo ocupa la imagen para recordar de
+  la última parada alcanzada (**decisión de Bitácora, aprobada:** no adelanta la siguiente); movimiento reducido y nombres
+  accesibles, revisados sin cambios. Carta: la «N» del norte con un disco oscuro detrás (contraste de 3,6 a 8,98); el nombre de la
+  parada, separado de Hipo; la escala gráfica, siempre abajo a la izquierda salvo que ahí pase el río o la barca; «Nilo Azul», fuera
+  del trazo del afluente; en pantalla ancha, la falúa e Hipo a 1,4 veces; «LAGO VICTORIA» vuelve a la portada, sobre el lago.

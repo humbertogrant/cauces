@@ -4,11 +4,12 @@
 /* ---------- alto de la carta según el momento ----------
    En la portada y navegando todo tiene que verse sin desplazar: el mapa se queda con lo que no piden la hoja y el pie
    (--v-resto, en px: lo pone panel.js en body según lo que la hoja lleva; aquí, lo de un teléfono si faltara), con un
-   tope arriba y otro abajo. En la parada y en el mar la hoja es larga y se desplaza: una parte fija del alto. */
+   tope arriba y otro abajo; navegando, el mapa guarda al menos 294 px (la píldora del encabezado, 84, y 210 de río) y lo
+   que no cabe de la hoja se ve desplazando la página. En la parada y en el mar la hoja es larga y se desplaza: una parte fija del alto. */
 body.vitrina{--v-col:clamp(380px,34vw,420px);--v-alto:100vh;--v-sombra:rgba(6,32,28,.28)}
 @supports (height:1svh){body.vitrina{--v-alto:100svh}}
 body.vitrina[data-momento="portada"]{--v-mapa:max(calc(var(--v-alto)*.34),min(calc(var(--v-alto)*.72),calc(var(--v-alto) - var(--v-resto,356px))))}
-body.vitrina[data-momento="navega"]{--v-mapa:max(calc(var(--v-alto)*.26),min(calc(var(--v-alto)*.58),calc(var(--v-alto) - var(--v-resto,372px))))}
+body.vitrina[data-momento="navega"]{--v-mapa:max(calc(var(--v-alto)*.26),294px,min(calc(var(--v-alto)*.58),calc(var(--v-alto) - var(--v-resto,372px))))}
 body.vitrina[data-momento="parada"],body.vitrina[data-momento="evento"]{--v-mapa:calc(var(--v-alto)*.38)}
 body.vitrina[data-momento="mar"]{--v-mapa:calc(var(--v-alto)*.5)}
 
