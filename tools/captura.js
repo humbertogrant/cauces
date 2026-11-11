@@ -63,7 +63,7 @@ async function abrir(archivo,tam){
         (e.source==='network'&&/fonts\.(googleapis|gstatic)\.com/.test(o.url+' '+o.texto)?avisos:errores).push(o)}   /* sin red, las fuentes de Google no cargan: es un aviso, no un error del juego */
       else if(m==='Runtime.consoleAPICalled'&&p.type==='error')errores.push({tipo:'console.error',texto:p.args.map(a=>a.value!==undefined?String(a.value):(a.description||'')).join(' ')})});
     await cdp.send('Page.enable');await cdp.send('Runtime.enable');await cdp.send('Log.enable');
-    await cdp.send('Emulation.setDeviceMetricsOverride',{width:tam.w,height:tam.h,deviceScaleFactor:2,mobile:tam.w<760});
+    await cdp.send('Emulation.setDeviceMetricsOverride',{width:tam.w,height:tam.h,deviceScaleFactor:tam.k||2,mobile:tam.w<760});
     const ev=async(expr,espera)=>{const r=await cdp.send('Runtime.evaluate',{expression:expr,returnByValue:true,awaitPromise:!!espera,userGesture:true});
       if(r.exceptionDetails)throw new Error('al evaluar «'+expr.slice(0,80)+'»: '+((r.exceptionDetails.exception&&r.exceptionDetails.exception.description)||r.exceptionDetails.text));return r.result.value};
     const listo=async()=>{let ok=false;for(let i=0;i<150&&!ok;i++){ok=await ev(LISTO).catch(()=>false);if(!ok)await dormir(100)}
@@ -82,7 +82,7 @@ const ESTADO=`(()=>{try{const r=S.rio?rioPor(S.rio):null,g=S.guias&&S.guias[S.pa
   return {pantalla:S.pantalla,tab:S.tab,rio:S.rio,paso:S.paso,n:r?r.paradas.length:null,parada:r&&S.paso>=1&&S.paso<=r.paradas.length?r.paradas[S.paso-1].nombre:null,zarpo:!!S.zarpo,
     evento:E?{tramo:E.tramo,resp:E.resp==null?null:E.resp,correcta:E.q.correcta}:null,guia:g?{objetivo:g.objetivo,resp:g.resp==null?null:g.resp,ok:g.ok}:null,
     fase:hayCapa?CAPA.fase:null,momento:hayCapa&&CAPA.momento?CAPA.momento():null,modo:P.modo,monedas:S.eco?S.eco.monedas:null,
-    ventana:innerWidth+'x'+innerHeight,anchoPagina:document.documentElement.scrollWidth,escala:window.visualViewport?Math.round(visualViewport.scale*1000)/1000:1,pie:pie&&!pie.hidden?(pie.innerText||'').replace(/\\s+/g,' ').trim().slice(0,160):''}}catch(e){return {error:String(e)}}})()`;
+    ventana:innerWidth+'x'+innerHeight,anchoPagina:document.documentElement.scrollWidth,scrollY:Math.round(window.scrollY),escala:window.visualViewport?Math.round(visualViewport.scale*1000)/1000:1,pie:pie&&!pie.hidden?(pie.innerText||'').replace(/\\s+/g,' ').trim().slice(0,160):''}}catch(e){return {error:String(e)}}})()`;
 /* qué tocar ahora: en la portada, lo que abre el Nilo; en un evento, la opción correcta; si no, un botón del pie que empiece por
    «Zarpar a», «Llegar al mar», «Seguir hacia» o «Zarpar», o la ficha correcta de la guía; después, lo mismo en el panel */
 const BUSCAR=`(()=>{const vis=b=>{if(!b||b.disabled)return false;const q=b.getBoundingClientRect(),c=getComputedStyle(b);return q.width>0&&q.height>0&&c.visibility!=='hidden'&&c.display!=='none'};
@@ -98,7 +98,8 @@ const BUSCAR=`(()=>{const vis=b=>{if(!b||b.disabled)return false;const q=b.getBo
       if(el)break}
     if(!el){el=con('#pie button','Siguiente');if(el)motivo='#pie: «Siguiente»'}}
   if(!el)return null;
-  el.scrollIntoView({block:'center',inline:'center',behavior:'instant'});
+  /* como haría una persona: la página solo se mueve si el botón no está entero a la vista */
+  {const q0=el.getBoundingClientRect();if(q0.top<0||q0.left<0||q0.bottom>innerHeight||q0.right>innerWidth)el.scrollIntoView({block:'center',inline:'center',behavior:'instant'})}
   const q=el.getBoundingClientRect(),x=q.left+q.width/2,y=q.top+q.height/2,enc=document.elementFromPoint(x,y),libre=!!enc&&(enc===el||el.contains(enc));
   /* el clic va en píxeles de pantalla: si la página no cabe a lo ancho, el navegador la achica (visualViewport.scale < 1) y hay que convertir */
   const vv=window.visualViewport,kv=vv?vv.scale:1,ox=vv?vv.offsetLeft:0,oy=vv?vv.offsetTop:0;
@@ -187,10 +188,11 @@ async function cmdMedir(archivo,tam,carpeta){
     res.viaje=medido;if(medido)res.barcaSobreElCurso=medido.desvioMaxPx!=null&&medido.desvioMaxPx<=3;
     /* otro viaje, con cinco capturas a lo largo */
     if(carpeta){fs.mkdirSync(carpeta,{recursive:true});res.capturas=[];
+      await s.ev(`(()=>{window.__k=null;if(typeof CAPA!=='undefined'&&CAPA.oir)CAPA.oir('avanza',d=>{window.__k=d&&d.k});return true})()`);   /* el avance del viaje (0 a 1), si la capa lo emite */
       for(let i=0;i<4;i++){const p=await s.ev(AVANZAR);await dormir(500);await s.ev(`window.__t0=performance.now();paso(1)`);
         if(await s.ev('!!S.evento')){await dormir(2400);await s.ev('responderEvento(S.evento.q.correcta);continuarEvento()');await dormir(2400);continue}
         for(let j=0;j<5;j++){const meta=120+j*300;while(await s.ev('performance.now()-window.__t0')<meta)await dormir(15);
-          const f='viaje-'+(j+1)+'.png';await s.foto(path.join(carpeta,f));res.capturas.push({captura:f,ms:Math.round(await s.ev('performance.now()-window.__t0')),desde:p,desvioPx:await s.ev(DESVIO)})}
+          const f='viaje-'+(j+1)+'.png';await s.foto(path.join(carpeta,f));res.capturas.push({captura:f,ms:Math.round(await s.ev('performance.now()-window.__t0')),desde:p,desvioPx:await s.ev(DESVIO),avance:await s.ev('window.__k==null?null:Math.round(window.__k*100)/100')})}
         break}
       res.barcaSobreElCursoEnLasCinco=res.capturas.length===5&&res.capturas.every(c=>c.desvioPx!=null&&c.desvioPx<=3)}
     await s.cdp.send('Emulation.setCPUThrottlingRate',{rate:1});
@@ -201,7 +203,7 @@ async function cmdMedir(archivo,tam,carpeta){
 
 async function main(){
   const [cmd,...resto]=process.argv.slice(2);let tam={w:390,h:844},modo='mercader';const libres=[];
-  for(const a of resto){const m=/^(\d+)x(\d+)$/.exec(a);if(m)tam={w:+m[1],h:+m[2]};else if(a==='mercader'||a==='historia')modo=a;else libres.push(a)}
+  for(const a of resto){const m=/^(\d+)x(\d+)(?:@(\d(?:\.\d+)?))?$/.exec(a);if(m)tam={w:+m[1],h:+m[2],k:m[3]?+m[3]:2};else   /* 1440x900@1: escala 1 en vez de 2 */ if(a==='mercader'||a==='historia')modo=a;else libres.push(a)}
   if(cmd==='foto'&&libres.length>=2)return cmdFoto(libres[0],libres[1],tam,libres[2]);
   if(cmd==='recorrido'&&libres.length>=2)return cmdRecorrido(libres[0],libres[1],tam,modo);
   if(cmd==='medir'&&libres.length>=1)return cmdMedir(libres[0],tam,libres[1]);
