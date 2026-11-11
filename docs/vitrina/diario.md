@@ -93,3 +93,18 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
 - **08:21** Cierre, con unos 9 minutos del presupuesto sin usar: informe escrito, todo con commit en `vitrina-nilo`, sin push.
   Quedan 9 hallazgos menores y la pieza 4 (la falúa con la carga a la vista e Hipo nadando al lado) a medias. **Decisión:** no abrir
   otra vuelta de arreglos que no se alcanzaría a verificar.
+
+## Corrida larga (2026-11-11, 08:27 → 11:27)
+
+- **08:26** Humberto: «vamos con la corrida larga», sin número. **Decisión:** 180 minutos, de 08:27 a 11:27; se lo dije al empezar,
+  con lo que pienso hacer, para que pueda cambiar el presupuesto. Mismo alcance y mismas reglas; plan en `plan-larga.md`. El plan
+  de consumo marca 24 % del límite semanal al arrancar (27 % en el modelo de la corrida).
+- **08:29** Contrato ampliado (sección «Corrida larga»): rol nuevo, Trazo (`src/vitrina/arte.*`: la falúa con la carga a la vista e
+  Hipo nadando), y los datos que la carta puede entregar: cauce fino, costas y lagos de la región, segundo relieve.
+  **Decisión (arte):** estos dos dibujos sí van en SVG plano, a mano: son piezas chicas del mapa, del tamaño de los glifos que
+  Humberto aprobó en setiembre, no ilustraciones; se miran a tamaño real en una hoja de contacto antes de darlos por buenos.
+- **08:30** Lanzada la vuelta A: Trazo (nuevo), Carta, Bitácora y Verificación, hasta las 09:15-09:20.
+- **08:32** **Decisión (cifras):** el cauce fino no puede mover ningún número del juego. `cauceFino` en `src/juegos/nilo.js` deja
+  fijos los kilómetros de cada parada (calculados con el curso de Cauces) y pasa el perfil de altura al cauce nuevo por tramos.
+  Probado con un curso torcido a propósito: kilómetros y alturas de las seis paradas, idénticos. El build aprende `arte.js`,
+  `arte.css` y `mapa-carta.js` (si la carta trae sus costas, el mapa del mundo no viaja).

@@ -114,3 +114,52 @@ carta ni en la bitácora.
 node tools/captura.js foto <archivo.html> <salida.png> [390x844] ["js a evaluar antes de la foto"]
 node tools/captura.js recorrido <archivo.html> <carpeta> [390x844] [mercader|historia]
 ```
+
+# Corrida larga (2026-11-11, 08:27 → 11:27): agregados al contrato
+
+El alcance es el mismo (solo el Nilo, solo Bajar); sube el acabado. Todo lo de arriba sigue valiendo.
+
+## Dueños nuevos
+
+| Rol | Archivos |
+|---|---|
+| Trazo | `src/vitrina/arte.js`, `src/vitrina/arte.css` |
+
+Orden de carga nuevo: … `capa.js` → `arte.js` → `carta-datos.js` → `mapa-carta.js` (de Dirección: `LAND`, `LAGOS` y `BORDES` salen de
+`CARTA` si la carta los trae) → `carta.js` → `panel.js` → `sonido.js` → `motor.js`. CSS: `capa.css`, `arte.css`, `carta.css`,
+`panel.css`.
+
+## `CAPA.arte` (lo define Trazo; lo coloca Carta en el mapa y, si quiere, Bitácora en la hoja)
+
+```js
+CAPA.arte={
+  falua(cargas),   // string con elementos SVG (sin <svg>): la falúa de perfil, proa a la derecha, origen (0,0) en el centro del casco
+                   // sobre la línea de flotación, caja x −26…26, y −34…10 (1 unidad = 1 px de pantalla). `cargas`: hasta 3 claves
+  hipoNada(animo), // string SVG: la cabeza de Hipo asomada del agua, con ondas; origen en su centro, caja x −11…11, y −8…6
+  carga(clave),    // string SVG de una carga sola, caja 12 × 12 con el suelo en y = 0 (para la cubierta y para hojas de revisión)
+  cargasDe(r),     // claves de lo que lleva la barca ahora: en Niño, la bodega (S.eco.bodega → r.carga[i].n); en Adulto, la carga
+                   // narrativa del último puerto (r.paradas[S.paso-1].carga); [] en el nacimiento y al llegar al mar
+  hoja()           // HTML de una hoja de contacto: la falúa con cada carga e Hipo en cada ánimo, a tamaño real y a 4×
+};
+```
+
+Claves de carga: `cafe`, `marfil`, `goma`, `datiles`, `obelisco`, `lino`, `trigo`, `pescado`. Clases CSS (en `arte.css`):
+`.v-casco`, `.v-vela` (la única pieza dorada), `.v-palo`, `.v-linea`, `.v-agua`, `.v-carga`. Trazo de 1,3 a 1,6 px en verde muy
+oscuro, rellenos planos con los tintes `--v-tinte1`, `--v-tinte2` y un único acento cálido `--v-calido`, sin degradados.
+
+Carta, en `CAPA.mapa`: si existe `CAPA.arte`, cambia el glifo del motor dentro de `#barca .mece > g` por `CAPA.arte.falua(…)` y el
+contenido de `#masc` por `CAPA.arte.hipoNada(…)` corrido a un costado (Hipo nada junto a la barca, no va encima). Sin `CAPA.arte`,
+quedan los glifos del motor.
+
+## El cauce fino y las cifras fijas (Carta entrega los datos; Dirección los engancha en `src/juegos/nilo.js`)
+
+- `CARTA.curso`: el Nilo de Natural Earth 10 m, de la fuente al mar, `[lat, lon]` con tres decimales, simplificado a la tolerancia
+  de pantalla (unos 400 a 700 vértices), **con un vértice en la proyección de cada una de las seis paradas, en orden**, y con el
+  mismo primer y último punto que el curso de hoy (con 0,05° de tolerancia). `CARTA.brazos` (opcional): los afluentes, igual.
+- Ninguna cifra del juego puede cambiar: `src/juegos/nilo.js` calcula con el curso de Cauces los kilómetros de cada parada y los
+  deja fijos, y pasa el perfil de altura al cauce nuevo punto por punto. `test/vitrina.js` comprueba que los kilómetros y las alturas
+  de las seis paradas sean los de `dist/cauces-amplia.html`.
+- `CARTA.tierra`, `CARTA.lagos`, `CARTA.bordes` (opcionales): costas, lagos y fronteras de la región en la proyección del motor,
+  finos cerca del río y gruesos lejos, que cubran lon −20…75 y lat −25…50. Si vienen, el build ya no carga el mapa del mundo.
+- `CARTA.luz2` (opcional): un segundo relieve, fino, del corredor del río, para las vistas cercanas (parada, evento, delta).
+  Entre los dos relieves, hasta unos 150 KB de base64.
