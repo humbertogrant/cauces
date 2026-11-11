@@ -1,0 +1,121 @@
+{
+ "archivo": "dist/nilo.html",
+ "tam": "390x844",
+ "cpu": "4x",
+ "navegador": "msedge.exe",
+ "viaje": {
+  "tramo": "de 1 a 2",
+  "cuadros": 84,
+  "duracionMs": 1383,
+  "fpsMediana": 59.9,
+  "cuadroMasLargoMs": 16.9,
+  "cuadrosDeMasDe50ms": 0,
+  "desvioMaxSVG": 0.006,
+  "desvioMaxPx": 0.12,
+  "pxPorUnidad": 18.64,
+  "muestras": 84
+ },
+ "barcaSobreElCurso": true,
+ "capturas": [
+  {
+   "captura": "viaje-1.png",
+   "ms": 462,
+   "desde": 4,
+   "desvioPx": 0.05,
+   "avance": 0.2
+  },
+  {
+   "captura": "viaje-2.png",
+   "ms": 729,
+   "desde": 4,
+   "desvioPx": 0,
+   "avance": 0.51
+  },
+  {
+   "captura": "viaje-3.png",
+   "ms": 1001,
+   "desde": 4,
+   "desvioPx": 0.08,
+   "avance": 0.82
+  },
+  {
+   "captura": "viaje-4.png",
+   "ms": 1288,
+   "desde": 4,
+   "desvioPx": 0.05,
+   "avance": 0.98
+  },
+  {
+   "captura": "viaje-5.png",
+   "ms": 1583,
+   "desde": 4,
+   "desvioPx": 0.11,
+   "avance": 1
+  }
+ ],
+ "barcaSobreElCursoEnLasCinco": true,
+ "sonido": [
+  {
+   "nombre": "viento",
+   "duracion": 5.2,
+   "pico": 0.3376,
+   "dBFS": -9.4,
+   "invalidos": 0,
+   "fin": 5.149,
+   "picoSalida": 0.2376,
+   "dBFSSalida": -12.5
+  },
+  {
+   "nombre": "puerto",
+   "duracion": 1.1,
+   "pico": 0.3232,
+   "dBFS": -9.8,
+   "invalidos": 0,
+   "fin": 1.049,
+   "picoSalida": 0.2077,
+   "dBFSSalida": -13.7
+  },
+  {
+   "nombre": "moneda",
+   "duracion": 0.3,
+   "pico": 0.3552,
+   "dBFS": -9,
+   "invalidos": 0,
+   "fin": 0.285,
+   "picoSalida": 0.2765,
+   "dBFSSalida": -11.2
+  },
+  {
+   "nombre": "sello",
+   "duracion": 0.36,
+   "pico": 0.3749,
+   "dBFS": -8.5,
+   "invalidos": 0,
+   "fin": 0.329,
+   "picoSalida": 0.2428,
+   "dBFSSalida": -12.3
+  },
+  {
+   "nombre": "mar",
+   "duracion": 6.4,
+   "pico": 0.4036,
+   "dBFS": -7.9,
+   "invalidos": 0,
+   "fin": 6.342,
+   "picoSalida": 0.2658,
+   "dBFSSalida": -11.5
+  },
+  {
+   "nombre": "acierto",
+   "duracion": 0.18,
+   "pico": 0.2039,
+   "dBFS": -13.8,
+   "invalidos": 0,
+   "fin": 0.17,
+   "picoSalida": 0.1412,
+   "dBFSSalida": -17
+  }
+ ],
+ "errores": [],
+ "avisos": []
+}

@@ -6,20 +6,57 @@ if(typeof CAPA==='undefined'||typeof CARTA==='undefined')return;
 const NS='http://www.w3.org/2000/svg';
 const pr=p=>[(p[1]+180)/360*1000,(90-p[0])/180*500];           /* la proyección del motor */
 const txt=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-const ANCHO_LETRA={agua:8.2,pais:10.2,'rio-n':6.2,linea:9.2,hito:5.9};   /* px por letra a 11 px, con su espaciado */
+const ANCHO_LETRA={agua:8.2,pais:10.2,'rio-n':6.2,linea:9.2,hito:5.9,bajo:5.7,escala:7.2};   /* px por letra a 11 px, con su espaciado */
+/* cuántos px del borde de abajo del mapa tapa la hoja de la bitácora (#panel), para no poner nada debajo; sin medidas, 26 */
+function solapa(){const m=document.getElementById('mapa'),p=document.getElementById('panel');if(!m||!p||!m.getBoundingClientRect||!p.getBoundingClientRect)return 26;
+  const a=m.getBoundingClientRect(),b=p.getBoundingClientRect();if(!a||!b||!a.height)return 26;
+  return b.left<a.right-20&&b.top>a.top+a.height*.5&&b.top<a.bottom?Math.max(8,a.bottom-b.top+6):8}
 const paso=()=>typeof S!=='undefined'&&S?S.paso|0:0;
 const idx=(r,p)=>{const n=r.paradas.length;return p<=0?0:p>n?r.curso.length-1:r.paradas[p-1].idx};
 
 /* el relieve: una sola vez, después de #relieve y antes de #lagos, recortado por la tierra */
-function fondo(){const svg=document.getElementById('svg'),lagos=document.getElementById('lagos');
+function fondo(){const svg=document.getElementById('svg'),lagos=document.getElementById('lagos'),tierra=document.getElementById('tierra');
   if(!svg||!lagos||!svg.insertBefore||!document.createElementNS||lagos.parentNode!==svg||document.getElementById('v-fondo'))return;
-  const L=CARTA.luz,a=pr([L.caja[0],L.caja[1]]),b=pr([L.caja[2],L.caja[3]]),g=document.createElementNS(NS,'g');
-  g.setAttribute('id','v-fondo');g.setAttribute('aria-hidden','true');
-  g.innerHTML=`<clipPath id="v-recorte"><use href="#tierra" clip-rule="evenodd"/></clipPath><image href="${L.src}" x="${a[0].toFixed(2)}" y="${a[1].toFixed(2)}" width="${(b[0]-a[0]).toFixed(2)}" height="${(b[1]-a[1]).toFixed(2)}" preserveAspectRatio="none" clip-path="url(#v-recorte)"/>`;
-  svg.insertBefore(g,lagos)}
+  const img=(L,id)=>{const a=pr([L.caja[0],L.caja[1]]),b=pr([L.caja[2],L.caja[3]]);
+    return`<image${id?` id="${id}" style="opacity:0"`:''} href="${L.src}" x="${a[0].toFixed(2)}" y="${a[1].toFixed(2)}" width="${(b[0]-a[0]).toFixed(2)}" height="${(b[1]-a[1]).toFixed(2)}" preserveAspectRatio="none"/>`};
+  const g=document.createElementNS(NS,'g');g.setAttribute('id','v-fondo');g.setAttribute('aria-hidden','true');
+  /* el relieve lejano y, encima, el fino del corredor del río, que aparece al acercarse (ver cerca) */
+  g.innerHTML=`<clipPath id="v-recorte"><use href="#tierra" clip-rule="evenodd"/></clipPath><g clip-path="url(#v-recorte)">${img(CARTA.luz)}${CARTA.luz2?img(CARTA.luz2,'v-luz2'):''}</g>`;
+  svg.insertBefore(g,lagos);
+  /* el halo de la costa: la misma tierra, debajo de la tierra, con tres trazos verde claro de ancho fijo en pantalla; de cada uno solo se ve la mitad que da al mar */
+  if(tierra&&tierra.parentNode===svg){const h=document.createElementNS(NS,'g');h.setAttribute('id','v-halo');h.setAttribute('aria-hidden','true');
+    h.innerHTML='<use href="#tierra" class="a"/><use href="#tierra" class="b"/><use href="#tierra" class="c"/>';svg.insertBefore(h,tierra)}}
+/* el relieve fino se ve cuando la vista es angosta (parada, evento, delta, navegando): px·390 es el ancho de la vista llevado a un teléfono */
+function cerca(px){const l=document.getElementById('v-luz2'),h=document.getElementById('v-halo');if(l&&l.style&&CARTA.luz2)l.style.opacity=px*390<=CARTA.luz2.max?'1':'0';
+  /* el ancho del halo, en píxeles de pantalla: 16, 8 y 2,2 (vector-effect no llega a las copias de <use>) */
+  if(h&&h.children)[16,8,2.2].forEach((w,i)=>{const u=h.children[i];if(u&&u.setAttribute)u.setAttribute('stroke-width',(w*px).toFixed(3))})}
 
 /* un grupo dentro de #capa (el motor la vuelve a escribir en cada render, así que se vuelve a poner cada vez) */
 function grupo(capa,id,html,antes){const g=document.createElementNS(NS,'g');g.setAttribute('id',id);g.setAttribute('aria-hidden','true');g.innerHTML=html;capa.insertBefore(g,antes||null)}
+
+/* La falúa y el Hipo de Trazo (CAPA.arte), si están: la falúa reemplaza al glifo del motor dentro de #barca e Hipo nada a popa,
+   no encima. El motor gira #barca con el rumbo y endereza #masc en cada cuadro; la falúa, que es un perfil de 52 px, toma ese
+   mismo enderezado (va siempre derecha y solo se da vuelta a la izquierda cuando el río va hacia el oeste). */
+let MIRA=1;/* hacia dónde mira la falúa (1 derecha, −1 izquierda): el rumbo del viaje de punta a punta; no cambia con cada recodo ni al volver a dibujar */
+function derecha(){const m=document.getElementById('masc'),g=document.getElementById('v-falua'),b=document.getElementById('barca');if(!m||!g||!b||!m.getAttribute||!g.setAttribute)return;
+  const t=m.getAttribute('transform');if(!t)return;
+  const k=(/scale\(-1 /.test(b.getAttribute('transform')||'')?-1:1)*MIRA,h=document.getElementById('v-hipo');/* el espejo del motor por el espejo que hace falta */
+  g.setAttribute('transform',t+(k<0?' scale(-1 1)':''));if(h&&h.setAttribute)h.setAttribute('transform',(k<0?'scale(-1 1) ':'')+'translate(-40 4)')}
+function arte(foco,momento){const A=CAPA.arte,b=document.getElementById('barca'),m=document.getElementById('masc'),B=foco.barca;
+  if(!A||typeof A.falua!=='function'||typeof A.hipoNada!=='function'||!b||!b.querySelector||!m||!foco.rio||!B)return false;
+  const g=b.querySelector('.mece > g');if(!g)return false;
+  let P,ida;if(B.poly){P=B.poly;ida=B.t1>=B.t0}else{P=[foco.rio.curso[B.de],foco.rio.curso[B.a]];ida=true}
+  if(P&&P.length>1){const dx=(pr(P[P.length-1])[0]-pr(P[0])[0])*(ida?1:-1);if(Math.abs(dx)>1e-6)MIRA=dx<0?-1:1}
+  let cargas=[],falua,hipo;try{if(A.cargasDe)cargas=A.cargasDe(foco.rio)||[]}catch(e){}
+  try{falua=A.falua(cargas);hipo=A.hipoNada(momento==='evento'?'sorpresa':momento==='mar'?'alegre':'normal')}catch(e){return false}/* si el dibujo falla, queda el glifo del motor */
+  if(!falua||!hipo)return false;
+  g.innerHTML=falua;g.setAttribute('id','v-falua');
+  m.innerHTML=`<g id="v-hipo" transform="translate(-40 4)">${hipo}</g>`;
+  derecha();return true}
+/* hacia dónde mira la barca al llegar (la regla de animarBarca): 1 a la derecha, −1 a la izquierda */
+function mirada(r,B){let P,fin;if(B.poly){P=B.poly;fin=B.t1>=B.t0}else{P=r.curso.slice(Math.min(B.de,B.a),Math.max(B.de,B.a)+1);fin=B.de<=B.a}
+  if(!P||P.length<2)return 1;const a=pr(fin?P[P.length-2]:P[0]),b=pr(fin?P[P.length-1]:P[1]);return b[0]-a[0]<0?-1:1}
+if(typeof CAPA.oir==='function')CAPA.oir('avanza',derecha);
 
 function dibujar(foco,vb,px){const capa=document.getElementById('capa');
   if(!capa||!capa.insertBefore||!capa.querySelector||!document.createElementNS||!foco||foco.modo!=='rio'||!foco.rio||foco.rio.id!==CAPA.rio)return;
@@ -39,21 +76,30 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
 
   /* lo que un rótulo no puede pisar: el río (muestras cada 3 px del cauce a la vista), las paradas y sus nombres, la barca */
   const rio=[],puestos=[{x0:vb.x,x1:vb.x+64*px,y0:vb.y,y1:vb.y+64*px},{x0:vb.x+vb.w-64*px,x1:vb.x+vb.w,y0:vb.y,y1:vb.y+64*px}];/* las esquinas de arriba (64 × 64 px) son de los botones redondos: volver y sonido */
-  for(let i=0;i+1<r.curso.length;i++){const p=pr(r.curso[i]),q=pr(r.curso[i+1]);
+  if(momento==='portada')puestos.push({x0:vb.x,x1:vb.x+220*px,y0:vb.y+64*px,y1:vb.y+352*px});/* y en la portada, arriba a la izquierda, va el título (hasta la firma de la cita) */
+  const muestrear=P=>{for(let i=0;i+1<P.length;i++){const p=pr(P[i]),q=pr(P[i+1]);
     if(Math.max(p[0],q[0])<vb.x-vb.w*.2||Math.min(p[0],q[0])>vb.x+vb.w*1.2||Math.max(p[1],q[1])<vb.y-vb.h*.2||Math.min(p[1],q[1])>vb.y+vb.h*1.2)continue;
-    const m=Math.min(400,Math.max(1,Math.ceil(Math.hypot(q[0]-p[0],q[1]-p[1])/(3*px))));for(let k=0;k<=m;k++)rio.push([p[0]+(q[0]-p[0])*k/m,p[1]+(q[1]-p[1])*k/m])}
+    const m=Math.min(400,Math.max(1,Math.ceil(Math.hypot(q[0]-p[0],q[1]-p[1])/(3*px))));for(let k=0;k<=m;k++)rio.push([p[0]+(q[0]-p[0])*k/m,p[1]+(q[1]-p[1])*k/m])}};
+  muestrear(r.curso);(r.ramas||[]).forEach(muestrear);/* el cauce y también los afluentes: ningún rótulo sobre un río */
+  const borde=solapa();/* px del borde de abajo del mapa que tapa la hoja */
   const prox=typeof S!=='undefined'&&S&&S.pantalla==='rio'&&S.tab==='descender'&&momento!=='portada'&&paso()<n?paso():-1;/* en la portada no hay pregunta todavía */
   /* la barca tapa la primera letra del nombre de la parada donde está: ese nombre se corre hacia afuera */
   const B=foco.barca,qb=B?pr(B.poly?B.poly[B.t1>=B.t0?B.poly.length-1:0]:r.curso[B.a]):null;
+  let renglon=null;
+  const conArte=!!B&&arte(foco,momento),mira=conArte?MIRA:B?mirada(r,B):1;/* con la falúa nueva (52 px, Hipo a popa) todo lo que esquiva a la barca necesita más lugar */
   if(qb&&capa.querySelectorAll)r.paradas.forEach((c,i)=>{const q=pr(c.pos);if(!foco.etiquetas||!foco.etiquetas.has(i)||Math.hypot(q[0]-qb[0],q[1]-qb[1])>10*px)return;
-    capa.querySelectorAll('text.etq').forEach(t=>{if(!t.getAttribute||!t.classList||t.classList.contains('relieve')||t.textContent!==c.nombre)return;const x=parseFloat(t.getAttribute('x')),fin=t.getAttribute('text-anchor')==='end';if(isFinite(x))t.setAttribute('x',(x+(fin?-16:14)*px).toFixed(2))})});
+    capa.querySelectorAll('text.etq').forEach(t=>{if(!t.getAttribute||!t.classList||t.classList.contains('relieve')||t.textContent!==c.nombre)return;const x=parseFloat(t.getAttribute('x')),fin=t.getAttribute('text-anchor')==='end';
+      const corre=conArte?(fin?(mira>0?-50:-26):(mira>0?26:50)):(fin?-16:14);/* del lado de popa hay que pasar también a Hipo */
+      if(!isFinite(x))return;t.setAttribute('x',(x+corre*px).toFixed(2));
+      /* y, donde los datos del juego lo dan, un renglón en cursiva debajo (CARTA.renglones): solo en la parada donde está la barca */
+      const y=parseFloat(t.getAttribute('y'));if(CARTA.renglones&&CARTA.renglones[i]&&isFinite(y))renglon={t:CARTA.renglones[i],x:x+corre*px,y:y+14*px,anc:fin?'end':'start'}})});
   r.paradas.forEach((c,i)=>{const q=pr(c.pos),d=(i===prox?15:7)*px;puestos.push({x0:q[0]-d,x1:q[0]+d,y0:q[1]-d,y1:q[1]+d})});
   /* los nombres que puso el motor (las paradas alcanzadas), cada uno con su caja de verdad */
   if(capa.querySelectorAll)capa.querySelectorAll('text.etq').forEach(t=>{if(!t.getAttribute||!t.classList||t.classList.contains('relieve'))return;
     const x=parseFloat(t.getAttribute('x')),y=parseFloat(t.getAttribute('y')),w=((t.textContent||'').length*9.2+4)*px,an=t.getAttribute('text-anchor');if(!isFinite(x)||!isFinite(y))return;
     const x0=an==='end'?x-w:an==='middle'?x-w/2:x;puestos.push({x0,x1:x0+w,y0:y-13*px,y1:y+4*px})});
-  if(qb)puestos.push({x0:qb[0]-24*px,x1:qb[0]+22*px,y0:qb[1]-32*px,y1:qb[1]+14*px});
-  const libre=c=>c.x0>vb.x+M&&c.x1<vb.x+vb.w-M&&c.y0>vb.y+M&&c.y1<vb.y+vb.h-26*px&&!puestos.some(o=>c.x0<o.x1+M&&c.x1>o.x0-M&&c.y0<o.y1+M&&c.y1>o.y0-M)&&!rio.some(p=>p[0]>c.x0-M&&p[0]<c.x1+M&&p[1]>c.y0-M&&p[1]<c.y1+M);
+  if(qb)puestos.push(conArte?{x0:qb[0]-54*px,x1:qb[0]+54*px,y0:qb[1]-38*px,y1:qb[1]+16*px}:{x0:qb[0]-24*px,x1:qb[0]+22*px,y0:qb[1]-32*px,y1:qb[1]+14*px});
+  const libre=c=>c.x0>vb.x+M&&c.x1<vb.x+vb.w-M&&c.y0>vb.y+M&&c.y1<vb.y+vb.h-borde*px&&!puestos.some(o=>c.x0<o.x1+M&&c.x1>o.x0-M&&c.y0<o.y1+M&&c.y1>o.y0-M)&&!rio.some(p=>p[0]>c.x0-M&&p[0]<c.x1+M&&p[1]>c.y0-M&&p[1]<c.y1+M);
   /* la caja de un rótulo de 11 px (renglones partidos con |), con su ancla y su giro */
   const caja=(t,x,y,anc,cls,giro)=>{const rs=t.split('|'),w=Math.max.apply(null,rs.map(s=>s.length))*ANCHO_LETRA[cls]*px,h=(13+(rs.length-1)*15)*px;
     if(giro){const g=giro*Math.PI/180,c=Math.abs(Math.cos(g)),s=Math.abs(Math.sin(g)),bw=c*w+s*h,bh=s*w+c*h;return{x0:x-bw/2,x1:x+bw/2,y0:y-bh/2,y1:y+bh/2}}
@@ -61,12 +107,24 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
   const texto=(t,x,y,anc,cls,giro)=>{const rs=t.split('|'),X=x.toFixed(2),Y=y.toFixed(2);
     return`<text class="v-rot ${cls}" x="${X}" y="${Y}" font-size="${f(11)}" text-anchor="${anc}"${giro?` transform="rotate(${giro} ${X} ${Y})"`:''}>${rs.length>1?rs.map((s,i)=>`<tspan x="${X}" dy="${i?f(15):0}">${txt(s)}</tspan>`).join(''):txt(t)}</text>`};
   let H='';
+  if(renglon){const c=caja(renglon.t,renglon.x,renglon.y,renglon.anc,'bajo');puestos.push(c);H+=texto(renglon.t,renglon.x,renglon.y,renglon.anc,'bajo')}
+
+  /* escala gráfica (abajo a la izquierda, sobre el borde de la hoja) y norte (arriba a la derecha, bajo el botón de sonido); en la
+     portada, no. La barra es el número redondo de kilómetros que mide de 70 a 130 px en la latitud del centro de la vista
+     (1 unidad del SVG = 0,36° de longitud). Si el río pasa por ahí, la escala prueba a la derecha; si no cabe, no sale. */
+  if(momento!=='portada'){const latC=90-(vb.y+vb.h/2)/500*180,kmPx=0.36*111.32*Math.cos(latC*Math.PI/180)*px,
+      km=([1000,500,250,200,100,50,25,20,10,5,2,1].map(k=>[k,k/kmPx]).filter(v=>v[1]>=64&&v[1]<=136).sort((u,v)=>Math.abs(u[1]-100)-Math.abs(v[1]-100))[0]||[0])[0];/* 70 a 130 px, con un poco de holgura para que siempre haya un número redondo */
+    if(km){const largo=km/kmPx*px,yb=vb.y+vb.h-(borde+14)*px;
+      for(const x0 of [vb.x+16*px,vb.x+vb.w-16*px-largo]){const c={x0:x0-3*px,x1:x0+Math.max(largo,56*px)+3*px,y0:yb-24*px,y1:yb+4*px};if(!libre(c))continue;puestos.push(c);
+        H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${x0.toFixed(2)} ${(yb-5*px).toFixed(2)}V${yb.toFixed(2)}h${largo.toFixed(2)}v${f(-5)}"/><text class="v-rot escala" x="${x0.toFixed(2)}" y="${(yb-10*px).toFixed(2)}" font-size="${f(11)}">${km} km</text>`;break}}
+    const xn=vb.x+vb.w-37*px,yn=vb.y+74*px,cn={x0:xn-10*px,x1:xn+10*px,y0:yn-3*px,y1:yn+40*px};
+    if(libre(cn)){puestos.push(cn);H+=`<path class="v-escala" stroke-width="${f(1.3)}" d="M${xn.toFixed(2)} ${(yn+22*px).toFixed(2)}V${yn.toFixed(2)}m${f(-4)} ${f(6)}l${f(4)} ${f(-6)}l${f(4)} ${f(6)}"/><text class="v-rot escala" x="${xn.toFixed(2)}" y="${(yn+37*px).toFixed(2)}" font-size="${f(11)}" text-anchor="middle">N</text>`}}
 
   /* la próxima parada: anillo punteado con un signo de pregunta, sin nombre (memoria primero) */
   if(prox>=0){const p0=pr(r.paradas[prox].pos);let q=p0;
     /* si la parada queda a menos de 24 px de la barca (Jinja, a un paso del nacimiento), el anillo se corre río abajo y un hilo fino lo une a su punto */
-    if(qb){const dx=p0[0]-qb[0],dy=p0[1]-qb[1],d=Math.hypot(dx,dy);if(d<24*px){const s=pr(r.curso[Math.min(r.curso.length-1,(r.paradas[prox].idx|0)+1)]),ux=d>px?dx:s[0]-p0[0],uy=d>px?dy:s[1]-p0[1],nu=Math.hypot(ux,uy)||1;
-      q=[qb[0]+ux/nu*38*px,qb[1]+uy/nu*38*px];puestos.push({x0:q[0]-15*px,x1:q[0]+15*px,y0:q[1]-15*px,y1:q[1]+15*px});H+=`<path class="v-guia" d="M${p0[0].toFixed(2)} ${p0[1].toFixed(2)}L${q[0].toFixed(2)} ${q[1].toFixed(2)}" stroke-width="${f(1)}"/>`}}
+    if(qb){const dx=p0[0]-qb[0],dy=p0[1]-qb[1],d=Math.hypot(dx,dy);if(d<(conArte?50:24)*px){const s=pr(r.curso[Math.min(r.curso.length-1,(r.paradas[prox].idx|0)+8)]),ux=d>px?dx:s[0]-p0[0],uy=d>px?dy:s[1]-p0[1],nu=Math.hypot(ux,uy)||1,lejos=(conArte?64:38)*px;
+      q=[qb[0]+ux/nu*lejos,qb[1]+uy/nu*lejos];puestos.push({x0:q[0]-15*px,x1:q[0]+15*px,y0:q[1]-15*px,y1:q[1]+15*px});H+=`<path class="v-guia" d="M${p0[0].toFixed(2)} ${p0[1].toFixed(2)}L${q[0].toFixed(2)} ${q[1].toFixed(2)}" stroke-width="${f(1)}"/>`}}
     H+=`<circle class="v-prox" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(11)}" stroke-width="${f(1.6)}" stroke-dasharray="${f(2.2)} ${f(3.4)}"/><text class="v-prox-t" x="${q[0].toFixed(2)}" y="${(q[1]+5*px).toFixed(2)}" font-size="${f(14)}" text-anchor="middle">?</text>`}
 
   /* paralelos con nombre: el rótulo va pegado a un borde de la vista, del lado donde no pisa el río */
@@ -77,18 +135,31 @@ function dibujar(foco,vb,px){const capa=document.getElementById('capa');
 
   /* rótulos de atlas, en orden de jerarquía: el que no cabe entero, pisa el río o pisa a otro, no sale */
   const vistos={};/* de cada nombre, una sola versión por vista: la primera que cabe */
-  CARTA.rotulos.forEach(o=>{const nom=o.t.replace('|',' ');if(vistos[nom]||ancho>o.max||(o.min&&ancho<=o.min))return;const q=pr(o.p),c=caja(o.t,q[0],q[1],o.a,o.c,o.g);if(!libre(c))return;vistos[nom]=1;puestos.push(c);H+=texto(o.t,q[0],q[1],o.a,o.c,o.g)});
+  const alcanzada=i=>i==null||!!(foco.etiquetas&&foco.etiquetas.has(i));/* `tras`: lo que solo sale cuando esa parada ya se alcanzó */
+  CARTA.rotulos.forEach(o=>{const nom=o.t.replace('|',' ');if(vistos[nom]||ancho>o.max||(o.min&&ancho<=o.min)||!alcanzada(o.tras))return;const q=pr(o.p),c=caja(o.t,q[0],q[1],o.a,o.c,o.g);if(!libre(c))return;vistos[nom]=1;puestos.push(c);H+=texto(o.t,q[0],q[1],o.a,o.c,o.g)});
 
-  /* hitos: una marca (cuadrito o dos triángulos) y su nombre a 11 px; ninguno es una parada */
-  CARTA.hitos.forEach(o=>{if(ancho>o.max||(o.tras!=null&&!(foco.etiquetas&&foco.etiquetas.has(o.tras))))return;const q=pr(o.p);if(!dentro(q))return;
-    const tri=o.m==='tri',izq=o.l==='izq',mx=tri?(izq?q[0]-21*px:q[0]+4*px):q[0]-2.5*px,x=izq?(tri?mx-5*px:q[0]-8*px):(tri?mx+22*px:q[0]+8*px),y=q[1]+4*px,anc=izq?'end':'start',c=caja(o.t,x,y,anc,'hito');
-    if(!libre(c))return;puestos.push(c,{x0:mx-2*px,x1:mx+19*px,y0:q[1]-6*px,y1:q[1]+6*px});
-    H+=(tri?`<path class="v-marca" stroke-width="${f(1.1)}" d="M${mx.toFixed(2)} ${(q[1]+4*px).toFixed(2)}l${f(4.5)} ${f(-8)}l${f(4.5)} ${f(8)}zm${f(8)} 0l${f(4.5)} ${f(-8)}l${f(4.5)} ${f(8)}z"/>`:`<path class="v-marca" stroke-width="${f(1.1)}" d="M${mx.toFixed(2)} ${(q[1]-2.5*px).toFixed(2)}h${f(5)}v${f(5)}h${f(-5)}z"/>`)+texto(o.t,x,y,anc,'hito')});
+  /* la boca del río: su nombre pegado al último punto del cauce, del lado que quede libre (la barca puede estar ahí), y un
+     circulito hueco en la boca cuando la barca no la tapa */
+  const BO=CARTA.boca;if(BO&&ancho<=BO.max&&alcanzada(BO.tras)){const q=pr(r.curso[r.curso.length-1]);
+    if(dentro(q)){if(!qb||Math.hypot(q[0]-qb[0],q[1]-qb[1])>30*px)H+=`<circle class="v-boca" cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="${f(4.5)}" stroke-width="${f(1.6)}"/>`;
+      for(const [dx,dy,anc] of [[-12,-7,'end'],[0,-52,'middle'],[-64,-8,'end'],[64,-8,'start'],[0,34,'middle']]){const x=q[0]+dx*px,y=q[1]+dy*px,c=caja(BO.t,x,y,anc,'rio-n');if(libre(c)){puestos.push(c);H+=texto(BO.t,x,y,anc,'rio-n');break}}}}
 
+  /* hitos: una marca (cuadrito o dos triángulos) y su nombre a 11 px; ninguno es una parada. El nombre prueba su lado, el otro y,
+     si es largo, lo mismo en dos renglones: el primero que no pise un río, un rótulo ni la barca */
+  CARTA.hitos.forEach(o=>{if(ancho>o.max||!alcanzada(o.tras))return;const q=pr(o.p);if(!dentro(q))return;
+    const tri=o.m==='tri',otro=o.l==='izq'?'der':'izq',t2=o.t.length>12?o.t.replace(' ','|'):null,ops=[[o.t,o.l],[o.t,otro]];if(t2)ops.push([t2,o.l],[t2,otro]);
+    if(!tri)ops.push([o.t,'abajo'],[o.t,'arriba']);/* una marca chica también admite el nombre debajo o encima */
+    for(const [t,lado] of ops){const izq=lado==='izq',vert=lado==='abajo'||lado==='arriba',mx=tri?(izq?q[0]-21*px:q[0]+4*px):q[0]-2.5*px,
+        x=vert?q[0]:izq?(tri?mx-5*px:q[0]-8*px):(tri?mx+22*px:q[0]+8*px),y=q[1]+(lado==='abajo'?18:lado==='arriba'?-9:t===o.t?4:-3)*px,anc=vert?'middle':izq?'end':'start',c=caja(t,x,y,anc,'hito'),cm={x0:mx-2*px,x1:mx+(tri?19:7)*px,y0:q[1]-6*px,y1:q[1]+6*px};
+      if(!libre(c)||puestos.some(p=>cm.x0<p.x1&&cm.x1>p.x0&&cm.y0<p.y1&&cm.y1>p.y0))continue;puestos.push(c,cm);
+      H+=(tri?`<path class="v-marca" stroke-width="${f(1.1)}" d="M${mx.toFixed(2)} ${(q[1]+4*px).toFixed(2)}l${f(4.5)} ${f(-8)}l${f(4.5)} ${f(8)}zm${f(8)} 0l${f(4.5)} ${f(-8)}l${f(4.5)} ${f(8)}z"/>`:`<path class="v-marca" stroke-width="${f(1.1)}" d="M${mx.toFixed(2)} ${(q[1]-2.5*px).toFixed(2)}h${f(5)}v${f(5)}h${f(-5)}z"/>`)+texto(t,x,y,anc,'hito');break}});
+
+  /* para revisar la colocación: con CAPA.depurarCarta=1 se ven las cajas ocupadas (rótulos, nombres, barca, esquinas, título) */
+  if(CAPA.depurarCarta)H+=puestos.map(o=>`<rect x="${o.x0.toFixed(2)}" y="${o.y0.toFixed(2)}" width="${(o.x1-o.x0).toFixed(2)}" height="${(o.y1-o.y0).toFixed(2)}" fill="none" stroke="#A6472E" stroke-width="${f(1)}"/>`).join('');
   grupo(capa,'v-rotulos',H,capa.querySelector('#estela')||capa.querySelector('rect.hitz'))}
 
 /* después de que el motor dibujó el mapa */
-CAPA.mapa=function(foco,vb,px){try{fondo();dibujar(foco,vb,px)}catch(e){if(typeof console!=='undefined'&&console.warn)console.warn('carta:',e)}};
+CAPA.mapa=function(foco,vb,px){try{fondo();cerca(px);dibujar(foco,vb,px)}catch(e){if(typeof console!=='undefined'&&console.warn)console.warn('carta:',e)}};
 
 /* el encuadre de cada momento: {pts, minW, margen} para vbPara del motor (minW en unidades del SVG: 1 unidad = 0,36°) */
 CAPA.vista=function(r,foco){if(!r||r.id!==CAPA.rio||typeof CAPA.momento!=='function'||!r.curso||!r.paradas)return null;

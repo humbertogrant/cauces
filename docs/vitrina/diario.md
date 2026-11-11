@@ -108,3 +108,26 @@ Horas de reloj de la máquina. Lo decidido sin consultar va marcado **Decisión*
   fijos los kilómetros de cada parada (calculados con el curso de Cauces) y pasa el perfil de altura al cauce nuevo por tramos.
   Probado con un curso torcido a propósito: kilómetros y alturas de las seis paradas, idénticos. El build aprende `arte.js`,
   `arte.css` y `mapa-carta.js` (si la carta trae sus costas, el mapa del mundo no viaja).
+- **08:49** Primera mirada a la hoja de contacto de Trazo: la falúa se lee; pedí tres retoques (el obelisco parecía una flauta, Hipo
+  nadando una rana, el saco de café una botella).
+- **08:56** Carta entregó la vuelta A antes de tiempo: cauce fino de Natural Earth 10 m (635 vértices, cinco afluentes), costas,
+  lagos y fronteras de la región (77 KB, en lugar del mapa del mundo), halo de costa, un segundo relieve fino del corredor para las
+  vistas cercanas, y la falúa e Hipo de Trazo colocados. `dist/nilo.html` bajó a 609 KB. **Decisiones de Carta, aprobadas:** la
+  falúa va siempre derecha y mira según el rumbo del tramo (girada con el río, un perfil de 52 px quedaba de punta); Guiza solo
+  sale cuando El Cairo ya se alcanzó. Le pedí una segunda pasada: escala gráfica y norte, rótulos del delta y un renglón bajo
+  Asuán («primera catarata») y El Cairo («puerto de Bulaq»), que están en los datos del juego.
+- **09:00** Verificación entregó: `auditar` (16 estados: letra de menos de 11 px, toques de menos de 44 px, contraste, ancho de
+  página, nombres futuros, emojis), `estados` (una captura por estado, en tres tamaños) y la prueba de cifras fijas contra
+  `dist/cauces-amplia.html`. Auditoría: ningún toque chico, ningún contraste bajo en la bitácora, página nunca ancha; letra más
+  chica, 10,2 px (rótulos del perfil). Hallazgos nuevos: 2 medios y 7 menores.
+- **09:01** Trazo entregó: la falúa con hasta tres cargas a la vista (el obelisco, acostado en la cubierta, se ve), ocho cargas y la
+  cabeza de Hipo asomada del agua en cinco ánimos. Mirado dentro del juego en Asuán: se lee. El gancho del encuadre ahora recibe
+  las medidas del mapa.
+- **09:02** El consumo va más rápido de lo supuesto: el límite semanal del modelo pasó de 27 % a 42 % en 35 minutos. **Decisión:**
+  tope de 75 % para esta corrida, avisado a Humberto; si se alcanza antes de las 11:27, se cierra ahí con commits e informe. Para
+  gastar menos: agentes nuevos de contexto chico para las vueltas que siguen, menos llamadas de Dirección y revisión en hojas de
+  contacto.
+- **09:03** **Decisiones sobre los hallazgos de la vuelta A:** antes de zarpar en la primera bajada Hipo no puede preguntar por la
+  próxima parada con la lista a la vista: dirá un texto nuevo y corto que explica la frase (va a `textos-nuevos.md`); los rótulos
+  secundarios de la carta suben a 4,5 a 1 de contraste aunque la instrucción los pedía al 60 % (se lee o no se lee); «1 monedas»
+  en el mercado es un texto del motor de Cauces y no se toca aquí: queda avisado.

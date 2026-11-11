@@ -11,12 +11,25 @@
 //      agrega la vitrina; se quitan del texto comparando contra los datos, no contra clases de CSS;
 //  (e) en Niño (mercader) y en Adulto (historia) se llega al mar sin excepciones;
 //  (f) dist/nilo.html pesa menos de 900 KB;
-//  (g) ningún emoji en lo que se dibuja en Bajar (#panel, #pie y #cab de cada pantalla del recorrido).
+//  (g) ningún emoji en lo que se dibuja en Bajar (#panel, #pie y #cab de cada pantalla del recorrido);
+//  (h) las cifras fijas: los kilómetros y la altura de cada parada, la longitud del río, el orden y los nombres de las paradas y
+//      lo que se lee de ellas son los mismos que en Cauces (dist/cauces-amplia.html, cargado en un proceso hijo con el mismo DOM
+//      simulado); cada parada cae a 0,25° o menos del curso y sus idx crecen.
 // Uso: node test/vitrina.js. Termina con "VITRINA OK" o lanza un error que dice qué falta. Es de Verificación.
 const fs=require('fs'),path=require('path'),vm=require('vm');
 const {montar}=require('./arnes');
 const archivo=path.join(__dirname,'..','dist','nilo.html');
 const falla=m=>{throw new Error('vitrina: '+m)};
+/* las cifras fijas del Nilo en un HTML ensamblado, las que ve el jugador y las que las sostienen: nombres y orden de las paradas,
+   kilómetros, alturas, longitud, lo que se lee (kicker, tramo y altura) y cómo cae cada parada sobre el curso. Se sacan con la misma
+   función de dist/nilo.html y de dist/cauces-amplia.html; nada va escrito a mano */
+function cifrasDe(){const r=rioPor('nilo'),V=r.vocab,n=r.paradas.length,sinTags=t=>String(t).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+  const alCurso=pos=>{let m=1e9;for(let i=1;i<r.curso.length;i++){const a=r.curso[i-1],b=r.curso[i],dx=b[1]-a[1],dy=b[0]-a[0],L=dx*dx+dy*dy,u=L?Math.max(0,Math.min(1,((pos[1]-a[1])*dx+(pos[0]-a[0])*dy)/L)):0;m=Math.min(m,Math.hypot(pos[1]-a[1]-u*dx,pos[0]-a[0]-u*dy))}return m};
+  return {longitud:r.longitud,vertices:r.curso.length,paradas:r.paradas.map((c,i)=>({nombre:c.nombre,km:c.km,idx:c.idx,altura:alturaParada(r,i),
+    kicker:sinTags(V.kickerParada(r,i+1,n,c)),tramo:sinTags(V.tramo(r,c,i?r.paradas[i-1]:null)),textoAltura:sinTags(textoAltura(r,i)),alCurso:alCurso(c.pos)}))}}
+if(process.argv[2]==='--cifras'){   /* proceso hijo: las cifras de otro HTML ensamblado (el de Cauces), por la salida */
+  montar([]);const h=fs.readFileSync(path.resolve(process.argv[3]),'utf8');[...h.matchAll(/<script>\n([\s\S]*?)<\/script>/g)].forEach((m,i)=>vm.runInThisContext(m[1],{filename:'cifras-script-'+i}));
+  setTimeout(()=>process.stdout.write('@@CIFRAS@@'+JSON.stringify(cifrasDe())+'@@FIN@@'),50);return}
 if(!fs.existsSync(archivo))falla('falta dist/nilo.html (lo arma `node build.js`)');
 montar([]);
 /* aquí las animaciones corren hasta el final (ver `drenar`), así que el nodo simulado necesita lo que el motor toca al terminar un
@@ -38,6 +51,20 @@ setTimeout(()=>{
   for(const f of ['oir','emitir','navegar','momento'])if(typeof CAPA[f]!=='function')falla('falta CAPA.'+f+' (contrato, «CAPA»)');
   drenar();
   const r=rioPor('nilo'),n=r.paradas.length,nodoDe=s=>document.querySelector(s).innerHTML||'';
+  /* (h) las cifras fijas: las mismas que en Cauces (dist/cauces-amplia.html, cargado en un proceso hijo), y las paradas sobre el curso */
+  {const otro=path.join(__dirname,'..','dist','cauces-amplia.html');if(!fs.existsSync(otro))falla('falta dist/cauces-amplia.html para comparar las cifras (lo arma `node build.js`)');
+    let salida;try{salida=require('child_process').execFileSync(process.execPath,[__filename,'--cifras',otro],{encoding:'utf8',maxBuffer:1<<26})}catch(e){falla('no pude sacar las cifras de Cauces: '+(e&&e.message||e))}
+    const m=/@@CIFRAS@@([\s\S]*)@@FIN@@/.exec(salida);if(!m)falla('el proceso hijo no devolvió las cifras de Cauces');
+    const A=JSON.parse(m[1]),B=cifrasDe(),nombres=X=>X.paradas.map(c=>c.nombre).join(' · ');
+    if(B.longitud!==A.longitud)falla('la longitud del Nilo es '+B.longitud+' km y en Cauces es '+A.longitud);
+    if(nombres(B)!==nombres(A))falla('las paradas no son las de Cauces, en su orden: '+nombres(B)+' (en Cauces: '+nombres(A)+')');
+    B.paradas.forEach((c,i)=>{const a=A.paradas[i],de=' de '+c.nombre+': ';
+      if(Math.round(c.km)!==Math.round(a.km))falla('el kilómetro'+de+Math.round(c.km)+', y en Cauces es '+Math.round(a.km));
+      if(c.altura!==a.altura)falla('la altura'+de+c.altura+' m, y en Cauces es '+a.altura+' m');
+      for(const k of ['kicker','tramo','textoAltura'])if(c[k]!==a[k])falla('lo que se lee ('+k+')'+de+'«'+c[k]+'», y en Cauces es «'+a[k]+'»');
+      if(!(c.alCurso<=0.25))falla(c.nombre+' cae a '+c.alCurso.toFixed(3)+'° del curso (el tope es 0,25°)');
+      if(!(c.idx>=0&&c.idx<B.vertices))falla('el idx de '+c.nombre+' cae fuera del curso: '+c.idx+' de '+B.vertices+' vértices');
+      if(i&&!(c.idx>B.paradas[i-1].idx))falla('los idx de las paradas no crecen: '+B.paradas.map(x=>x.nombre+' '+x.idx).join(', '))})}
   /* (b) los ganchos, en orden */
   const oidos=[];for(const k of ['zarpar','parada','mar'])CAPA.oir(k,d=>oidos.push({k,de:d&&d.de,a:d&&d.a,i:d&&d.i}));
   let dibujados=0;CAPA.oir('dibujado',()=>{dibujados++});   /* al final de cada render() */
@@ -78,7 +105,8 @@ setTimeout(()=>{
     /* paradas futuras: de la que sigue en adelante; con la guía ya respondida, la que sigue ya se dijo («Zarpar a …») */
     const futuras=r.paradas.map(c=>c.nombre).slice(p+(respondida?1:0));
     for(const [k,nd] of Object.entries(nodos)){if(k!=='#capa'&&!/v-|carta|vitrina/i.test(k))continue;const h=sinDatos(String(nd.innerHTML||''));
-      for(const nom of futuras)if(h.includes(nom))falla('la carta ('+k+') nombra una parada futura, '+nom+'; '+aqui+': '+cerca(h,nom))}
+      const hm=h.toLowerCase();   /* en la carta los rótulos pueden ir escritos en mayúsculas: se compara sin distinguirlas */
+      for(const nom of futuras){const i=hm.indexOf(nom.toLowerCase());if(i>=0)falla('la carta ('+k+') nombra una parada futura, '+nom+'; '+aqui+': '+cerca(h,h.substr(i,nom.length)))}}
     for(const k of ['#panel','#pie','#cab']){const e=emojis(sinDatos(String((nodos[k]||{}).innerHTML||'')));
       if(e.length)falla('hay emojis en '+k+': '+e.map(c=>'«'+c+'» U+'+c.codePointAt(0).toString(16).toUpperCase()).join(', ')+'; '+aqui)}
     if(S.evento||(p===0&&!S.zarpo))return;   /* un evento pregunta con opciones; la primera bajada enseña la lista antes de zarpar */

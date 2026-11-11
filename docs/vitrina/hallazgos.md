@@ -156,3 +156,96 @@ una). Las doce salieron sin errores de consola y con la página del ancho de la 
 
 **Pendientes graves: ninguno. Medias: ninguna. Quedan 12 menores** (V1-09, V1-10, V1-11, V1-17 y V2-01 a V2-08); tres de ellos
 son preguntas a confirmar (V2-05, V2-08 y el origen de V1-11).
+
+## Corrida larga, vuelta A (2026-11-11, de 08:27 a 09:15)
+
+### Lo que hay de nuevo para medir
+
+- **`node tools/captura.js auditar <archivo.html> [390x844]`**: arma 16 estados con funciones del motor (la portada; navegar en la
+  primera bajada; la guía sin responder, bien y mal; la parada con el sello nuevo y con el sello pendiente; el mercado con la
+  bodega llena; el evento sin responder, bien y mal; la parada en Adulto; la barca anclada; la última parada; el mar en Niño y
+  en Adulto) y mide en cada uno el texto más chico (en píxeles de pantalla, también el del SVG), lo tocable de menos de 44 px,
+  el contraste de cada texto HTML contra lo que tiene debajo, el ancho de la página, nombres de paradas futuras en la carta,
+  emojis, textos cortados y rótulos de la carta tapados o encimados. Deja `auditoria.json` (y `auditoria-360x640.json`,
+  `auditoria-844x390.json`) en `docs/vitrina/capturas/`. Sale con código 1 si hay página ancha, nombres futuros o emojis.
+- **`node tools/captura.js estados <archivo.html> <carpeta> [390x844]`**: una captura por estado. Corridas: `estados-390/`,
+  `estados-360/` (360 × 640) y `estados-acostado/` (844 × 390), 16 capturas cada una, sin errores de consola. Miradas 17: de
+  390, la portada, navegar-primera, guía mal, sello pendiente, mercado lleno, evento mal, anclada y El Cairo; de 360, la portada,
+  la guía sin responder y la parada; de acostado, la portada, la guía sin responder, la parada y el mar.
+- **`test/vitrina.js`, cifras fijas**: los kilómetros y la altura de cada parada, la longitud, los nombres en su orden y lo que se
+  lee (kicker, tramo y altura) se comparan con los de Cauces, sacados de `dist/cauces-amplia.html` en un proceso hijo; cada
+  parada cae a 0,25° o menos del curso y sus `idx` crecen. Pasa: `VITRINA OK 609 KB`.
+
+- **Regresión sobre el build de las 08:54 (609 KB, ya con la falúa nueva e Hipo nadando)**: dos recorridos con clics de verdad a
+  390 × 844 (`vueltaA-mercader/` y `vueltaA-historia/`), 27 capturas y 41,9 s cada uno, los dos al mar, sin errores de consola,
+  sin botones tapados y con la página de 390 px en las 54 pantallas. `medir` (`medicion-vueltaA.json`; CPU 4×, Jinja → Juba):
+  84 cuadros en 1 383 ms, mediana de 59,9 cuadros por segundo, cuadro más largo de 16,9 ms; la barca, a 0,12 px del curso como
+  máximo (en cinco capturas: 0,05 · 0 · 0,08 · 0,05 · 0,11); los seis efectos de sonido, sin muestras inválidas y con los mismos
+  picos que en la vuelta 2.
+
+### Auditoría automática (repetida sobre los builds de las 08:47, las 08:52 y las 08:58, de 609 a 610 KB, con los mismos números)
+
+| Tamaño | Texto más chico | Textos de menos de 11 px | Tocables de menos de 44 px | Contraste de menos de 4,5 | Página ancha | Nombres futuros en la carta | Emojis |
+|---|---|---|---|---|---|---|---|
+| 390 × 844 | 10,2 px | 3 (rótulos del perfil), en 4 estados | 0 | 0 | no | 0 | 0 |
+| 360 × 640 | 9,4 px | 3 (los mismos), en 4 estados | 0 | 0 | no | 0 | 0 |
+| 844 × 390 | 9,8 px | 3 (los mismos) y 3 rótulos de la carta a 10,9 px | 0 | 0 | no | 0 | 0 |
+
+Por estado, a 390 × 844 (en los 16, cero tocables chicos, cero contrastes bajos, página de 390 px, sin nombres futuros ni emojis):
+
+| Estado | Texto más chico | Textos de menos de 11 px | Asoman a medias sobre el pie |
+|---|---|---|---|
+| portada | 11 px | 0 | 0 |
+| navegar-primera | 10,2 px | 2 | 0 |
+| guia-sin-responder, guia-bien, guia-mal | 10,2 px | 3 | 0 |
+| parada-sello-nuevo, parada-adulto, anclada | 11 px | 0 | 1 (el texto de la postal) |
+| parada-sello-pendiente | 11,9 px | 0 | 1 |
+| mercado-lleno, evento, evento-bien, evento-mal | 11 px | 0 | 0 |
+| parada-ultima | 11 px | 0 | 1 |
+| mar-nino, mar-adulto | 11 px | 0 | 0 |
+
+Por estado se midió el contraste de 13 a 37 textos HTML y hay de 4 a 10 tocables. Lo que va sobre el mapa se mide aparte y no
+hace fallar: su contraste sale de la captura, contra los píxeles que rodean cada texto (107 textos a 390 × 844, sumando los
+estados; los tapados por la hoja o la píldora no se miden). Los títulos, la píldora y los nombres de las paradas pasan de 4,5 a 1;
+los rótulos secundarios de la carta, no (A-12). Lo que va dentro de un dibujo (el sello y el perfil, 21 textos) no se mide.
+
+### Hallazgos nuevos
+
+| N.º | Gravedad | Pantalla | Captura | Qué se ve | Visto por |
+|---|---|---|---|---|---|
+| A-01 | media | navegando y parada, a 360 × 640 | `estados-360/03-guia-sin-responder.png`, `estados-360/06-parada-sello-nuevo.png` | La píldora tapa en parte lo que la carta pone debajo: el anillo «?» de la próxima parada (3 de 9 puntos en navegar y con la guía sin responder; 6 de 9 con la guía bien y en el evento), el rótulo SUDD en las paradas (6 de 9) y «Nilo Azul» con la guía mal (3 a 4 de 9); con la guía mal, además, la hoja tapa una punta del rótulo JUBA (3 de 9). Sigue igual en el build de las 08:58. A 390 × 844 y acostado, nada. | auditoría y a ojo |
+| A-02 | media | navegar en la primera bajada, antes de zarpar | `estados-390/02-navegar-primera.png` | Hipo ya pregunta «¿Cuál es la próxima parada?» con la lista de las seis a la vista y sin fichas para responder; el pie dice «Zarpar ›». | a ojo |
+| A-03 | media | navegando, a 360 × 640 y acostado | `estados-360/03-guia-sin-responder.png`, `estados-acostado/03-guia-sin-responder.png` | El perfil queda bajo el pie: a 360 asoma su encabezado cortado por la mitad («Perfil del río», «de 1 149 m en la fuente a 0 m en el…»); acostado, solo «1 149 m». Se destapa al bajar. En el build de las 08:55 ya no se ve: el pie lleva «‹ Atrás» y las fichas en un renglón y el perfil entra entero, a 360 y acostado. | auditoría y a ojo |
+| A-04 | menor | navegando | `estados-390/05-guia-mal.png` | Los rótulos del perfil («1 149 m», «457 m», «Altura del cauce») miden 10,2 px (9,4 a 360 × 640; 9,8 acostado): por debajo de 11. | auditoría |
+| A-05 | menor | navegando | `estados-390/02-navegar-primera.png` | En el perfil, «1 149 m» queda pisado por la línea que baja de la fuente. | a ojo |
+| A-06 | menor | parada y navegando | `estados-390/07-parada-sello-pendiente.png`, `estados-390/05-guia-mal.png` | La barca llega a la parada girada con el rumbo del tramo (casi vertical) y al pasar a navegar, o al reabrir el río, queda horizontal: cambia de postura entre dos pantallas de la misma parada. En el build de las 08:54, con la falúa nueva, llega horizontal y ya no se ve (`vueltaA-mercader/08-parada-2.png`). | a ojo |
+| A-07 | menor | parada 1 (Jinja) | `estados-390/extra-jinja-sello.png` | El sello de Jinja dice «0° N». | a ojo |
+| A-08 | menor | portada, a 360 × 640 | `estados-360/01-portada.png` | Sobre el pie asoma una raya suelta: es el filete de lo que sigue (el riel), que queda debajo del pie. En el build de las 08:55 ya no se ve: el riel entra entero sobre ZARPAR. | a ojo |
+| A-09 | menor | navegar en la primera bajada, acostado | `estados-acostado/02-navegar-primera.png` | Tres rótulos de la carta (ECUADOR, LAGO VICTORIA, UGANDA) miden 10,9 px: al límite de los 11. | auditoría |
+| A-10 | menor | parada, a 360 × 640 | `estados-360/06-parada-sello-nuevo.png` | El kicker se parte en dos renglones entre «KM» y «≈1 006 DE 6 650». En el build de las 08:55 el kicker dice solo «PARADA 2 DE 6» y ya no se parte. | a ojo |
+| A-11 | menor, para Humberto | mercado (Niño) | `estados-390/08-mercado-lleno.png` | Con una moneda dice «1 monedas · bodega 3 de 3»: es el texto del motor de siempre (`renderMercado`). | a ojo |
+| A-12 | menor (aparte: sobre el mapa, a decidir) | la carta, en casi todos los estados | `estados-390/01-portada.png`, `estados-390/03-guia-sin-responder.png` | Nueve rótulos secundarios de 11 px quedan por debajo de 4,5 a 1 contra lo que tienen alrededor, medido en la captura a 390 × 844 (mediana): ECUADOR 2,65; Nilo Azul 3,21; LAGO VICTORIA 3,26; ETIOPÍA 3,43; Nilo Blanco 3,48; UGANDA 3,69; SUDD 3,80; SUDÁN 3,80; SUDÁN DEL SUR 3,84. Acostado, también EGIPTO, 3,96. Los nombres de las paradas y el mar Mediterráneo pasan. | auditoría (captura) |
+| A-13 | menor | portada, con la falúa nueva (build de las 08:54) | `vueltaA-mercader/01-inicio.png` | La falúa nueva, más grande, queda pegada por abajo al rótulo LAGO VICTORIA: su sombra parece pisar las letras del medio. | a ojo |
+
+### Abiertos de la primera corrida
+
+| N.º | Gravedad | Qué era | Cómo se ve en la vuelta A (build de las 08:44 a 08:47) |
+|---|---|---|---|
+| V1-09 | menor | el sello no es circular | abierto en la lista; en este build el sello ya es circular (`estados-390/13-anclada.png`) |
+| V1-10 | menor, para Humberto | la carga de Juba nombra a Jartum | abierto |
+| V1-11 | menor | marcas oscuras junto al río, al sur de Asuán | abierto; no se volvió a mirar |
+| V2-01 | menor | letras de 8 px en el sello | abierto en la lista; en este build el sello lleva «JUBA» a 13 px y «5° N» a 11 px |
+| V2-02 | menor | relieve en manchas suaves en las vistas cercanas | abierto; en Juba y en El Cairo ya se ve relieve con detalle, con zonas borrosas (`estados-390/14-parada-ultima.png`) |
+| V2-04 | menor | la bitácora de la portada queda casi vacía | abierto en la lista; en este build trae el riel bajo la fila (`estados-390/01-portada.png`) |
+| V2-05 | menor | a 390 no se ve el riel | abierto en la lista; el riel está en la portada, y en parada y navegando sigue sin verse a 390 |
+| V2-06 | menor | en El Cairo la barca queda pegada al pictograma de Guiza | abierto en la lista; a las 08:44 seguía encima de los triángulos y en el build de las 08:55 el pictograma ya no sale bajo la barca (`estados-390/14-parada-ultima.png`) |
+| V2-08 | menor | en el mar Hipo sale dormido mientras habla | abierto: sigue («z z» en `estados-acostado/15-mar-nino.png`) |
+| V1-17 | menor | un rótulo asoma detrás del botón de volver | corregido en el retoque de las 08:18 (lo comprobó Dirección); SUDD queda separado del botón en `estados-acostado/06-parada-sello-nuevo.png` |
+| V2-03 | menor | SUDÁN dos veces y sin EGIPTO a 1440 | corregido en el retoque de las 08:18 (lo comprobó Dirección) |
+| V2-07 | menor | «‹ Atrás» cambia de forma | corregido en el retoque de las 08:18: enlace también en El Cairo (`estados-390/14-parada-ultima.png`) |
+
+**Vuelta A: ningún hallazgo grave. De las 3 medias nuevas siguen dos (A-01, la píldora sobre el anillo a 360 × 640, y A-02, la
+pregunta de Hipo antes de zarpar); A-03 ya no se ve en el build de las 08:55. De las 10 menores nuevas (A-04 a A-13) ya no se ven
+tres (A-06, A-08 y A-10) y siguen siete. De las 9 menores abiertas de la primera corrida, cinco ya no se ven en los builds de la
+vuelta A (V1-09, V2-01, V2-04, V2-06 y, en la portada, V2-05) y cuatro siguen (V1-10, V1-11, V2-02 y V2-08). Las capturas de
+`estados-390/`, `estados-360/` y `estados-acostado/` son las del build de las 08:55.**

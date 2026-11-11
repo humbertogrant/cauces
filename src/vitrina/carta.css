@@ -3,6 +3,16 @@
 
 /* la tierra y el relieve sombreado (carta.js mete #v-fondo); las franjas del motor no van en la vitrina, ni sus nombres */
 body.vitrina #tierra{fill:var(--v-tierra,#215A4F)}
+/* el halo claro pegado a la costa, hacia el mar, de grosor constante en pantalla (carta.js mete #v-halo debajo de la tierra y le
+   pone el ancho en cada dibujo: 16, 8 y 2,2 px; de cada trazo solo se ve la mitad de afuera) */
+body.vitrina #v-halo{pointer-events:none}
+body.vitrina #v-halo use{stroke:var(--v-claro,#64C8AA);stroke-linejoin:round;stroke-linecap:round}
+body.vitrina #v-halo .a{stroke-opacity:.05}
+body.vitrina #v-halo .b{stroke-opacity:.08}
+body.vitrina #v-halo .c{stroke-opacity:.36}
+/* los lagos, con su orilla fina: así el lago Nasser, angosto y con el río encima, se lee como lago */
+body.vitrina #lagos{stroke:var(--v-claro,#64C8AA);stroke-opacity:.5;stroke-width:1.2px;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+body.vitrina #v-luz2{transition:opacity .6s ease}
 body.vitrina #relieve{display:none}
 body.vitrina .etq.relieve,body.vitrina .pico{display:none}
 body.vitrina #v-fondo{pointer-events:none}
@@ -49,6 +59,11 @@ body.vitrina .v-rot.rio-n{font-style:italic;letter-spacing:.06em;fill:var(--v-cl
 body.vitrina .v-rot.pais{text-transform:uppercase;font-weight:600;letter-spacing:.32em;fill:var(--v-crema,#FBF8F2);fill-opacity:.6}
 body.vitrina .v-rot.linea{text-transform:uppercase;font-weight:600;letter-spacing:.22em;fill:var(--v-claro,#64C8AA);fill-opacity:.72}
 body.vitrina .v-rot.hito{fill:var(--v-crema,#FBF8F2);fill-opacity:.92}
+body.vitrina .v-rot.bajo{font-style:italic;fill:var(--v-crema,#FBF8F2);fill-opacity:.92}/* el renglón bajo el nombre de la parada donde está la barca */
+/* escala gráfica y norte: crema al 80 % */
+body.vitrina .v-escala{fill:none;stroke:var(--v-crema,#FBF8F2);stroke-opacity:.8;stroke-linecap:round;stroke-linejoin:round}
+body.vitrina .v-rot.escala{fill:var(--v-crema,#FBF8F2);fill-opacity:.8;font-weight:600;letter-spacing:.06em}
+body.vitrina .v-boca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2)}/* la boca del río */
 body.vitrina .v-marca{fill:var(--v-mar,#0C3A33);stroke:var(--v-crema,#FBF8F2);stroke-opacity:.92;stroke-linejoin:round}
 
 /* la barrida de olas al llegar al mar, en verde claro (el dorado es solo el río y la vela): el patrón del motor, recoloreado */
